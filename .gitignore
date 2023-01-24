@@ -7,13 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# OS files
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Build and setup files
+node_modules
 dist
 dist-ssr
-coverage
 *.local
 
+# Test suite files
+coverage
 /cypress/videos/
 /cypress/screenshots/
 
@@ -26,3 +32,14 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variables file
+.env
+.env.test
+*.local
