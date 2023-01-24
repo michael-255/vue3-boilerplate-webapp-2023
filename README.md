@@ -18,7 +18,7 @@ This template should help get you started developing with Vue 3 in Vite.
 1. `-----------Record other steps to get this project ready!`
 1. Run `git init` inside your project directory
 1. Commit all changes to the project into it's initial commit
-1. Run the follow commands to push the new project to GitHub:
+1. Run the follow commands to push the new project to your GitHub repo:
     ```sh
     git remote add origin https://github.com/GITHUB_USER/PROJECT_NAME.git
     git branch -M main
