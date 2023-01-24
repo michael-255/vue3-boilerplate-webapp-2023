@@ -4,8 +4,9 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ## Steps to Setup
 
-1. Run `npm init @vue/latest` in your Projects directory
-   - Name the project
+1. Create an empty repository in GitHub with a `PROJECT_NAME`
+1. Run `npm init @vue/latest` in your local Projects directory
+   - Name the project `PROJECT_NAME`
    - TypeScript - Yes
    - JSX - No
    - Vue Router - Yes
@@ -14,7 +15,15 @@ This template should help get you started developing with Vue 3 in Vite.
    - End-to-End Testing - No
    - ESLint - Yes
    - Prettier - Yes
-2. `Record other steps to the this project ready!`
+1. `-----------Record other steps to get this project ready!`
+1. Run `git init` inside your project directory
+1. Commit all changes to the project into it's initial commit
+1. Run the follow commands to push the new project to GitHub:
+    ```sh
+    git remote add origin https://github.com/GITHUB_USER/PROJECT_NAME.git
+    git branch -M main
+    git push -u origin main
+    ```
 
 
 ## Recommended IDE Setup
