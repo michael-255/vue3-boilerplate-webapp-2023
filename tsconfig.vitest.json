@@ -3,7 +3,8 @@
   "exclude": [],
   "compilerOptions": {
     "composite": true,
-    "lib": [],
+    "lib": ["es2020"], // added for es2020 language features
+    "target": "es2020", // added for es2020 language features
     "types": ["node", "jsdom"]
   }
 }
