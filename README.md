@@ -5,6 +5,13 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos
 
+- What are the next steps to get this project ready?
+  - Dashboard (Home)
+  - Settings
+  - Logs
+  - Images
+  - Menu
+
 ## Post Cloning Steps (Remove after completion)
 
 - [ ] Update `package.json`
