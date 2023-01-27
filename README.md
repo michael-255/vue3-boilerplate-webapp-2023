@@ -6,12 +6,36 @@ projects. Read through this README to have a better understanding of how this pr
 ## Todos (\*\*\*)
 
 - Notes on how the Manifest is setup (icons, themes, etc.)
-- What are the next steps to get this project ready?
+- What are the next steps to get this project ready (notes about them only)?
+
   - Dashboard (Home)
   - Settings
   - Logs
   - Images
   - Menu
+
+- Include an Introduction card and Setting on the Home page that can be dismissed
+
+- Changes to how you view data:
+  - Have Settings page button in the top right of header bar again
+  - Move `Settings`, `Logs`, and `Images` table views into Settings page
+  - `Measurements` link in Menu
+    - Options to record a measurement:
+      - `Miscellaneous`
+      - `BMI`
+      - `Body`
+      - `Heart`
+      - `Pain`
+      - `Athletics`
+    - Option to `Create New Measurement`
+    - Option to `View Measurement Charts`
+    - Option to `View Measurements`
+    - Option to `View Measurement Records`
+  - `Exercises` link in Menu
+    - Option to `Create New Exercise`
+    - Option to `View Exercise Charts`
+    - Option to `View Exercises`
+    - Option to `View Exercise Records`
 
 ## Post Cloning Steps (Remove after completion)
 
