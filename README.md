@@ -1,10 +1,11 @@
-# Vue 3 Boilerplate Web App
+# Vue 3 Web App Template (WORK IN PROGRESS)
 
 This Vue 3 Typescript project can be used as a template to help you get started developing smaller
 projects. Read through this README to have a better understanding of how this project is setup.
 
-## Todos
+## Todos (\*\*\*)
 
+- Notes on how the Manifest is setup (icons, themes, etc.)
 - What are the next steps to get this project ready?
   - Dashboard (Home)
   - Settings

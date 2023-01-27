@@ -1,5 +1,5 @@
 {
-  "name": "vue3-boilerplate-webapp-2023",
+  "name": "vue3-web-app-template-2023",
   "author": "Michael Joy",
   "private": true,
   "license": "MIT",
@@ -51,10 +51,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/michael-255/vue3-boilerplate-webapp-2023.git"
+    "url": "git+https://github.com/michael-255/vue3-web-app-template-2023.git"
   },
   "bugs": {
-    "url": "https://github.com/michael-255/vue3-boilerplate-webapp-2023/issues"
+    "url": "https://github.com/michael-255/vue3-web-app-template-2023/issues"
   },
-  "homepage": "https://github.com/michael-255/vue3-boilerplate-webapp-2023#readme"
+  "homepage": "https://github.com/michael-255/vue3-web-app-template-2023#readme"
 }
