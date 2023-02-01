@@ -22,22 +22,18 @@ Sections
 - Import
 
   - Good explanation of import file requirements
-  - Import input
 
 - Export
 
   - Good explanation of export functionality
-  - Export input
   - Remove option to name export file???
-
-- Logging
-
-  - Move logging toggles here
 
 - DANGER ZONE
 
   - Move all table clears here
 
+- Clean up `Icon` bloat
+- Setup brand colors so you don't need `AppColors`???
 - Add info tooltips to Settings page
 - Include an Introduction card and Setting on the Home page that can be dismissed
 - Consider using other Quasar plugins (Loading, Meta, etc.)

@@ -42,6 +42,6 @@ function reloadMessageDialog(): void {
 <template>
   <!-- Div ensures this item will stack on screen -->
   <div>
-    <QBtn label="Delete Database" :color="AppColor.ERROR" @click="onDeleteDB()" />
+    <QBtn square label="Delete Database" :color="AppColor.ERROR" @click="onDeleteDB()" />
   </div>
 </template>

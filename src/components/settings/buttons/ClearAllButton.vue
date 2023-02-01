@@ -32,6 +32,6 @@ async function onClearAll(): Promise<void> {
 <template>
   <!-- Div ensures this item will stack on screen -->
   <div>
-    <QBtn label="Clear All" :color="AppColor.ERROR" @click="onClearAll()" />
+    <QBtn square label="Clear All" :color="AppColor.ERROR" @click="onClearAll()" />
   </div>
 </template>

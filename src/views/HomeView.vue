@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { QPage } from 'quasar'
 import { Icon } from '@/constants/globals'
-import SectionBanner from '@/components/shared/SectionBanner.vue'
+import BannerCard from '@/components/shared/BannerCard.vue'
 </script>
 
 <template>
   <QPage padding>
-    <SectionBanner title="Home" :icon="Icon.HOME" />
+    <BannerCard title="Home" :icon="Icon.HOME" />
   </QPage>
 </template>

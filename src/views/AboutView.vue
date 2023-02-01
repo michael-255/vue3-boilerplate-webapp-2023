@@ -2,14 +2,14 @@
 import { QPage } from 'quasar'
 import { QCard, QCardSection, QBtn } from 'quasar'
 import { AppString, Icon, Links } from '@/constants/globals'
-import SectionBanner from '@/components/shared/SectionBanner.vue'
+import BannerCard from '@/components/shared/BannerCard.vue'
 </script>
 
 <template>
   <QPage padding>
     <div class="row justify-center">
       <div class="col-md-6 col-sm-8 col-xs-12">
-        <SectionBanner title="About" :icon="Icon.INFO" />
+        <BannerCard title="About" :icon="Icon.INFO" />
 
         <QCard flat square>
           <QCardSection class="q-pb-xs">
