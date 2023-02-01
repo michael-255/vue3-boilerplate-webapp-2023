@@ -1,4 +1,4 @@
-import { Icon, AppColor, SettingKey, Severity } from '@/constants/globals'
+import { Icon, SettingKey, Severity } from '@/constants/globals'
 import { logger } from '@/services/PrettyLogger'
 import useNotifications from '@/use/useNotifications'
 import useSettingsStore from '@/stores/settings'
@@ -19,7 +19,6 @@ export default function useLogger() {
    * - info
    * - warn
    * - error
-   * - critical
    */
   const log = {
     /**
@@ -34,7 +33,7 @@ export default function useLogger() {
       }
 
       if (settingsStore[SettingKey.SHOW_DEBUG_MESSAGES]) {
-        notify(label, Icon.DEBUG, AppColor.DEBUG)
+        notify(label, Icon.DEBUG, 'accent')
       }
     },
     /**
@@ -54,7 +53,7 @@ export default function useLogger() {
         addLog(severity, label, details)
       }
 
-      notify(label, Icon.INFO, AppColor.INFO)
+      notify(label, Icon.INFO, 'info')
     },
     /**
      * WARN
@@ -71,7 +70,7 @@ export default function useLogger() {
 
       addLog(severity, label, details)
 
-      notify(label, Icon.WARN, AppColor.WARN)
+      notify(label, Icon.WARN, 'warning')
     },
     /**
      * ERROR
@@ -88,24 +87,7 @@ export default function useLogger() {
 
       addLog(severity, label, details)
 
-      notify(label, Icon.ERROR, AppColor.ERROR)
-    },
-    /**
-     * CRITICAL
-     * - Suppressable console logs
-     * - Cannot turn off DB saving
-     * - Cannot suppress notifications
-     */
-    critical: (label: string, details?: any) => {
-      const severity = Severity.CRITICAL
-
-      if (settingsStore[SettingKey.SHOW_CONSOLE_LOGS]) {
-        logger.critical(`[${severity}]`, label, details)
-      }
-
-      addLog(severity, label, details)
-
-      notify(label, Icon.CRITICAL, AppColor.CRITICAL)
+      notify(label, Icon.ERROR, 'negative')
     },
   }
 

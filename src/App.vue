@@ -31,7 +31,7 @@ watch(
       layout.value = markRaw(component?.default || DefaultLayout)
     } catch (error) {
       layout.value = markRaw(DefaultLayout)
-      log.critical('Route layout watcher', error)
+      log.error('Route layout watcher', error)
     }
   },
   { immediate: true }

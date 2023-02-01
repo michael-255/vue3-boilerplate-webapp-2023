@@ -1,5 +1,5 @@
 import { TableName } from '@/constants/globals'
-import { AppColor, Icon, AppString, SettingKey } from '@/constants/globals'
+import { Icon, AppString, SettingKey } from '@/constants/globals'
 import { exportFile } from 'quasar'
 import { type Ref, ref, computed } from 'vue'
 import useDBSettings from '@/use/useDBSettings'
@@ -7,7 +7,6 @@ import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDBShared from '@/use/useDBShared'
 import useLogger from '@/use/useLogger'
 import useSettingsStore from '@/stores/settings'
-import type { SettingValue } from '@/constants/types'
 
 export default function useSettingsView() {
   const settingsStore = useSettingsStore()
@@ -84,11 +83,6 @@ export default function useSettingsView() {
       message: 'Error message',
       stack: 'Error stack trace',
     })
-    log.critical('This is a Critical Log', {
-      name: 'Critical',
-      message: 'Critical message',
-      stack: 'Critical stack trace',
-    })
   }
 
   /**
@@ -108,7 +102,7 @@ export default function useSettingsView() {
       'Import',
       `Import file "${importFile.value.name}" and attempt to load data from it?`,
       Icon.INFO,
-      AppColor.INFO,
+      'info',
       async (): Promise<void> => {
         try {
           // Imports data properties it can parse that are defined below.
@@ -150,7 +144,7 @@ export default function useSettingsView() {
       'Export',
       `Export the file "${filename}" with all of your data?`,
       Icon.INFO,
-      AppColor.INFO,
+      'info',
       async (): Promise<void> => {
         try {
           // Use table keys as guide for what data can be exported
@@ -189,7 +183,7 @@ export default function useSettingsView() {
       `Delete ${table} Data`,
       `Permanetly delete all ${table} data from the database?`,
       Icon.DELETE,
-      AppColor.ERROR,
+      'negative',
       async (): Promise<void> => {
         try {
           await clearTable(table)
@@ -206,7 +200,7 @@ export default function useSettingsView() {
       'Delete All Data',
       'Permanetly delete all data from the database?',
       Icon.DELETE,
-      AppColor.ERROR,
+      'negative',
       async (): Promise<void> => {
         try {
           await Promise.all(Object.values(TableName).map((table) => clearTable(table as TableName)))
@@ -223,11 +217,11 @@ export default function useSettingsView() {
       'Delete Database',
       'Delete the underlining database? All data will be lost. You must reload the website after this action to reinitialize the database.',
       Icon.DELETE,
-      AppColor.ERROR,
+      'negative',
       async (): Promise<void> => {
         try {
           await deleteDatabase()
-          log.critical('Reload the website now.')
+          log.error('Reload the website now.')
         } catch (error) {
           log.error('Database deletion failed', error)
         }

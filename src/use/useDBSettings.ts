@@ -37,8 +37,8 @@ export default function useDBSettings() {
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
-    const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
-    const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
+    // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
+    // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
     // const parentsTableVisibleColumns = findSettingValue(
     //   SettingKey.PARENTS_TABLE_VISIBLE_COLUMNS
@@ -56,8 +56,8 @@ export default function useDBSettings() {
       setSetting(SettingKey.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingKey.SAVE_INFO_MESSAGES, saveInfoMessages),
-      setSetting(SettingKey.FAVORITE_PARENT_IDS, favoriteParentIds),
-      setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
+      // setSetting(SettingKey.FAVORITE_PARENT_IDS, favoriteParentIds),
+      // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
       // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),
       // setSetting(SettingKey.PARENTS_TABLE_VISIBLE_COLUMNS, parentsTableVisibleColumns),
       // setSetting(SettingKey.RECORDS_TABLE_VISIBLE_COLUMNS, recordsTableVisibleColumns),

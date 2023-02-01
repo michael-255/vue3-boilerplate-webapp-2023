@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QPage, QSelect, QBtn } from 'quasar'
-import { AppColor, Icon, TableName, AppLimits } from '@/constants/globals'
+import { Icon, TableName, AppLimits } from '@/constants/globals'
 import BannerCard from '@/components/shared/BannerCard.vue'
 import useSettingsView from '@/use/useSettingsView'
 
@@ -78,7 +78,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
         <!-- Examples -->
         <div class="q-mb-md">{{ defaultExamplesText }}</div>
-        <QBtn square label="Examples" :icon="Icon.EXAMPLES" :color="AppColor.BRAND" />
+        <QBtn square label="Examples" :icon="Icon.EXAMPLES" color="primary" />
       </QCardSection>
     </QCard>
 
@@ -130,12 +130,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
           label="Table"
         >
           <template v-slot:after>
-            <QBtn
-              :disable="!accessTableModel"
-              square
-              label="Access Table"
-              :color="AppColor.BRAND"
-            />
+            <QBtn :disable="!accessTableModel" square label="Access Table" color="primary" />
           </template>
         </QSelect>
       </QCardSection>
@@ -158,7 +153,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
         <!-- Test Logger -->
         <div class="q-mb-md">{{ testLoggerText }}</div>
-        <QBtn square label="Test Logger" :color="AppColor.BRAND" @click="onTestLogger()" />
+        <QBtn square label="Test Logger" color="primary" @click="onTestLogger()" />
       </QCardSection>
     </QCard>
 
@@ -183,7 +178,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
               :disable="!deleteDataModel"
               square
               label="Delete Data"
-              :color="AppColor.ERROR"
+              color="negative"
               @click="onDeleteTableData(TableName.LOGS)"
             />
           </template>
@@ -195,13 +190,13 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
           square
           class="q-mb-md"
           label="Delete All Data"
-          :color="AppColor.ERROR"
+          color="negative"
           @click="onDeleteAllData()"
         />
 
         <!-- Delete Database -->
         <div class="q-mb-md">{{ deleteDatabaseText }}</div>
-        <QBtn square label="Delete Database" :color="AppColor.ERROR" @click="onDeleteDatabase()" />
+        <QBtn square label="Delete Database" color="negative" @click="onDeleteDatabase()" />
       </QCardSection>
     </QCard>
   </QPage>

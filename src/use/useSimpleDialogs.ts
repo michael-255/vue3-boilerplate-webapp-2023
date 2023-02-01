@@ -1,4 +1,4 @@
-import { AppColor, Icon } from '@/constants/globals'
+import { Icon } from '@/constants/globals'
 import { useQuasar } from 'quasar'
 import SimpleDialog from '@/components/shared/SimpleDialog.vue'
 
@@ -20,7 +20,7 @@ export default function useSimpleDialogs() {
     title: string,
     message: string,
     icon: Icon,
-    color: AppColor,
+    color: string,
     onOkFunc: () => void
   ): void {
     $quasar
@@ -51,7 +51,7 @@ export default function useSimpleDialogs() {
     title: string,
     message: string,
     icon: Icon = Icon.INFO,
-    color: AppColor = AppColor.INFO
+    color: string = 'info'
   ): void {
     $quasar.dialog({
       component: SimpleDialog,

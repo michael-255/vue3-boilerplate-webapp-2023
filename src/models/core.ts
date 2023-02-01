@@ -17,6 +17,7 @@ export interface IDBParent extends IDBEntity {
   [Field.PARENT_STATUS]: ParentStatus
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
+  [Field.FAVORITE]: boolean
 }
 
 export interface IDBRecord extends IDBEntity {

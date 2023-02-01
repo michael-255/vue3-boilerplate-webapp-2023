@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AppColor, Icon } from '@/constants/globals'
+import type { Icon } from '@/constants/globals'
 import { QDialog, QCard, QCardSection, QCardActions, QIcon, QBtn } from 'quasar'
 import { useDialogPluginComponent } from 'quasar'
 
@@ -24,10 +24,12 @@ defineProps<{
   icon: Icon
   title: string
   message: string
-  color: AppColor
+  color: string
   persistent: boolean // If it can be dismissed by clicking outside it
 }>()
+
 defineEmits([...useDialogPluginComponent.emits])
+
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
 
 function onOKClick() {
@@ -36,7 +38,7 @@ function onOKClick() {
 </script>
 
 <template>
-  <QDialog ref="dialogRef" :persistent="persistent" @hide="onDialogHide">
+  <QDialog square ref="dialogRef" :persistent="persistent" @hide="onDialogHide">
     <QCard class="q-dialog-plugin">
       <QCardSection :class="`bg-${color} text-white q-mb-sm`">
         <QIcon :name="icon" size="sm" class="q-pb-xs q-mr-md" />

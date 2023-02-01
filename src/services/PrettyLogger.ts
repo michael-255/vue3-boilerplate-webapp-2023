@@ -1,4 +1,4 @@
-import { AppString, AppColor } from '@/constants/globals'
+import { AppString } from '@/constants/globals'
 import { colors } from 'quasar'
 
 const { getPaletteColor } = colors
@@ -15,7 +15,6 @@ export class PrettyLogger {
     info: string
     warn: string
     error: string
-    critical: string
   }
 
   constructor(name = 'Logger') {
@@ -23,12 +22,11 @@ export class PrettyLogger {
 
     const baseStyle = 'border-radius: 3px; padding: 2px 4px; color: white;'
     this.style = {
-      log: `${baseStyle} background-color: ${getPaletteColor(AppColor.LOG)};`,
-      debug: `${baseStyle} background-color: ${getPaletteColor(AppColor.DEBUG)};`,
-      info: `${baseStyle} background-color: ${getPaletteColor(AppColor.INFO)};`,
-      warn: `${baseStyle} background-color: ${getPaletteColor(AppColor.WARN)};`,
-      error: `${baseStyle} background-color: ${getPaletteColor(AppColor.ERROR)};`,
-      critical: `${baseStyle} background-color: ${getPaletteColor(AppColor.CRITICAL)};`,
+      log: `${baseStyle} background-color: ${getPaletteColor('secondary')};`,
+      debug: `${baseStyle} background-color: ${getPaletteColor('accent')};`,
+      info: `${baseStyle} background-color: ${getPaletteColor('info')};`,
+      warn: `${baseStyle} background-color: ${getPaletteColor('warning')};`,
+      error: `${baseStyle} background-color: ${getPaletteColor('negative')};`,
     }
   }
 
@@ -50,10 +48,6 @@ export class PrettyLogger {
 
   error(message: any, ...args: any): void {
     console.error(this.name, this.style.error, message, ...args)
-  }
-
-  critical(message: any, ...args: any): void {
-    console.error(this.name, this.style.critical, message, ...args)
   }
 
   trace(message: any, ...args: any): void {

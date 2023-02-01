@@ -12,21 +12,6 @@ export enum AppString {
 }
 
 /**
- * Defined app colors.
- * @see https://quasar.dev/style/color-palette
- * @see https://quasar.dev/quasar-utils/color-utils#helper-getpalettecolor
- */
-export enum AppColor {
-  BRAND = 'primary',
-  LOG = 'blue-grey',
-  DEBUG = 'deep-purple',
-  INFO = 'secondary',
-  WARN = 'orange-9',
-  ERROR = 'negative',
-  CRITICAL = 'red-13',
-}
-
-/**
  * Material Design icons.
  * @see https://fonts.google.com/icons
  */
@@ -36,7 +21,6 @@ export enum Icon {
   INFO = 'info',
   WARN = 'warning',
   ERROR = 'error',
-  CRITICAL = 'report',
   // Operations
   INSPECT = 'summarize',
   SAVE = 'save',
@@ -65,6 +49,13 @@ export enum Icon {
   MENU = 'menu',
 }
 
+/**
+ * Limits for various fields and properties.
+ */
+export enum AppLimits {
+  FILESIZE = 100000000, // ~100 megabytes
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //     Model Constants                                                       //
@@ -91,6 +82,7 @@ export enum Field {
   PARENT_STATUS = 'parentStatus',
   NAME = 'name',
   DESCRIPTION = 'description',
+  FAVORITE = 'favorite',
   // Record
   RECORD_STATUS = 'recordStatus',
   PARENT_ID = 'parentId',
@@ -118,7 +110,6 @@ export enum Severity {
   INFO = 'Info',
   WARN = 'Warning',
   ERROR = 'Error',
-  CRITICAL = 'Critical',
 }
 
 export enum SettingKey {
@@ -126,8 +117,6 @@ export enum SettingKey {
   SHOW_CONSOLE_LOGS = 'show-console-logs',
   SHOW_DEBUG_MESSAGES = 'show-debug-messages',
   SAVE_INFO_MESSAGES = 'save-info-messages',
-  FAVORITE_PARENT_IDS = 'favorite-parent-ids', // TODO - should be stored on the item itself?
-  ORPHANED_RECORD_IDS = 'orphaned-record-ids',
   // ACTIVE_RECORD_IDS = 'active-record-ids',
   // PARENTS_TABLE_VISIBLE_COLUMNS = 'parents-table-visible-columns',
   // RECORDS_TABLE_VISIBLE_COLUMNS = 'records-table-visible-columns',
@@ -199,11 +188,4 @@ export enum Milliseconds {
   PER_HOUR = 3600000,
   PER_MINUTE = 60000,
   PER_SECOND = 1000,
-}
-
-/**
- * Limits for various fields and properties.
- */
-export enum AppLimits {
-  FILESIZE = 100000000, // ~100 megabytes
 }

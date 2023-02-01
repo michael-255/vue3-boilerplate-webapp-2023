@@ -1,5 +1,5 @@
 import { useQuasar } from 'quasar'
-import { AppColor, Icon } from '@/constants/globals'
+import { Icon } from '@/constants/globals'
 
 /**
  * Simple customizable notifications.
@@ -19,7 +19,7 @@ export default function useNotifications() {
   function notify(
     message: string,
     icon: Icon = Icon.INFO,
-    color: AppColor = AppColor.INFO,
+    color: string = 'info',
     multiLine = false,
     position:
       | 'top-left'

@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Setup brand colors so you don't need `AppColors`???
 - Include an Introduction card and Setting on the Home page that can be dismissed
 - Consider using other Quasar plugins (Loading, Meta, etc.)
 
