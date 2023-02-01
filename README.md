@@ -5,15 +5,42 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- What are the next steps to get this project ready (notes about them only)?
+**Settings**
 
-  - Dashboard (Home)
-  - Settings
-  - Logs
-  - Images
-  - Menu
+Sections
 
+- Options
+
+  - Remove `Dark Mode` (it will be the default | requires some useDBSettings updates)
+  - App Introduction (boolean)
+  - TODO
+
+- Defaults
+
+  - Various defaulting buttons
+
+- Import
+
+  - Good explanation of import file requirements
+  - Import input
+
+- Export
+
+  - Good explanation of export functionality
+  - Export input
+  - Remove option to name export file???
+
+- Logging
+
+  - Move logging toggles here
+
+- DANGER ZONE
+
+  - Move all table clears here
+
+- Add info tooltips to Settings page
 - Include an Introduction card and Setting on the Home page that can be dismissed
+- Consider using other Quasar plugins (Loading, Meta, etc.)
 
 - Changes to how you view data:
   - Have Settings page button in the top right of header bar again

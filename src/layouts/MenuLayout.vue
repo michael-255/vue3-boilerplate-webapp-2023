@@ -22,8 +22,8 @@ const route = useRoute()
 
 <template>
   <QLayout view="hHh LpR lff">
-    <!-- Header -->
-    <QHeader elevated>
+    <!-- App Header -->
+    <QHeader flat bordered>
       <QToolbar>
         <QBtn flat round :icon="Icon.MENU" @click="mainMenuStore.drawer = !mainMenuStore.drawer" />
 
@@ -41,16 +41,21 @@ const route = useRoute()
     <!-- Menu Drawer -->
     <QDrawer v-model="mainMenuStore.drawer" :width="250" show-if-above side="left" bordered>
       <QList>
-        <QItem>
-          <QItemSection class="text-h6">Menu</QItemSection>
-        </QItem>
-
         <QItem clickable v-ripple :to="{ name: RouteName.HOME }">
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.DASHBOARD" />
+            <QIcon color="primary" :name="Icon.HOME" />
           </QItemSection>
-          <QItemSection>Dashboard</QItemSection>
+          <QItemSection>Home</QItemSection>
         </QItem>
+
+        <QItem clickable v-ripple>
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.EXAMPLE" />
+          </QItemSection>
+          <QItemSection>Examples</QItemSection>
+        </QItem>
+
+        <QSeparator />
 
         <QItem clickable v-ripple :to="{ name: RouteName.SETTINGS }">
           <QItemSection avatar>
@@ -66,45 +71,6 @@ const route = useRoute()
           <QItemSection>About</QItemSection>
         </QItem>
       </QList>
-
-      <QItem>
-        <QItemSection class="text-h6">Data Tables</QItemSection>
-      </QItem>
-
-      <QItem clickable v-ripple>
-        <QItemSection avatar>
-          <QIcon color="primary" :name="Icon.MEASUREMENTS" />
-        </QItemSection>
-        <QItemSection>Measurements</QItemSection>
-      </QItem>
-
-      <QItem clickable v-ripple>
-        <QItemSection avatar>
-          <QIcon color="primary" :name="Icon.RECORDS" />
-        </QItemSection>
-        <QItemSection>Measurement Records</QItemSection>
-      </QItem>
-
-      <QItem clickable v-ripple>
-        <QItemSection avatar>
-          <QIcon color="primary" :name="Icon.EXERCISES" />
-        </QItemSection>
-        <QItemSection>Exercises</QItemSection>
-      </QItem>
-
-      <QItem clickable v-ripple>
-        <QItemSection avatar>
-          <QIcon color="primary" :name="Icon.RECORDS" />
-        </QItemSection>
-        <QItemSection>Exercise Records</QItemSection>
-      </QItem>
-
-      <QItem clickable v-ripple>
-        <QItemSection avatar>
-          <QIcon color="primary" :name="Icon.LOGS" />
-        </QItemSection>
-        <QItemSection>Logs</QItemSection>
-      </QItem>
     </QDrawer>
 
     <!-- Router View -->
