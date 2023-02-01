@@ -11,6 +11,18 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue'),
     },
     {
+      path: '/examples',
+      name: RouteName.EXAMPLES,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/ExamplesView.vue'),
+    },
+    {
+      path: '/reports',
+      name: RouteName.REPORTS,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/ReportsView.vue'),
+    },
+    {
       path: '/settings',
       name: RouteName.SETTINGS,
       meta: { layout: 'MenuLayout' },

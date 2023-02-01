@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Move Home page Introduction logic to `useHomeView` file
 - Consider using other Quasar plugins (Loading, Meta, etc.)
 
 - Changes to how you view data:

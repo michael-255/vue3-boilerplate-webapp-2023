@@ -3,18 +3,10 @@ import { QPage, QCard, QCardSection, QBtn } from 'quasar'
 import { Icon, RouteName, SettingKey } from '@/constants/globals'
 import BannerCard from '@/components/shared/BannerCard.vue'
 import useSettingsStore from '@/stores/settings'
-import useDBSettings from '@/use/useDBSettings'
+import useHomeView from '@/use/useHomeView'
 
 const settingsStore = useSettingsStore()
-const { setSetting } = useDBSettings()
-
-/**
- * TODO
- * - Move this to a useHomeView file?
- */
-async function onCloseIntroduction(): Promise<void> {
-  await setSetting(SettingKey.INTRODUCTION, false)
-}
+const { onCloseIntroduction } = useHomeView()
 </script>
 
 <template>
@@ -59,7 +51,7 @@ async function onCloseIntroduction(): Promise<void> {
               class="glossy full-width"
               color="warning"
               label="Examples"
-              :to="{ name: RouteName.HOME }"
+              :to="{ name: RouteName.EXAMPLES }"
             />
           </div>
 
@@ -72,7 +64,7 @@ async function onCloseIntroduction(): Promise<void> {
               class="glossy full-width"
               color="accent"
               label="Reports"
-              :to="{ name: RouteName.HOME }"
+              :to="{ name: RouteName.REPORTS }"
             />
           </div>
 
