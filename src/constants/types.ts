@@ -17,7 +17,7 @@ export type AppObject = { [x: string]: any }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export type SettingValue = any
+export type SettingValue = any // May make this more specific later
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //

@@ -23,6 +23,15 @@ export default function useSettingsView() {
   const deleteDataOptions: Ref<TableName[]> = ref(Object.values(TableName))
   const deleteDataModel: Ref<TableName | null> = ref(null)
 
+  const introduction = computed({
+    get() {
+      return !!settingsStore[SettingKey.INTRODUCTION]
+    },
+    async set(bool: boolean) {
+      await setSetting(SettingKey.INTRODUCTION, bool)
+    },
+  })
+
   const darkMode = computed({
     get() {
       return !!settingsStore[SettingKey.DARK_MODE]
@@ -221,7 +230,7 @@ export default function useSettingsView() {
       async (): Promise<void> => {
         try {
           await deleteDatabase()
-          log.error('Reload the website now.')
+          log.error('Reload the website now')
         } catch (error) {
           log.error('Database deletion failed', error)
         }
@@ -230,6 +239,7 @@ export default function useSettingsView() {
   }
 
   return {
+    introduction,
     darkMode,
     showConsoleLogs,
     showDebugMessages,

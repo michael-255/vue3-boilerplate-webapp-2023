@@ -1,7 +1,20 @@
 <script setup lang="ts">
-import { QPage, QIcon } from 'quasar'
-import { Icon } from '@/constants/globals'
+import { QPage, QCard, QCardSection, QBtn } from 'quasar'
+import { Icon, RouteName, SettingKey } from '@/constants/globals'
 import BannerCard from '@/components/shared/BannerCard.vue'
+import useSettingsStore from '@/stores/settings'
+import useDBSettings from '@/use/useDBSettings'
+
+const settingsStore = useSettingsStore()
+const { setSetting } = useDBSettings()
+
+/**
+ * TODO
+ * - Move this to a useHomeView file?
+ */
+async function onCloseIntroduction(): Promise<void> {
+  await setSetting(SettingKey.INTRODUCTION, false)
+}
 </script>
 
 <template>
@@ -9,63 +22,72 @@ import BannerCard from '@/components/shared/BannerCard.vue'
     <BannerCard title="Home" :icon="Icon.HOME" />
 
     <!--##### Introduction #####-->
-    <QCard flat square class="q-mb-sm">
+    <QCard v-if="settingsStore[SettingKey.INTRODUCTION]" flat square class="q-mb-sm">
       <QCardSection>
         <div class="text-h6 q-mb-md">Introduction</div>
-        <div>Work in progress...</div>
+
         <!-- TODO -->
+        <div class="q-mb-md">
+          <div>WORK IN PROGRESS</div>
+          <div>- What type of site this is (static, no login, you control your data)</div>
+          <div>- Where certain pages are and how to get to them</div>
+          <div>- How to favorite things</div>
+        </div>
+
+        <QBtn
+          square
+          label="Got it!"
+          icon="recommend"
+          color="positive"
+          @click="onCloseIntroduction()"
+        />
       </QCardSection>
     </QCard>
 
-    <!--##### Quick Links #####-->
+    <!--##### Quick Access #####-->
     <QCard flat square class="q-mb-sm">
       <QCardSection>
-        <div class="text-h6 q-mb-md">Quick Links</div>
+        <div class="text-h6 q-mb-md">Quick Access</div>
 
-        <div class="q-mb-md">
-          <QBtn square color="warning">
-            <div class="row items-center no-wrap">
-              <QIcon left :name="Icon.EXAMPLES" />
-              <div class="text-center">Record An<br />Example</div>
-            </div>
-          </QBtn>
-        </div>
+        <div class="row q-col-gutter-md justify-center">
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <QBtn
+              square
+              no-caps
+              size="lg"
+              :icon="Icon.EXAMPLES"
+              class="glossy full-width"
+              color="warning"
+              label="Examples"
+              :to="{ name: RouteName.HOME }"
+            />
+          </div>
 
-        <div class="q-mb-md">
-          <QBtn square color="accent">
-            <div class="row items-center no-wrap">
-              <QIcon left :name="Icon.REPORTS" />
-              <div class="text-center">View<br />Reports</div>
-            </div>
-          </QBtn>
-        </div>
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <QBtn
+              square
+              no-caps
+              size="lg"
+              :icon="Icon.REPORTS"
+              class="glossy full-width"
+              color="accent"
+              label="Reports"
+              :to="{ name: RouteName.HOME }"
+            />
+          </div>
 
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="primary" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="secondary" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="positive" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="accent" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="info" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="warning" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="negative" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="dark" />
-        </div>
-        <div class="q-mb-md">
-          <QBtn square label="TESTING" color="dark-page" />
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <QBtn
+              square
+              no-caps
+              size="lg"
+              :icon="Icon.SETTINGS"
+              class="glossy full-width"
+              color="secondary"
+              label="Settings"
+              :to="{ name: RouteName.SETTINGS }"
+            />
+          </div>
         </div>
       </QCardSection>
     </QCard>

@@ -5,6 +5,7 @@ import BannerCard from '@/components/shared/BannerCard.vue'
 import useSettingsView from '@/use/useSettingsView'
 
 const {
+  introduction,
   darkMode,
   showConsoleLogs,
   showDebugMessages,
@@ -24,7 +25,7 @@ const {
 } = useSettingsView()
 
 // Options
-const introductionText = `Introduction provides instructions on the Home page on how to use the app when on.`
+const introductionText = `Introduction provides instructions on the Home page on how to use the app.`
 const darkModeText = `Dark Mode allows you to switch between a light or dark theme for the app.`
 
 // Defaults
@@ -39,8 +40,8 @@ const accessTableText = `Select a table and access it directly in a data table f
 operations for individual records for most tables.`
 
 // Logging
-const showConsoleLogsText = `Show Console Logs will display all log messages in the developer console when turned on.`
-const showDebugMessagesText = `Show Debug Messages will display debug level notification alerts when on.`
+const showConsoleLogsText = `Show Console Logs will display all log messages in the developer console.`
+const showDebugMessagesText = `Show Debug Messages will display debug level notification alerts.`
 const saveInfoMessagesText = `Save Info Messages will save info level messages in the logs table of the database for
 later review.`
 const testLoggerText = `Validate that your logging settings above are working as expected by using the test action
@@ -64,7 +65,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
         <!-- Toggles -->
         <div class="q-mb-md">{{ introductionText }}</div>
-        <QToggle v-model="darkMode" class="q-mb-md" label="Introduction" />
+        <QToggle v-model="introduction" class="q-mb-md" label="Introduction" />
 
         <div class="q-mb-md">{{ darkModeText }}</div>
         <QToggle v-model="darkMode" label="Dark Mode" />

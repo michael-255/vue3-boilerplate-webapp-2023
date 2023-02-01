@@ -11,6 +11,7 @@ import {
   QItem,
   QItemSection,
   QIcon,
+  QSeparator,
 } from 'quasar'
 import { AppString, Icon, RouteName } from '@/constants/globals'
 import { useRoute } from 'vue-router'
@@ -32,8 +33,9 @@ const route = useRoute()
         <QBtn
           v-if="route.name !== RouteName.HOME"
           flat
+          round
           :to="{ name: RouteName.HOME }"
-          :icon="Icon.RETURN_TO_DASHBOARD"
+          :icon="Icon.HOME"
         />
       </QToolbar>
     </QHeader>
@@ -48,11 +50,20 @@ const route = useRoute()
           <QItemSection>Home</QItemSection>
         </QItem>
 
+        <QSeparator />
+
         <QItem clickable v-ripple>
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
           <QItemSection>Examples</QItemSection>
+        </QItem>
+
+        <QItem clickable v-ripple>
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.REPORTS" />
+          </QItemSection>
+          <QItemSection>Reports</QItemSection>
         </QItem>
 
         <QSeparator />

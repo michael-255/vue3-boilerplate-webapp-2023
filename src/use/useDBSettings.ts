@@ -33,6 +33,7 @@ export default function useDBSettings() {
     }
 
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
+    const introduction = findSettingValue(SettingKey.INTRODUCTION) ?? true
     const darkMode = findSettingValue(SettingKey.DARK_MODE) ?? true
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
@@ -52,6 +53,7 @@ export default function useDBSettings() {
 
     // Set all settings before continuing
     await Promise.all([
+      setSetting(SettingKey.INTRODUCTION, introduction),
       setSetting(SettingKey.DARK_MODE, darkMode),
       setSetting(SettingKey.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),

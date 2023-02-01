@@ -113,6 +113,7 @@ export enum Severity {
 }
 
 export enum SettingKey {
+  INTRODUCTION = 'introduction',
   DARK_MODE = 'dark-mode',
   SHOW_CONSOLE_LOGS = 'show-console-logs',
   SHOW_DEBUG_MESSAGES = 'show-debug-messages',
