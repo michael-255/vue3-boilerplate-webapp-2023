@@ -5,7 +5,12 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Include an Introduction card and Setting on the Home page that can be dismissed
+Settings Introduction Option:
+
+- Add to settings store
+- Confirming on the Home page closes it and turns off the setting
+- Link store setting to option in Settings page
+
 - Consider using other Quasar plugins (Loading, Meta, etc.)
 
 - Changes to how you view data:

@@ -127,10 +127,16 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
           dense
           v-model="accessTableModel"
           :options="accessTableOptions"
-          label="Table"
+          label="Database Table"
         >
-          <template v-slot:after>
-            <QBtn :disable="!accessTableModel" square label="Access Table" color="primary" />
+          <template v-slot:before>
+            <QBtn
+              :disable="!accessTableModel"
+              square
+              class="q-mr-xs"
+              label="Access Table"
+              color="primary"
+            />
           </template>
         </QSelect>
       </QCardSection>
@@ -169,14 +175,15 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
           v-model="deleteDataModel"
           outlined
           dense
-          label="Table"
+          label="Database Table"
           class="q-mb-md"
           :options="deleteDataOptions"
         >
-          <template v-slot:after>
+          <template v-slot:before>
             <QBtn
               :disable="!deleteDataModel"
               square
+              class="q-mr-xs"
               label="Delete Data"
               color="negative"
               @click="onDeleteTableData(TableName.LOGS)"
