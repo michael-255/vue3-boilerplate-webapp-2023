@@ -78,7 +78,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
         <!-- Examples -->
         <div class="q-mb-md">{{ defaultExamplesText }}</div>
-        <QBtn square label="Examples" :icon="Icon.EXAMPLE" :color="AppColor.INFO" />
+        <QBtn square label="Examples" :icon="Icon.EXAMPLES" :color="AppColor.BRAND" />
       </QCardSection>
     </QCard>
 
@@ -130,7 +130,12 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
           label="Table"
         >
           <template v-slot:after>
-            <QBtn :disable="!accessTableModel" square label="Access Table" :color="AppColor.INFO" />
+            <QBtn
+              :disable="!accessTableModel"
+              square
+              label="Access Table"
+              :color="AppColor.BRAND"
+            />
           </template>
         </QSelect>
       </QCardSection>
@@ -153,7 +158,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
         <!-- Test Logger -->
         <div class="q-mb-md">{{ testLoggerText }}</div>
-        <QBtn square label="Test Logger" :color="AppColor.INFO" @click="onTestLogger()" />
+        <QBtn square label="Test Logger" :color="AppColor.BRAND" @click="onTestLogger()" />
       </QCardSection>
     </QCard>
 

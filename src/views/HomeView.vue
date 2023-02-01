@@ -25,7 +25,7 @@ import BannerCard from '@/components/shared/BannerCard.vue'
         <div class="q-mb-md">
           <QBtn square :color="AppColor.WARN">
             <div class="row items-center no-wrap">
-              <QIcon left :name="Icon.EXAMPLE" />
+              <QIcon left :name="Icon.EXAMPLES" />
               <div class="text-center">Record An<br />Example</div>
             </div>
           </QBtn>
@@ -34,7 +34,7 @@ import BannerCard from '@/components/shared/BannerCard.vue'
         <div>
           <QBtn square :color="AppColor.DEBUG">
             <div class="row items-center no-wrap">
-              <QIcon left :name="Icon.REPORT" />
+              <QIcon left :name="Icon.REPORTS" />
               <div class="text-center">View<br />Reports</div>
             </div>
           </QBtn>

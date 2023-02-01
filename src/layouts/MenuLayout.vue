@@ -50,7 +50,7 @@ const route = useRoute()
 
         <QItem clickable v-ripple>
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.EXAMPLE" />
+            <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
           <QItemSection>Examples</QItemSection>
         </QItem>

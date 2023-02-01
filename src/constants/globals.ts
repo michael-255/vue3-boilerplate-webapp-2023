@@ -17,9 +17,10 @@ export enum AppString {
  * @see https://quasar.dev/quasar-utils/color-utils#helper-getpalettecolor
  */
 export enum AppColor {
+  BRAND = 'primary',
   LOG = 'blue-grey',
   DEBUG = 'deep-purple',
-  INFO = 'primary',
+  INFO = 'secondary',
   WARN = 'orange-9',
   ERROR = 'negative',
   CRITICAL = 'red-13',
@@ -37,7 +38,7 @@ export enum Icon {
   ERROR = 'error',
   CRITICAL = 'report',
   // Operations
-  UNDO = 'undo',
+  INSPECT = 'summarize',
   SAVE = 'save',
   CLOSE = 'close',
   EDIT = 'edit',
@@ -45,32 +46,23 @@ export enum Icon {
   ADD = 'add',
   REMOVE = 'remove',
   // Pages
-  EXAMPLE = 'smart_toy',
-  ACTIVE = 'play_arrow',
-  ACTIVITIES = 'directions_run',
-  RECORDS = 'web_stories',
-  MEASUREMENTS = 'straighten',
-  EXERCISES = 'fitness_center',
-  WORKOUTS = 'assignment',
+  HOME = 'home',
+  EXAMPLES = 'smart_toy',
+  SETTINGS = 'settings',
   LOGS = 'plagiarism',
+  REPORTS = 'timeline',
   // Misc
-  ACTIVE_NOTIFY = 'notifications_active',
-  TIMER = 'timer',
+  REMINDER = 'notifications_active',
+  STOPWATCH = 'timer',
+  CLOCK = 'access_time',
   CALENDAR_DATE = 'event',
   CALENDAR_CHECK = 'event_available',
   CALENDAR_CLEAR = 'event_busy',
-  RETURN_TO_DASHBOARD = 'exit_to_app',
-  TIME = 'access_time',
-  RENEW = 'autorenew',
-  DASHBOARD = 'dashboard',
-  REPORT = 'timeline',
-  MANAGEMENT = 'tune',
-  SETTINGS = 'settings',
-  DETAILS = 'summarize',
+  EXIT = 'exit_to_app',
+  REFRESH = 'refresh',
   CODE = 'code',
   WEB = 'language',
   MENU = 'menu',
-  HOME = 'home',
 }
 
 ///////////////////////////////////////////////////////////////////////////////
