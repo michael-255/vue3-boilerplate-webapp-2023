@@ -38,7 +38,7 @@ function onOKClick() {
 </script>
 
 <template>
-  <QDialog square ref="dialogRef" :persistent="persistent" @hide="onDialogHide">
+  <QDialog ref="dialogRef" :persistent="persistent" @hide="onDialogHide">
     <QCard class="q-dialog-plugin">
       <QCardSection :class="`bg-${color} text-white q-mb-sm`">
         <QIcon :name="icon" size="sm" class="q-pb-xs q-mr-md" />
