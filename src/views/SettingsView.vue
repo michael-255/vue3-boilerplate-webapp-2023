@@ -1,83 +1,202 @@
 <script setup lang="ts">
-import { QPage, QBtn } from 'quasar'
-import { AppColor, Icon } from '@/constants/globals'
+import { QPage, QSelect, QBtn } from 'quasar'
+import { AppColor, Icon, TableName, AppLimits } from '@/constants/globals'
 import BannerCard from '@/components/shared/BannerCard.vue'
-import OptionToggles from '@/components/settings/inputs/OptionToggles.vue'
-import TestLoggerButton from '@/components/settings/buttons/TestLoggerButton.vue'
-import ImportInput from '@/components/settings/inputs/ImportInput.vue'
-import ExportInput from '@/components/settings/inputs/ExportInput.vue'
-import ClearAllButton from '@/components/settings/buttons/ClearAllButton.vue'
-import DeleteDatabaseButton from '@/components/settings/buttons/DeleteDatabaseButton.vue'
+import useSettingsView from '@/use/useSettingsView'
 
-const optionsText = `Dark Mode allows you to switch between a light or dark themed app.
-Show Console Logs will display all log messages in the developer console when turned on.
-Show Debug Messages will display debug level notification alerts when on.
-Save Info Messages will save info level messages in the logs table of the database for later review.`
-const defaultsText = `TODO`
-const importText = `You can import data into the database from a JSON file.`
-const exportText = `You can export the entire database as a JSON file.`
-const tableViewerText = `TODO`
-const dangerZoneText = `Permanetly delete all of your data from the database using Clear All.
-Permanetly delete your data and the underlining database using Delete Database (requires site reload).
-None of the actions in this section can be undone. Export your data before proceeding.`
+const {
+  darkMode,
+  showConsoleLogs,
+  showDebugMessages,
+  saveInfoMessages,
+  importFile,
+  accessTableModel,
+  accessTableOptions,
+  deleteDataModel,
+  deleteDataOptions,
+  onTestLogger,
+  onRejectedFile,
+  onImportFile,
+  onExportData,
+  onDeleteTableData,
+  onDeleteAllData,
+  onDeleteDatabase,
+} = useSettingsView()
+
+// Options
+const introductionText = `Introduction provides instructions on the Home page on how to use the app when on.`
+const darkModeText = `Dark Mode allows you to switch between a light or dark theme for the app.`
+
+// Defaults
+const defaultExamplesText = `Load default Examples into the database.`
+
+// Data Management
+const importText = `Import data into the database from a JSON file. The app expects the data in the file to be
+structured the same as the exported version.`
+const exportText = `Export the entire database as a JSON file. Do this on a regularly basis so you have a backup of your
+data.`
+const accessTableText = `Select a table and access it directly in a data table format. This gives you access to
+operations for individual records for most tables.`
+
+// Logging
+const showConsoleLogsText = `Show Console Logs will display all log messages in the developer console when turned on.`
+const showDebugMessagesText = `Show Debug Messages will display debug level notification alerts when on.`
+const saveInfoMessagesText = `Save Info Messages will save info level messages in the logs table of the database for
+later review.`
+const testLoggerText = `Validate that your logging settings above are working as expected by using the test action
+below.`
+
+// DANGER ZONE
+const dangerZoneText = `The following operations cannot be undone. Consider exporting your data before proceeding.`
+const deleteTableDataText = `Select a table and permanently delete all of its data.`
+const deleteAllDataText = `Permanently delete all data from the database.`
+const deleteDatabaseText = `Delete the underlining database and all of its data (requires website reload).`
 </script>
 
 <template>
   <QPage padding>
     <BannerCard title="Settings" :icon="Icon.SETTINGS" />
 
-    <!-- Options -->
+    <!--##### Options #####-->
     <QCard flat square class="q-mb-sm">
       <QCardSection>
         <div class="text-h6 q-mb-md">Options</div>
-        <div class="q-mb-md">{{ optionsText }}</div>
-        <OptionToggles class="q-mb-lg" />
-        <TestLoggerButton />
+
+        <!-- Toggles -->
+        <div class="q-mb-md">{{ introductionText }}</div>
+        <QToggle v-model="darkMode" class="q-mb-md" label="Introduction" />
+
+        <div class="q-mb-md">{{ darkModeText }}</div>
+        <QToggle v-model="darkMode" label="Dark Mode" />
       </QCardSection>
     </QCard>
 
-    <!-- Defaults -->
+    <!--##### Defaults #####-->
     <QCard flat square class="q-mb-sm">
       <QCardSection>
         <div class="text-h6 q-mb-md">Defaults</div>
-        <div class="q-mb-md">{{ defaultsText }}</div>
+
+        <!-- Examples -->
+        <div class="q-mb-md">{{ defaultExamplesText }}</div>
+        <QBtn square label="Examples" :icon="Icon.EXAMPLE" :color="AppColor.INFO" />
       </QCardSection>
     </QCard>
 
-    <!-- Data Management -->
+    <!--##### Data Management #####-->
     <QCard flat square class="q-mb-sm">
       <QCardSection>
         <div class="text-h6 q-mb-md">Data Management</div>
 
+        <!-- Import -->
         <div class="q-mb-md">{{ importText }}</div>
-        <ImportInput />
+        <QFile
+          v-model="importFile"
+          dense
+          outlined
+          counter
+          bottom-slots
+          label="File Select"
+          :max-file-size="AppLimits.FILESIZE"
+          accept="application/json"
+          @rejected="onRejectedFile"
+        >
+          <template v-slot:before>
+            <QBtn
+              :disable="!importFile"
+              square
+              label="Import"
+              color="primary"
+              class="q-mr-xs"
+              @click="onImportFile()"
+            />
+          </template>
 
+          <template v-slot:after>
+            <QIcon :name="Icon.CLOSE" @click.stop="importFile = null" class="cursor-pointer" />
+          </template>
+        </QFile>
+
+        <!-- Export -->
         <div class="q-mb-md">{{ exportText }}</div>
-        <ExportInput class="q-mb-md" />
+        <QBtn square class="q-mb-md" label="Export" color="primary" @click="onExportData()" />
 
-        <div class="q-mb-md">{{ tableViewerText }}</div>
-        <div class="q-mb-sm">
-          <QBtn square label="Examples" :icon="Icon.EXAMPLE" :color="AppColor.INFO" />
-        </div>
-        <div class="q-mb-sm">
-          <QBtn square label="Settings" :icon="Icon.SETTINGS" :color="AppColor.WARN" />
-        </div>
-        <div class="q-mb-sm">
-          <QBtn square label="Images" :icon="Icon.DASHBOARD" :color="AppColor.WARN" />
-        </div>
-        <div>
-          <QBtn square label="Logs" :icon="Icon.LOGS" :color="AppColor.WARN" />
-        </div>
+        <!-- Access Table -->
+        <div class="q-mb-md">{{ accessTableText }}</div>
+        <QSelect
+          outlined
+          dense
+          v-model="accessTableModel"
+          :options="accessTableOptions"
+          label="Table"
+        >
+          <template v-slot:after>
+            <QBtn :disable="!accessTableModel" square label="Access Table" :color="AppColor.INFO" />
+          </template>
+        </QSelect>
       </QCardSection>
     </QCard>
 
-    <!-- DANGER ZONE -->
+    <!--##### Logging #####-->
+    <QCard flat square class="q-mb-sm">
+      <QCardSection>
+        <div class="text-h6 q-mb-md">Logging</div>
+
+        <!-- Toggles -->
+        <div class="q-mb-md">{{ showConsoleLogsText }}</div>
+        <QToggle v-model="showConsoleLogs" class="q-mb-md" label="Show Console Logs" />
+
+        <div class="q-mb-md">{{ showDebugMessagesText }}</div>
+        <QToggle v-model="showDebugMessages" class="q-mb-md" label="Show Debug Messages" />
+
+        <div class="q-mb-md">{{ saveInfoMessagesText }}</div>
+        <QToggle v-model="saveInfoMessages" class="q-mb-md" label="Save Info Messages" />
+
+        <!-- Test Logger -->
+        <div class="q-mb-md">{{ testLoggerText }}</div>
+        <QBtn square label="Test Logger" :color="AppColor.INFO" @click="onTestLogger()" />
+      </QCardSection>
+    </QCard>
+
+    <!--##### DANGER ZONE #####-->
     <QCard flat square>
       <QCardSection>
         <div class="text-h6 text-negative q-mb-md">DANGER ZONE</div>
-        <div class="q-mb-lg">{{ dangerZoneText }}</div>
-        <ClearAllButton class="q-mb-sm" />
-        <DeleteDatabaseButton />
+        <div class="q-mb-md">{{ dangerZoneText }}</div>
+
+        <!-- Delete Table Data -->
+        <div class="q-mb-md">{{ deleteTableDataText }}</div>
+        <QSelect
+          v-model="deleteDataModel"
+          outlined
+          dense
+          label="Table"
+          class="q-mb-md"
+          :options="deleteDataOptions"
+        >
+          <template v-slot:after>
+            <QBtn
+              :disable="!deleteDataModel"
+              square
+              label="Delete Data"
+              :color="AppColor.ERROR"
+              @click="onDeleteTableData(TableName.LOGS)"
+            />
+          </template>
+        </QSelect>
+
+        <!-- Delete All Data -->
+        <div class="q-mb-md">{{ deleteAllDataText }}</div>
+        <QBtn
+          square
+          class="q-mb-md"
+          label="Delete All Data"
+          :color="AppColor.ERROR"
+          @click="onDeleteAllData()"
+        />
+
+        <!-- Delete Database -->
+        <div class="q-mb-md">{{ deleteDatabaseText }}</div>
+        <QBtn square label="Delete Database" :color="AppColor.ERROR" @click="onDeleteDatabase()" />
       </QCardSection>
     </QCard>
   </QPage>

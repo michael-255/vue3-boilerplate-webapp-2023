@@ -35,7 +35,7 @@ export default function useDBShared() {
   }
 
   /**
-   * Clears all items from table.
+   * Deletes all items from table.
    * @param table
    * @returns undefined
    */

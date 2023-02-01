@@ -5,36 +5,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-**Settings**
-
-Sections
-
-- Options
-
-  - Remove `Dark Mode` (it will be the default | requires some useDBSettings updates)
-  - App Introduction (boolean)
-  - TODO
-
-- Defaults
-
-  - Various defaulting buttons
-
-- Import
-
-  - Good explanation of import file requirements
-
-- Export
-
-  - Good explanation of export functionality
-  - Remove option to name export file???
-
-- DANGER ZONE
-
-  - Move all table clears here
-
 - Clean up `Icon` bloat
 - Setup brand colors so you don't need `AppColors`???
-- Add info tooltips to Settings page
 - Include an Introduction card and Setting on the Home page that can be dismissed
 - Consider using other Quasar plugins (Loading, Meta, etc.)
 

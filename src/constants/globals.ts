@@ -186,9 +186,11 @@ export enum Links {
  * Dexie table names used by DexieWrapper service.
  */
 export enum TableName {
-  SETTINGS = 'Settings-Table',
-  LOGS = 'Logs-Table',
-  IMAGES = 'Images-Table',
+  SETTINGS = 'Settings',
+  LOGS = 'Logs',
+  IMAGES = 'Images',
+  EXAMPLES = 'Examples',
+  EXAMPLE_RECORDS = 'Example Records',
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -205,4 +207,11 @@ export enum Milliseconds {
   PER_HOUR = 3600000,
   PER_MINUTE = 60000,
   PER_SECOND = 1000,
+}
+
+/**
+ * Limits for various fields and properties.
+ */
+export enum AppLimits {
+  FILESIZE = 100000000, // ~100 megabytes
 }
