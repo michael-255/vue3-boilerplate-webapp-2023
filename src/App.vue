@@ -1,85 +1,47 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView, useRoute } from 'vue-router'
+import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
+import useLogger from '@/use/useLogger'
+import useDBSettings from '@/use/useDBSettings'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+// import OperationDialog from '@/components/shared/OperationDialog.vue'
+// import { DB } from './services/LocalDatabase'
+
+const { log } = useLogger()
+const route = useRoute()
+const { initializeSettings } = useDBSettings()
+const layout: Ref<any> = ref(null)
+
+onMounted(async () => {
+  await initializeSettings()
+})
+
+/**
+ * Watching the route for the meta layout property to change. Sets the layout component.
+ */
+watch(
+  () => route.meta?.layout as string | undefined,
+  async (metaLayout) => {
+    try {
+      // metaLayout must exist && the imported component
+      const component = metaLayout && (await import(`./layouts/${metaLayout}.vue`))
+      // markRaw to avoid reactivity on component definition
+      // default is the component
+      // Use the default layout if the component is missing
+      layout.value = markRaw(component?.default || DefaultLayout)
+    } catch (error) {
+      layout.value = markRaw(DefaultLayout)
+      log.critical('Route layout watcher', error)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <component :is="layout">
+    <RouterView />
+  </component>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <!-- <OperationDialog /> -->
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>

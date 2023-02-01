@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Notes on how the Manifest is setup (icons, themes, etc.)
 - What are the next steps to get this project ready (notes about them only)?
 
   - Dashboard (Home)
@@ -179,6 +178,18 @@ Details on the steps I took to setup this project.
    - `.gitignore`
    - `.prettierignore`
    - `.prettier.json`
+1. Add icons, manifest file, and update `index.html` for the project:
+   - `site.webmanifest`
+   - `favicon.ico`
+   - (other icons)
+   - ```html
+     <meta name="theme-color" content="#1976D2" />
+     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+     <link rel="manifest" href="site.webmanifest" />
+     <title>Vue 3 Web App Template</title>
+     ```
 1. Run `git init` inside your project directory
 1. Commit all changes to the project into it's initial commit
 1. Run the follow commands to push the new project to your GitHub repo:
