@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { QPage, QCard, QCardSection, QBtn } from 'quasar'
 import { Icon, RouteName, SettingKey } from '@/constants/globals'
-import BannerCard from '@/components/shared/BannerCard.vue'
 import useSettingsStore from '@/stores/settings'
 import useHomeView from '@/use/useHomeView'
 
@@ -11,7 +10,15 @@ const { onCloseIntroduction } = useHomeView()
 
 <template>
   <QPage padding>
-    <BannerCard title="Home" :icon="Icon.HOME" />
+    <!-- Banner -->
+    <QCard flat square class="q-mb-sm">
+      <QCardSection class="text-h5">
+        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.HOME" />
+        Home
+        <!-- TODO -->
+        <QBtn flat rounded :icon="Icon.MENU_VERT" color="grey" class="absolute-right q-ma-xs" />
+      </QCardSection>
+    </QCard>
 
     <!--##### Introduction #####-->
     <QCard v-if="settingsStore[SettingKey.INTRODUCTION]" flat square class="q-mb-sm">
@@ -29,7 +36,7 @@ const { onCloseIntroduction } = useHomeView()
         <QBtn
           square
           label="Got it!"
-          icon="recommend"
+          :icon="Icon.RECOMMEND"
           color="positive"
           @click="onCloseIntroduction()"
         />
@@ -44,7 +51,6 @@ const { onCloseIntroduction } = useHomeView()
         <div class="row q-col-gutter-md justify-center">
           <div class="col-md-4 col-sm-6 col-xs-12">
             <QBtn
-              square
               no-caps
               size="lg"
               :icon="Icon.EXAMPLES"
@@ -57,7 +63,6 @@ const { onCloseIntroduction } = useHomeView()
 
           <div class="col-md-4 col-sm-6 col-xs-12">
             <QBtn
-              square
               no-caps
               size="lg"
               :icon="Icon.REPORTS"
@@ -70,7 +75,6 @@ const { onCloseIntroduction } = useHomeView()
 
           <div class="col-md-4 col-sm-6 col-xs-12">
             <QBtn
-              square
               no-caps
               size="lg"
               :icon="Icon.SETTINGS"

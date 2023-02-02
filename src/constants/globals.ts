@@ -29,6 +29,8 @@ export enum Icon {
   DELETE = 'delete',
   ADD = 'add',
   REMOVE = 'remove',
+  CREATE_PARENT = 'add_circle',
+  CREATE_RECORD = 'add_box',
   // Pages
   HOME = 'home',
   EXAMPLES = 'smart_toy',
@@ -36,6 +38,9 @@ export enum Icon {
   LOGS = 'plagiarism',
   REPORTS = 'timeline',
   // Misc
+  LIST = 'view_list',
+  TABLE = 'table_chart',
+  RECOMMEND = 'recommend',
   REMINDER = 'notifications_active',
   STOPWATCH = 'timer',
   CLOCK = 'access_time',
@@ -47,6 +52,7 @@ export enum Icon {
   CODE = 'code',
   WEB = 'language',
   MENU = 'menu',
+  MENU_VERT = 'more_vert',
 }
 
 /**
@@ -88,9 +94,9 @@ export enum Field {
   PARENT_ID = 'parentId',
   NOTE = 'note',
   // Example Parent
-  EXAMPLE_DATA = 'exampleData', // TODO
+  EXAMPLE_MESSAGE = 'exampleMessage',
   // Example Record
-  EXAMPLE_TEST = 'exampleTest', // TODO
+  EXAMPLE_NUMBER = 'exampleNumber',
 }
 
 export enum ParentStatus {

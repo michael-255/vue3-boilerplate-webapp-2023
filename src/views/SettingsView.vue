@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { QPage, QSelect, QBtn } from 'quasar'
 import { Icon, TableName, AppLimits } from '@/constants/globals'
-import BannerCard from '@/components/shared/BannerCard.vue'
 import useSettingsView from '@/use/useSettingsView'
 
 const {
@@ -56,7 +55,13 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
 <template>
   <QPage padding>
-    <BannerCard title="Settings" :icon="Icon.SETTINGS" />
+    <!-- Banner -->
+    <QCard flat square class="q-mb-sm">
+      <QCardSection class="text-h5">
+        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.SETTINGS" />
+        Settings
+      </QCardSection>
+    </QCard>
 
     <!--##### Options #####-->
     <QCard flat square class="q-mb-sm">

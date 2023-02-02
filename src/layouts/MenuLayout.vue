@@ -52,14 +52,14 @@ const route = useRoute()
 
         <QSeparator />
 
-        <QItem clickable v-ripple>
+        <QItem clickable v-ripple :to="{ name: RouteName.EXAMPLES }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
           <QItemSection>Examples</QItemSection>
         </QItem>
 
-        <QItem clickable v-ripple>
+        <QItem clickable v-ripple :to="{ name: RouteName.REPORTS }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.REPORTS" />
           </QItemSection>

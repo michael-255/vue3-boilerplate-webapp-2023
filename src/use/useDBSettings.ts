@@ -22,6 +22,35 @@ export default function useDBSettings() {
   }
 
   /**
+   * Sets the Setting with the provided key to the provided value in the database. Also sets quasar dark mode.
+   * @param key
+   * @param value
+   * @returns Added Setting key, or 1 on successful update
+   */
+  async function setSetting(key: SettingKey, value: SettingValue): Promise<IndexableType> {
+    const existingSetting = await dexieWrapper
+      .table(TableName.SETTINGS)
+      .where(Field.KEY)
+      .equalsIgnoreCase(key)
+      .first()
+
+    // Set Quasar dark mode if the key is for dark mode
+    if (key === SettingKey.DARK_MODE) {
+      $q.dark.set(!!value) // Cast to boolean
+    }
+
+    // Update setting store value
+    settingsStore[key] = value
+
+    // Add or Update depending on if the Setting already exists
+    if (!existingSetting) {
+      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as IDBSetting)
+    } else {
+      return await dexieWrapper.table(TableName.SETTINGS).update(key, { value })
+    }
+  }
+
+  /**
    * Sets the Settings to their database or default values.
    */
   async function initializeSettings(): Promise<void> {
@@ -66,38 +95,9 @@ export default function useDBSettings() {
     ])
   }
 
-  /**
-   * Sets the Setting with the provided key to the provided value in the database. Also sets quasar dark mode.
-   * @param key
-   * @param value
-   * @returns Added Setting key, or 1 on successful update
-   */
-  async function setSetting(key: SettingKey, value: SettingValue): Promise<IndexableType> {
-    const existingSetting = await dexieWrapper
-      .table(TableName.SETTINGS)
-      .where(Field.KEY)
-      .equalsIgnoreCase(key)
-      .first()
-
-    // Set Quasar dark mode if the key is for dark mode
-    if (key === SettingKey.DARK_MODE) {
-      $q.dark.set(!!value) // Cast to boolean
-    }
-
-    // Update setting store value
-    settingsStore[key] = value
-
-    // Add or Update depending on if the Setting already exists
-    if (!existingSetting) {
-      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as IDBSetting)
-    } else {
-      return await dexieWrapper.table(TableName.SETTINGS).update(key, { value })
-    }
-  }
-
   return {
     getSettingValue,
-    initializeSettings,
     setSetting,
+    initializeSettings,
   }
 }

@@ -5,8 +5,14 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Consider using other Quasar plugins (Loading, Meta, etc.)
+- [ ] Have the List View display the Example Parents
+- [ ] List View items should have input(s) and a save button
 
+  - [ ] Maybe the save button could be hidden until the input has something in it?
+
+- [ ] Help or (i): Open a dialog that explains the parts of the page
+
+- Consider using other Quasar plugins (Loading, Meta, etc.)
 - Changes to how you view data:
   - Have Settings page button in the top right of header bar again
   - Move `Settings`, `Logs`, and `Images` table views into Settings page

@@ -7,12 +7,11 @@
 
 import type { IDBParent, IDBRecord } from '@/models/core'
 import type { Field } from '@/constants/globals'
-import type { AppObject } from '@/constants/types'
 
 export interface IDBExample extends IDBParent {
-  [Field.EXAMPLE_DATA]: AppObject // TODO
+  [Field.EXAMPLE_MESSAGE]: string
 }
 
 export interface IDBExampleRecord extends IDBRecord {
-  [Field.EXAMPLE_TEST]: AppObject // TODO
+  [Field.EXAMPLE_NUMBER]: number
 }

@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { QPage } from 'quasar'
+import { QPage, QCard, QCardSection, QBtn } from 'quasar'
 import { Icon } from '@/constants/globals'
-import BannerCard from '@/components/shared/BannerCard.vue'
 </script>
 
 <template>
   <QPage padding>
-    <BannerCard title="Reports" :icon="Icon.REPORTS" />
+    <!-- Banner -->
+    <QCard flat square class="q-mb-sm">
+      <QCardSection class="text-h5">
+        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.REPORTS" />
+        Reports
+        <!-- TODO -->
+        <QBtn flat rounded :icon="Icon.MENU_VERT" color="grey" class="absolute-right q-ma-xs" />
+      </QCardSection>
+    </QCard>
   </QPage>
 </template>

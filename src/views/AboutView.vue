@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { QPage } from 'quasar'
-import { QCard, QCardSection, QBtn } from 'quasar'
+import { QPage, QCard, QCardSection, QBtn } from 'quasar'
 import { AppString, Icon, Links } from '@/constants/globals'
-import BannerCard from '@/components/shared/BannerCard.vue'
 </script>
 
 <template>
   <QPage padding>
     <div class="row justify-center">
       <div class="col-md-6 col-sm-8 col-xs-12">
-        <BannerCard title="About" :icon="Icon.INFO" />
+        <!-- Banner -->
+        <QCard flat square class="q-mb-sm">
+          <QCardSection class="text-h5">
+            <QIcon class="q-pb-xs q-pr-xs" :name="Icon.INFO" />
+            About
+          </QCardSection>
+        </QCard>
 
+        <!-- About -->
         <QCard flat square>
           <QCardSection class="q-pb-xs">
             {{ AppString.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
