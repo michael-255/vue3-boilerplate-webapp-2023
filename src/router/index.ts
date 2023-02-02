@@ -16,19 +16,27 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ExamplesView.vue'),
     },
-    /*
-      /examples/parent/create
-      /examples/parent/edit/:id
-      /examples/parent/inspect/:id
-      /examples/parent/data-table
-
-      /examples/record/create
-      /examples/record/edit/:id
-      /examples/record/inspect/:id
-      /examples/record/data-table
-
-      /examples/report/:id
-    */
+    {
+      // Data tables viewer
+      path: '/table/:table',
+      name: RouteName.TABLE,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/TableView.vue'),
+    },
+    {
+      // Data table operations (create, edit, inspect)
+      path: '/operation/:table/:operation/:id?',
+      name: RouteName.OPERATION,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/OperationView.vue'),
+    },
+    {
+      // Report for id on tables
+      path: '/report/:table/:id',
+      name: RouteName.REPORT,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/ReportView.vue'),
+    },
     {
       path: '/settings',
       name: RouteName.SETTINGS,

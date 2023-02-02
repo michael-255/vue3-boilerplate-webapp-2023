@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QPage, QCard, QCardSection, QBtn } from 'quasar'
-import { Icon, RouteName, SettingKey } from '@/constants/globals'
+import { Icon, RouteName, SettingKey, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
 import useHomeView from '@/use/useHomeView'
 

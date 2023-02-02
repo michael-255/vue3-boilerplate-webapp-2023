@@ -153,7 +153,10 @@ export enum RouteName {
   SETTINGS = 'Settings',
   ABOUT = 'About',
   NOT_FOUND = 'NotFound',
-  REPORTS = 'Reports',
+  PAGE = 'Page',
+  TABLE = 'Table',
+  OPERATION = 'Operation',
+  REPORT = 'Report',
   EXAMPLES = 'Examples',
 }
 
