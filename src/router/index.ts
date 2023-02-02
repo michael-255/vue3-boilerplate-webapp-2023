@@ -16,12 +16,19 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ExamplesView.vue'),
     },
-    {
-      path: '/reports',
-      name: RouteName.REPORTS,
-      meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ReportsView.vue'),
-    },
+    /*
+      /examples/parent/create
+      /examples/parent/edit/:id
+      /examples/parent/inspect/:id
+      /examples/parent/data-table
+
+      /examples/record/create
+      /examples/record/edit/:id
+      /examples/record/inspect/:id
+      /examples/record/data-table
+
+      /examples/report/:id
+    */
     {
       path: '/settings',
       name: RouteName.SETTINGS,

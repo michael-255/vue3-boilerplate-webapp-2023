@@ -42,6 +42,12 @@ const route = useRoute()
 
     <!-- Menu Drawer -->
     <QDrawer v-model="mainMenuStore.drawer" :width="250" show-if-above side="left" bordered>
+      <div class="row justify-center">
+        <QAvatar outline size="90px" class="q-my-md">
+          <img src="../../public/android-chrome-512x512.png" />
+        </QAvatar>
+      </div>
+
       <QList>
         <QItem clickable v-ripple :to="{ name: RouteName.HOME }">
           <QItemSection avatar>
@@ -50,23 +56,12 @@ const route = useRoute()
           <QItemSection>Home</QItemSection>
         </QItem>
 
-        <QSeparator />
-
         <QItem clickable v-ripple :to="{ name: RouteName.EXAMPLES }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
           <QItemSection>Examples</QItemSection>
         </QItem>
-
-        <QItem clickable v-ripple :to="{ name: RouteName.REPORTS }">
-          <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.REPORTS" />
-          </QItemSection>
-          <QItemSection>Reports</QItemSection>
-        </QItem>
-
-        <QSeparator />
 
         <QItem clickable v-ripple :to="{ name: RouteName.SETTINGS }">
           <QItemSection avatar>

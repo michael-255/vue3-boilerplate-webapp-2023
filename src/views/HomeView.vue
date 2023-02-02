@@ -65,18 +65,6 @@ const { onCloseIntroduction } = useHomeView()
             <QBtn
               no-caps
               size="lg"
-              :icon="Icon.REPORTS"
-              class="glossy full-width"
-              color="accent"
-              label="Reports"
-              :to="{ name: RouteName.REPORTS }"
-            />
-          </div>
-
-          <div class="col-md-4 col-sm-6 col-xs-12">
-            <QBtn
-              no-caps
-              size="lg"
               :icon="Icon.SETTINGS"
               class="glossy full-width"
               color="secondary"
