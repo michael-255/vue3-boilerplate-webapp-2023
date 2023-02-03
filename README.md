@@ -140,6 +140,7 @@ Details on the steps I took to setup this project.
    - ESLint - Yes
    - Prettier - Yes
 1. Install useful dependencies:
+   - `npm i slugify` - For making URL slug from text
    - `npm i uuid` - random ids
    - `npm i -D @types/uuid`
    - `npm i luxon` - Javascript date utilities
