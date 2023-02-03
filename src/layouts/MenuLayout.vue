@@ -13,7 +13,7 @@ import {
   QIcon,
   QSeparator,
 } from 'quasar'
-import { AppString, Icon, RouteName } from '@/constants/globals'
+import { AppText, Icon, RouteName } from '@/constants/globals'
 import { useRoute } from 'vue-router'
 import useUIStore from '@/stores/ui'
 
@@ -28,7 +28,7 @@ const route = useRoute()
       <QToolbar>
         <QBtn flat round :icon="Icon.MENU" @click="mainMenuStore.drawer = !mainMenuStore.drawer" />
 
-        <QToolbarTitle>{{ AppString.APP_NAME }}</QToolbarTitle>
+        <QToolbarTitle>{{ AppText.APP_NAME }}</QToolbarTitle>
 
         <QBtn
           v-if="route.name !== RouteName.HOME"

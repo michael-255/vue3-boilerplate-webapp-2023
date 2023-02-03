@@ -5,6 +5,25 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- [ ] Try having the Menu avatar image saved in the `Images` table (`menu-avatar`)
+- [ ] Function that looksup original text for slugified text (May not need this?):
+  ```javascript
+  export function getTableNameFromSlug(tableSlug: string): TableName {
+    return {
+      [slugify(TableName.EXAMPLES)]: TableName.EXAMPLES,
+      [slugify(TableName.EXAMPLE_RECORDS)]: TableName.EXAMPLE_RECORDS,
+      // ...
+    }
+  }
+  export function getActionNameFromSlug(actionSlug: string): TableName {
+    return {
+      [slugify(ActionName.CREATE)]: ActionName.CREATE,
+      [slugify(ActionName.EDIT)]: ActionName.EDIT,
+      // ...
+    }
+  }
+  ```
+- [ ] Do NOT allow IDs to be created with custom text (Should always be a UUID)
 - [ ] Have the List View display the Example Parents
 - [ ] List View items should have input(s) and a save button
 
@@ -48,7 +67,7 @@ projects. Read through this README to have a better understanding of how this pr
 - [ ] Update certain code files
 
   - [ ] Update `base` in `~/vite.config.ts` to your repository name for deployments to work
-  - [ ] Update `AppString` enums in `~/src/constants/ui/string-enums.ts` to represent your app
+  - [ ] Update `AppText` enums in `~/src/constants/ui/string-enums.ts` to represent your app
   - [ ] Update `title` in `~/index.html` to reflect the app name you use in `ui-enums.ts`
   - [ ] Update `name` and `short_name` in `~/public/site.webmanifest` the app name
   - [ ] Update `start_url` in `~/public/site.webmanifest` to deployed website address (home)

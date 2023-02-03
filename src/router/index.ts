@@ -18,21 +18,21 @@ const router = createRouter({
     },
     {
       // Data tables viewer
-      path: '/table/:table',
+      path: '/table/:tableSlug',
       name: RouteName.TABLE,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/TableView.vue'),
     },
     {
-      // Data table operations (create, edit, inspect)
-      path: '/operation/:table/:operation/:id?',
-      name: RouteName.OPERATION,
+      // Data table actions (create, edit, inspect)
+      path: '/action/:tableSlug/:actionSlug/:id?',
+      name: RouteName.ACTION,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/OperationView.vue'),
+      component: () => import('../views/ActionView.vue'),
     },
     {
       // Report for id on tables
-      path: '/report/:table/:id',
+      path: '/report/:tableSlug/:id',
       name: RouteName.REPORT,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ReportView.vue'),

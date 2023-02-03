@@ -7,7 +7,7 @@
 /**
  * Generic strings that are reused throughout the app.
  */
-export enum AppString {
+export enum AppText {
   APP_NAME = 'Vue 3 Web App Template',
 }
 
@@ -21,14 +21,14 @@ export enum Icon {
   INFO = 'info',
   WARN = 'warning',
   ERROR = 'error',
-  // Operations
-  INSPECT = 'summarize',
+  // Actions
   SAVE = 'save',
   CLOSE = 'close',
-  EDIT = 'edit',
-  DELETE = 'delete',
   ADD = 'add',
   REMOVE = 'remove',
+  EDIT = 'edit',
+  INSPECT = 'summarize',
+  DELETE = 'delete',
   CREATE_PARENT = 'add_circle',
   CREATE_RECORD = 'add_box',
   // Pages
@@ -56,9 +56,9 @@ export enum Icon {
 }
 
 /**
- * Limits for various fields and properties.
+ * Limits for various rules and inputs.
  */
-export enum AppLimits {
+export enum Limit {
   FILESIZE = 100000000, // ~100 megabytes
 }
 
@@ -155,15 +155,15 @@ export enum RouteName {
   NOT_FOUND = 'NotFound',
   PAGE = 'Page',
   TABLE = 'Table',
-  OPERATION = 'Operation',
+  ACTION = 'Action',
   REPORT = 'Report',
   EXAMPLES = 'Examples',
 }
 
 /**
- * Links you might use throughout the app.
+ * Web URLs you might use throughout the app.
  */
-export enum Links {
+export enum WebURL {
   GITHUB = 'https://github.com/michael-255',
   MYAPPS = 'https://www.example.com',
 }
@@ -175,7 +175,7 @@ export enum Links {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Dexie table names used by DexieWrapper service.
+ * Database table names used throughout the app.
  */
 export enum TableName {
   SETTINGS = 'Settings',
@@ -183,6 +183,19 @@ export enum TableName {
   IMAGES = 'Images',
   EXAMPLES = 'Examples',
   EXAMPLE_RECORDS = 'Example Records',
+}
+
+/**
+ * Table actions that can be performed. Each table may support a subset of these actions.
+ */
+export enum ActionName {
+  NONE = 'None',
+  CREATE = 'Create',
+  UPDATE = 'Update',
+  DELETE = 'Delete',
+  CLEAR = 'Clear',
+  INSPECT = 'Inspect',
+  REPORT = 'Report',
 }
 
 ///////////////////////////////////////////////////////////////////////////////

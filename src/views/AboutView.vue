@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QPage, QCard, QCardSection, QBtn } from 'quasar'
-import { AppString, Icon, Links } from '@/constants/globals'
+import { AppText, Icon, WebURL } from '@/constants/globals'
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import { AppString, Icon, Links } from '@/constants/globals'
         <!-- About -->
         <QCard flat square>
           <QCardSection class="q-pb-xs">
-            {{ AppString.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
+            {{ AppText.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
             It is publicly available using the permissive MIT License.
           </QCardSection>
 
@@ -31,7 +31,7 @@ import { AppString, Icon, Links } from '@/constants/globals'
                   color="primary"
                   label="GitHub"
                   target="_blank"
-                  :href="Links.GITHUB"
+                  :href="WebURL.GITHUB"
                   :icon="Icon.CODE"
                 />
               </div>
@@ -44,7 +44,7 @@ import { AppString, Icon, Links } from '@/constants/globals'
                   color="primary"
                   label="My Apps"
                   target="_blank"
-                  :href="Links.MYAPPS"
+                  :href="WebURL.MYAPPS"
                   :icon="Icon.WEB"
                 />
               </div>

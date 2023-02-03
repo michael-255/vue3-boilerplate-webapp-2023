@@ -1,5 +1,5 @@
 import { TableName } from '@/constants/globals'
-import { Icon, AppString, SettingKey } from '@/constants/globals'
+import { Icon, AppText, SettingKey } from '@/constants/globals'
 import { exportFile } from 'quasar'
 import { type Ref, ref, computed } from 'vue'
 import useDBSettings from '@/use/useDBSettings'
@@ -145,7 +145,7 @@ export default function useSettingsView() {
    * Confirm if you want to export your data as a JSON file.
    */
   function onExportData(): void {
-    const appName = AppString.APP_NAME.toLowerCase().split(' ').join('-')
+    const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
     const date = new Date().toISOString().split('T')[0]
     const filename = `export-${appName}-${date}.json`
 

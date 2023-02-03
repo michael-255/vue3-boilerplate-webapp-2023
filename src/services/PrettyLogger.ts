@@ -1,4 +1,4 @@
-import { AppString } from '@/constants/globals'
+import { AppText } from '@/constants/globals'
 import { colors } from 'quasar'
 
 const { getPaletteColor } = colors
@@ -63,4 +63,4 @@ export class PrettyLogger {
 /**
  * Preconfigured logger
  */
-export const logger = new PrettyLogger(AppString.APP_NAME)
+export const logger = new PrettyLogger(AppText.APP_NAME)

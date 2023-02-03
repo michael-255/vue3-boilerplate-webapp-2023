@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QPage, QSelect, QBtn } from 'quasar'
-import { Icon, TableName, AppLimits } from '@/constants/globals'
+import { Icon, TableName, Limit } from '@/constants/globals'
 import useSettingsView from '@/use/useSettingsView'
 
 const {
@@ -102,7 +102,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
           counter
           bottom-slots
           label="File Select"
-          :max-file-size="AppLimits.FILESIZE"
+          :max-file-size="Limit.FILESIZE"
           accept="application/json"
           @rejected="onRejectedFile"
         >

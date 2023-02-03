@@ -1,5 +1,5 @@
 import Dexie, { type Table } from 'dexie'
-import { AppString, Field } from '@/constants/globals'
+import { AppText, Field } from '@/constants/globals'
 import { TableName } from '@/constants/globals'
 import type { IDBLog, IDBSetting, IDBImage } from '@/models/core'
 import type { IDBExample, IDBExampleRecord } from '@/models/app'
@@ -27,4 +27,4 @@ export class DexieWrapper extends Dexie {
 /**
  * Preconfigured DexieWrapper
  */
-export const dexieWrapper = new DexieWrapper(AppString.APP_NAME)
+export const dexieWrapper = new DexieWrapper(AppText.APP_NAME)

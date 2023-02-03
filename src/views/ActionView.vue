@@ -9,7 +9,7 @@ import { Icon } from '@/constants/globals'
     <QCard flat square class="q-mb-sm">
       <QCardSection class="text-h5">
         <QIcon class="q-pb-xs q-pr-xs" :name="Icon.REFRESH" />
-        Operation View
+        Action View
       </QCardSection>
     </QCard>
   </QPage>
