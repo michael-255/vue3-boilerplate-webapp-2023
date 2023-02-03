@@ -11,7 +11,6 @@ import {
   QItem,
   QItemSection,
   QIcon,
-  QSeparator,
 } from 'quasar'
 import { AppText, Icon, RouteName } from '@/constants/globals'
 import { useRoute } from 'vue-router'
@@ -44,7 +43,7 @@ const route = useRoute()
     <QDrawer v-model="mainMenuStore.drawer" :width="250" show-if-above side="left" bordered>
       <div class="row justify-center">
         <QAvatar outline size="90px" class="q-my-md">
-          <img src="../../public/android-chrome-512x512.png" />
+          <img src="@/assets/menu-avatar.png" />
         </QAvatar>
       </div>
 
