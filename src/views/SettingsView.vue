@@ -55,162 +55,162 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
 <template>
   <QPage padding>
-    <!-- Banner -->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection class="text-h5">
-        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.SETTINGS" />
-        Settings
-      </QCardSection>
-    </QCard>
+    <div class="row justify-center">
+      <div class="col-md-6 col-xs-12">
+        <!-- Banner -->
+        <QCard flat class="q-mb-sm">
+          <QCardSection class="text-h5">
+            <QIcon class="q-pb-xs q-pr-xs" :name="Icon.SETTINGS" />
+            Settings
+          </QCardSection>
+        </QCard>
 
-    <!--##### Options #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Options</div>
+        <!--##### Options #####-->
+        <QCard flat class="q-mb-sm">
+          <QCardSection>
+            <div class="text-h6 q-mb-md">Options</div>
 
-        <!-- Toggles -->
-        <div class="q-mb-md">{{ introductionText }}</div>
-        <QToggle v-model="introduction" class="q-mb-md" label="Introduction" />
+            <!-- Toggles -->
+            <div class="q-mb-md">{{ introductionText }}</div>
+            <QToggle v-model="introduction" class="q-mb-md" label="Introduction" />
 
-        <div class="q-mb-md">{{ darkModeText }}</div>
-        <QToggle v-model="darkMode" label="Dark Mode" />
-      </QCardSection>
-    </QCard>
+            <div class="q-mb-md">{{ darkModeText }}</div>
+            <QToggle v-model="darkMode" label="Dark Mode" />
+          </QCardSection>
+        </QCard>
 
-    <!--##### Defaults #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Defaults</div>
+        <!--##### Defaults #####-->
+        <QCard flat class="q-mb-sm">
+          <QCardSection>
+            <div class="text-h6 q-mb-md">Defaults</div>
 
-        <!-- Examples -->
-        <div class="q-mb-md">{{ defaultExamplesText }}</div>
-        <QBtn square label="Examples" :icon="Icon.EXAMPLES" color="primary" />
-      </QCardSection>
-    </QCard>
+            <!-- Examples -->
+            <div class="q-mb-md">{{ defaultExamplesText }}</div>
+            <QBtn label="Examples" :icon="Icon.EXAMPLES" color="primary" />
+          </QCardSection>
+        </QCard>
 
-    <!--##### Data Management #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Data Management</div>
+        <!--##### Data Management #####-->
+        <QCard flat class="q-mb-sm">
+          <QCardSection>
+            <div class="text-h6 q-mb-md">Data Management</div>
 
-        <!-- Import -->
-        <div class="q-mb-md">{{ importText }}</div>
-        <QFile
-          v-model="importFile"
-          dense
-          outlined
-          counter
-          bottom-slots
-          label="File Select"
-          :max-file-size="Limit.FILESIZE"
-          accept="application/json"
-          @rejected="onRejectedFile"
-        >
-          <template v-slot:before>
+            <!-- Import -->
+            <div class="q-mb-md">{{ importText }}</div>
+            <QFile
+              v-model="importFile"
+              dense
+              outlined
+              counter
+              bottom-slots
+              label="File Select"
+              :max-file-size="Limit.FILESIZE"
+              accept="application/json"
+              @rejected="onRejectedFile"
+            >
+              <template v-slot:before>
+                <QBtn
+                  :disable="!importFile"
+                  label="Import"
+                  color="primary"
+                  class="q-mr-xs"
+                  @click="onImportFile()"
+                />
+              </template>
+
+              <template v-slot:after>
+                <QIcon :name="Icon.CLOSE" @click.stop="importFile = null" class="cursor-pointer" />
+              </template>
+            </QFile>
+
+            <!-- Export -->
+            <div class="q-mb-md">{{ exportText }}</div>
+            <QBtn class="q-mb-md" label="Export" color="primary" @click="onExportData()" />
+
+            <!-- Access Table -->
+            <div class="q-mb-md">{{ accessTableText }}</div>
+            <QSelect
+              outlined
+              dense
+              v-model="accessTableModel"
+              :options="accessTableOptions"
+              label="Database Table"
+            >
+              <template v-slot:before>
+                <QBtn
+                  :disable="!accessTableModel"
+                  class="q-mr-xs"
+                  label="Access Table"
+                  color="primary"
+                />
+              </template>
+            </QSelect>
+          </QCardSection>
+        </QCard>
+
+        <!--##### Logging #####-->
+        <QCard flat class="q-mb-sm">
+          <QCardSection>
+            <div class="text-h6 q-mb-md">Logging</div>
+
+            <!-- Toggles -->
+            <div class="q-mb-md">{{ showConsoleLogsText }}</div>
+            <QToggle v-model="showConsoleLogs" class="q-mb-md" label="Show Console Logs" />
+
+            <div class="q-mb-md">{{ showDebugMessagesText }}</div>
+            <QToggle v-model="showDebugMessages" class="q-mb-md" label="Show Debug Messages" />
+
+            <div class="q-mb-md">{{ saveInfoMessagesText }}</div>
+            <QToggle v-model="saveInfoMessages" class="q-mb-md" label="Save Info Messages" />
+
+            <!-- Test Logger -->
+            <div class="q-mb-md">{{ testLoggerText }}</div>
+            <QBtn label="Test Logger" color="primary" @click="onTestLogger()" />
+          </QCardSection>
+        </QCard>
+
+        <!--##### DANGER ZONE #####-->
+        <QCard flat>
+          <QCardSection>
+            <div class="text-h6 text-negative q-mb-md">DANGER ZONE</div>
+            <div class="q-mb-md">{{ dangerZoneText }}</div>
+
+            <!-- Delete Table Data -->
+            <div class="q-mb-md">{{ deleteTableDataText }}</div>
+            <QSelect
+              v-model="deleteDataModel"
+              outlined
+              dense
+              label="Database Table"
+              class="q-mb-md"
+              :options="deleteDataOptions"
+            >
+              <template v-slot:before>
+                <QBtn
+                  :disable="!deleteDataModel"
+                  class="q-mr-xs"
+                  label="Delete Data"
+                  color="negative"
+                  @click="onDeleteTableData(TableName.LOGS)"
+                />
+              </template>
+            </QSelect>
+
+            <!-- Delete All Data -->
+            <div class="q-mb-md">{{ deleteAllDataText }}</div>
             <QBtn
-              :disable="!importFile"
-              square
-              label="Import"
-              color="primary"
-              class="q-mr-xs"
-              @click="onImportFile()"
-            />
-          </template>
-
-          <template v-slot:after>
-            <QIcon :name="Icon.CLOSE" @click.stop="importFile = null" class="cursor-pointer" />
-          </template>
-        </QFile>
-
-        <!-- Export -->
-        <div class="q-mb-md">{{ exportText }}</div>
-        <QBtn square class="q-mb-md" label="Export" color="primary" @click="onExportData()" />
-
-        <!-- Access Table -->
-        <div class="q-mb-md">{{ accessTableText }}</div>
-        <QSelect
-          outlined
-          dense
-          v-model="accessTableModel"
-          :options="accessTableOptions"
-          label="Database Table"
-        >
-          <template v-slot:before>
-            <QBtn
-              :disable="!accessTableModel"
-              square
-              class="q-mr-xs"
-              label="Access Table"
-              color="primary"
-            />
-          </template>
-        </QSelect>
-      </QCardSection>
-    </QCard>
-
-    <!--##### Logging #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Logging</div>
-
-        <!-- Toggles -->
-        <div class="q-mb-md">{{ showConsoleLogsText }}</div>
-        <QToggle v-model="showConsoleLogs" class="q-mb-md" label="Show Console Logs" />
-
-        <div class="q-mb-md">{{ showDebugMessagesText }}</div>
-        <QToggle v-model="showDebugMessages" class="q-mb-md" label="Show Debug Messages" />
-
-        <div class="q-mb-md">{{ saveInfoMessagesText }}</div>
-        <QToggle v-model="saveInfoMessages" class="q-mb-md" label="Save Info Messages" />
-
-        <!-- Test Logger -->
-        <div class="q-mb-md">{{ testLoggerText }}</div>
-        <QBtn square label="Test Logger" color="primary" @click="onTestLogger()" />
-      </QCardSection>
-    </QCard>
-
-    <!--##### DANGER ZONE #####-->
-    <QCard flat square>
-      <QCardSection>
-        <div class="text-h6 text-negative q-mb-md">DANGER ZONE</div>
-        <div class="q-mb-md">{{ dangerZoneText }}</div>
-
-        <!-- Delete Table Data -->
-        <div class="q-mb-md">{{ deleteTableDataText }}</div>
-        <QSelect
-          v-model="deleteDataModel"
-          outlined
-          dense
-          label="Database Table"
-          class="q-mb-md"
-          :options="deleteDataOptions"
-        >
-          <template v-slot:before>
-            <QBtn
-              :disable="!deleteDataModel"
-              square
-              class="q-mr-xs"
-              label="Delete Data"
+              class="q-mb-md"
+              label="Delete All Data"
               color="negative"
-              @click="onDeleteTableData(TableName.LOGS)"
+              @click="onDeleteAllData()"
             />
-          </template>
-        </QSelect>
 
-        <!-- Delete All Data -->
-        <div class="q-mb-md">{{ deleteAllDataText }}</div>
-        <QBtn
-          square
-          class="q-mb-md"
-          label="Delete All Data"
-          color="negative"
-          @click="onDeleteAllData()"
-        />
-
-        <!-- Delete Database -->
-        <div class="q-mb-md">{{ deleteDatabaseText }}</div>
-        <QBtn square label="Delete Database" color="negative" @click="onDeleteDatabase()" />
-      </QCardSection>
-    </QCard>
+            <!-- Delete Database -->
+            <div class="q-mb-md">{{ deleteDatabaseText }}</div>
+            <QBtn label="Delete Database" color="negative" @click="onDeleteDatabase()" />
+          </QCardSection>
+        </QCard>
+      </div>
+    </div>
   </QPage>
 </template>

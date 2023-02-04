@@ -6,9 +6,9 @@ import { AppText, Icon, WebURL } from '@/constants/globals'
 <template>
   <QPage padding>
     <div class="row justify-center">
-      <div class="col-md-6 col-sm-8 col-xs-12">
+      <div class="col-md-6 col-xs-12">
         <!-- Banner -->
-        <QCard flat square class="q-mb-sm">
+        <QCard flat class="q-mb-sm">
           <QCardSection class="text-h5">
             <QIcon class="q-pb-xs q-pr-xs" :name="Icon.INFO" />
             About
@@ -16,7 +16,7 @@ import { AppText, Icon, WebURL } from '@/constants/globals'
         </QCard>
 
         <!-- About -->
-        <QCard flat square>
+        <QCard flat>
           <QCardSection class="q-pb-xs">
             {{ AppText.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
             It is publicly available using the permissive MIT License.
@@ -26,7 +26,6 @@ import { AppText, Icon, WebURL } from '@/constants/globals'
             <div class="row q-col-gutter-md justify-start">
               <div class="col-sm-6 col-xs-12">
                 <QBtn
-                  square
                   class="full-width"
                   color="primary"
                   label="GitHub"
@@ -38,7 +37,6 @@ import { AppText, Icon, WebURL } from '@/constants/globals'
 
               <div class="col-sm-6 col-xs-12">
                 <QBtn
-                  square
                   disable
                   class="full-width"
                   color="primary"

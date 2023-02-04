@@ -34,15 +34,15 @@ const route = useRoute()
           flat
           round
           :to="{ name: RouteName.HOME }"
-          :icon="Icon.HOME"
+          :icon="Icon.BACK"
         />
       </QToolbar>
     </QHeader>
 
     <!-- Menu Drawer -->
-    <QDrawer v-model="mainMenuStore.drawer" :width="250" show-if-above side="left" bordered>
+    <QDrawer v-model="mainMenuStore.drawer" :width="220" overlay show-if-above side="left">
       <div class="row justify-center">
-        <QAvatar outline size="90px" class="q-my-md">
+        <QAvatar outline size="100px" class="q-my-md">
           <img src="@/assets/menu-avatar.png" />
         </QAvatar>
       </div>
@@ -74,6 +74,13 @@ const route = useRoute()
             <QIcon color="primary" :name="Icon.INFO" />
           </QItemSection>
           <QItemSection>About</QItemSection>
+        </QItem>
+
+        <QItem clickable v-ripple :to="{ name: RouteName.TABLE, params: { tableSlug: '1' } }">
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.CLOSE" />
+          </QItemSection>
+          <QItemSection>TEST</QItemSection>
         </QItem>
       </QList>
     </QDrawer>

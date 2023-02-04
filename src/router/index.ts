@@ -32,7 +32,7 @@ const router = createRouter({
     },
     {
       // Report for id on tables
-      path: '/report/:tableSlug/:id',
+      path: '/report/:tableSlug/:id?',
       name: RouteName.REPORT,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ReportView.vue'),

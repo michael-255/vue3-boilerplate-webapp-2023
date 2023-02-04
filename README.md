@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] Try having the Menu avatar image saved in the `Images` table (`menu-avatar`)
 - [ ] Function that looksup original text for slugified text (May not need this?):
   ```javascript
   export function getTableNameFromSlug(tableSlug: string): TableName {

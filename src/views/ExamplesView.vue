@@ -5,11 +5,9 @@ import useDBExamples from '@/use/useDBExamples'
 
 const { addExample, addExampleRecord } = useDBExamples()
 
-const parentActionsText = `Parent items define the name, description, status, and other information about the item. You
-can create more Parent items, view reports for them, and access the data table for more options.`
+const parentActionsText = `Parent items define the name, description, status, and other information about the item.`
 const recordActionsText = `Record items have the fields that hold the data that the Parent item expects it to store.
-The relationship is one Parent item to many Record items. You can create more Record items and access the data table for
-more options.`
+The relationship is one Parent item to many Record items.`
 
 async function onAddExampleTEST(): Promise<void> {
   await addExample({
@@ -37,71 +35,92 @@ async function onAddExampleRecordTEST(): Promise<void> {
 
 <template>
   <QPage padding>
-    <!-- Banner -->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection class="text-h5">
-        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.EXAMPLES" />
-        Examples
-        <!-- TODO -->
-        <QBtn flat rounded :icon="Icon.MENU_VERT" color="grey" class="absolute-right q-ma-xs" />
-      </QCardSection>
-    </QCard>
+    <div class="row justify-center">
+      <div class="col-md-6 col-xs-12">
+        <!-- Banner -->
+        <QCard flat class="q-mb-sm">
+          <QCardSection class="text-h5">
+            <QIcon class="q-pb-xs q-pr-xs" :name="Icon.EXAMPLES" />
+            Examples
+          </QCardSection>
+        </QCard>
 
-    <!--##### Parents #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Parents</div>
+        <!--##### Expansion Panel #####-->
+        <QList bordered class="q-mb-sm">
+          <QExpansionItem group="somegroup" :icon="Icon.TABLE" label="Table Options">
+            <QCard>
+              <QCardSection>
+                <div class="text-h6 q-mb-md">Parents</div>
+                <div class="q-mb-md">{{ parentActionsText }}</div>
+                <div class="q-mb-md">
+                  <QBtn label="Create New Example" :icon="Icon.CREATE_PARENT" color="positive" />
+                </div>
 
-        <div class="q-mb-md">{{ parentActionsText }}</div>
-        <QBtn round :icon="Icon.ADD" class="q-mr-md" color="positive" />
-        <QBtn round :icon="Icon.REPORTS" class="q-mr-md" color="accent" />
-        <QBtn round :icon="Icon.TABLE" class="q-mr-md" color="warning" />
-      </QCardSection>
-    </QCard>
+                <div class="q-mb-md">
+                  <QBtn label="Examples Data" :icon="Icon.TABLE" color="info" />
+                </div>
 
-    <!--##### Records #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Records</div>
+                <div class="q-mb-md">
+                  <QBtn label="Reports" :icon="Icon.REPORTS" color="accent" />
+                </div>
 
-        <div class="q-mb-md">{{ recordActionsText }}</div>
-        <QBtn round :icon="Icon.ADD" class="q-mr-md" color="positive" />
-        <QBtn round :icon="Icon.TABLE" class="q-mr-md" color="warning" />
-      </QCardSection>
-    </QCard>
+                <div class="text-h6 q-mb-md">Records</div>
+                <div class="q-mb-md">{{ recordActionsText }}</div>
+                <div class="q-mb-md">
+                  <QBtn
+                    label="Create New Record"
+                    :icon="Icon.CREATE_RECORD"
+                    class="q-mr-md"
+                    color="positive"
+                  />
+                </div>
+                <div>
+                  <QBtn label="Records Data" :icon="Icon.RECORDS" class="q-mr-md" color="info" />
+                </div>
+              </QCardSection>
+            </QCard>
+          </QExpansionItem>
 
-    <!--##### TESTING #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">TESTING</div>
+          <QSeparator />
 
-        <QBtn
-          square
-          label="Add Example"
-          :icon="Icon.ADD"
-          class="q-mr-md"
-          color="primary"
-          @click="onAddExampleTEST"
-        />
-        <QBtn
-          square
-          label="Add Example Record"
-          :icon="Icon.ADD"
-          class="q-mr-md"
-          color="primary"
-          @click="onAddExampleRecordTEST"
-        />
-      </QCardSection>
-    </QCard>
+          <QExpansionItem group="somegroup" :icon="Icon.CLOSE" label="TESTING">
+            <QCard>
+              <QCardSection>
+                <div class="q-mb-md">
+                  <QBtn
+                    label="Add Example"
+                    :icon="Icon.ADD"
+                    color="primary"
+                    @click="onAddExampleTEST"
+                  />
+                </div>
+                <div>
+                  <QBtn
+                    label="Add Example Record"
+                    :icon="Icon.ADD"
+                    color="primary"
+                    @click="onAddExampleRecordTEST"
+                  />
+                </div>
+              </QCardSection>
+            </QCard>
+          </QExpansionItem>
 
-    <!--##### List View #####-->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection class="text-h5">
-        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.LIST" />
-        List View
-        <!-- TODO -->
-        <QBtn flat rounded :icon="Icon.MENU_VERT" color="grey" class="absolute-right q-ma-xs" />
-      </QCardSection>
-    </QCard>
+          <QSeparator />
+
+          <QExpansionItem group="somegroup" :icon="Icon.LIST" label="List Filters">
+            <QCard>
+              <QCardSection>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit
+                eos corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores
+                architecto suscipit iste eveniet doloribus ullam aliquid.
+              </QCardSection>
+            </QCard>
+          </QExpansionItem>
+        </QList>
+
+        <!-- List Examples here... -->
+      </div>
+    </div>
   </QPage>
 </template>

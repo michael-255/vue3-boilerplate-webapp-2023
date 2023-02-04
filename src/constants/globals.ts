@@ -33,13 +33,14 @@ export enum Icon {
   CREATE_RECORD = 'add_box',
   // Pages
   HOME = 'home',
-  EXAMPLES = 'smart_toy',
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
   REPORTS = 'timeline',
+  EXAMPLES = 'smart_toy',
   // Misc
   LIST = 'view_list',
   TABLE = 'table_chart',
+  RECORDS = 'dataset_linked',
   RECOMMEND = 'recommend',
   REMINDER = 'notifications_active',
   STOPWATCH = 'timer',
@@ -48,6 +49,7 @@ export enum Icon {
   CALENDAR_CHECK = 'event_available',
   CALENDAR_CLEAR = 'event_busy',
   EXIT = 'exit_to_app',
+  BACK = 'arrow_back',
   REFRESH = 'refresh',
   CODE = 'code',
   WEB = 'language',
