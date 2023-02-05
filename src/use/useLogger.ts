@@ -2,7 +2,7 @@ import { Icon, SettingKey, Severity } from '@/constants/globals'
 import { logger } from '@/services/PrettyLogger'
 import useNotifications from '@/use/useNotifications'
 import useSettingsStore from '@/stores/settings'
-import useDBLogs from '@/use/useDBLogs'
+import useDatabaseLogs from '@/use/useDatabaseLogs'
 
 /**
  * Utilities for logging that include notifications and database entries.
@@ -10,7 +10,7 @@ import useDBLogs from '@/use/useDBLogs'
  */
 export default function useLogger() {
   const settingsStore = useSettingsStore()
-  const { addLog } = useDBLogs()
+  const { addLog } = useDatabaseLogs()
   const { notify } = useNotifications()
 
   /**

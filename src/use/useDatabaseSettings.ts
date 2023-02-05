@@ -6,7 +6,7 @@ import { dexieWrapper } from '@/services/DexieWrapper'
 import type { IDBSetting } from '@/models/core'
 import useSettingsStore from '@/stores/settings'
 
-export default function useDBSettings() {
+export default function useDatabaseSettings() {
   const $q = useQuasar()
   const settingsStore = useSettingsStore()
 
@@ -62,11 +62,12 @@ export default function useDBSettings() {
     }
 
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
-    const introduction = findSettingValue(SettingKey.INTRODUCTION) ?? true
+    const showIntroduction = findSettingValue(SettingKey.SHOW_INTRODUCTION) ?? true
     const darkMode = findSettingValue(SettingKey.DARK_MODE) ?? true
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
+    const primaryListSelection = findSettingValue(SettingKey.PRIMARY_LIST_SELECTION) ?? 'tests'
     // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PRIMARY_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
@@ -82,11 +83,12 @@ export default function useDBSettings() {
 
     // Set all settings before continuing
     await Promise.all([
-      setSetting(SettingKey.INTRODUCTION, introduction),
+      setSetting(SettingKey.SHOW_INTRODUCTION, showIntroduction),
       setSetting(SettingKey.DARK_MODE, darkMode),
       setSetting(SettingKey.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingKey.SAVE_INFO_MESSAGES, saveInfoMessages),
+      setSetting(SettingKey.PRIMARY_LIST_SELECTION, primaryListSelection),
       // setSetting(SettingKey.FAVORITE_PRIMARY_IDS, favoriteParentIds),
       // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
       // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),

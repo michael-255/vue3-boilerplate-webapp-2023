@@ -1,11 +1,19 @@
 import type { IndexableType } from 'dexie'
 import type { TableName, SettingKey } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import type { IDBLog, IDBSetting } from '@/models/core'
+import type { IDBImage, IDBLog, IDBSetting } from '@/models/core'
+import type { IDBExample, IDBExampleRecord, IDBTest, IDBTestRecord } from '@/models/app'
 
-type AnyModel = IDBSetting | IDBLog
+type AnyModel =
+  | IDBSetting
+  | IDBLog
+  | IDBImage
+  | IDBExample
+  | IDBExampleRecord
+  | IDBTest
+  | IDBTestRecord
 
-export default function useDBShared() {
+export default function useDatabaseShared() {
   /**
    * Gets all data from a table.
    * @returns Database table data as an array

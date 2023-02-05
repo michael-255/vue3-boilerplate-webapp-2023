@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { QSelect, QBtn } from 'quasar'
 import { Icon, TableName, Limit } from '@/constants/globals'
-import useSettingsView from '@/use/useSettingsView'
+import useSettings from '@/use/useSettings'
 import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 
 const {
-  introduction,
+  showIntroduction,
   darkMode,
   showConsoleLogs,
   showDebugMessages,
@@ -22,7 +22,7 @@ const {
   onDeleteTableData,
   onDeleteAllData,
   onDeleteDatabase,
-} = useSettingsView()
+} = useSettings()
 
 // Options
 const introductionText = `Introduction provides instructions on the Home page on how to use the app.`
@@ -63,7 +63,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 
         <!-- Toggles -->
         <div class="q-mb-md">{{ introductionText }}</div>
-        <QToggle v-model="introduction" class="q-mb-md" label="Introduction" />
+        <QToggle v-model="showIntroduction" class="q-mb-md" label="Show Introduction" />
 
         <div class="q-mb-md">{{ darkModeText }}</div>
         <QToggle v-model="darkMode" label="Dark Mode" />

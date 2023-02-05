@@ -2,18 +2,18 @@ import { TableName } from '@/constants/globals'
 import { Icon, AppText, SettingKey } from '@/constants/globals'
 import { exportFile } from 'quasar'
 import { type Ref, ref, computed } from 'vue'
-import useDBSettings from '@/use/useDBSettings'
+import useDatabaseSettings from '@/use/useDatabaseSettings'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDBShared from '@/use/useDBShared'
+import useDatabaseShared from '@/use/useDatabaseShared'
 import useLogger from '@/use/useLogger'
 import useSettingsStore from '@/stores/settings'
 
-export default function useSettingsView() {
+export default function useSettings() {
   const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
-  const { initializeSettings, setSetting } = useDBSettings()
+  const { initializeSettings, setSetting } = useDatabaseSettings()
   const { confirmDialog } = useSimpleDialogs()
-  const { getTable, clearTable, deleteDatabase, importItems } = useDBShared()
+  const { getTable, clearTable, deleteDatabase, importItems } = useDatabaseShared()
 
   const importFile: Ref<any> = ref(null)
 
@@ -23,12 +23,16 @@ export default function useSettingsView() {
   const deleteDataOptions: Ref<TableName[]> = ref(Object.values(TableName))
   const deleteDataModel: Ref<TableName | null> = ref(null)
 
-  const introduction = computed({
+  //
+  // Toggles
+  //
+
+  const showIntroduction = computed({
     get() {
-      return !!settingsStore[SettingKey.INTRODUCTION]
+      return !!settingsStore[SettingKey.SHOW_INTRODUCTION]
     },
     async set(bool: boolean) {
-      await setSetting(SettingKey.INTRODUCTION, bool)
+      await setSetting(SettingKey.SHOW_INTRODUCTION, bool)
     },
   })
 
@@ -239,7 +243,7 @@ export default function useSettingsView() {
   }
 
   return {
-    introduction,
+    showIntroduction,
     darkMode,
     showConsoleLogs,
     showDebugMessages,

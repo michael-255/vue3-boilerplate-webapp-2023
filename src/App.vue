@@ -2,14 +2,14 @@
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
 import useLogger from '@/use/useLogger'
-import useDBSettings from '@/use/useDBSettings'
+import useDatabaseSettings from '@/use/useDatabaseSettings'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 // import ActionDialog from '@/components/shared/ActionDialog.vue'
 // import { DB } from './services/LocalDatabase'
 
 const { log } = useLogger()
 const route = useRoute()
-const { initializeSettings } = useDBSettings()
+const { initializeSettings } = useDatabaseSettings()
 const layout: Ref<any> = ref(null)
 
 onMounted(async () => {

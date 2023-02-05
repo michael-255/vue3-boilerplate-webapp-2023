@@ -3,7 +3,7 @@ import { TableName, Field, Severity } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import type { IDBLog } from '@/models/core'
 
-export default function useDBLogs() {
+export default function useDatabaseLogs() {
   /**
    * Adds a Log to the database.
    * @param severity

@@ -2,15 +2,15 @@
 import { QCard, QCardSection, QBtn } from 'quasar'
 import { AppText, Icon, WebURL } from '@/constants/globals'
 import ResponsivePage from '@/components/shared/ResponsivePage.vue'
+
+const aboutMessage = `${AppText.APP_NAME} is a Vue 3 Typescript project created by michael-255 on GitHub. It is
+publicly available using the MIT License.`
 </script>
 
 <template>
   <ResponsivePage :banner-icon="Icon.INFO" banner-title="About">
     <QCard flat>
-      <QCardSection class="q-pb-xs">
-        {{ AppText.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub. It is
-        publicly available using the permissive MIT License.
-      </QCardSection>
+      <QCardSection class="q-pb-xs">{{ aboutMessage }}</QCardSection>
 
       <QCardSection>
         <div class="row q-col-gutter-md justify-start">

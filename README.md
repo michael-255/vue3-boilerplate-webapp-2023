@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] Rename `Parent` to `Primary`?
 - [ ] Scroll to top smoothly
 - [ ] Function that looksup original text for slugified text (May not need this?):
   ```javascript

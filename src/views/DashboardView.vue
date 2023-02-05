@@ -1,32 +1,29 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn } from 'quasar'
 import { Icon, SettingKey } from '@/constants/globals'
-import { ref } from 'vue'
 import useSettingsStore from '@/stores/settings'
-import useHomeView from '@/use/useHomeView'
+import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 
 const settingsStore = useSettingsStore()
-const { onCloseIntroduction } = useHomeView()
+const { primaryListSelection, onCloseIntroduction } = useDashboard()
 
 const groupOptions = [
   {
     label: 'Examples',
-    value: 'option1',
+    value: 'examples',
   },
   {
     label: 'Tests',
-    value: 'option2',
+    value: 'tests',
   },
 ]
-
-const group = ref('option1')
 </script>
 
 <template>
   <ResponsivePage :banner-icon="Icon.DASHBOARD" banner-title="Dashboard">
     <!-- Introduction -->
-    <QCard v-if="settingsStore[SettingKey.INTRODUCTION]" flat class="q-mb-sm">
+    <QCard v-if="settingsStore[SettingKey.SHOW_INTRODUCTION]" flat class="q-mb-sm">
       <QCardSection>
         <div class="text-h6 q-mb-md">Introduction</div>
 
@@ -55,7 +52,7 @@ const group = ref('option1')
           Select the Primary items you want to appear in the Dashboard list below.
         </div>
 
-        <QOptionGroup v-model="group" :options="groupOptions" color="primary" />
+        <QOptionGroup v-model="primaryListSelection" :options="groupOptions" color="primary" />
       </QCardSection>
     </QCard>
 

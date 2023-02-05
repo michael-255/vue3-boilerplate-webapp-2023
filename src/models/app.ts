@@ -16,7 +16,7 @@ export interface IDBExampleRecord extends IDBRecord {
   [Field.TEST_NUMBER]: number
 }
 
-export interface IDBTests extends IDBPrimary {
+export interface IDBTest extends IDBPrimary {
   [Field.TEST_MESSAGE]: string
 }
 
