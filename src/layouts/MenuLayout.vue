@@ -56,26 +56,11 @@ const route = useRoute()
           <QItemSection>Dashboard</QItemSection>
         </QItem>
 
-        <QItem
-          clickable
-          v-ripple
-          :to="{ name: RouteName.PAGE, params: { tableSlug: slugify(TableName.EXAMPLES) } }"
-        >
+        <QItem clickable v-ripple :to="{ name: RouteName.TABLE }">
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.EXAMPLES" />
+            <QIcon color="primary" :name="Icon.TABLE" />
           </QItemSection>
-          <QItemSection>Examples</QItemSection>
-        </QItem>
-
-        <QItem
-          clickable
-          v-ripple
-          :to="{ name: RouteName.PAGE, params: { tableSlug: slugify(TableName.TESTS) } }"
-        >
-          <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.TESTS" />
-          </QItemSection>
-          <QItemSection>Tests</QItemSection>
+          <QItemSection>Tables</QItemSection>
         </QItem>
 
         <QSeparator spaced="md" inset />

@@ -6,23 +6,6 @@ projects. Read through this README to have a better understanding of how this pr
 ## Todos (\*\*\*)
 
 - [ ] Scroll to top smoothly
-- [ ] Function that looksup original text for slugified text (May not need this?):
-  ```javascript
-  export function getTableNameFromSlug(tableSlug: string): TableName {
-    return {
-      [slugify(TableName.EXAMPLES)]: TableName.EXAMPLES,
-      [slugify(TableName.EXAMPLE_RECORDS)]: TableName.EXAMPLE_RECORDS,
-      // ...
-    }
-  }
-  export function getActionNameFromSlug(actionSlug: string): TableName {
-    return {
-      [slugify(ActionName.CREATE)]: ActionName.CREATE,
-      [slugify(ActionName.EDIT)]: ActionName.EDIT,
-      // ...
-    }
-  }
-  ```
 - [ ] Do NOT allow IDs to be created with custom text (Should always be a UUID)
 - [ ] Have the List View display the Example Parents
 - [ ] List View items should have input(s) and a save button

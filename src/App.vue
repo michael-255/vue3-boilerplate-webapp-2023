@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
-import useLogger from '@/use/useLogger'
 import useDatabaseSettings from '@/use/useDatabaseSettings'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-// import ActionDialog from '@/components/shared/ActionDialog.vue'
-// import { DB } from './services/LocalDatabase'
+import useLogger from '@/use/useLogger'
 
 const { log } = useLogger()
 const route = useRoute()
@@ -17,7 +15,7 @@ onMounted(async () => {
 })
 
 /**
- * Watching the route for the meta layout property to change. Sets the layout component.
+ * Watching route for the meta layout property to change. Sets the layout component.
  */
 watch(
   () => route.meta?.layout as string | undefined,
@@ -31,7 +29,7 @@ watch(
       layout.value = markRaw(component?.default || DefaultLayout)
     } catch (error) {
       layout.value = markRaw(DefaultLayout)
-      log.error('Route layout watcher', error)
+      log.error('Error with route layout watcher', error)
     }
   },
   { immediate: true }
@@ -42,6 +40,4 @@ watch(
   <component :is="layout">
     <RouterView />
   </component>
-
-  <!-- <ActionDialog /> -->
 </template>

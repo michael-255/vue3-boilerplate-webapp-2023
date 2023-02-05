@@ -34,13 +34,14 @@ export enum Icon {
   DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
+  IMAGES = 'image',
   REPORTS = 'timeline',
+  RECORDS = 'dataset',
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
   // Misc
   LIST = 'view_list',
   TABLE = 'table_chart',
-  RECORDS = 'dataset_linked',
   RECOMMEND = 'recommend',
   REMINDER = 'notifications_active',
   STOPWATCH = 'timer',
@@ -155,7 +156,7 @@ export enum RouteName {
   SETTINGS = 'Settings',
   ABOUT = 'About',
   NOT_FOUND = 'NotFound',
-  PAGE = 'Page',
+  TABLE = 'Table',
   DATA = 'Data',
   ACTION = 'Action',
   REPORT = 'Report',
@@ -196,10 +197,10 @@ export enum TableName {
 export enum ActionName {
   NONE = 'None',
   CREATE = 'Create',
-  UPDATE = 'Update',
+  INSPECT = 'Inspect',
+  EDIT = 'Edit',
   DELETE = 'Delete',
   CLEAR = 'Clear',
-  INSPECT = 'Inspect',
   REPORT = 'Report',
 }
 

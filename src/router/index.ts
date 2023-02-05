@@ -11,10 +11,10 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/page/:tableSlug', // Main table pages with core Primary and Record options
-      name: RouteName.PAGE,
+      path: '/table', // Main table page with core Primary and Record table options
+      name: RouteName.TABLE,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/PageView.vue'),
+      component: () => import('../views/TableView.vue'),
     },
     {
       path: '/data/:tableSlug', // Data table
