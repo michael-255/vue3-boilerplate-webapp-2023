@@ -30,10 +30,10 @@ const route = useRoute()
         <QToolbarTitle>{{ AppText.APP_NAME }}</QToolbarTitle>
 
         <QBtn
-          v-if="route.name !== RouteName.HOME"
+          v-if="route.name !== RouteName.DASHBOARD"
           flat
           round
-          :to="{ name: RouteName.HOME }"
+          :to="{ name: RouteName.DASHBOARD }"
           :icon="Icon.BACK"
         />
       </QToolbar>
@@ -48,11 +48,11 @@ const route = useRoute()
       </div>
 
       <QList>
-        <QItem clickable v-ripple :to="{ name: RouteName.HOME }">
+        <QItem clickable v-ripple :to="{ name: RouteName.DASHBOARD }">
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.HOME" />
+            <QIcon color="primary" :name="Icon.DASHBOARD" />
           </QItemSection>
-          <QItemSection>Home</QItemSection>
+          <QItemSection>Dashboard</QItemSection>
         </QItem>
 
         <QItem clickable v-ripple :to="{ name: RouteName.EXAMPLES }">
@@ -61,6 +61,8 @@ const route = useRoute()
           </QItemSection>
           <QItemSection>Examples</QItemSection>
         </QItem>
+
+        <QSeparator spaced="md" inset />
 
         <QItem clickable v-ripple :to="{ name: RouteName.SETTINGS }">
           <QItemSection avatar>
@@ -74,13 +76,6 @@ const route = useRoute()
             <QIcon color="primary" :name="Icon.INFO" />
           </QItemSection>
           <QItemSection>About</QItemSection>
-        </QItem>
-
-        <QItem clickable v-ripple :to="{ name: RouteName.TABLE, params: { tableSlug: '1' } }">
-          <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.CLOSE" />
-          </QItemSection>
-          <QItemSection>TEST</QItemSection>
         </QItem>
       </QList>
     </QDrawer>

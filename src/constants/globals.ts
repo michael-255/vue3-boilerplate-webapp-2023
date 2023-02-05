@@ -32,7 +32,7 @@ export enum Icon {
   CREATE_PARENT = 'add_circle',
   CREATE_RECORD = 'add_box',
   // Pages
-  HOME = 'home',
+  DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
   REPORTS = 'timeline',
@@ -104,7 +104,6 @@ export enum Field {
 export enum ParentStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
-  ARCHIVED = 'Archived',
 }
 
 export enum RecordStatus {
@@ -151,12 +150,12 @@ export enum SettingKey {
  * Route names used by Vue router.
  */
 export enum RouteName {
-  HOME = 'Home',
+  DASHBOARD = 'Dashboard',
   SETTINGS = 'Settings',
   ABOUT = 'About',
   NOT_FOUND = 'NotFound',
   PAGE = 'Page',
-  TABLE = 'Table',
+  DATA = 'Data',
   ACTION = 'Action',
   REPORT = 'Report',
   EXAMPLES = 'Examples',

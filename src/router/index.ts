@@ -6,33 +6,36 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: RouteName.HOME,
+      name: RouteName.DASHBOARD,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/examples',
+      path: '/examples', // TODO - Remove this after converting to PageView
       name: RouteName.EXAMPLES,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ExamplesView.vue'),
     },
     {
-      // Data tables viewer
-      path: '/table/:tableSlug',
-      name: RouteName.TABLE,
+      path: '/page/:tableSlug', // Main table page with Parent and Record options
+      name: RouteName.PAGE,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/TableView.vue'),
+      component: () => import('../views/ExamplesView.vue'),
     },
     {
-      // Data table actions (create, edit, inspect)
-      path: '/action/:tableSlug/:actionSlug/:id?',
+      path: '/data/:tableSlug', // Data table view
+      name: RouteName.DATA,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/DataView.vue'),
+    },
+    {
+      path: '/action/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect)
       name: RouteName.ACTION,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionView.vue'),
     },
     {
-      // Report for id on tables
-      path: '/report/:tableSlug/:id?',
+      path: '/report/:tableSlug/:id?', // Report for id on tables
       name: RouteName.REPORT,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ReportView.vue'),

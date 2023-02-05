@@ -113,12 +113,11 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
                   :disable="!importFile"
                   label="Import"
                   color="primary"
-                  class="q-mr-xs"
                   @click="onImportFile()"
                 />
               </template>
 
-              <template v-slot:after>
+              <template v-slot:append>
                 <QIcon :name="Icon.CLOSE" @click.stop="importFile = null" class="cursor-pointer" />
               </template>
             </QFile>
@@ -137,12 +136,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
               label="Database Table"
             >
               <template v-slot:before>
-                <QBtn
-                  :disable="!accessTableModel"
-                  class="q-mr-xs"
-                  label="Access Table"
-                  color="primary"
-                />
+                <QBtn :disable="!accessTableModel" label="Access Table" color="primary" />
               </template>
             </QSelect>
           </QCardSection>
@@ -188,7 +182,6 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
               <template v-slot:before>
                 <QBtn
                   :disable="!deleteDataModel"
-                  class="q-mr-xs"
                   label="Delete Data"
                   color="negative"
                   @click="onDeleteTableData(TableName.LOGS)"
