@@ -56,7 +56,7 @@ const route = useRoute()
           <QItemSection>Dashboard</QItemSection>
         </QItem>
 
-        <QItem clickable v-ripple :to="{ name: RouteName.TABLE }">
+        <QItem clickable v-ripple :to="{ name: RouteName.TABLES }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.TABLE" />
           </QItemSection>

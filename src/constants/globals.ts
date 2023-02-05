@@ -156,7 +156,7 @@ export enum RouteName {
   SETTINGS = 'Settings',
   ABOUT = 'About',
   NOT_FOUND = 'NotFound',
-  TABLE = 'Table',
+  TABLES = 'Tables',
   DATA = 'Data',
   ACTION = 'Action',
   REPORT = 'Report',
