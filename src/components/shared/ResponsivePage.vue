@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import type { Icon } from '@/constants/globals'
+import { QPage } from 'quasar'
+
+defineProps<{
+  bannerIcon?: Icon
+  bannerTitle?: string
+}>()
+</script>
+
+<template>
+  <QPage padding>
+    <div class="row justify-center">
+      <div class="col-md-6 col-xs-12">
+        <!-- Optional Banner -->
+        <QCard v-if="bannerIcon && bannerTitle" flat class="q-mb-sm">
+          <QCardSection class="text-h5">
+            <QIcon class="q-pb-xs q-pr-xs" :name="bannerIcon" />
+            {{ bannerTitle }}
+          </QCardSection>
+        </QCard>
+
+        <!-- Additional Components Slot -->
+        <slot />
+      </div>
+    </div>
+  </QPage>
+</template>

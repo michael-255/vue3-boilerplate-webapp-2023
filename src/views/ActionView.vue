@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import { QPage, QCard, QCardSection } from 'quasar'
 import { Icon } from '@/constants/globals'
+import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 </script>
 
 <template>
-  <QPage padding>
-    <!-- Banner -->
-    <QCard flat square class="q-mb-sm">
-      <QCardSection class="text-h5">
-        <QIcon class="q-pb-xs q-pr-xs" :name="Icon.REFRESH" />
-        Action View
-      </QCardSection>
-    </QCard>
-  </QPage>
+  <ResponsivePage :banner-icon="Icon.REFRESH" banner-title="Actions" />
 </template>

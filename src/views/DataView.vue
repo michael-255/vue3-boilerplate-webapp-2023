@@ -105,53 +105,49 @@ const rows = [
 </script>
 
 <template>
-  <div class="row justify-center">
-    <div class="col-md-6 col-xs-12">
-      <QTable
-        flat
-        fullscreen
-        title="Treats"
-        selection="single"
-        v-model:selected="selected"
-        :rows="rows"
-        :columns="columns"
-        row-key="name"
+  <QTable
+    flat
+    fullscreen
+    title="Treats"
+    selection="single"
+    v-model:selected="selected"
+    :rows="rows"
+    :columns="columns"
+    row-key="name"
+  >
+    <template v-slot:top>
+      <div class="text-h6">Examples</div>
+
+      <QSelect
+        v-model="selectModel"
+        dense
+        outlined
+        :options="selectOptions"
+        class="full-width q-mr-sm q-mb-sm"
+      />
+
+      <!-- Search Input -->
+      <QInput
+        outlined
+        dense
+        clearable
+        debounce="300"
+        v-model="selectModel"
+        placeholder="Search"
+        class="full-width q-mr-sm q-mb-sm"
       >
-        <template v-slot:top>
-          <div class="text-h6">Examples</div>
-
-          <QSelect
-            v-model="selectModel"
-            dense
-            outlined
-            :options="selectOptions"
-            class="full-width q-mr-sm q-mb-sm"
-          />
-
-          <!-- Search Input -->
-          <QInput
-            outlined
-            dense
-            clearable
-            debounce="300"
-            v-model="selectModel"
-            placeholder="Search"
-            class="full-width q-mr-sm q-mb-sm"
-          >
-            <template v-slot:append>
-              <QIcon name="search" />
-            </template>
-          </QInput>
-
-          <QBtn
-            round
-            color="primary"
-            class="absolute-top-right q-ma-md"
-            :to="{ name: RouteName.DASHBOARD }"
-            :icon="Icon.CLOSE"
-          />
+        <template v-slot:append>
+          <QIcon name="search" />
         </template>
-      </QTable>
-    </div>
-  </div>
+      </QInput>
+
+      <QBtn
+        round
+        color="primary"
+        class="absolute-top-right q-ma-md"
+        :to="{ name: RouteName.DASHBOARD }"
+        :icon="Icon.CLOSE"
+      />
+    </template>
+  </QTable>
 </template>

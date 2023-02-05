@@ -5,13 +5,21 @@
  * functionality and are unique to this app.
  */
 
-import type { IDBParent, IDBRecord } from '@/models/core'
+import type { IDBPrimary, IDBRecord } from '@/models/core'
 import type { Field } from '@/constants/globals'
 
-export interface IDBExample extends IDBParent {
-  [Field.EXAMPLE_MESSAGE]: string
+export interface IDBExample extends IDBPrimary {
+  [Field.TEST_MESSAGE]: string
 }
 
 export interface IDBExampleRecord extends IDBRecord {
-  [Field.EXAMPLE_NUMBER]: number
+  [Field.TEST_NUMBER]: number
+}
+
+export interface IDBTests extends IDBPrimary {
+  [Field.TEST_MESSAGE]: string
+}
+
+export interface IDBTestRecord extends IDBRecord {
+  [Field.TEST_NUMBER]: number
 }

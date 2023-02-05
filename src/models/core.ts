@@ -5,7 +5,7 @@
  * the app (like Settings and Logs).
  */
 
-import type { Field, ParentStatus, RecordStatus, Severity, SettingKey } from '@/constants/globals'
+import type { Field, PrimaryStatus, RecordStatus, Severity, SettingKey } from '@/constants/globals'
 import type { AppObject, SettingValue } from '@/constants/types'
 
 export interface IDBEntity {
@@ -13,8 +13,8 @@ export interface IDBEntity {
   [Field.CREATED_TIMESTAMP]: number
 }
 
-export interface IDBParent extends IDBEntity {
-  [Field.PARENT_STATUS]: ParentStatus
+export interface IDBPrimary extends IDBEntity {
+  [Field.PRIMARY_STATUS]: PrimaryStatus
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
   [Field.FAVORITE]: boolean
@@ -22,7 +22,7 @@ export interface IDBParent extends IDBEntity {
 
 export interface IDBRecord extends IDBEntity {
   [Field.RECORD_STATUS]: RecordStatus
-  [Field.PARENT_ID]: string
+  [Field.PRIMARY_ID]: string
   [Field.NOTE]: string
 }
 

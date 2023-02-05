@@ -12,9 +12,10 @@ import {
   QItemSection,
   QIcon,
 } from 'quasar'
-import { AppText, Icon, RouteName } from '@/constants/globals'
+import { AppText, Icon, RouteName, TableName } from '@/constants/globals'
 import { useRoute } from 'vue-router'
 import useUIStore from '@/stores/ui'
+import { slugify } from '@/utils/common'
 
 const mainMenuStore = useUIStore()
 const route = useRoute()
@@ -55,11 +56,26 @@ const route = useRoute()
           <QItemSection>Dashboard</QItemSection>
         </QItem>
 
-        <QItem clickable v-ripple :to="{ name: RouteName.EXAMPLES }">
+        <QItem
+          clickable
+          v-ripple
+          :to="{ name: RouteName.PAGE, params: { tableSlug: slugify(TableName.EXAMPLES) } }"
+        >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
           <QItemSection>Examples</QItemSection>
+        </QItem>
+
+        <QItem
+          clickable
+          v-ripple
+          :to="{ name: RouteName.PAGE, params: { tableSlug: slugify(TableName.TESTS) } }"
+        >
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.TESTS" />
+          </QItemSection>
+          <QItemSection>Tests</QItemSection>
         </QItem>
 
         <QSeparator spaced="md" inset />

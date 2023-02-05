@@ -29,14 +29,14 @@ export enum Icon {
   EDIT = 'edit',
   INSPECT = 'summarize',
   DELETE = 'delete',
-  CREATE_PARENT = 'add_circle',
-  CREATE_RECORD = 'add_box',
+  CREATE = 'add_circle',
   // Pages
   DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
   REPORTS = 'timeline',
   EXAMPLES = 'smart_toy',
+  TESTS = 'cruelty_free',
   // Misc
   LIST = 'view_list',
   TABLE = 'table_chart',
@@ -86,22 +86,22 @@ export enum Field {
   // Entity
   ID = 'id',
   CREATED_TIMESTAMP = 'createdTimestamp',
-  // Parent
-  PARENT_STATUS = 'parentStatus',
+  // Primary
+  PRIMARY_STATUS = 'primaryStatus',
   NAME = 'name',
   DESCRIPTION = 'description',
   FAVORITE = 'favorite',
   // Record
   RECORD_STATUS = 'recordStatus',
-  PARENT_ID = 'parentId',
+  PRIMARY_ID = 'primaryId',
   NOTE = 'note',
-  // Example Parent
-  EXAMPLE_MESSAGE = 'exampleMessage',
-  // Example Record
-  EXAMPLE_NUMBER = 'exampleNumber',
+  // Example & Test Primary
+  TEST_MESSAGE = 'testMessage',
+  // Example & Test Record
+  TEST_NUMBER = 'testNumber',
 }
 
-export enum ParentStatus {
+export enum PrimaryStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
 }
@@ -159,6 +159,7 @@ export enum RouteName {
   ACTION = 'Action',
   REPORT = 'Report',
   EXAMPLES = 'Examples',
+  TESTS = 'Tests',
 }
 
 /**
@@ -184,6 +185,8 @@ export enum TableName {
   IMAGES = 'Images',
   EXAMPLES = 'Examples',
   EXAMPLE_RECORDS = 'Example Records',
+  TESTS = 'Tests',
+  TEST_RECORDS = 'Test Records',
 }
 
 /**

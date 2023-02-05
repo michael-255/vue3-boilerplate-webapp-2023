@@ -18,8 +18,8 @@ export class DexieWrapper extends Dexie {
       [TableName.SETTINGS]: `&${Field.KEY}`,
       [TableName.LOGS]: `++${Field.ID}`,
       [TableName.IMAGES]: `&${Field.ID}`,
-      [TableName.EXAMPLES]: `&${Field.ID}, ${Field.PARENT_STATUS}`,
-      [TableName.EXAMPLE_RECORDS]: `&${Field.ID}, ${Field.RECORD_STATUS}, ${Field.PARENT_ID}`,
+      [TableName.EXAMPLES]: `&${Field.ID}, ${Field.PRIMARY_STATUS}`,
+      [TableName.EXAMPLE_RECORDS]: `&${Field.ID}, ${Field.RECORD_STATUS}, ${Field.PRIMARY_ID}`,
     })
   }
 }

@@ -11,31 +11,25 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/examples', // TODO - Remove this after converting to PageView
-      name: RouteName.EXAMPLES,
-      meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ExamplesView.vue'),
-    },
-    {
-      path: '/page/:tableSlug', // Main table page with Parent and Record options
+      path: '/page/:tableSlug', // Main table pages with core Primary and Record options
       name: RouteName.PAGE,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ExamplesView.vue'),
+      component: () => import('../views/PageView.vue'),
     },
     {
-      path: '/data/:tableSlug', // Data table view
+      path: '/data/:tableSlug', // Data table
       name: RouteName.DATA,
-      meta: { layout: 'MenuLayout' },
+      meta: { layout: 'DataTableLayout' },
       component: () => import('../views/DataView.vue'),
     },
     {
-      path: '/action/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect)
+      path: '/action/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect, etc.)
       name: RouteName.ACTION,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionView.vue'),
     },
     {
-      path: '/report/:tableSlug/:id?', // Report for id on tables
+      path: '/report/:tableSlug/:id?', // Reports for id on tables
       name: RouteName.REPORT,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ReportView.vue'),
