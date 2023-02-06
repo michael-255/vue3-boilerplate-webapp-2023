@@ -58,6 +58,7 @@ export enum Icon {
   WEB = 'language',
   MENU = 'menu',
   MENU_VERT = 'more_vert',
+  TOP_OF_PAGE = 'keyboard_arrow_up',
 }
 
 /**
@@ -128,7 +129,7 @@ export enum SettingKey {
   SHOW_CONSOLE_LOGS = 'show-console-logs',
   SHOW_DEBUG_MESSAGES = 'show-debug-messages',
   SAVE_INFO_MESSAGES = 'save-info-messages',
-  PRIMARY_LIST_SELECTION = 'primary-list-selection',
+  PARENT_LIST_SELECTION = 'primary-list-selection',
   // ACTIVE_RECORD_IDS = 'active-record-ids',
   // PARENTS_TABLE_VISIBLE_COLUMNS = 'parents-table-visible-columns',
   // RECORDS_TABLE_VISIBLE_COLUMNS = 'records-table-visible-columns',

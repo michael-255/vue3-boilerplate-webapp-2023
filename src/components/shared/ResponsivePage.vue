@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Icon } from '@/constants/globals'
-import { QPage } from 'quasar'
+import { Icon } from '@/constants/globals'
+import { QPage, QPageScroller, QBtn } from 'quasar'
 
 defineProps<{
   bannerIcon?: Icon
@@ -24,5 +24,10 @@ defineProps<{
         <slot />
       </div>
     </div>
+
+    <!-- Page Scroller -->
+    <QPageScroller>
+      <QBtn fab :icon="Icon.TOP_OF_PAGE" color="accent" />
+    </QPageScroller>
   </QPage>
 </template>

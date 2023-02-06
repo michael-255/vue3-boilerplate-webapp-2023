@@ -7,12 +7,12 @@ export default function useDashboard() {
   const settingsStore = useSettingsStore()
   const { setSetting } = useDatabaseSettings()
 
-  const primaryListSelection = computed({
+  const parentListSelection = computed({
     get() {
-      return settingsStore[SettingKey.PRIMARY_LIST_SELECTION]
+      return settingsStore[SettingKey.PARENT_LIST_SELECTION]
     },
     async set(str: string) {
-      await setSetting(SettingKey.PRIMARY_LIST_SELECTION, str)
+      await setSetting(SettingKey.PARENT_LIST_SELECTION, str)
     },
   })
 
@@ -23,5 +23,5 @@ export default function useDashboard() {
     await setSetting(SettingKey.SHOW_INTRODUCTION, false)
   }
 
-  return { primaryListSelection, onCloseIntroduction }
+  return { parentListSelection, onCloseIntroduction }
 }

@@ -1,15 +1,6 @@
-import { v4 as uuidv4 } from 'uuid'
 import * as slug from 'slugify'
 import { DateTime } from 'luxon'
 import { Milliseconds } from '@/constants/globals'
-
-/**
- * Generates a random id using the UUID package.
- * @returns Random 36 (including dashes) character id
- */
-export function uuid(): string {
-  return uuidv4()
-}
 
 /**
  * Slugify a string so it can be used as a URL.
@@ -27,7 +18,7 @@ export function slugify(str: string): string {
 }
 
 /**
- * Generates a custom id based on parameters.
+ * Generates customized id. Use Quasar Other Utils UID for any other case.
  * @param obj.segmentLengths Array of segment lengths (recommend 1-8 each)
  * @param obj.delimiter Single string character delimiter for id segments
  * @returns Custom random id

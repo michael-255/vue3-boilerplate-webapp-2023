@@ -6,7 +6,7 @@ import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 
 const settingsStore = useSettingsStore()
-const { primaryListSelection, onCloseIntroduction } = useDashboard()
+const { parentListSelection, onCloseIntroduction } = useDashboard()
 
 const groupOptions = [
   {
@@ -49,14 +49,14 @@ const groupOptions = [
       <QCardSection>
         <div class="text-h6 q-mb-md">List Selection</div>
         <div class="q-mb-md">
-          Select the Primary items you want to appear in the Dashboard list below.
+          Select the Parent items you want to appear in the Dashboard list below.
         </div>
 
-        <QOptionGroup v-model="primaryListSelection" :options="groupOptions" color="primary" />
+        <QOptionGroup v-model="parentListSelection" :options="groupOptions" color="primary" />
       </QCardSection>
     </QCard>
 
-    <!-- Primary Items List -->
+    <!-- Parent Items List -->
     <QCard flat class="q-mb-sm">
       <QCardSection>
         <div class="text-h6 q-mb-md">Defaults</div>

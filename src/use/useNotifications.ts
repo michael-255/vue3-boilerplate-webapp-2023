@@ -5,7 +5,7 @@ import { Icon } from '@/constants/globals'
  * Simple customizable notifications.
  */
 export default function useNotifications() {
-  const $quasar = useQuasar()
+  const $q = useQuasar()
 
   /**
    * Customizable Quasar notification.
@@ -35,7 +35,7 @@ export default function useNotifications() {
   ): void {
     const textColor = 'white'
 
-    $quasar.notify({
+    $q.notify({
       message,
       icon,
       color,

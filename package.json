@@ -22,7 +22,6 @@
     "pinia": "^2.0.28",
     "quasar": "^2.11.5",
     "slugify": "^1.6.5",
-    "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.1.6"
@@ -33,7 +32,6 @@
     "@types/jsdom": "^20.0.1",
     "@types/luxon": "^3.2.0",
     "@types/node": "^18.11.12",
-    "@types/uuid": "^9.0.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitest/coverage-c8": "^0.28.1",
     "@vue/eslint-config-prettier": "^7.0.0",

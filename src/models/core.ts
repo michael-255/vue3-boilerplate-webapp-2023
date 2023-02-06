@@ -8,19 +8,19 @@
 import type { Field, PrimaryStatus, RecordStatus, Severity, SettingKey } from '@/constants/globals'
 import type { AppObject, SettingValue } from '@/constants/types'
 
-export interface IDBEntity {
+export interface IDBItem {
   [Field.ID]: string
   [Field.CREATED_TIMESTAMP]: number
 }
 
-export interface IDBPrimary extends IDBEntity {
+export interface IDBParent extends IDBItem {
   [Field.PRIMARY_STATUS]: PrimaryStatus
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
   [Field.FAVORITE]: boolean
 }
 
-export interface IDBRecord extends IDBEntity {
+export interface IDBRecord extends IDBItem {
   [Field.RECORD_STATUS]: RecordStatus
   [Field.PRIMARY_ID]: string
   [Field.NOTE]: string
@@ -39,6 +39,6 @@ export interface IDBSetting {
   [Field.VALUE]: SettingValue
 }
 
-export interface IDBImage extends IDBEntity {
-  [Field.IMAGE]: string // TODO - base64 image blob?
+export interface IDBImage extends IDBItem {
+  [Field.IMAGE]: string // TODO - base64 image or blob?
 }

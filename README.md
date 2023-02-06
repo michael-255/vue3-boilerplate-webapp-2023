@@ -143,8 +143,6 @@ Details on the steps I took to setup this project.
    - Prettier - Yes
 1. Install useful dependencies:
    - `npm i slugify` - For making URL slug from text
-   - `npm i uuid` - random ids
-   - `npm i -D @types/uuid`
    - `npm i luxon` - Javascript date utilities
    - `npm i -D @types/luxon`
    - `npm i dexie` - IndexedDB wrapper

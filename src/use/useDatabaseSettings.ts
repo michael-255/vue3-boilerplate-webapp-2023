@@ -1,4 +1,4 @@
-import { useQuasar } from 'quasar'
+import { Dark } from 'quasar'
 import type { IndexableType } from 'dexie'
 import { TableName, Field, SettingKey } from '@/constants/globals'
 import type { SettingValue } from '@/constants/types'
@@ -7,7 +7,6 @@ import type { IDBSetting } from '@/models/core'
 import useSettingsStore from '@/stores/settings'
 
 export default function useDatabaseSettings() {
-  const $q = useQuasar()
   const settingsStore = useSettingsStore()
 
   /**
@@ -36,7 +35,7 @@ export default function useDatabaseSettings() {
 
     // Set Quasar dark mode if the key is for dark mode
     if (key === SettingKey.DARK_MODE) {
-      $q.dark.set(!!value) // Cast to boolean
+      Dark.set(!!value) // Cast to boolean
     }
 
     // Update setting store value
@@ -67,7 +66,7 @@ export default function useDatabaseSettings() {
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
-    const primaryListSelection = findSettingValue(SettingKey.PRIMARY_LIST_SELECTION) ?? 'tests'
+    const parentListSelection = findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? 'tests'
     // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PRIMARY_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
@@ -79,7 +78,7 @@ export default function useDatabaseSettings() {
     // ) ?? [Field.PRIMARY_ID]
 
     // Set Quasar dark mode
-    $q.dark.set(!!darkMode) // Cast to boolean
+    Dark.set(!!darkMode) // Cast to boolean
 
     // Set all settings before continuing
     await Promise.all([
@@ -88,7 +87,7 @@ export default function useDatabaseSettings() {
       setSetting(SettingKey.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingKey.SAVE_INFO_MESSAGES, saveInfoMessages),
-      setSetting(SettingKey.PRIMARY_LIST_SELECTION, primaryListSelection),
+      setSetting(SettingKey.PARENT_LIST_SELECTION, parentListSelection),
       // setSetting(SettingKey.FAVORITE_PRIMARY_IDS, favoriteParentIds),
       // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
       // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),

@@ -6,7 +6,7 @@ import SimpleDialog from '@/components/shared/SimpleDialog.vue'
  * Simple customizable dialogs.
  */
 export default function useSimpleDialogs() {
-  const $quasar = useQuasar()
+  const $q = useQuasar()
 
   /**
    * Customizable Quasar dialog (confirm).
@@ -23,21 +23,19 @@ export default function useSimpleDialogs() {
     color: string,
     onOkFunc: () => void
   ): void {
-    $quasar
-      .dialog({
-        component: SimpleDialog,
-        componentProps: {
-          type: 'Confirm',
-          icon,
-          title,
-          message,
-          color,
-          persistent: false,
-        },
-      })
-      .onOk(() => {
-        onOkFunc()
-      })
+    $q.dialog({
+      component: SimpleDialog,
+      componentProps: {
+        type: 'Confirm',
+        icon,
+        title,
+        message,
+        color,
+        persistent: false,
+      },
+    }).onOk(() => {
+      onOkFunc()
+    })
   }
 
   /**
@@ -53,7 +51,7 @@ export default function useSimpleDialogs() {
     icon: Icon = Icon.INFO,
     color: string = 'info'
   ): void {
-    $quasar.dialog({
+    $q.dialog({
       component: SimpleDialog,
       componentProps: {
         type: 'Dismiss',
