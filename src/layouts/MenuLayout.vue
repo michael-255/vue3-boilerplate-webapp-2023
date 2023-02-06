@@ -12,10 +12,9 @@ import {
   QItemSection,
   QIcon,
 } from 'quasar'
-import { AppText, Icon, RouteName, TableName } from '@/constants/globals'
+import { AppText, Icon, RouteName } from '@/constants/globals'
 import { useRoute } from 'vue-router'
 import useUIStore from '@/stores/ui'
-import { slugify } from '@/utils/common'
 
 const mainMenuStore = useUIStore()
 const route = useRoute()
@@ -56,11 +55,11 @@ const route = useRoute()
           <QItemSection>Dashboard</QItemSection>
         </QItem>
 
-        <QItem clickable v-ripple :to="{ name: RouteName.TABLES }">
+        <QItem clickable v-ripple :to="{ name: RouteName.OPTIONS }">
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.TABLE" />
+            <QIcon color="primary" :name="Icon.OPTIONS" />
           </QItemSection>
-          <QItemSection>Tables</QItemSection>
+          <QItemSection>Options</QItemSection>
         </QItem>
 
         <QSeparator spaced="md" inset />
@@ -83,7 +82,22 @@ const route = useRoute()
 
     <!-- Router View -->
     <QPageContainer>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" :key="$route.path" />
+        </transition>
+      </router-view>
     </QPageContainer>
   </QLayout>
 </template>
+
+<style lang="css">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

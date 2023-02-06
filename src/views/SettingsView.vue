@@ -55,7 +55,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.INFO" banner-title="About">
+  <ResponsivePage :banner-icon="Icon.SETTINGS" banner-title="Settings">
     <!-- Options -->
     <QCard flat class="q-mb-sm">
       <QCardSection>

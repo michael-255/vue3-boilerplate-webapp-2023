@@ -8,15 +8,19 @@ import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 const primaryTables = [TableName.EXAMPLES, TableName.TESTS]
 const recordTables = [TableName.EXAMPLE_RECORDS, TableName.TEST_RECORDS]
 
+const informationText = `Here you can access the relevant data tables for more advanced actions, create new database
+items, and view reports on your Primary items.`
 const primaryActionsText = `Define the name, description, status, and other information about the Primary item.`
 const recordActionsText = `Define the fields that hold the data that the Primary item expects it to store.
 The relationship is one Primary item to many Record items.`
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.TABLE" banner-title="Tables">
+  <ResponsivePage :banner-icon="Icon.OPTIONS" banner-title="Options">
     <QCard flat class="q-mb-sm">
       <QCardSection>
+        <div class="text-h6 q-mb-md">Information</div>
+        <div class="q-mb-md">{{ informationText }}</div>
         <div class="text-h6 q-mb-md">Primary Items</div>
         <div class="q-mb-md">{{ primaryActionsText }}</div>
         <div class="text-h6 q-mb-md">Record Items</div>
