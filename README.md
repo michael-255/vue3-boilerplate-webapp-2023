@@ -52,8 +52,8 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] Update `base` in `~/vite.config.ts` to your repository name for deployments to work
   - [ ] Update `AppText` enums in `~/src/constants/ui/string-enums.ts` to represent your app
   - [ ] Update `title` in `~/index.html` to reflect the app name you use in `ui-enums.ts`
-  - [ ] Update `name` and `short_name` in `~/public/site.webmanifest` the app name
-  - [ ] Update `start_url` in `~/public/site.webmanifest` to deployed website address (home)
+  - [ ] Update `name` and `short_name` in `~/public/manifest.json` the app name
+  - [ ] Update `start_url` in `~/public/manifest.json` to deployed website address (home)
 
 - [ ] Update `GitHub` repository settings
 
@@ -178,7 +178,7 @@ Details on the steps I took to setup this project.
    - `.prettierignore`
    - `.prettier.json`
 1. Add icons, manifest file, and update `index.html` for the project:
-   - `site.webmanifest`
+   - `manifest.json`
    - `favicon.ico`
    - (other icons)
    - ```html
@@ -186,7 +186,7 @@ Details on the steps I took to setup this project.
      <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
      <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
      <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-     <link rel="manifest" href="site.webmanifest" />
+     <link rel="manifest" href="manifest.json" />
      <title>Vue 3 Web App Template</title>
      ```
 1. Run `git init` inside your project directory
