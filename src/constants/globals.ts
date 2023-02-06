@@ -35,14 +35,15 @@ export enum Icon {
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
   IMAGES = 'image',
-  OPTIONS = 'tune',
   REPORTS = 'timeline',
-  RECORDS = 'dataset',
+  RECORDS = 'storage',
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
   // Misc
+  HELP = 'help',
   LIST = 'view_list',
   TABLE = 'table_chart',
+  OPTIONS = 'tune',
   RECOMMEND = 'recommend',
   REMINDER = 'notifications_active',
   STOPWATCH = 'timer',
@@ -155,14 +156,12 @@ export enum SettingKey {
 export enum RouteName {
   DASHBOARD = 'Dashboard',
   SETTINGS = 'Settings',
+  FAQ = 'FAQ',
   ABOUT = 'About',
   NOT_FOUND = 'NotFound',
-  OPTIONS = 'Options',
   DATA = 'Data',
   ACTION = 'Action',
   REPORT = 'Report',
-  EXAMPLES = 'Examples',
-  TESTS = 'Tests',
 }
 
 /**

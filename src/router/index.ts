@@ -11,15 +11,9 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/options', // Main table page with core Primary and Record table options
-      name: RouteName.OPTIONS,
-      meta: { layout: 'MenuLayout' },
-      component: () => import('../views/OptionsView.vue'),
-    },
-    {
       path: '/data/:tableSlug', // Data table
       name: RouteName.DATA,
-      meta: { layout: 'DataTableLayout' },
+      meta: { layout: 'MenuLayout' },
       component: () => import('../views/DataView.vue'),
     },
     {
@@ -39,6 +33,12 @@ const router = createRouter({
       name: RouteName.SETTINGS,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/SettingsView.vue'),
+    },
+    {
+      path: '/faq',
+      name: RouteName.FAQ,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/FAQView.vue'),
     },
     {
       path: '/about',

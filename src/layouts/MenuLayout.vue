@@ -12,12 +12,14 @@ import {
   QItemSection,
   QIcon,
 } from 'quasar'
-import { AppText, Icon, RouteName } from '@/constants/globals'
-import { useRoute } from 'vue-router'
+import { AppText, Icon, RouteName, TableName } from '@/constants/globals'
+import { RouterView, useRoute, useRouter } from 'vue-router'
+import { slugify } from '@/utils/common'
 import useUIStore from '@/stores/ui'
 
 const mainMenuStore = useUIStore()
 const route = useRoute()
+const router = useRouter()
 </script>
 
 <template>
@@ -33,14 +35,14 @@ const route = useRoute()
           v-if="route.name !== RouteName.DASHBOARD"
           flat
           round
-          :to="{ name: RouteName.DASHBOARD }"
           :icon="Icon.BACK"
+          @click="router.go(-1)"
         />
       </QToolbar>
     </QHeader>
 
     <!-- Menu Drawer -->
-    <QDrawer v-model="mainMenuStore.drawer" :width="220" overlay show-if-above side="left">
+    <QDrawer v-model="mainMenuStore.drawer" :width="250" overlay show-if-above bordered side="left">
       <div class="row justify-center">
         <QAvatar outline size="100px" class="q-my-md">
           <img src="@/assets/menu-avatar.png" />
@@ -55,11 +57,49 @@ const route = useRoute()
           <QItemSection>Dashboard</QItemSection>
         </QItem>
 
-        <QItem clickable v-ripple :to="{ name: RouteName.OPTIONS }">
+        <QSeparator spaced="md" inset />
+
+        <QItem
+          clickable
+          v-ripple
+          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.EXAMPLES) } }"
+        >
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.OPTIONS" />
+            <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
-          <QItemSection>Options</QItemSection>
+          <QItemSection>Examples</QItemSection>
+          <QItemSection side>
+            <QBtn
+              flat
+              class="q-px-sm"
+              color="white"
+              :to="{
+                name: RouteName.DATA,
+                params: { tableSlug: slugify(TableName.EXAMPLE_RECORDS) },
+              }"
+              :icon="Icon.RECORDS"
+            />
+          </QItemSection>
+        </QItem>
+
+        <QItem
+          clickable
+          v-ripple
+          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.TESTS) } }"
+        >
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.TESTS" />
+          </QItemSection>
+          <QItemSection>Tests</QItemSection>
+          <QItemSection side>
+            <QBtn
+              flat
+              class="q-px-sm"
+              color="white"
+              :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.TEST_RECORDS) } }"
+              :icon="Icon.RECORDS"
+            />
+          </QItemSection>
         </QItem>
 
         <QSeparator spaced="md" inset />
@@ -69,6 +109,13 @@ const route = useRoute()
             <QIcon color="primary" :name="Icon.SETTINGS" />
           </QItemSection>
           <QItemSection>Settings</QItemSection>
+        </QItem>
+
+        <QItem clickable v-ripple :to="{ name: RouteName.FAQ }">
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.HELP" />
+          </QItemSection>
+          <QItemSection>FAQ</QItemSection>
         </QItem>
 
         <QItem clickable v-ripple :to="{ name: RouteName.ABOUT }">
@@ -82,11 +129,11 @@ const route = useRoute()
 
     <!-- Router View -->
     <QPageContainer>
-      <router-view v-slot="{ Component }">
+      <RouterView v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
-          <component :is="Component" :key="$route.path" />
+          <component :is="Component" :key="route.path" />
         </transition>
-      </router-view>
+      </RouterView>
     </QPageContainer>
   </QLayout>
 </template>
@@ -94,7 +141,7 @@ const route = useRoute()
 <style lang="css">
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s;
+  transition: opacity 0.2s;
 }
 .fade-enter-from,
 .fade-leave-to {

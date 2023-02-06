@@ -2,12 +2,13 @@
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
 import useDatabaseSettings from '@/use/useDatabaseSettings'
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/use/useLogger'
 
 const { log } = useLogger()
 const route = useRoute()
 const { initializeSettings } = useDatabaseSettings()
+
 const layout: Ref<any> = ref(null)
 
 onMounted(async () => {
@@ -26,9 +27,9 @@ watch(
       // markRaw to avoid reactivity on component definition
       // default is the component
       // Use the default layout if the component is missing
-      layout.value = markRaw(component?.default || DefaultLayout)
+      layout.value = markRaw(component?.default || ErrorLayout)
     } catch (error) {
-      layout.value = markRaw(DefaultLayout)
+      layout.value = markRaw(ErrorLayout)
       log.error('Error with route layout watcher', error)
     }
   },

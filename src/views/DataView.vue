@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { Icon, RouteName } from '@/constants/globals'
 import { ref } from 'vue'
 
 const selected = ref([])
@@ -139,14 +138,6 @@ const rows = [
           <QIcon name="search" />
         </template>
       </QInput>
-
-      <QBtn
-        round
-        color="primary"
-        class="absolute-top-right q-ma-md"
-        :to="{ name: RouteName.DASHBOARD }"
-        :icon="Icon.CLOSE"
-      />
     </template>
   </QTable>
 </template>
