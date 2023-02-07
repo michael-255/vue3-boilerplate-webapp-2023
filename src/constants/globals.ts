@@ -40,7 +40,7 @@ export enum Icon {
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
   // Misc
-  HELP = 'help',
+  HELP = 'help_center',
   LIST = 'view_list',
   TABLE = 'table_chart',
   OPTIONS = 'tune',

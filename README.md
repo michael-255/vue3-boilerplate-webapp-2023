@@ -5,35 +5,27 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] Do NOT allow IDs to be created with custom text (Should always be a UUID)
+- [ ] `Data Tables` Try using `table-style` and/or `table-class` to stretch the tables vertically
+
 - [ ] Have the List View display the Example Parents
-- [ ] List View items should have input(s) and a save button
 
-  - [ ] Maybe the save button could be hidden until the input has something in it?
+  - [ ] List View items should have input(s) and a save button (maybe edit, delete, and more?)
 
-- [ ] Help or (i): Open a dialog that explains the parts of the page
+  - [ ] Hide/disable save button until the input has a value
 
-- Consider using other Quasar plugins (Loading, Meta, etc.)
-- Changes to how you view data:
-  - Have Settings page button in the top right of header bar again
-  - Move `Settings`, `Logs`, and `Images` table views into Settings page
-  - `Measurements` link in Menu
-    - Options to record a measurement:
-      - `Miscellaneous`
-      - `BMI`
-      - `Body`
-      - `Heart`
-      - `Pain`
-      - `Athletics`
-    - Option to `Create New Measurement`
-    - Option to `View Measurement Charts`
-    - Option to `View Measurements`
-    - Option to `View Measurement Records`
-  - `Exercises` link in Menu
-    - Option to `Create New Exercise`
-    - Option to `View Exercise Charts`
-    - Option to `View Exercises`
-    - Option to `View Exercise Records`
+- [ ] Do NOT allow IDs to be created with custom text (Should be UID with few exceptions, Images?)
+
+- [ ] `Quasar`
+
+  - [ ] Replace Luxon with Quasar Date Utils (test utils first!)
+
+  - [ ] Quasar Icon Genie CLI to generate a more complete icon list
+
+  - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
+
+  - [ ] Use Quasar Loading plugin when waiting on data tables
+
+  - [ ] Use Quasar Meta plugin to improve SEO
 
 ## Post Cloning Steps (Remove after completion)
 
