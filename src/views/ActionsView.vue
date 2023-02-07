@@ -4,5 +4,5 @@ import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.REFRESH" banner-title="Actions" />
+  <ResponsivePage :banner-icon="Icon.EDIT" banner-title="Actions" />
 </template>

@@ -141,7 +141,7 @@ const router = useRouter()
 <style lang="css">
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s;
+  transition: opacity 0.15s;
 }
 .fade-enter-from,
 .fade-leave-to {

@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] Scroll to top smoothly
 - [ ] Do NOT allow IDs to be created with custom text (Should always be a UUID)
 - [ ] Have the List View display the Example Parents
 - [ ] List View items should have input(s) and a save button

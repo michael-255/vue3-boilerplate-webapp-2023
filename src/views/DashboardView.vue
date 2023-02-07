@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn } from 'quasar'
-import { Icon, SettingKey } from '@/constants/globals'
+import { Icon, SettingKey, RouteName, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
 import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/shared/ResponsivePage.vue'
@@ -33,6 +33,32 @@ const groupOptions = [
           <div>- What type of site this is (static, no login, you control your data)</div>
           <div>- Where certain pages are and how to get to them</div>
           <div>- How to favorite things</div>
+        </div>
+
+        <!-- TODO - TEMP - For Testing -->
+        <div class="q-mb-md">
+          <QBtn
+            label="Actions"
+            :icon="Icon.EDIT"
+            color="warning"
+            :to="{
+              name: RouteName.ACTIONS,
+              params: { tableSlug: 'examples', actionSlug: 'create' },
+            }"
+          />
+        </div>
+
+        <!-- TODO - TEMP - For Testing -->
+        <div class="q-mb-md">
+          <QBtn
+            label="Charts"
+            :icon="Icon.CHARTS"
+            color="accent"
+            :to="{
+              name: RouteName.CHARTS,
+              params: { tableSlug: 'examples', id: 'test-123' },
+            }"
+          />
         </div>
 
         <QBtn

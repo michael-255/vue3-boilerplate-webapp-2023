@@ -17,16 +17,16 @@ const router = createRouter({
       component: () => import('../views/DataView.vue'),
     },
     {
-      path: '/action/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect, etc.)
-      name: RouteName.ACTION,
+      path: '/actions/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect, etc.)
+      name: RouteName.ACTIONS,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ActionView.vue'),
+      component: () => import('../views/ActionsView.vue'),
     },
     {
-      path: '/report/:tableSlug/:id?', // Reports for id on tables
-      name: RouteName.REPORT,
+      path: '/charts/:tableSlug/:id?', // Charts for id on tables
+      name: RouteName.CHARTS,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ReportView.vue'),
+      component: () => import('../views/ChartsView.vue'),
     },
     {
       path: '/settings',

@@ -35,7 +35,7 @@ export enum Icon {
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
   IMAGES = 'image',
-  REPORTS = 'timeline',
+  CHARTS = 'bar_chart',
   RECORDS = 'storage',
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
@@ -161,8 +161,8 @@ export enum RouteName {
   ABOUT = 'About',
   NOT_FOUND = 'NotFound',
   DATA = 'Data',
-  ACTION = 'Action',
-  REPORT = 'Report',
+  ACTIONS = 'Actions',
+  CHARTS = 'Charts',
 }
 
 /**
