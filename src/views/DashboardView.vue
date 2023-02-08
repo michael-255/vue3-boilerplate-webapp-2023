@@ -98,7 +98,7 @@ const groupOptions = [
       <QCardSection>
         <div class="text-h6 q-mb-md">Example List Card</div>
 
-        <div class="q-mb-md">Example description goes here?</div>
+        <div class="q-mb-md">Example description goes here.</div>
 
         <div class="q-mb-none">
           <QBadge rounded color="secondary" class="q-py-none">
@@ -108,17 +108,13 @@ const groupOptions = [
         </div>
 
         <div class="q-mb-none">
-          <QBadge rounded color="secondary" class="q-py-none">
-            <QIcon :name="Icon.CALENDAR_CHECK" class="q-mr-xs" />
-            <span class="text-caption">{{ new Date().toDateString() }}</span>
-          </QBadge>
+          <QIcon :name="Icon.CALENDAR_CHECK" class="q-mr-xs q-pb-xs" />
+          <span class="text-caption">{{ new Date().toDateString() }}</span>
         </div>
 
         <div>
-          <QBadge rounded color="secondary" class="q-py-none">
-            <QIcon :name="Icon.STOPWATCH" class="q-mr-xs" />
-            <span class="text-caption">1h 23m 15s</span>
-          </QBadge>
+          <QIcon :name="Icon.STOPWATCH" class="q-mr-xs q-pb-xs" />
+          <span class="text-caption">1h 23m 15s</span>
         </div>
 
         <div class="absolute-top-right q-ma-xs">
@@ -167,6 +163,35 @@ const groupOptions = [
               </QList>
             </QMenu>
           </QBtn>
+        </div>
+      </QCardSection>
+    </QCard>
+
+    <QCard class="q-mb-md">
+      <QCardSection>
+        <div class="text-h6 q-mb-md">Example List Card</div>
+
+        <div class="q-mb-md">Example description goes here.</div>
+
+        <div class="q-mb-none">
+          <QBadge rounded color="secondary" class="q-py-none">
+            <QIcon :name="Icon.PREVIOUS" class="q-mr-xs" />
+            <span class="text-caption">No previous records</span>
+          </QBadge>
+        </div>
+
+        <div class="absolute-top-right q-ma-xs">
+          <QRating
+            v-model="rating"
+            :max="1"
+            :icon="Icon.FAVORITE_OFF"
+            :icon-selected="Icon.FAVORITE_ON"
+            color="warning"
+            size="md"
+            class="q-mr-xs"
+          />
+
+          <QBtn round flat :icon="Icon.MENU_VERTICAL" />
         </div>
       </QCardSection>
     </QCard>
