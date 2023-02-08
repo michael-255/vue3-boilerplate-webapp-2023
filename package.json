@@ -2,7 +2,7 @@
   "name": "vue3-web-app-template-2023",
   "description": "Vue 3 Typescript Web App Template to jump start development.",
   "author": "Michael Joy",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "deploy": "npm run build && cd dist && cp index.html 404.html && cd .. && gh-pages -d dist -m Deployment"
+    "deploy:gh-pages": "npm run build && npm version patch && cd dist && cp index.html 404.html && cd .. && gh-pages -d dist -m Deployment"
   },
   "dependencies": {
     "@quasar/extras": "^1.15.10",
