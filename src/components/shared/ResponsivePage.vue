@@ -13,7 +13,7 @@ defineProps<{
     <div class="row justify-center">
       <div class="col-md-6 col-xs-12">
         <!-- Optional Banner -->
-        <QCard v-if="bannerIcon && bannerTitle" flat class="q-mb-sm">
+        <QCard v-if="bannerIcon && bannerTitle" class="q-mb-md">
           <QCardSection class="text-h5">
             <QIcon class="q-pb-xs q-pr-xs" :name="bannerIcon" />
             {{ bannerTitle }}

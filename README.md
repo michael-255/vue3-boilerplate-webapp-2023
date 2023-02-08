@@ -13,8 +13,6 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] Hide/disable save button until the input has a value
 
-- [ ] Do NOT allow IDs to be created with custom text (Should be UID with few exceptions, Images?)
-
 - [ ] `Quasar`
 
   - [ ] Replace Luxon with Quasar Date Utils (test utils first!)

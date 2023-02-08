@@ -14,7 +14,7 @@ export interface IDBItem {
 }
 
 export interface IDBParent extends IDBItem {
-  [Field.PRIMARY_STATUS]: PrimaryStatus
+  [Field.PARENT_STATUS]: PrimaryStatus
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
   [Field.FAVORITE]: boolean
@@ -22,7 +22,7 @@ export interface IDBParent extends IDBItem {
 
 export interface IDBRecord extends IDBItem {
   [Field.RECORD_STATUS]: RecordStatus
-  [Field.PRIMARY_ID]: string
+  [Field.PARENT_ID]: string
   [Field.NOTE]: string
 }
 

@@ -67,7 +67,7 @@ export default function useDatabaseSettings() {
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
     const parentListSelection = findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? 'tests'
-    // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PRIMARY_IDS) ?? []
+    // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
     // const parentsTableVisibleColumns = findSettingValue(
@@ -75,7 +75,7 @@ export default function useDatabaseSettings() {
     // ) ?? [Field.NAME]
     // const recordsTableVisibleColumns = findSettingValue(
     //   SettingKey.RECORDS_TABLE_VISIBLE_COLUMNS
-    // ) ?? [Field.PRIMARY_ID]
+    // ) ?? [Field.PARENT_ID]
 
     // Set Quasar dark mode
     Dark.set(!!darkMode) // Cast to boolean
@@ -88,7 +88,7 @@ export default function useDatabaseSettings() {
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingKey.SAVE_INFO_MESSAGES, saveInfoMessages),
       setSetting(SettingKey.PARENT_LIST_SELECTION, parentListSelection),
-      // setSetting(SettingKey.FAVORITE_PRIMARY_IDS, favoriteParentIds),
+      // setSetting(SettingKey.FAVORITE_PARENT_IDS, favoriteParentIds),
       // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
       // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),
       // setSetting(SettingKey.PARENTS_TABLE_VISIBLE_COLUMNS, parentsTableVisibleColumns),

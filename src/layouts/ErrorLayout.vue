@@ -6,7 +6,7 @@ import { AppText } from '@/constants/globals'
 
 <template>
   <QLayout view="hHh LpR lff">
-    <QHeader flat bordered>
+    <QHeader elevated>
       <QToolbar>
         <QToolbarTitle>{{ AppText.APP_NAME }}</QToolbarTitle>
       </QToolbar>

@@ -5,7 +5,7 @@ import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 
 <template>
   <ResponsivePage>
-    <QCard flat>
+    <QCard>
       <QCardSection class="bg-negative text-white">
         <div class="text-h3">404</div>
         <div class="text-subtitle1">Page Not Found</div>

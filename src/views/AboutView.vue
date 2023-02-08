@@ -9,7 +9,7 @@ publicly available using the MIT License.`
 
 <template>
   <ResponsivePage :banner-icon="Icon.INFO" banner-title="About">
-    <QCard flat>
+    <QCard>
       <QCardSection class="q-pb-xs">{{ aboutMessage }}</QCardSection>
 
       <QCardSection>

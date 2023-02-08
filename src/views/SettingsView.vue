@@ -57,7 +57,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
 <template>
   <ResponsivePage :banner-icon="Icon.SETTINGS" banner-title="Settings">
     <!-- Options -->
-    <QCard flat class="q-mb-sm">
+    <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">Options</div>
 
@@ -71,7 +71,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
     </QCard>
 
     <!-- Defaults -->
-    <QCard flat class="q-mb-sm">
+    <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">Defaults</div>
 
@@ -82,7 +82,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
     </QCard>
 
     <!-- Data Management -->
-    <QCard flat class="q-mb-sm">
+    <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">Data Management</div>
 
@@ -129,7 +129,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
     </QCard>
 
     <!-- Logging -->
-    <QCard flat class="q-mb-sm">
+    <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">Logging</div>
 
@@ -150,7 +150,7 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
     </QCard>
 
     <!-- DANGER ZONE -->
-    <QCard flat>
+    <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 text-negative q-mb-md">DANGER ZONE</div>
         <div class="q-mb-md">{{ dangerZoneText }}</div>

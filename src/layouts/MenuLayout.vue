@@ -25,9 +25,14 @@ const router = useRouter()
 <template>
   <QLayout view="hHh LpR lff">
     <!-- App Header -->
-    <QHeader flat bordered>
+    <QHeader elevated>
       <QToolbar>
-        <QBtn flat round :icon="Icon.MENU" @click="mainMenuStore.drawer = !mainMenuStore.drawer" />
+        <QBtn
+          flat
+          round
+          :icon="Icon.MENU_STANDARD"
+          @click="mainMenuStore.drawer = !mainMenuStore.drawer"
+        />
 
         <QToolbarTitle>{{ AppText.APP_NAME }}</QToolbarTitle>
 
@@ -72,7 +77,6 @@ const router = useRouter()
             <QBtn
               flat
               class="q-px-sm"
-              color="white"
               :to="{
                 name: RouteName.DATA,
                 params: { tableSlug: slugify(TableName.EXAMPLE_RECORDS) },
@@ -95,7 +99,6 @@ const router = useRouter()
             <QBtn
               flat
               class="q-px-sm"
-              color="white"
               :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.TEST_RECORDS) } }"
               :icon="Icon.RECORDS"
             />

@@ -106,6 +106,7 @@ const rows = [
 <template>
   <QTable
     flat
+    square
     title="Treats"
     selection="single"
     v-model:selected="selected"

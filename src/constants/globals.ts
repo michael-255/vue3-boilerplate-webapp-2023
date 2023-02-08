@@ -27,7 +27,7 @@ export enum Icon {
   ADD = 'add',
   REMOVE = 'remove',
   EDIT = 'edit',
-  INSPECT = 'summarize',
+  INSPECT = 'manage_search',
   DELETE = 'delete',
   CREATE = 'add_circle',
   // Pages
@@ -40,6 +40,7 @@ export enum Icon {
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
   // Misc
+  DESCRIPTION = 'description',
   HELP = 'help_center',
   LIST = 'view_list',
   TABLE = 'table_chart',
@@ -54,11 +55,14 @@ export enum Icon {
   EXIT = 'exit_to_app',
   BACK = 'arrow_back',
   REFRESH = 'refresh',
+  PREVIOUS = 'undo',
   CODE = 'code',
   WEB = 'language',
-  MENU = 'menu',
-  MENU_VERT = 'more_vert',
+  MENU_STANDARD = 'menu',
+  MENU_VERTICAL = 'more_vert',
   TOP_OF_PAGE = 'keyboard_arrow_up',
+  FAVORITE_ON = 'star',
+  FAVORITE_OFF = 'star_border',
 }
 
 /**
@@ -90,16 +94,16 @@ export enum Field {
   // Entity
   ID = 'id',
   CREATED_TIMESTAMP = 'createdTimestamp',
-  // Primary
-  PRIMARY_STATUS = 'primaryStatus',
+  // Parent
+  PARENT_STATUS = 'parentStatus',
   NAME = 'name',
   DESCRIPTION = 'description',
   FAVORITE = 'favorite',
   // Record
   RECORD_STATUS = 'recordStatus',
-  PRIMARY_ID = 'primaryId',
+  PARENT_ID = 'parentId',
   NOTE = 'note',
-  // Example & Test Primary
+  // Example & Test Parent
   TEST_MESSAGE = 'testMessage',
   // Example & Test Record
   TEST_NUMBER = 'testNumber',
@@ -108,6 +112,7 @@ export enum Field {
 export enum PrimaryStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
+  ARCHIVED = 'Archived', // Reserving, but have no use for this yet
 }
 
 export enum RecordStatus {
