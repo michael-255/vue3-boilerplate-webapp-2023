@@ -1,8 +1,8 @@
 import { ActionName, TableName, Icon } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 
-export default function useTableHelper() {
-  function getTableNameFromSlug(tableSlug: string): TableName {
+export const TableHelper = {
+  getTableNameFromSlug(tableSlug: string): TableName {
     return {
       [slugify(TableName.SETTINGS)]: TableName.SETTINGS,
       [slugify(TableName.LOGS)]: TableName.LOGS,
@@ -11,9 +11,9 @@ export default function useTableHelper() {
       [slugify(TableName.TESTS)]: TableName.TESTS,
       [slugify(TableName.TEST_RECORDS)]: TableName.TEST_RECORDS,
     }[tableSlug]
-  }
+  },
 
-  function getActionNameFromSlug(actionSlug: string): ActionName {
+  getActionNameFromSlug(actionSlug: string): ActionName {
     return {
       [slugify(ActionName.NONE)]: ActionName.NONE,
       [slugify(ActionName.CREATE)]: ActionName.CREATE,
@@ -23,9 +23,9 @@ export default function useTableHelper() {
       [slugify(ActionName.CLEAR)]: ActionName.CLEAR,
       [slugify(ActionName.REPORT)]: ActionName.REPORT,
     }[actionSlug]
-  }
+  },
 
-  function getIconFromTableName(tableName: TableName): Icon {
+  getIconFromTableName(tableName: TableName): Icon {
     return {
       [TableName.SETTINGS]: Icon.SETTINGS,
       [TableName.LOGS]: Icon.LOGS,
@@ -34,7 +34,5 @@ export default function useTableHelper() {
       [TableName.TESTS]: Icon.TESTS,
       [TableName.TEST_RECORDS]: Icon.RECORDS,
     }[tableName]
-  }
-
-  return { getTableNameFromSlug, getActionNameFromSlug, getIconFromTableName }
+  },
 }

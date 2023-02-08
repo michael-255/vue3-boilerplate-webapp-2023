@@ -25,6 +25,11 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] Use Quasar Meta plugin to improve SEO
 
+- [ ] `Text Pass` Review app text for good flow and grammer
+
+- [ ] `Add Tests`
+      <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
+
 ## Post Cloning Steps (Remove after completion)
 
 - [ ] Update `package.json`
