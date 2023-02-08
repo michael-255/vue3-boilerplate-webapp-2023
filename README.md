@@ -5,6 +5,14 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- [ ] `Mocks and Styling`
+
+  - [ ] `FAQ Page`
+
+  - [ ] `Data Table Pages`
+
+  - [ ] `Test Data` Example/Test item generators (Defaults)
+
 - [ ] `Data Tables` Try using `table-style` and/or `table-class` to stretch the tables vertically
 
 - [ ] Have the List View display the Example Parents
@@ -25,7 +33,9 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] Use Quasar Meta plugin to improve SEO
 
-- [ ] `Text Pass` Review app text for good flow and grammer
+- [ ] Script to quickly updates certain values across the app
+
+- [ ] `Text/Copy Pass` Review app text for good flow and grammer
 
 - [ ] `Add Tests`
       <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
