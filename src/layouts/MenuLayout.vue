@@ -20,6 +20,17 @@ import useUIStore from '@/stores/ui'
 const mainMenuStore = useUIStore()
 const route = useRoute()
 const router = useRouter()
+
+/**
+ * Go back if pervious state is part of the app history, otherwise go to Dashboard.
+ */
+function goBack(): void {
+  if (router.options.history.state.back) {
+    router.back()
+  } else {
+    router.push({ name: RouteName.DASHBOARD })
+  }
+}
 </script>
 
 <template>
@@ -41,7 +52,7 @@ const router = useRouter()
           flat
           round
           :icon="Icon.BACK"
-          @click="router.go(-1)"
+          @click="goBack()"
         />
       </QToolbar>
     </QHeader>
