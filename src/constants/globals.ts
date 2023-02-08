@@ -34,7 +34,6 @@ export enum Icon {
   DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
-  IMAGES = 'image',
   CHARTS = 'bar_chart',
   RECORDS = 'storage',
   EXAMPLES = 'smart_toy',
@@ -89,8 +88,6 @@ export enum Field {
   SEVERITY = 'severity',
   LABEL = 'label',
   DETAILS = 'details',
-  // Image
-  IMAGE = 'image',
   // Entity
   ID = 'id',
   CREATED_TIMESTAMP = 'createdTimestamp',
@@ -190,7 +187,6 @@ export enum WebURL {
 export enum TableName {
   SETTINGS = 'Settings',
   LOGS = 'Logs',
-  IMAGES = 'Images',
   EXAMPLES = 'Examples',
   EXAMPLE_RECORDS = 'Example Records',
   TESTS = 'Tests',

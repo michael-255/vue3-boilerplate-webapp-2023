@@ -6,7 +6,6 @@ export default function useTableHelper() {
     return {
       [slugify(TableName.SETTINGS)]: TableName.SETTINGS,
       [slugify(TableName.LOGS)]: TableName.LOGS,
-      [slugify(TableName.IMAGES)]: TableName.IMAGES,
       [slugify(TableName.EXAMPLES)]: TableName.EXAMPLES,
       [slugify(TableName.EXAMPLE_RECORDS)]: TableName.EXAMPLE_RECORDS,
       [slugify(TableName.TESTS)]: TableName.TESTS,
@@ -30,7 +29,6 @@ export default function useTableHelper() {
     return {
       [TableName.SETTINGS]: Icon.SETTINGS,
       [TableName.LOGS]: Icon.LOGS,
-      [TableName.IMAGES]: Icon.IMAGES,
       [TableName.EXAMPLES]: Icon.EXAMPLES,
       [TableName.EXAMPLE_RECORDS]: Icon.RECORDS,
       [TableName.TESTS]: Icon.TESTS,

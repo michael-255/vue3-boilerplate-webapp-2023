@@ -38,7 +38,3 @@ export interface IDBSetting {
   [Field.KEY]: SettingKey
   [Field.VALUE]: SettingValue
 }
-
-export interface IDBImage extends IDBItem {
-  [Field.IMAGE]: string // TODO - base64 image or blob?
-}
