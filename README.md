@@ -13,6 +13,8 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] `Test Data` Example/Test item generators (Defaults)
 
+  - [ ] `Data Table Menu Layout` Should NOT be of style "overlay"
+
 - [ ] `Data Tables` Try using `table-style` and/or `table-class` to stretch the tables vertically
 
 - [ ] Have the List View display the Example Parents
