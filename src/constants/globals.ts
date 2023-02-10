@@ -107,10 +107,10 @@ export enum Field {
   TEST_NUMBER = 'testNumber',
 }
 
-export enum PrimaryStatus {
+export enum ParentStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
-  ARCHIVED = 'Archived', // Reserving, but have no use for this yet
+  // ARCHIVED = 'Archived', // Reserving, but have no use for this yet
 }
 
 export enum RecordStatus {

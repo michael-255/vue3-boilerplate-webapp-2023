@@ -5,7 +5,7 @@
  * the app (like Settings and Logs).
  */
 
-import type { Field, PrimaryStatus, RecordStatus, Severity, SettingKey } from '@/constants/globals'
+import type { Field, ParentStatus, RecordStatus, Severity, SettingKey } from '@/constants/globals'
 import type { AppObject, SettingValue } from '@/constants/types'
 
 export interface IDBItem {
@@ -14,7 +14,7 @@ export interface IDBItem {
 }
 
 export interface IDBParent extends IDBItem {
-  [Field.PARENT_STATUS]: PrimaryStatus
+  [Field.PARENT_STATUS]: ParentStatus
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
   [Field.FAVORITE]: boolean

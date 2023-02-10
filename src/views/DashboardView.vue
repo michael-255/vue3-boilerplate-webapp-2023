@@ -7,7 +7,7 @@ import ResponsivePage from '@/components/shared/ResponsivePage.vue'
 import { ref } from 'vue'
 
 const settingsStore = useSettingsStore()
-const { parentListSelection, onCloseIntroduction } = useDashboard()
+const { parentListSelection, onCloseIntroduction, generateData } = useDashboard()
 
 const rating = ref(0)
 
@@ -67,6 +67,11 @@ const groupOptions = [
               params: { tableSlug: 'examples', id: 'test-123' },
             }"
           />
+        </div>
+
+        <!-- TODO - TEMP - For Testing -->
+        <div class="q-mb-md">
+          <QBtn label="Generate Data" :icon="Icon.CREATE" color="primary" @click="generateData()" />
         </div>
 
         <div class="row justify-center">
