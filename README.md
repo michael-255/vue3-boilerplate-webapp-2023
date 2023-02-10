@@ -5,19 +5,21 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- [ ] `Low Hanging Fruit`
+
+  - [ ] `Test Data` Example/Test item generators (Defaults)
+
+  - [ ] `TableHelper` Move functions from others apps into this one
+
 - [ ] `Mocks and Styling`
 
   - [ ] `FAQ Page`
 
+  - [ ] `Donate Page`
+
   - [ ] `Data Table Pages`
 
-  - [ ] `Test Data` Example/Test item generators (Defaults)
-
-  - [ ] `Data Table Menu Layout` Should NOT be of style "overlay"
-
-- [ ] `Data Tables` Try using `table-style` and/or `table-class` to stretch the tables vertically
-
-- [ ] Have the List View display the Example Parents
+- [ ] `Dashboard List View`
 
   - [ ] List View items should have input(s) and a save button (maybe edit, delete, and more?)
 
@@ -35,12 +37,16 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] Use Quasar Meta plugin to improve SEO
 
-- [ ] Script to quickly updates certain values across the app
+- [ ] `Possible Features & Updates`
 
-- [ ] `Text/Copy Pass` Review app text for good flow and grammer
+  - [ ] Script to quickly updates certain values across the app
 
-- [ ] `Add Tests`
-      <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
+- [ ] `Final Steps`
+
+  - [ ] `Text/Copy Pass` Review app text for good flow and grammer
+
+  - [ ] `Add Tests`
+        <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
 
 ## Post Cloning Steps (Remove after completion)
 
