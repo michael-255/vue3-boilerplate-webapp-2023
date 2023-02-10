@@ -10,9 +10,9 @@ publicly available using the MIT License.`
 <template>
   <ResponsivePage :banner-icon="Icon.INFO" banner-title="About">
     <QCard>
-      <QCardSection class="q-pb-xs">{{ aboutMessage }}</QCardSection>
+      <QCardSection>{{ aboutMessage }}</QCardSection>
 
-      <QCardSection>
+      <QCardSection class="q-pt-xs">
         <div class="row q-col-gutter-md justify-start">
           <div class="col-sm-6 col-xs-12">
             <QBtn
