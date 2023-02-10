@@ -1,12 +1,9 @@
 import type { IndexableType } from 'dexie'
 import type { TableName, SettingKey } from '@/constants/globals'
+import type { AnyModel } from '@/constants/types'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import type { IDBLog, IDBSetting } from '@/models/core'
-import type { IDBExample, IDBExampleRecord, IDBTest, IDBTestRecord } from '@/models/app'
 
-type AnyModel = IDBSetting | IDBLog | IDBExample | IDBExampleRecord | IDBTest | IDBTestRecord
-
-export default function useDatabaseShared() {
+export default function useDBCommon() {
   /**
    * Gets all data from a table.
    * @returns Database table data as an array
@@ -16,12 +13,12 @@ export default function useDatabaseShared() {
   }
 
   /**
-   * Import items into the defined table. Do NOT mismatch tables and item types!
+   * Bulk add items into a defined table. Do NOT mismatch tables and item types!
    * @param table (TableName)
    * @param items (Matching table model type)
    * @returns Array of imported item ids
    */
-  async function importItems(table: TableName, items: AnyModel[]): Promise<IndexableType[]> {
+  async function bulkAddItems(table: TableName, items: AnyModel[]): Promise<IndexableType[]> {
     return await dexieWrapper.table(table).bulkAdd(items, { allKeys: true })
   }
 
@@ -52,5 +49,5 @@ export default function useDatabaseShared() {
     return await dexieWrapper.delete()
   }
 
-  return { getTable, importItems, deleteItem, clearTable, deleteDatabase }
+  return { getTable, bulkAddItems, deleteItem, clearTable, deleteDatabase }
 }

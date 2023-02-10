@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn } from 'quasar'
 import { AppText, Icon, WebURL } from '@/constants/globals'
-import ResponsivePage from '@/components/shared/ResponsivePage.vue'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 
 const aboutMessage = `${AppText.APP_NAME} is a Vue 3 Typescript project created by michael-255 on GitHub. It is
 publicly available using the MIT License.`

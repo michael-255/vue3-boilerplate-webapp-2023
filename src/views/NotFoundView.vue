@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QCard, QCardSection } from 'quasar'
-import ResponsivePage from '@/components/shared/ResponsivePage.vue'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 </script>
 
 <template>

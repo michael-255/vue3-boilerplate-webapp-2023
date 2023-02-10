@@ -2,18 +2,18 @@ import { TableName } from '@/constants/globals'
 import { Icon, AppText, SettingKey } from '@/constants/globals'
 import { exportFile } from 'quasar'
 import { type Ref, ref, computed } from 'vue'
-import useDatabaseSettings from '@/use/useDatabaseSettings'
+import useDBSettings from '@/use/useDBSettings'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDatabaseShared from '@/use/useDatabaseShared'
+import useDBCommon from '@/use/useDBCommon'
 import useLogger from '@/use/useLogger'
 import useSettingsStore from '@/stores/settings'
 
-export default function useSettings() {
+export default function useViewSettings() {
   const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
-  const { initializeSettings, setSetting } = useDatabaseSettings()
+  const { initializeSettings, setSetting } = useDBSettings()
   const { confirmDialog } = useSimpleDialogs()
-  const { getTable, clearTable, deleteDatabase, importItems } = useDatabaseShared()
+  const { getTable, clearTable, deleteDatabase, bulkAddItems } = useDBCommon()
 
   const importFile: Ref<any> = ref(null)
 
@@ -133,7 +133,7 @@ export default function useSettings() {
           consoleDebug('importData =', importData)
 
           await Promise.all(
-            tableKeys.map((table: TableName) => importItems(table, importData[table]))
+            tableKeys.map((table: TableName) => bulkAddItems(table, importData[table]))
           )
 
           importFile.value = null // Clear input

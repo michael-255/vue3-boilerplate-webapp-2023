@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QTable, QBtnDropdown } from 'quasar'
+import { QTable } from 'quasar'
 import { Icon, RouteName, TableName } from '@/constants/globals'
 import { ref } from 'vue'
 

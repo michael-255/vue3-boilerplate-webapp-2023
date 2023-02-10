@@ -1,12 +1,12 @@
 import type { IndexableType } from 'dexie'
 import { TableName } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import type { IDBExample, IDBExampleRecord, IDBTest } from '@/models/app'
+import type { IDBExample, IDBExampleRecord } from '@/models/models'
 
 /**
  * Remove this when building your own app
  */
-export default function useDatabaseExamplesAndTests() {
+export default function useDBExamples() {
   /**
    * Adds an Example to the database.
    * @param example
@@ -25,23 +25,5 @@ export default function useDatabaseExamplesAndTests() {
     return await dexieWrapper.table(TableName.EXAMPLE_RECORDS).add(exampleRecord)
   }
 
-  /**
-   * Adds a Test to the database.
-   * @param test
-   * @returns
-   */
-  async function addTest(test: IDBTest): Promise<IndexableType> {
-    return await dexieWrapper.table(TableName.TESTS).add(test)
-  }
-
-  /**
-   * Adds a Test Record to the database.
-   * @param testRecord
-   * @returns
-   */
-  async function addTestRecord(testRecord: IDBExampleRecord): Promise<IndexableType> {
-    return await dexieWrapper.table(TableName.TEST_RECORDS).add(testRecord)
-  }
-
-  return { addExample, addExampleRecord, addTest, addTestRecord }
+  return { addExample, addExampleRecord }
 }

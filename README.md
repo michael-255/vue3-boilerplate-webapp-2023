@@ -7,6 +7,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - [ ] `Low Hanging Fruit`
 
+  - [ ] `Settings` Access Table should just be two buttons for `Logs` and `Settings` tables
+
   - [ ] `Test Data` Example/Test item generators (Defaults)
 
   - [ ] `TableHelper` Move functions from others apps into this one
@@ -37,7 +39,17 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] Use Quasar Meta plugin to improve SEO
 
+- [ ] `Charts`
+
+  - [ ] Replace `vue-chart-3` with `vue-chartjs`
+
+  - [ ] How to handle two records of the same Parent on the same day in the chart graph
+
 - [ ] `Possible Features & Updates`
+
+  - [ ] Add more tags to the repository
+
+  - [ ] `useRules` Composable for input rules and validators
 
   - [ ] Script to quickly updates certain values across the app
 

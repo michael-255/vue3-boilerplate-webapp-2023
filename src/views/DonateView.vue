@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@/constants/globals'
-import ResponsivePage from '@/components/shared/ResponsivePage.vue'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 </script>
 
 <template>
@@ -8,6 +8,7 @@ import ResponsivePage from '@/components/shared/ResponsivePage.vue'
     <QCard>
       <QCardSection>
         <div>Buy me a coffee</div>
+        <div>Ko-fi</div>
         <div>PayPal</div>
         <div>Venmo</div>
         <div>Bitcoin</div>

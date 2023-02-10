@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { QSelect, QBtn } from 'quasar'
 import { Icon, TableName, Limit } from '@/constants/globals'
-import useSettings from '@/use/useSettings'
-import ResponsivePage from '@/components/shared/ResponsivePage.vue'
+import useViewSettings from '@/use/useViewSettings'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 
 const {
   showIntroduction,
@@ -22,7 +22,7 @@ const {
   onDeleteTableData,
   onDeleteAllData,
   onDeleteDatabase,
-} = useSettings()
+} = useViewSettings()
 
 // Options
 const introductionText = `Introduction provides instructions on the Home page on how to use the app.`

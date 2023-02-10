@@ -1,12 +1,12 @@
-import { Dark } from 'quasar'
 import type { IndexableType } from 'dexie'
-import { TableName, Field, SettingKey } from '@/constants/globals'
 import type { SettingValue } from '@/constants/types'
+import type { IDBSetting } from '@/models/models'
+import { Dark } from 'quasar'
+import { TableName, Field, SettingKey } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import type { IDBSetting } from '@/models/core'
 import useSettingsStore from '@/stores/settings'
 
-export default function useDatabaseSettings() {
+export default function useDBSettings() {
   const settingsStore = useSettingsStore()
 
   /**
@@ -66,7 +66,8 @@ export default function useDatabaseSettings() {
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
-    const parentListSelection = findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? 'tests'
+    const parentListSelection =
+      findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? TableName.EXAMPLES
     // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []

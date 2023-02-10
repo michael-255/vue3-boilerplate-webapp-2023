@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@/constants/globals'
-import ResponsivePage from '@/components/shared/ResponsivePage.vue'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 </script>
 
 <template>

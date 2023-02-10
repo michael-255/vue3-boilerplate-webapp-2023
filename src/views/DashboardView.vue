@@ -1,26 +1,28 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn, date } from 'quasar'
-import { Icon, SettingKey, RouteName } from '@/constants/globals'
+import { Icon, SettingKey, RouteName, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
-import useDashboard from '@/use/useDashboard'
-import ResponsivePage from '@/components/shared/ResponsivePage.vue'
-import { ref } from 'vue'
+import useViewDashboard from '@/use/useViewDashboard'
+import ResponsivePage from '@/components/ResponsivePage.vue'
+import { type Ref, ref, onMounted } from 'vue'
+import type { IDBExample } from '@/models/models'
 
 const settingsStore = useSettingsStore()
-const { parentListSelection, onCloseIntroduction, generateData } = useDashboard()
+const {
+  parentListSelection,
+  parentListOptions,
+  getExamples,
+  onCloseIntroduction,
+  generateDemoData,
+} = useViewDashboard()
 
 const rating = ref(0)
 
-const groupOptions = [
-  {
-    label: 'Examples',
-    value: 'examples',
-  },
-  {
-    label: 'Tests',
-    value: 'tests',
-  },
-]
+const examples: Ref<IDBExample[]> = ref([])
+
+onMounted(async () => {
+  examples.value = await getExamples()
+})
 </script>
 
 <template>
@@ -71,7 +73,12 @@ const groupOptions = [
 
         <!-- TODO - TEMP - For Testing -->
         <div class="q-mb-md">
-          <QBtn label="Generate Data" :icon="Icon.CREATE" color="primary" @click="generateData()" />
+          <QBtn
+            label="Generate Data"
+            :icon="Icon.CREATE"
+            color="primary"
+            @click="generateDemoData()"
+          />
         </div>
 
         <div class="row justify-center">
@@ -90,15 +97,32 @@ const groupOptions = [
     <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">List Selection</div>
-        <div class="q-mb-md">
-          Select the Parent items you want to appear in the Dashboard list below.
-        </div>
+        <div class="q-mb-md">Select the Parent items you want to appear below.</div>
 
-        <QOptionGroup v-model="parentListSelection" :options="groupOptions" color="primary" />
+        <QOptionGroup v-model="parentListSelection" :options="parentListOptions" color="primary" />
       </QCardSection>
     </QCard>
 
     <!-- Parent Items List -->
+    <div v-if="parentListSelection === TableName.EXAMPLES">
+      <div v-for="(example, i) in examples" :key="i">
+        <QCard>
+          <QCardSection>
+            {{ example }}
+          </QCardSection>
+          <QCardSection>
+            {{ example.id }}
+          </QCardSection>
+          <QCardSection>
+            {{ example.name }}
+          </QCardSection>
+          <QCardSection>
+            {{ example.createdTimestamp }}
+          </QCardSection>
+        </QCard>
+      </div>
+    </div>
+
     <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">Example List Card</div>

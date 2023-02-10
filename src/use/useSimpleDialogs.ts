@@ -1,6 +1,6 @@
 import { Icon } from '@/constants/globals'
 import { useQuasar } from 'quasar'
-import SimpleDialog from '@/components/shared/SimpleDialog.vue'
+import SimpleDialog from '@/components/SimpleDialog.vue'
 
 /**
  * Simple customizable dialogs.

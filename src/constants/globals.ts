@@ -38,7 +38,6 @@ export enum Icon {
   CHARTS = 'bar_chart',
   RECORDS = 'storage',
   EXAMPLES = 'smart_toy',
-  TESTS = 'cruelty_free',
   // Misc
   DESCRIPTION = 'description',
   HELP = 'help_center',
@@ -101,10 +100,10 @@ export enum Field {
   RECORD_STATUS = 'recordStatus',
   PARENT_ID = 'parentId',
   NOTE = 'note',
-  // Example & Test Parent
-  TEST_MESSAGE = 'testMessage',
-  // Example & Test Record
-  TEST_NUMBER = 'testNumber',
+  // Example Parent
+  EXAMPLE_MESSAGE = 'exampleMessage',
+  // Example Record
+  EXAMPLE_NUMBER = 'exampleNumber',
 }
 
 export enum ParentStatus {
@@ -191,8 +190,6 @@ export enum TableName {
   LOGS = 'Logs',
   EXAMPLES = 'Examples',
   EXAMPLE_RECORDS = 'Example Records',
-  TESTS = 'Tests',
-  TEST_RECORDS = 'Test Records',
 }
 
 /**

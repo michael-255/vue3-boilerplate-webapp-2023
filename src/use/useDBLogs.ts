@@ -1,9 +1,9 @@
 import type { IndexableType } from 'dexie'
 import { TableName, Field, Severity } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import type { IDBLog } from '@/models/core'
+import type { IDBLog } from '@/models/models'
 
-export default function useDatabaseLogs() {
+export default function useDBLogs() {
   /**
    * Adds a Log to the database.
    * @param severity

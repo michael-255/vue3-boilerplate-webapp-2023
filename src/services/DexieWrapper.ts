@@ -1,8 +1,14 @@
 import Dexie, { type Table } from 'dexie'
 import { AppText, Field } from '@/constants/globals'
 import { TableName } from '@/constants/globals'
-import type { IDBLog, IDBSetting } from '@/models/core'
-import type { IDBExample, IDBExampleRecord, IDBTestRecord, IDBTest } from '@/models/app'
+import type {
+  IDBLog,
+  IDBSetting,
+  IDBExample,
+  IDBExampleRecord,
+  IDBTestRecord,
+  IDBTest,
+} from '@/models/models'
 
 export class DexieWrapper extends Dexie {
   [TableName.SETTINGS]!: Table<IDBSetting>;

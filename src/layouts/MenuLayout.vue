@@ -97,25 +97,6 @@ function goBack(): void {
           </QItemSection>
         </QItem>
 
-        <QItem
-          clickable
-          v-ripple
-          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.TESTS) } }"
-        >
-          <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.TESTS" />
-          </QItemSection>
-          <QItemSection>Tests</QItemSection>
-          <QItemSection side>
-            <QBtn
-              flat
-              class="q-px-sm"
-              :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.TEST_RECORDS) } }"
-              :icon="Icon.RECORDS"
-            />
-          </QItemSection>
-        </QItem>
-
         <QSeparator spaced="md" inset />
 
         <QItem clickable v-ripple :to="{ name: RouteName.SETTINGS }">
@@ -139,7 +120,7 @@ function goBack(): void {
           <QItemSection>About</QItemSection>
         </QItem>
 
-        <QItem clickable v-ripple :to="{ name: RouteName.DONATE }">
+        <QItem clickable v-ripple active-class="text-warning" :to="{ name: RouteName.DONATE }">
           <QItemSection avatar>
             <QIcon color="warning" :name="Icon.DONATE" />
           </QItemSection>
