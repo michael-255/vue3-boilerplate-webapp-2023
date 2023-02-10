@@ -138,6 +138,13 @@ function goBack(): void {
           </QItemSection>
           <QItemSection>About</QItemSection>
         </QItem>
+
+        <QItem clickable v-ripple :to="{ name: RouteName.DONATE }">
+          <QItemSection avatar>
+            <QIcon color="warning" :name="Icon.DONATE" />
+          </QItemSection>
+          <QItemSection>Donate</QItemSection>
+        </QItem>
       </QList>
     </QDrawer>
 

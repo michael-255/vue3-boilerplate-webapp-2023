@@ -47,6 +47,12 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
+      path: '/donate',
+      name: RouteName.DONATE,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/DonateView.vue'),
+    },
+    {
       path: '/:pathMatch(.*)*', // 404 Not Found
       name: RouteName.NOT_FOUND,
       meta: { layout: 'MenuLayout' },

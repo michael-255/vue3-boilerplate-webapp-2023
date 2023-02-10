@@ -31,6 +31,7 @@ export enum Icon {
   DELETE = 'delete',
   CREATE = 'add_circle',
   // Pages
+  DONATE = 'redeem',
   DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
   LOGS = 'plagiarism',
@@ -161,6 +162,7 @@ export enum RouteName {
   SETTINGS = 'Settings',
   FAQ = 'FAQ',
   ABOUT = 'About',
+  DONATE = 'Donate',
   NOT_FOUND = 'NotFound',
   DATA = 'Data',
   ACTIONS = 'Actions',
