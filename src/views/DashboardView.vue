@@ -98,23 +98,21 @@ const groupOptions = [
       <QCardSection>
         <div class="text-h6 q-mb-md">Example List Card</div>
 
-        <div class="q-mb-md">Example description goes here.</div>
-
-        <div class="q-mb-none">
+        <div>
           <QBadge rounded color="secondary" class="q-py-none">
-            <QIcon :name="Icon.PREVIOUS" class="q-mr-xs" />
-            <span class="text-caption">1 day ago</span>
+            <QIcon :name="Icon.PREVIOUS" />
+            <span class="text-caption q-ml-xs">1 day ago</span>
           </QBadge>
         </div>
 
-        <div class="q-mb-none">
-          <QIcon :name="Icon.CALENDAR_CHECK" class="q-mr-xs q-pb-xs" />
-          <span class="text-caption">{{ new Date().toDateString() }}</span>
+        <div>
+          <QIcon :name="Icon.CALENDAR_CHECK" />
+          <span class="text-caption q-ml-xs">{{ new Date().toDateString() }}</span>
         </div>
 
         <div>
-          <QIcon :name="Icon.STOPWATCH" class="q-mr-xs q-pb-xs" />
-          <span class="text-caption">1h 23m 15s</span>
+          <QIcon :name="Icon.STOPWATCH" />
+          <span class="text-caption q-ml-xs">1h 23m 15s</span>
         </div>
 
         <div class="absolute-top-right q-ma-xs">
@@ -129,7 +127,7 @@ const groupOptions = [
           />
 
           <QBtn round flat :icon="Icon.MENU_VERTICAL">
-            <QMenu auto-close>
+            <QMenu auto-close cover anchor="top middle">
               <QList>
                 <QItem clickable>
                   <QItemSection avatar>
@@ -170,8 +168,6 @@ const groupOptions = [
     <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-md">Example List Card</div>
-
-        <div class="q-mb-md">Example description goes here.</div>
 
         <div class="q-mb-none">
           <QBadge rounded color="secondary" class="q-py-none">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { QTable, QBtnDropdown } from 'quasar'
 import { Icon, RouteName, TableName } from '@/constants/globals'
-import { QTable } from 'quasar'
 import { ref } from 'vue'
 
 const selectOptions = Object.values(TableName)
@@ -110,10 +110,19 @@ const rows = [
     row-key="name"
   >
     <template v-slot:top>
+      <div class="row justify-start full-width q-mb-md">
+        <div class="col-10 text-h6 ellipsis">Measurement Records</div>
+        <QBtn
+          round
+          flat
+          class="absolute-top-right q-mr-sm q-mt-sm"
+          :icon="Icon.CLOSE"
+          :to="{ name: RouteName.DASHBOARD }"
+        />
+      </div>
+
       <div class="row justify-start full-width">
-        <div class="col-9">
-          <div class="text-h6">Measurement Records</div>
-          <!-- Search Input -->
+        <div class="col-12">
           <QInput
             outlined
             dense
@@ -121,25 +130,23 @@ const rows = [
             debounce="300"
             v-model="searchFilter"
             placeholder="Search"
-            class="q-mr-sm q-mb-sm"
           >
+            <template v-slot:before>
+              <QBtn color="primary" class="q-px-sm" :icon="Icon.OPTIONS" />
+            </template>
+
             <template v-slot:append>
               <QIcon name="search" />
             </template>
           </QInput>
         </div>
+      </div>
+    </template>
 
-        <div class="col-3">
-          <QBtn round color="primary" :icon="Icon.CLOSE" :to="{ name: RouteName.DASHBOARD }" />
-
-          <QSelect
-            v-model="selectModel"
-            dense
-            outlined
-            :options="selectOptions"
-            class="q-mr-sm q-mb-sm"
-          />
-        </div>
+    <template v-slot:bottom>
+      <div class="row justify-between full-width">
+        <QBtn color="positive" class="q-px-sm" :icon="Icon.ADD" />
+        <div class="q-mt-sm">{{ columns.length || 0 }} items found</div>
       </div>
     </template>
   </QTable>
