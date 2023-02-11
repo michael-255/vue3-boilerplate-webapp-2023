@@ -13,6 +13,10 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
           Thank you!
         </div>
 
+        <div class="q-mb-md">
+          Donations are done through Ko-fi. It's safe, easy to use, and doesn't require an account.
+        </div>
+
         <div class="row q-col-gutter-md justify-center">
           <div class="col-sm-6 col-xs-12">
             <QBtn

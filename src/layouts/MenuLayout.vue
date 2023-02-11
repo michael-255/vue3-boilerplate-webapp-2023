@@ -17,7 +17,7 @@ import { RouterView, useRoute, useRouter } from 'vue-router'
 import { slugify } from '@/utils/common'
 import useUIStore from '@/stores/ui'
 
-const mainMenuStore = useUIStore()
+const uiStore = useUIStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -38,12 +38,7 @@ function goBack(): void {
     <!-- App Header -->
     <QHeader elevated>
       <QToolbar>
-        <QBtn
-          flat
-          round
-          :icon="Icon.MENU_STANDARD"
-          @click="mainMenuStore.drawer = !mainMenuStore.drawer"
-        />
+        <QBtn flat round :icon="Icon.MENU_STANDARD" @click="uiStore.drawer = !uiStore.drawer" />
 
         <QToolbarTitle>{{ AppText.APP_NAME }}</QToolbarTitle>
 
@@ -58,7 +53,7 @@ function goBack(): void {
     </QHeader>
 
     <!-- Menu Drawer -->
-    <QDrawer v-model="mainMenuStore.drawer" :width="250" overlay show-if-above bordered side="left">
+    <QDrawer v-model="uiStore.drawer" :width="250" overlay show-if-above bordered side="left">
       <div class="row justify-center">
         <QAvatar outline size="100px" class="q-my-md">
           <img src="@/assets/menu-avatar.png" />
