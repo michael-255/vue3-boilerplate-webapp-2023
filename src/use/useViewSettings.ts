@@ -157,7 +157,7 @@ export default function useViewSettings() {
           await bulkAddItems(TableName.EXAMPLES, examples)
           await bulkAddItems(TableName.EXAMPLE_RECORDS, exampleRecords)
           await bulkAddItems(TableName.TESTS, tests)
-          await bulkAddItems(TableName.TESTS_RECORDS, testRecords)
+          await bulkAddItems(TableName.TEST_RECORDS, testRecords)
 
           log.info('Default Examples loaded')
         } catch (error) {

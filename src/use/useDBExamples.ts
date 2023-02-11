@@ -39,7 +39,7 @@ export default function useDBExamples() {
    * @returns
    */
   async function addTestRecord(testRecord: IDBTestRecord): Promise<IndexableType> {
-    return await dexieWrapper.table(TableName.TESTS_RECORDS).add(testRecord)
+    return await dexieWrapper.table(TableName.TEST_RECORDS).add(testRecord)
   }
 
   return { addExample, addExampleRecord, addTest, addTestRecord }
