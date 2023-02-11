@@ -120,7 +120,7 @@ export default function useViewSettings() {
               name: `Example ${i}`,
               description: `Example ${i} description goes here.`,
               favorite: i % 2 === 0 ? true : false,
-              exampleMessage: 'Example Test Message',
+              exampleMessage: 'Example Message',
             }
             const exampleRecord: IDBExampleRecord = {
               id: uid(),
@@ -134,17 +134,17 @@ export default function useViewSettings() {
               id: uid(),
               createdTimestamp: new Date().getTime(),
               parentStatus: ParentStatus.ENABLED,
-              name: `Example ${i}`,
-              description: `Example ${i} description goes here.`,
+              name: `Test ${i}`,
+              description: `Test ${i} description goes here.`,
               favorite: i % 2 === 0 ? true : false,
-              exampleMessage: 'Example Test Message',
+              exampleMessage: 'Test Message',
             }
             const testRecord: IDBTestRecord = {
               id: uid(),
               createdTimestamp: new Date().getTime(),
               recordStatus: RecordStatus.COMPLETED,
               parentId: example.id,
-              note: 'Example Record Note',
+              note: 'Test Record Note',
               exampleNumber: i,
             }
 
@@ -268,7 +268,7 @@ export default function useViewSettings() {
     confirmDialog(
       `Delete ${table} Data`,
       `Permanetly delete all ${table} data from the database?`,
-      Icon.DELETE,
+      Icon.CLEAR,
       'negative',
       async (): Promise<void> => {
         try {
@@ -289,7 +289,7 @@ export default function useViewSettings() {
     confirmDialog(
       'Delete All Data',
       'Permanetly delete all data from the database?',
-      Icon.DELETE,
+      Icon.CLEAR,
       'negative',
       async (): Promise<void> => {
         try {
@@ -310,7 +310,7 @@ export default function useViewSettings() {
     confirmDialog(
       'Delete Database',
       'Delete the underlining database? All data will be lost. You must reload the website after this action to reinitialize the database.',
-      Icon.DELETE,
+      Icon.CLEAR,
       'negative',
       async (): Promise<void> => {
         try {

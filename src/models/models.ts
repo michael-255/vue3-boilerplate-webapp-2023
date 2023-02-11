@@ -13,15 +13,15 @@ export interface IDBItem {
 }
 
 export interface IDBParent extends IDBItem {
-  [Field.PARENT_STATUS]: ParentStatus
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
+  [Field.PARENT_STATUS]: ParentStatus
   [Field.FAVORITE]: boolean
 }
 
 export interface IDBRecord extends IDBItem {
-  [Field.RECORD_STATUS]: RecordStatus
   [Field.PARENT_ID]: string
+  [Field.RECORD_STATUS]: RecordStatus
   [Field.NOTE]: string
 }
 

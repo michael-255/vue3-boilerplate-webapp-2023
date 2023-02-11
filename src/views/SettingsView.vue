@@ -86,7 +86,12 @@ const {
           </template>
 
           <template v-slot:append>
-            <QIcon :name="Icon.CLOSE" @click.stop="importFile = null" class="cursor-pointer" />
+            <QIcon
+              v-if="importFile"
+              :name="Icon.CLOSE"
+              class="cursor-pointer"
+              @click.stop="importFile = null"
+            />
           </template>
         </QFile>
 

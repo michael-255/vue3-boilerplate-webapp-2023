@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { Icon, RouteName } from '@/constants/globals'
+import { Icon } from '@/constants/globals'
 import { ref } from 'vue'
 import useGoBack from '@/use/useGoBack'
 

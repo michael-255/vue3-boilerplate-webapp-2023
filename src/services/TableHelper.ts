@@ -1,7 +1,126 @@
-import { ActionName, TableName, Icon } from '@/constants/globals'
+import type { ColumnProps } from '@/constants/types'
+import { ActionName, TableName, Icon, Field } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 
 export const TableHelper = {
+  getFields(tableName: TableName): Field[] {
+    return {
+      [TableName.SETTINGS]: [], // Can't perform actions on this table
+      [TableName.LOGS]: [], // Can't perform actions on this table
+      [TableName.EXAMPLES]: [
+        Field.ID,
+        Field.CREATED_TIMESTAMP,
+        Field.NAME,
+        Field.DESCRIPTION,
+        Field.PARENT_STATUS,
+        Field.FAVORITE,
+        Field.EXAMPLE_MESSAGE,
+      ],
+      [TableName.EXAMPLE_RECORDS]: [
+        Field.ID,
+        Field.CREATED_TIMESTAMP,
+        Field.PARENT_ID,
+        Field.RECORD_STATUS,
+        Field.NOTE,
+        Field.EXAMPLE_NUMBER,
+      ],
+      [TableName.TESTS]: [
+        Field.ID,
+        Field.CREATED_TIMESTAMP,
+        Field.NAME,
+        Field.DESCRIPTION,
+        Field.PARENT_STATUS,
+        Field.FAVORITE,
+        Field.EXAMPLE_MESSAGE,
+      ],
+      [TableName.TEST_RECORDS]: [
+        Field.ID,
+        Field.CREATED_TIMESTAMP,
+        Field.PARENT_ID,
+        Field.RECORD_STATUS,
+        Field.NOTE,
+        Field.EXAMPLE_NUMBER,
+      ],
+    }[tableName]
+  },
+
+  getComponents(tableName: TableName): any[] {
+    return {
+      [TableName.SETTINGS]: [],
+      [TableName.LOGS]: [],
+      [TableName.EXAMPLES]: [],
+      [TableName.EXAMPLE_RECORDS]: [],
+      [TableName.TESTS]: [],
+      [TableName.TEST_RECORDS]: [],
+    }[tableName]
+  },
+
+  getColumns(tableName: TableName): ColumnProps[] {
+    return {
+      [TableName.SETTINGS]: [],
+      [TableName.LOGS]: [],
+      [TableName.EXAMPLES]: [],
+      [TableName.EXAMPLE_RECORDS]: [],
+      [TableName.TESTS]: [],
+      [TableName.TEST_RECORDS]: [],
+    }[tableName]
+  },
+
+  getVisibleColumns(tableName: TableName): Field[] {
+    return {
+      [TableName.SETTINGS]: [],
+      [TableName.LOGS]: [],
+      [TableName.EXAMPLES]: [],
+      [TableName.EXAMPLE_RECORDS]: [],
+      [TableName.TESTS]: [],
+      [TableName.TEST_RECORDS]: [],
+    }[tableName]
+  },
+
+  getSupportedActions(tableName: TableName): ActionName[] {
+    return {
+      [TableName.SETTINGS]: [],
+      [TableName.LOGS]: [],
+      [TableName.EXAMPLES]: [],
+      [TableName.EXAMPLE_RECORDS]: [],
+      [TableName.TESTS]: [],
+      [TableName.TEST_RECORDS]: [],
+    }[tableName]
+  },
+
+  getParentTable(tableName: TableName): TableName | null {
+    return {
+      [TableName.SETTINGS]: null,
+      [TableName.LOGS]: null,
+      [TableName.EXAMPLES]: null,
+      [TableName.EXAMPLE_RECORDS]: TableName.EXAMPLES,
+      [TableName.TESTS]: null,
+      [TableName.TEST_RECORDS]: TableName.TESTS,
+    }[tableName]
+  },
+
+  getLabelSingular(tableName: TableName): string {
+    return {
+      [TableName.SETTINGS]: 'Setting',
+      [TableName.LOGS]: 'Logs',
+      [TableName.EXAMPLES]: 'Example',
+      [TableName.EXAMPLE_RECORDS]: 'Example Record',
+      [TableName.TESTS]: 'Test',
+      [TableName.TEST_RECORDS]: 'Test Record',
+    }[tableName]
+  },
+
+  getTableIcon(tableName: TableName): Icon {
+    return {
+      [TableName.SETTINGS]: Icon.SETTINGS,
+      [TableName.LOGS]: Icon.LOGS,
+      [TableName.EXAMPLES]: Icon.EXAMPLES,
+      [TableName.EXAMPLE_RECORDS]: Icon.RECORDS,
+      [TableName.TESTS]: Icon.TESTS,
+      [TableName.TEST_RECORDS]: Icon.RECORDS,
+    }[tableName]
+  },
+
   getTableNameFromSlug(tableSlug: string): TableName {
     return {
       [slugify(TableName.SETTINGS)]: TableName.SETTINGS,
@@ -21,18 +140,19 @@ export const TableHelper = {
       [slugify(ActionName.EDIT)]: ActionName.EDIT,
       [slugify(ActionName.DELETE)]: ActionName.DELETE,
       [slugify(ActionName.CLEAR)]: ActionName.CLEAR,
-      [slugify(ActionName.REPORT)]: ActionName.REPORT,
+      [slugify(ActionName.CHARTS)]: ActionName.CHARTS,
     }[actionSlug]
   },
 
-  getIconFromTableName(tableName: TableName): Icon {
+  getActionIcon(action: ActionName): Icon {
     return {
-      [TableName.SETTINGS]: Icon.SETTINGS,
-      [TableName.LOGS]: Icon.LOGS,
-      [TableName.EXAMPLES]: Icon.EXAMPLES,
-      [TableName.EXAMPLE_RECORDS]: Icon.RECORDS,
-      [TableName.TESTS]: Icon.TESTS,
-      [TableName.TEST_RECORDS]: Icon.RECORDS,
-    }[tableName]
+      [ActionName.NONE]: Icon.NONE,
+      [ActionName.CREATE]: Icon.CREATE,
+      [ActionName.INSPECT]: Icon.INSPECT,
+      [ActionName.EDIT]: Icon.EDIT,
+      [ActionName.DELETE]: Icon.DELETE,
+      [ActionName.CLEAR]: Icon.CLEAR,
+      [ActionName.CHARTS]: Icon.CHARTS,
+    }[action]
   },
 }

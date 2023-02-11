@@ -5,10 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] `Low Hanging Fruit`
-
-  - [ ] `TableHelper` Move functions from others apps into this one
-
 - [ ] `Mocks and Styling`
 
   - [ ] `Charts Page`

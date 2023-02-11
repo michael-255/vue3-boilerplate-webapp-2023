@@ -22,6 +22,7 @@ export enum Icon {
   WARN = 'warning',
   ERROR = 'error',
   // Actions
+  NONE = 'select',
   SAVE = 'save',
   CLOSE = 'close',
   ADD = 'add',
@@ -30,6 +31,7 @@ export enum Icon {
   INSPECT = 'manage_search',
   DELETE = 'delete',
   CREATE = 'add_circle',
+  CLEAR = 'delete_sweep',
   // Pages
   DONATE = 'redeem',
   DASHBOARD = 'dashboard',
@@ -197,7 +199,7 @@ export enum ActionName {
   EDIT = 'Edit',
   DELETE = 'Delete',
   CLEAR = 'Clear',
-  REPORT = 'Report',
+  CHARTS = 'Charts',
 }
 
 ///////////////////////////////////////////////////////////////////////////////
