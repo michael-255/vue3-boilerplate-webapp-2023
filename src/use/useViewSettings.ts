@@ -1,7 +1,8 @@
-import { TableName } from '@/constants/globals'
-import { Icon, AppText, SettingKey } from '@/constants/globals'
-import { exportFile } from 'quasar'
 import { type Ref, ref, computed } from 'vue'
+import type { IDBExample, IDBExampleRecord, IDBTest, IDBTestRecord } from '@/models/models'
+import { TableName } from '@/constants/globals'
+import { Icon, AppText, SettingKey, ParentStatus, RecordStatus } from '@/constants/globals'
+import { exportFile, uid } from 'quasar'
 import useDBSettings from '@/use/useDBSettings'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDBCommon from '@/use/useDBCommon'
@@ -16,9 +17,6 @@ export default function useViewSettings() {
   const { getTable, clearTable, deleteDatabase, bulkAddItems } = useDBCommon()
 
   const importFile: Ref<any> = ref(null)
-
-  const accessTableOptions: Ref<TableName[]> = ref(Object.values(TableName))
-  const accessTableModel: Ref<TableName | null> = ref(null)
 
   const deleteDataOptions: Ref<TableName[]> = ref(Object.values(TableName))
   const deleteDataModel: Ref<TableName | null> = ref(null)
@@ -96,6 +94,77 @@ export default function useViewSettings() {
       message: 'Error message',
       stack: 'Error stack trace',
     })
+  }
+
+  /**
+   * Generate default Examples for the app.
+   */
+  async function onDefaultExamples(): Promise<void> {
+    confirmDialog(
+      'Load Default Examples',
+      `Would you like the load default Examples into the database?`,
+      Icon.INFO,
+      'info',
+      async (): Promise<void> => {
+        try {
+          const examples: IDBExample[] = []
+          const exampleRecords: IDBExampleRecord[] = []
+          const tests: IDBTest[] = []
+          const testRecords: IDBTestRecord[] = []
+
+          for (let i = 0; i < 3; i++) {
+            const example: IDBExample = {
+              id: uid(),
+              createdTimestamp: new Date().getTime(),
+              parentStatus: ParentStatus.ENABLED,
+              name: `Example ${i}`,
+              description: `Example ${i} description goes here.`,
+              favorite: i % 2 === 0 ? true : false,
+              exampleMessage: 'Example Test Message',
+            }
+            const exampleRecord: IDBExampleRecord = {
+              id: uid(),
+              createdTimestamp: new Date().getTime(),
+              recordStatus: RecordStatus.COMPLETED,
+              parentId: example.id,
+              note: 'Example Record Note',
+              exampleNumber: i,
+            }
+            const test: IDBTest = {
+              id: uid(),
+              createdTimestamp: new Date().getTime(),
+              parentStatus: ParentStatus.ENABLED,
+              name: `Example ${i}`,
+              description: `Example ${i} description goes here.`,
+              favorite: i % 2 === 0 ? true : false,
+              exampleMessage: 'Example Test Message',
+            }
+            const testRecord: IDBTestRecord = {
+              id: uid(),
+              createdTimestamp: new Date().getTime(),
+              recordStatus: RecordStatus.COMPLETED,
+              parentId: example.id,
+              note: 'Example Record Note',
+              exampleNumber: i,
+            }
+
+            examples.push(example)
+            exampleRecords.push(exampleRecord)
+            tests.push(test)
+            testRecords.push(testRecord)
+          }
+
+          await bulkAddItems(TableName.EXAMPLES, examples)
+          await bulkAddItems(TableName.EXAMPLE_RECORDS, exampleRecords)
+          await bulkAddItems(TableName.TESTS, tests)
+          await bulkAddItems(TableName.TESTS_RECORDS, testRecords)
+
+          log.info('Default Examples loaded')
+        } catch (error) {
+          log.error('Failed to load default Examples', error)
+        }
+      }
+    )
   }
 
   /**
@@ -191,6 +260,10 @@ export default function useViewSettings() {
     )
   }
 
+  /**
+   * @todo
+   * @param table
+   */
   async function onDeleteTableData(table: TableName): Promise<void> {
     confirmDialog(
       `Delete ${table} Data`,
@@ -208,6 +281,9 @@ export default function useViewSettings() {
     )
   }
 
+  /**
+   * @todo
+   */
   async function onDeleteAllData(): Promise<void> {
     confirmDialog(
       'Delete All Data',
@@ -225,6 +301,9 @@ export default function useViewSettings() {
     )
   }
 
+  /**
+   * @todo
+   */
   async function onDeleteDatabase(): Promise<void> {
     confirmDialog(
       'Delete Database',
@@ -249,11 +328,10 @@ export default function useViewSettings() {
     showDebugMessages,
     saveInfoMessages,
     importFile,
-    accessTableModel,
-    accessTableOptions,
     deleteDataModel,
     deleteDataOptions,
     onTestLogger,
+    onDefaultExamples,
     onRejectedFile,
     onImportFile,
     onExportData,

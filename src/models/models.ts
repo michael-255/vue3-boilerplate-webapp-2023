@@ -51,3 +51,11 @@ export interface IDBExample extends IDBParent {
 export interface IDBExampleRecord extends IDBRecord {
   [Field.EXAMPLE_NUMBER]: number
 }
+
+export interface IDBTest extends IDBParent {
+  [Field.EXAMPLE_MESSAGE]: string
+}
+
+export interface IDBTestRecord extends IDBRecord {
+  [Field.EXAMPLE_NUMBER]: number
+}

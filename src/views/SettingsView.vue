@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { QSelect, QBtn } from 'quasar'
-import { Icon, TableName, Limit } from '@/constants/globals'
+import { AppText, Icon, TableName, Limit, RouteName } from '@/constants/globals'
 import useViewSettings from '@/use/useViewSettings'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import { slugify } from '@/utils/common'
 
 const {
   showIntroduction,
@@ -11,11 +12,10 @@ const {
   showDebugMessages,
   saveInfoMessages,
   importFile,
-  accessTableModel,
-  accessTableOptions,
   deleteDataModel,
   deleteDataOptions,
   onTestLogger,
+  onDefaultExamples,
   onRejectedFile,
   onImportFile,
   onExportData,
@@ -23,35 +23,6 @@ const {
   onDeleteAllData,
   onDeleteDatabase,
 } = useViewSettings()
-
-// Options
-const introductionText = `Introduction provides instructions on the Home page on how to use the app.`
-const darkModeText = `Dark Mode allows you to switch between a light or dark theme for the app.`
-
-// Defaults
-const defaultExamplesText = `Load default Examples into the database.`
-
-// Data Management
-const importText = `Import data into the database from a JSON file. The app expects the data in the file to be
-structured the same as the exported version.`
-const exportText = `Export the entire database as a JSON file. Do this on a regularly basis so you have a backup of your
-data.`
-const accessTableText = `Select a table and access it directly in a data table format. This gives you access to
-operations for individual records for most tables.`
-
-// Logging
-const showConsoleLogsText = `Show Console Logs will display all log messages in the developer console.`
-const showDebugMessagesText = `Show Debug Messages will display debug level notification alerts.`
-const saveInfoMessagesText = `Save Info Messages will save info level messages in the logs table of the database for
-later review.`
-const testLoggerText = `Validate that your logging settings above are working as expected by using the test action
-below.`
-
-// DANGER ZONE
-const dangerZoneText = `The following operations cannot be undone. Consider exporting your data before proceeding.`
-const deleteTableDataText = `Select a table and permanently delete all of its data.`
-const deleteAllDataText = `Permanently delete all data from the database.`
-const deleteDatabaseText = `Delete the underlining database and all of its data (requires website reload).`
 </script>
 
 <template>
@@ -62,10 +33,16 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
         <div class="text-h6 q-mb-md">Options</div>
 
         <!-- Toggles -->
-        <div class="q-mb-md">{{ introductionText }}</div>
+        <div class="q-mb-md">
+          Introduction provides instructions on the Home page on how to use the app.
+        </div>
+
         <QToggle v-model="showIntroduction" class="q-mb-md" label="Show Introduction" />
 
-        <div class="q-mb-md">{{ darkModeText }}</div>
+        <div class="q-mb-md">
+          Dark Mode allows you to switch between a light or dark theme for the app.
+        </div>
+
         <QToggle v-model="darkMode" label="Dark Mode" />
       </QCardSection>
     </QCard>
@@ -76,8 +53,9 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
         <div class="text-h6 q-mb-md">Defaults</div>
 
         <!-- Examples -->
-        <div class="q-mb-md">{{ defaultExamplesText }}</div>
-        <QBtn label="Examples" :icon="Icon.EXAMPLES" color="primary" />
+        <div class="q-mb-md">Load default Examples into the database.</div>
+
+        <QBtn label="Load Examples" color="primary" @click="onDefaultExamples()" />
       </QCardSection>
     </QCard>
 
@@ -87,7 +65,11 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
         <div class="text-h6 q-mb-md">Data Management</div>
 
         <!-- Import -->
-        <div class="q-mb-md">{{ importText }}</div>
+        <div class="q-mb-md">
+          Import data into the database from a JSON file. The app expects the data in the file to be
+          structured the same as the exported version.
+        </div>
+
         <QFile
           v-model="importFile"
           dense
@@ -109,22 +91,33 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
         </QFile>
 
         <!-- Export -->
-        <div class="q-mb-md">{{ exportText }}</div>
+        <div class="q-mb-md">
+          Export the entire database as a JSON file. Do this on a regularly basis so you have a
+          backup of your data.
+        </div>
+
         <QBtn class="q-mb-md" label="Export" color="primary" @click="onExportData()" />
 
-        <!-- Access Table -->
-        <div class="q-mb-md">{{ accessTableText }}</div>
-        <QSelect
-          outlined
-          dense
-          v-model="accessTableModel"
-          :options="accessTableOptions"
-          label="Database Table"
-        >
-          <template v-slot:before>
-            <QBtn :disable="!accessTableModel" label="Access Table" color="primary" />
-          </template>
-        </QSelect>
+        <!-- Access Internal Tables -->
+        <div class="q-mb-md">
+          Access the internal {{ AppText.APP_NAME }} data tables if you need to troubleshoot issues.
+        </div>
+
+        <div class="q-mb-md">
+          <QBtn
+            label="Logs Table"
+            color="primary"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.LOGS) } }"
+          />
+        </div>
+
+        <div>
+          <QBtn
+            label="Settings Table"
+            color="primary"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.SETTINGS) } }"
+          />
+        </div>
       </QCardSection>
     </QCard>
 
@@ -134,17 +127,29 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
         <div class="text-h6 q-mb-md">Logging</div>
 
         <!-- Toggles -->
-        <div class="q-mb-md">{{ showConsoleLogsText }}</div>
+        <div class="q-mb-md">
+          Show Console Logs will display all log messages in the developer console.
+        </div>
+
         <QToggle v-model="showConsoleLogs" class="q-mb-md" label="Show Console Logs" />
 
-        <div class="q-mb-md">{{ showDebugMessagesText }}</div>
+        <div class="q-mb-md">Show Debug Messages will display debug level notification alerts.</div>
+
         <QToggle v-model="showDebugMessages" class="q-mb-md" label="Show Debug Messages" />
 
-        <div class="q-mb-md">{{ saveInfoMessagesText }}</div>
+        <div class="q-mb-md">
+          Save Info Messages will save info level messages in the logs table of the database for
+          later review.
+        </div>
+
         <QToggle v-model="saveInfoMessages" class="q-mb-md" label="Save Info Messages" />
 
         <!-- Test Logger -->
-        <div class="q-mb-md">{{ testLoggerText }}</div>
+        <div class="q-mb-md">
+          Validate that your logging settings above are working as expected by using the test action
+          below.
+        </div>
+
         <QBtn label="Test Logger" color="primary" @click="onTestLogger()" />
       </QCardSection>
     </QCard>
@@ -153,10 +158,14 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
     <QCard class="q-mb-md">
       <QCardSection>
         <div class="text-h6 text-negative q-mb-md">DANGER ZONE</div>
-        <div class="q-mb-md">{{ dangerZoneText }}</div>
+
+        <div class="q-mb-md">
+          The following operations cannot be undone. Consider exporting your data before proceeding.
+        </div>
 
         <!-- Delete Table Data -->
-        <div class="q-mb-md">{{ deleteTableDataText }}</div>
+        <div class="q-mb-md">Select a table and permanently delete all of its data.</div>
+
         <QSelect
           v-model="deleteDataModel"
           outlined
@@ -176,11 +185,15 @@ const deleteDatabaseText = `Delete the underlining database and all of its data 
         </QSelect>
 
         <!-- Delete All Data -->
-        <div class="q-mb-md">{{ deleteAllDataText }}</div>
+        <div class="q-mb-md">Permanently delete all data from the database.</div>
+
         <QBtn class="q-mb-md" label="Delete All Data" color="negative" @click="onDeleteAllData()" />
 
         <!-- Delete Database -->
-        <div class="q-mb-md">{{ deleteDatabaseText }}</div>
+        <div class="q-mb-md">
+          Delete the underlining database and all of its data (requires website reload).
+        </div>
+
         <QBtn label="Delete Database" color="negative" @click="onDeleteDatabase()" />
       </QCardSection>
     </QCard>

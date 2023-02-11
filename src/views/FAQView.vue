@@ -5,46 +5,37 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 
 <template>
   <ResponsivePage :banner-icon="Icon.HELP" banner-title="FAQ">
-    <QCard class="q-mb-md">
-      <QCardSection>Message about FAQ page.</QCardSection>
-    </QCard>
-
     <QList bordered class="rounded-borders">
       <QExpansionItem label="How does this app work?">
         <QCard>
-          <QCardSection> Test 1 </QCardSection>
+          <QCardSection>
+            <div class="q-mb-md">
+              This web app is whats called a static website. All of your data is being stored
+              locally on the device and web browser you are using the site with. This means you
+              retain control of your data at all times.
+            </div>
+            <div>
+              However, this also means you are responsible for making backups of your data by using
+              the export feature in Settings to download it.
+            </div>
+          </QCardSection>
         </QCard>
       </QExpansionItem>
 
       <QSeparator />
 
-      <QExpansionItem label="Question?">
+      <QExpansionItem label="How do I move my data to another device?">
         <QCard>
-          <QCardSection> Test 2 </QCardSection>
-        </QCard>
-      </QExpansionItem>
-
-      <QSeparator />
-
-      <QExpansionItem label="Question?">
-        <QCard>
-          <QCardSection> Test 3 </QCardSection>
-        </QCard>
-      </QExpansionItem>
-
-      <QSeparator />
-
-      <QExpansionItem label="Question?">
-        <QCard>
-          <QCardSection> Test 4 </QCardSection>
-        </QCard>
-      </QExpansionItem>
-
-      <QSeparator />
-
-      <QExpansionItem label="Question?">
-        <QCard>
-          <QCardSection> Test 5 </QCardSection>
+          <QCardSection>
+            <div class="q-mb-md">
+              First, use the export feature in Settings to download your data. You'll need to email
+              the exported data file to yourself so you can access it on the new device.
+            </div>
+            <div>
+              Then, use the import feature in Settings on your new device to load your exported data
+              into the app.
+            </div>
+          </QCardSection>
         </QCard>
       </QExpansionItem>
     </QList>

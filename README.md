@@ -5,21 +5,27 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- [ ] `Introduction`
+
+  - [ ] Create `IntroductionCard` component
+
+  - [ ] Create `useIntroduction` composable
+
 - [ ] `Low Hanging Fruit`
 
-  - [ ] `Settings` Access Table should just be two buttons for `Logs` and `Settings` tables
+  - [ ] `Data Table Back Route` Fix so it works like the main header back route
 
-  - [ ] `Test Data` Example/Test item generators (Defaults)
+  - [ ] `Delete Settings` Doesn't work... keeps store settings instead
 
   - [ ] `TableHelper` Move functions from others apps into this one
 
 - [ ] `Mocks and Styling`
 
-  - [ ] `FAQ Page`
-
   - [ ] `Donate Page`
 
-  - [ ] `Data Table Pages`
+  - [ ] `Charts Page`
+
+  - [ ] `Actions Page`
 
 - [ ] `Dashboard List View`
 
@@ -42,6 +48,8 @@ projects. Read through this README to have a better understanding of how this pr
 - [ ] `Charts`
 
   - [ ] Replace `vue-chart-3` with `vue-chartjs`
+
+  - [ ] Improve defaults generator with records of different dates so you can test charts
 
   - [ ] How to handle two records of the same Parent on the same day in the chart graph
 

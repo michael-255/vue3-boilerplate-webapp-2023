@@ -1,39 +1,54 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn } from 'quasar'
-import { AppText, Icon, WebURL } from '@/constants/globals'
+import { AppText, Icon, RouteName } from '@/constants/globals'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-
-const aboutMessage = `${AppText.APP_NAME} is a Vue 3 Typescript project created by michael-255 on GitHub. It is
-publicly available using the MIT License.`
 </script>
 
 <template>
   <ResponsivePage :banner-icon="Icon.INFO" banner-title="About">
     <QCard>
-      <QCardSection>{{ aboutMessage }}</QCardSection>
+      <QCardSection>
+        <div class="q-mb-md">
+          {{ AppText.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
+          This project was built to be the foundation for many web apps. It is publicly available
+          using the MIT License.
+        </div>
 
-      <QCardSection class="q-pt-xs">
-        <div class="row q-col-gutter-md justify-start">
-          <div class="col-sm-6 col-xs-12">
+        <div class="q-mb-md">
+          Feel free to checkout my other projects or help support my work with a donation. Thanks
+          for visiting!
+        </div>
+
+        <div class="row q-col-gutter-md justify-center">
+          <div class="col-sm-4 col-xs-12">
+            <QBtn
+              class="full-width"
+              color="primary"
+              label="Blog"
+              target="_blank"
+              href="https://www.example.com"
+              :icon="Icon.WEB"
+            />
+          </div>
+
+          <div class="col-sm-4 col-xs-12">
             <QBtn
               class="full-width"
               color="primary"
               label="GitHub"
               target="_blank"
-              :href="WebURL.GITHUB"
+              href="https://github.com/michael-255"
               :icon="Icon.CODE"
             />
           </div>
 
-          <div class="col-sm-6 col-xs-12">
+          <div class="col-sm-4 col-xs-12">
             <QBtn
-              disable
               class="full-width"
-              color="primary"
-              label="My Apps"
-              target="_blank"
-              :href="WebURL.MYAPPS"
-              :icon="Icon.WEB"
+              color="warning"
+              label="Donate"
+              :to="{ name: RouteName.DONATE }"
+              :icon="Icon.DONATE"
             />
           </div>
         </div>

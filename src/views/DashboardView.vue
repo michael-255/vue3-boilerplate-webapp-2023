@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QBtn, date } from 'quasar'
-import { Icon, SettingKey, RouteName, TableName } from '@/constants/globals'
+import { QCard, QCardSection, QBtn } from 'quasar'
+import { Icon, SettingKey, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
 import useViewDashboard from '@/use/useViewDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
@@ -9,15 +9,9 @@ import type { IDBExample } from '@/models/models'
 import ParentCard from '@/components/ParentCard.vue'
 
 const settingsStore = useSettingsStore()
-const {
-  parentListSelection,
-  parentListOptions,
-  getExamples,
-  onCloseIntroduction,
-  generateDemoData,
-} = useViewDashboard()
+const { parentListSelection, parentListOptions, getExamples, onCloseIntroduction } =
+  useViewDashboard()
 
-const rating = ref(0)
 const examples: Ref<IDBExample[]> = ref([])
 
 onMounted(async () => {
@@ -40,43 +34,14 @@ onMounted(async () => {
           <div>- How to favorite things</div>
         </div>
 
-        <!-- TODO - TEMP - For Testing -->
-        <div class="q-mb-md">
-          {{ date.formatDate(new Date(), 'YYYY MM DD HH mm ss SSSZ') }}
-        </div>
-
-        <!-- TODO - TEMP - For Testing -->
-        <div class="q-mb-md">
-          <QBtn
-            label="Actions Test Route"
-            :icon="Icon.EDIT"
-            color="warning"
-            :to="{
-              name: RouteName.ACTIONS,
-              params: { tableSlug: 'examples', actionSlug: 'create' },
-            }"
-          />
-        </div>
-
-        <!-- TODO - TEMP - For Testing -->
-        <div class="q-mb-md">
-          <QBtn
-            label="Generate Data"
-            :icon="Icon.CREATE"
-            color="primary"
-            @click="generateDemoData()"
-          />
-        </div>
-
-        <div class="row justify-center">
-          <QBtn
-            label="Got it!"
-            size="lg"
-            color="positive"
-            :icon="Icon.RECOMMEND"
-            @click="onCloseIntroduction()"
-          />
-        </div>
+        <QBtn
+          label="Got it!"
+          class="full-width"
+          size="lg"
+          color="positive"
+          :icon="Icon.RECOMMEND"
+          @click="onCloseIntroduction()"
+        />
       </QCardSection>
     </QCard>
 

@@ -38,6 +38,7 @@ export enum Icon {
   CHARTS = 'bar_chart',
   RECORDS = 'storage',
   EXAMPLES = 'smart_toy',
+  TESTS = 'cruelty_free',
   // Misc
   DESCRIPTION = 'description',
   HELP = 'help_center',
@@ -168,14 +169,6 @@ export enum RouteName {
   CHARTS = 'Charts',
 }
 
-/**
- * Web URLs you might use throughout the app.
- */
-export enum WebURL {
-  GITHUB = 'https://github.com/michael-255',
-  MYAPPS = 'https://www.example.com',
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //     Table Constants                                                       //
@@ -190,6 +183,8 @@ export enum TableName {
   LOGS = 'Logs',
   EXAMPLES = 'Examples',
   EXAMPLE_RECORDS = 'Example Records',
+  TESTS = 'Tests',
+  TESTS_RECORDS = 'Tests Records',
 }
 
 /**
