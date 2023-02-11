@@ -5,17 +5,29 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] `Mocks and Styling`
+- Dashboard List Cards
 
-  - [ ] `Charts Page`
+- [ ] Finish up `ParentCard` component (pass in TableName for other operations?)
 
-  - [ ] `Actions Page`
+- [ ] `Time Ago` function from other app
 
-- [ ] `Dashboard List View`
+- [ ] Create `ExampleCard` and `TestCard` components using `ParentCard`
 
-  - [ ] List View items should have input(s) and a save button (maybe edit, delete, and more?)
+- [ ] Cards text area inputs
 
-  - [ ] Hide/disable save button until the input has a value
+- [ ] Cards save button disabled on hidden when input is empty
+
+- [ ] Finish the `Delete Action`
+
+- [ ] Finish the `Inspect Action`
+
+- [ ] Work on the `Edit Action`
+
+- [ ] Work on the `Charts Action`
+
+- Dashboard List Functionality
+
+- [ ] Sort the list: Favorites first, alpha by name (merge together)
 
 - [ ] `Quasar`
 
@@ -30,8 +42,6 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] Use Quasar Meta plugin to improve SEO
 
 - [ ] `Charts`
-
-  - [ ] Replace `vue-chart-3` with `vue-chartjs`
 
   - [ ] Improve defaults generator with records of different dates so you can test charts
 
@@ -165,7 +175,8 @@ Details on the steps I took to setup this project.
    - `npm i -D gh-pages` - GitHub Pages deployment
    - `npm i -D @vitest/coverage-c8` - test coverage output
    - `npm i @vueuse/core` - Vue component utilities
-   - `npm i chart.js vue-chart-3` - charts with a Vue wrapper
+   - `npm i chart.js vue-chartjs` - Chart.js with a Vue wrapper
+   - `npm i -D @types/chart.js`
    - `npm i quasar @quasar/extras` - Vue component framework
    - `npm i -D @quasar/vite-plugin`
 1. Use Quasar configurator tool to help setup Quasar for your specific project:
