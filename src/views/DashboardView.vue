@@ -6,6 +6,7 @@ import useViewDashboard from '@/use/useViewDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import { type Ref, ref, onMounted } from 'vue'
 import type { IDBExample } from '@/models/models'
+import ParentCard from '@/components/ParentCard.vue'
 
 const settingsStore = useSettingsStore()
 const {
@@ -17,7 +18,6 @@ const {
 } = useViewDashboard()
 
 const rating = ref(0)
-
 const examples: Ref<IDBExample[]> = ref([])
 
 onMounted(async () => {
@@ -61,19 +61,6 @@ onMounted(async () => {
         <!-- TODO - TEMP - For Testing -->
         <div class="q-mb-md">
           <QBtn
-            label="Charts Test Route"
-            :icon="Icon.CHARTS"
-            color="accent"
-            :to="{
-              name: RouteName.CHARTS,
-              params: { tableSlug: 'examples', id: 'test-123' },
-            }"
-          />
-        </div>
-
-        <!-- TODO - TEMP - For Testing -->
-        <div class="q-mb-md">
-          <QBtn
             label="Generate Data"
             :icon="Icon.CREATE"
             color="primary"
@@ -104,121 +91,12 @@ onMounted(async () => {
     </QCard>
 
     <!-- Parent Items List -->
+    <!-- Examples -->
     <div v-if="parentListSelection === TableName.EXAMPLES">
       <div v-for="(example, i) in examples" :key="i">
-        <QCard>
-          <QCardSection>
-            {{ example }}
-          </QCardSection>
-          <QCardSection>
-            {{ example.id }}
-          </QCardSection>
-          <QCardSection>
-            {{ example.name }}
-          </QCardSection>
-          <QCardSection>
-            {{ example.createdTimestamp }}
-          </QCardSection>
-        </QCard>
+        <ParentCard :item="example" class="q-mb-md" />
       </div>
     </div>
-
-    <QCard class="q-mb-md">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Example List Card</div>
-
-        <div>
-          <QBadge rounded color="secondary" class="q-py-none">
-            <QIcon :name="Icon.PREVIOUS" />
-            <span class="text-caption q-ml-xs">1 day ago</span>
-          </QBadge>
-        </div>
-
-        <div>
-          <QIcon :name="Icon.CALENDAR_CHECK" />
-          <span class="text-caption q-ml-xs">{{ new Date().toDateString() }}</span>
-        </div>
-
-        <div>
-          <QIcon :name="Icon.STOPWATCH" />
-          <span class="text-caption q-ml-xs">1h 23m 15s</span>
-        </div>
-
-        <div class="absolute-top-right q-ma-xs">
-          <QRating
-            v-model="rating"
-            :max="1"
-            :icon="Icon.FAVORITE_OFF"
-            :icon-selected="Icon.FAVORITE_ON"
-            color="warning"
-            size="md"
-            class="q-mr-xs"
-          />
-
-          <QBtn round flat :icon="Icon.MENU_VERTICAL">
-            <QMenu auto-close cover anchor="top middle">
-              <QList>
-                <QItem clickable>
-                  <QItemSection avatar>
-                    <QIcon color="primary" :name="Icon.INSPECT" />
-                  </QItemSection>
-                  <QItemSection>Inspect</QItemSection>
-                </QItem>
-
-                <QItem clickable>
-                  <QItemSection avatar>
-                    <QIcon color="primary" :name="Icon.EDIT" />
-                  </QItemSection>
-                  <QItemSection>Edit</QItemSection>
-                </QItem>
-
-                <QItem clickable>
-                  <QItemSection avatar>
-                    <QIcon color="primary" :name="Icon.CHARTS" />
-                  </QItemSection>
-                  <QItemSection>Charts</QItemSection>
-                </QItem>
-
-                <QSeparator />
-
-                <QItem clickable>
-                  <QItemSection avatar>
-                    <QIcon color="negative" :name="Icon.DELETE" />
-                  </QItemSection>
-                  <QItemSection>Delete</QItemSection>
-                </QItem>
-              </QList>
-            </QMenu>
-          </QBtn>
-        </div>
-      </QCardSection>
-    </QCard>
-
-    <QCard class="q-mb-md">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Example List Card</div>
-
-        <div class="q-mb-none">
-          <QBadge rounded color="secondary" class="q-py-none">
-            <QIcon :name="Icon.PREVIOUS" class="q-mr-xs" />
-            <span class="text-caption">No previous records</span>
-          </QBadge>
-        </div>
-
-        <div class="absolute-top-right q-ma-xs">
-          <QRating
-            v-model="rating"
-            :max="1"
-            :icon="Icon.FAVORITE_OFF"
-            :icon-selected="Icon.FAVORITE_ON"
-            color="warning"
-            size="md"
-            class="q-mr-xs"
-          />
-
-          <QBtn round flat :icon="Icon.MENU_VERTICAL" />
-        </div>
-      </QCardSection>
-    </QCard>
+    <!-- Other items... -->
   </ResponsivePage>
 </template>
