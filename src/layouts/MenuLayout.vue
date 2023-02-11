@@ -13,24 +13,14 @@ import {
   QIcon,
 } from 'quasar'
 import { AppText, Icon, RouteName, TableName } from '@/constants/globals'
-import { RouterView, useRoute, useRouter } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import { slugify } from '@/utils/common'
+import useGoBack from '@/use/useGoBack'
 import useUIStore from '@/stores/ui'
 
+const { onGoBack } = useGoBack()
 const uiStore = useUIStore()
 const route = useRoute()
-const router = useRouter()
-
-/**
- * Go back if pervious state is part of the app history, otherwise go to Dashboard.
- */
-function goBack(): void {
-  if (router.options.history.state.back) {
-    router.back()
-  } else {
-    router.push({ name: RouteName.DASHBOARD })
-  }
-}
 </script>
 
 <template>
@@ -47,7 +37,7 @@ function goBack(): void {
           flat
           round
           :icon="Icon.BACK"
-          @click="goBack()"
+          @click="onGoBack()"
         />
       </QToolbar>
     </QHeader>

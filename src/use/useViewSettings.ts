@@ -206,7 +206,7 @@ export default function useViewSettings() {
           )
 
           importFile.value = null // Clear input
-          log.info('Imported available data')
+          log.info('Successfully imported available data')
         } catch (error) {
           log.error('Import failed', error)
         }
@@ -249,7 +249,7 @@ export default function useViewSettings() {
           })
 
           if (fileStatus === true) {
-            log.info('File downloaded succesfully')
+            log.info('File downloaded successfully')
           } else {
             throw new Error('Browser denied file download')
           }
@@ -274,6 +274,7 @@ export default function useViewSettings() {
         try {
           await clearTable(table)
           await initializeSettings()
+          log.info(`${table} data successfully deleted`)
         } catch (error) {
           log.error(`Error deleting ${table} data`, error)
         }
@@ -294,6 +295,7 @@ export default function useViewSettings() {
         try {
           await Promise.all(Object.values(TableName).map((table) => clearTable(table as TableName)))
           await initializeSettings()
+          log.info('All data successfully deleted')
         } catch (error) {
           log.error('Error deleting all data', error)
         }
@@ -313,7 +315,7 @@ export default function useViewSettings() {
       async (): Promise<void> => {
         try {
           await deleteDatabase()
-          log.error('Reload the website now')
+          log.warn('Reload the website now')
         } catch (error) {
           log.error('Database deletion failed', error)
         }

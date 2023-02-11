@@ -53,6 +53,7 @@ export default function useDBSettings() {
    * Sets the Settings to their database or default values.
    */
   async function initializeSettings(): Promise<void> {
+    settingsStore.$reset()
     const settings: IDBSetting[] = await dexieWrapper.table(TableName.SETTINGS).toArray()
 
     // Function that returns the Setting value field or undefined

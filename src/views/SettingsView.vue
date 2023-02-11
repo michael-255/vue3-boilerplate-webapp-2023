@@ -179,7 +179,7 @@ const {
               :disable="!deleteDataModel"
               label="Delete Data"
               color="negative"
-              @click="onDeleteTableData(TableName.LOGS)"
+              @click="onDeleteTableData(deleteDataModel as TableName)"
             />
           </template>
         </QSelect>

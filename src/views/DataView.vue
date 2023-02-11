@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { Icon, RouteName, TableName } from '@/constants/globals'
+import { Icon, RouteName } from '@/constants/globals'
 import { ref } from 'vue'
+import useGoBack from '@/use/useGoBack'
 
-const selectOptions = Object.values(TableName)
-const selectModel = ref(selectOptions[0])
+const { onGoBack } = useGoBack()
+
 const searchFilter = ref('')
 
 const columns = [
@@ -117,7 +118,7 @@ const rows = [
           flat
           class="absolute-top-right q-mr-sm q-mt-sm"
           :icon="Icon.CLOSE"
-          :to="{ name: RouteName.DASHBOARD }"
+          @click="onGoBack()"
         />
       </div>
 
