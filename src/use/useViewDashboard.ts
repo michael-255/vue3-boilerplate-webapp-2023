@@ -10,7 +10,7 @@ export default function useViewDashboard() {
   const { getTable } = useDBCommon()
   const { setSetting } = useDBSettings()
 
-  const parentListSelection = computed({
+  const parentItemsSelection = computed({
     get() {
       return settingsStore[SettingKey.PARENT_LIST_SELECTION]
     },
@@ -19,7 +19,7 @@ export default function useViewDashboard() {
     },
   })
 
-  const parentListOptions = [
+  const parentItemsOptions = [
     {
       label: TableName.EXAMPLES,
       value: TableName.EXAMPLES,
@@ -30,17 +30,9 @@ export default function useViewDashboard() {
     return (await getTable(TableName.EXAMPLES)) as IDBExample[]
   }
 
-  /**
-   * Set the introduction setting value to false in settings to 'close' the introduction card.
-   */
-  async function onCloseIntroduction(): Promise<void> {
-    await setSetting(SettingKey.SHOW_INTRODUCTION, false)
-  }
-
   return {
-    parentListSelection,
-    parentListOptions,
+    parentItemsSelection,
+    parentItemsOptions,
     getExamples,
-    onCloseIntroduction,
   }
 }

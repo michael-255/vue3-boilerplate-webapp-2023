@@ -5,12 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] `Introduction`
-
-  - [ ] Create `IntroductionCard` component
-
-  - [ ] Create `useIntroduction` composable
-
 - [ ] `Low Hanging Fruit`
 
   - [ ] `Data Table Back Route` Fix so it works like the main header back route
@@ -20,8 +14,6 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] `TableHelper` Move functions from others apps into this one
 
 - [ ] `Mocks and Styling`
-
-  - [ ] `Donate Page`
 
   - [ ] `Charts Page`
 
