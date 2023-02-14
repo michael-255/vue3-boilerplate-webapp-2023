@@ -1,5 +1,5 @@
 import type { Field } from '@/constants/globals'
-import type { IDBSetting, IDBLog, IDBExample, IDBExampleRecord } from '@/models/models'
+import type { Setting, Log, Example, ExampleRecord } from '@/models/models'
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
@@ -18,7 +18,7 @@ export type AppObject = { [x: string]: any }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export type AnyModel = IDBSetting | IDBLog | IDBExample | IDBExampleRecord
+export type AnyModel = Setting | Log | Example | ExampleRecord
 
 export type SettingValue = any // May make this more specific later
 

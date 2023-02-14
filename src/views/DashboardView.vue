@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type Ref, ref, onMounted } from 'vue'
-import type { IDBExample, IDBTest } from '@/models/models'
+import type { Example, Test } from '@/models/models'
 import { QCard, QCardSection } from 'quasar'
 import { Icon, SettingKey, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
@@ -12,8 +12,8 @@ import IntroductionCard from '@/components/IntroductionCard.vue'
 const settingsStore = useSettingsStore()
 const { parentItemsSelection, parentItemsOptions, getExamples, getTests } = useViewDashboard()
 
-const examples: Ref<IDBExample[]> = ref([])
-const tests: Ref<IDBTest[]> = ref([])
+const examples: Ref<Example[]> = ref([])
+const tests: Ref<Test[]> = ref([])
 
 onMounted(async () => {
   examples.value = await getExamples()

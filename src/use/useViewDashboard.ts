@@ -1,4 +1,4 @@
-import type { IDBExample, IDBTest } from '@/models/models'
+import type { Example, Test } from '@/models/models'
 import { SettingKey, TableName } from '@/constants/globals'
 import { computed } from 'vue'
 import useDBCommon from '@/use/useDBCommon'
@@ -30,12 +30,12 @@ export default function useViewDashboard() {
     },
   ]
 
-  async function getExamples(): Promise<IDBExample[]> {
-    return (await getTable(TableName.EXAMPLES)) as IDBExample[]
+  async function getExamples(): Promise<Example[]> {
+    return (await getTable(TableName.EXAMPLES)) as Example[]
   }
 
-  async function getTests(): Promise<IDBTest[]> {
-    return (await getTable(TableName.TESTS)) as IDBTest[]
+  async function getTests(): Promise<Test[]> {
+    return (await getTable(TableName.TESTS)) as Test[]
   }
 
   return {

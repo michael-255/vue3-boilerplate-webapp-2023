@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { IDBExample } from '@/models/models'
+import type { Example } from '@/models/models'
 import { QCard, QCardSection, QBtn } from 'quasar'
 import { ActionName, Icon, RouteName, TableName } from '@/constants/globals'
 import { ref } from 'vue'
 import { slugify } from '@/utils/common'
 
 defineProps<{
-  item: IDBExample
+  item: Example
 }>()
 
 const rating = ref(0)

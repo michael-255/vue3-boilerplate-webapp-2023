@@ -1,5 +1,5 @@
 import { type Ref, ref, computed } from 'vue'
-import type { IDBExample, IDBExampleRecord, IDBTest, IDBTestRecord } from '@/models/models'
+import type { Example, ExampleRecord, Test, TestRecord } from '@/models/models'
 import { TableName } from '@/constants/globals'
 import { Icon, AppText, SettingKey, ParentStatus, RecordStatus } from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
@@ -107,13 +107,13 @@ export default function useViewSettings() {
       'info',
       async (): Promise<void> => {
         try {
-          const examples: IDBExample[] = []
-          const exampleRecords: IDBExampleRecord[] = []
-          const tests: IDBTest[] = []
-          const testRecords: IDBTestRecord[] = []
+          const examples: Example[] = []
+          const exampleRecords: ExampleRecord[] = []
+          const tests: Test[] = []
+          const testRecords: TestRecord[] = []
 
           for (let i = 0; i < 3; i++) {
-            const example: IDBExample = {
+            const example: Example = {
               id: uid(),
               createdTimestamp: new Date().getTime(),
               parentStatus: ParentStatus.ENABLED,
@@ -122,7 +122,7 @@ export default function useViewSettings() {
               favorite: i % 2 === 0 ? true : false,
               exampleMessage: 'Example Message',
             }
-            const exampleRecord: IDBExampleRecord = {
+            const exampleRecord: ExampleRecord = {
               id: uid(),
               createdTimestamp: new Date().getTime(),
               recordStatus: RecordStatus.COMPLETED,
@@ -130,7 +130,7 @@ export default function useViewSettings() {
               note: 'Example Record Note',
               exampleNumber: i,
             }
-            const test: IDBTest = {
+            const test: Test = {
               id: uid(),
               createdTimestamp: new Date().getTime(),
               parentStatus: ParentStatus.ENABLED,
@@ -139,7 +139,7 @@ export default function useViewSettings() {
               favorite: i % 2 === 0 ? true : false,
               exampleMessage: 'Test Message',
             }
-            const testRecord: IDBTestRecord = {
+            const testRecord: TestRecord = {
               id: uid(),
               createdTimestamp: new Date().getTime(),
               recordStatus: RecordStatus.COMPLETED,

@@ -1,6 +1,6 @@
 import type { IndexableType } from 'dexie'
 import type { SettingValue } from '@/constants/types'
-import type { IDBSetting } from '@/models/models'
+import type { Setting } from '@/models/models'
 import { Dark } from 'quasar'
 import { TableName, Field, SettingKey } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
@@ -43,7 +43,7 @@ export default function useDBSettings() {
 
     // Add or Update depending on if the Setting already exists
     if (!existingSetting) {
-      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as IDBSetting)
+      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as Setting)
     } else {
       return await dexieWrapper.table(TableName.SETTINGS).update(key, { value })
     }
@@ -54,11 +54,11 @@ export default function useDBSettings() {
    */
   async function initializeSettings(): Promise<void> {
     settingsStore.$reset()
-    const settings: IDBSetting[] = await dexieWrapper.table(TableName.SETTINGS).toArray()
+    const settings: Setting[] = await dexieWrapper.table(TableName.SETTINGS).toArray()
 
     // Function that returns the Setting value field or undefined
     const findSettingValue = (key: SettingKey): SettingValue | undefined => {
-      return settings.find((s: IDBSetting) => s[Field.KEY] === key)?.value
+      return settings.find((s: Setting) => s[Field.KEY] === key)?.value
     }
 
     // Defaults are set after the nullish coalescing operator, which means no setting data was found

@@ -7,33 +7,33 @@ import type { AppObject, SettingValue } from '@/constants/types'
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export interface IDBItem {
+export interface Entity {
   [Field.ID]: string
   [Field.CREATED_TIMESTAMP]: number
 }
 
-export interface IDBParent extends IDBItem {
+export interface Parent extends Entity {
   [Field.NAME]: string
   [Field.DESCRIPTION]: string
   [Field.PARENT_STATUS]: ParentStatus
   [Field.FAVORITE]: boolean
 }
 
-export interface IDBRecord extends IDBItem {
+export interface Record extends Entity {
   [Field.PARENT_ID]: string
   [Field.RECORD_STATUS]: RecordStatus
   [Field.NOTE]: string
 }
 
-export interface IDBLog {
-  [Field.ID]?: string // Optional - Gets auto generated and incremented by the table
-  [Field.CREATED_TIMESTAMP]: number
+export interface Log {
+  [Field.AUTO_ID]?: number // Optional - Gets auto generated and incremented by the table
+  [Field.TIMESTAMP]: number
   [Field.SEVERITY]: Severity
   [Field.LABEL]: string
   [Field.DETAILS]?: AppObject
 }
 
-export interface IDBSetting {
+export interface Setting {
   [Field.KEY]: SettingKey
   [Field.VALUE]: SettingValue
 }
@@ -44,18 +44,18 @@ export interface IDBSetting {
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export interface IDBExample extends IDBParent {
+export interface Example extends Parent {
   [Field.EXAMPLE_MESSAGE]: string
 }
 
-export interface IDBExampleRecord extends IDBRecord {
+export interface ExampleRecord extends Record {
   [Field.EXAMPLE_NUMBER]: number
 }
 
-export interface IDBTest extends IDBParent {
+export interface Test extends Parent {
   [Field.EXAMPLE_MESSAGE]: string
 }
 
-export interface IDBTestRecord extends IDBRecord {
+export interface TestRecord extends Record {
   [Field.EXAMPLE_NUMBER]: number
 }
