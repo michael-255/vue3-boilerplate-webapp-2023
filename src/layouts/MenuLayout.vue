@@ -51,6 +51,7 @@ const route = useRoute()
       </div>
 
       <QList>
+        <!-- Section 1 -->
         <QItem clickable v-ripple :to="{ name: RouteName.DASHBOARD }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.DASHBOARD" />
@@ -60,6 +61,7 @@ const route = useRoute()
 
         <QSeparator spaced="md" inset />
 
+        <!-- Section 2 -->
         <QItem
           clickable
           v-ripple
@@ -84,6 +86,7 @@ const route = useRoute()
 
         <QSeparator spaced="md" inset />
 
+        <!-- Section 3 -->
         <QItem clickable v-ripple :to="{ name: RouteName.SETTINGS }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.SETTINGS" />

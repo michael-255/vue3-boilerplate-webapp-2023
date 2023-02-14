@@ -88,6 +88,8 @@ export enum Field {
   KEY = 'key',
   VALUE = 'value',
   // Log
+  AUTO_ID = 'autoId',
+  TIMESTAMP = 'timestamp',
   SEVERITY = 'severity',
   LABEL = 'label',
   DETAILS = 'details',
@@ -95,13 +97,13 @@ export enum Field {
   ID = 'id',
   CREATED_TIMESTAMP = 'createdTimestamp',
   // Parent
-  PARENT_STATUS = 'parentStatus',
   NAME = 'name',
   DESCRIPTION = 'description',
+  PARENT_STATUS = 'parentStatus',
   FAVORITE = 'favorite',
   // Record
-  RECORD_STATUS = 'recordStatus',
   PARENT_ID = 'parentId',
+  RECORD_STATUS = 'recordStatus',
   NOTE = 'note',
   // Example Parent
   EXAMPLE_MESSAGE = 'exampleMessage',
@@ -112,7 +114,7 @@ export enum Field {
 export enum ParentStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
-  // ARCHIVED = 'Archived', // Reserving, but have no use for this yet
+  // ARCHIVED = 'Archived', // Reserving, but have no planned use for this yet
 }
 
 export enum RecordStatus {

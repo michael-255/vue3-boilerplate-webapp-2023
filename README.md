@@ -5,6 +5,10 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- Misc...
+
+- [ ] Combine `types.t` with `globals.ts`
+
 - Dashboard List Cards
 
 - [ ] Finish up `ParentCard` component (pass in TableName for other operations?)
