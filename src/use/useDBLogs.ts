@@ -14,7 +14,7 @@ export default function useDBLogs() {
    */
   async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
     const log: Log = {
-      [Field.CREATED_TIMESTAMP]: new Date().getTime(),
+      [Field.TIMESTAMP]: new Date().getTime(),
       [Field.SEVERITY]: severity,
       [Field.LABEL]: label,
       [Field.DETAILS]: details,
