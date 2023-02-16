@@ -5,19 +5,25 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- Misc...
+
+- [ ] `DB` to `Database` (be more verbose)
+
 - Dashboard List Cards
 
 - [ ] Finish up `ParentCard` component (pass in TableName for other operations?)
 
+- [ ] Determine how you are going to organize `ParentCard` (useParentCard composable?)
+
 - [ ] `Time Ago` function from other app
+
+- [ ] Finish the `Delete Action`
 
 - [ ] Create `ExampleCard` and `TestCard` components using `ParentCard`
 
 - [ ] Cards text area inputs
 
 - [ ] Cards save button disabled on hidden when input is empty
-
-- [ ] Finish the `Delete Action`
 
 - [ ] Finish the `Inspect Action`
 

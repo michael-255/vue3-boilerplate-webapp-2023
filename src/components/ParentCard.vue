@@ -4,12 +4,36 @@ import { QCard, QCardSection, QBtn } from 'quasar'
 import { ActionName, Icon, RouteName, TableName } from '@/constants/globals'
 import { ref } from 'vue'
 import { slugify } from '@/utils/common'
+import { useTimeAgo } from '@vueuse/core'
+import useLogger from '@/use/useLogger'
+import useSimpleDialogs from '@/use/useSimpleDialogs'
 
-defineProps<{
+const props = defineProps<{
   item: Example
 }>()
 
+const { log } = useLogger()
+const { confirmDialog } = useSimpleDialogs()
+
 const rating = ref(0)
+const timeAgo = useTimeAgo(props.item?.createdTimestamp || '')
+
+async function onDelete(id: string): Promise<void> {
+  confirmDialog(
+    'Delete',
+    `Permanently delete "${id}" from table?`,
+    Icon.DELETE,
+    'negative',
+    async () => {
+      try {
+        // await DB.deleteById(props.table, id)
+        // await updateRows()
+      } catch (error) {
+        log.error('DataTable:onDelete', error)
+      }
+    }
+  )
+}
 </script>
 
 <template>
@@ -19,7 +43,7 @@ const rating = ref(0)
 
       <QBadge rounded color="secondary" class="q-py-none">
         <QIcon :name="Icon.PREVIOUS" />
-        <span class="text-caption q-ml-xs">1 day ago</span>
+        <span class="text-caption q-ml-xs">{{ timeAgo || 'No previous records' }}</span>
       </QBadge>
 
       <div>
