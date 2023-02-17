@@ -1,20 +1,31 @@
+import type { AnyModel } from '@/constants/types'
+import type { IndexableType } from 'dexie'
 import { type Ref, ref, computed } from 'vue'
 import type { Example, ExampleRecord, Test, TestRecord } from '@/models/models'
 import { TableName } from '@/constants/globals'
 import { Icon, AppText, SettingKey, ParentStatus, RecordStatus } from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
-import useDBSettings from '@/use/useDBSettings'
+import { dexieWrapper } from '@/services/DexieWrapper'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDBCommon from '@/use/useDBCommon'
+import useDatabaseCommon from '@/use/useDatabaseCommon'
 import useLogger from '@/use/useLogger'
 import useSettingsStore from '@/stores/settings'
 
-export default function useViewSettings() {
+export default function useSettings() {
   const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
-  const { initializeSettings, setSetting } = useDBSettings()
   const { confirmDialog } = useSimpleDialogs()
-  const { getTable, clearTable, deleteDatabase, bulkAddItems } = useDBCommon()
+  const { initializeSettings, setSetting } = useDatabaseCommon()
+
+  /**
+   * Bulk add items into a defined table. Do NOT mismatch tables and item types!
+   * @param tableName (TableName)
+   * @param items (Matching table model type)
+   * @returns Array of imported item ids
+   */
+  async function bulkAddItems(tableName: TableName, items: AnyModel[]): Promise<IndexableType[]> {
+    return await dexieWrapper.table(tableName).bulkAdd(items, { allKeys: true })
+  }
 
   const importFile: Ref<any> = ref(null)
 
@@ -97,12 +108,12 @@ export default function useViewSettings() {
   }
 
   /**
-   * Generate default Examples for the app.
+   * Generate default demostration data for the app.
    */
-  async function onDefaultExamples(): Promise<void> {
+  async function onDefaults(): Promise<void> {
     confirmDialog(
-      'Load Default Examples',
-      `Would you like the load default Examples into the database?`,
+      'Load Defaults',
+      `Would you like the load defaults into the database?`,
       Icon.INFO,
       'info',
       async (): Promise<void> => {
@@ -112,7 +123,7 @@ export default function useViewSettings() {
           const tests: Test[] = []
           const testRecords: TestRecord[] = []
 
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 6; i++) {
             const example: Example = {
               id: uid(),
               createdTimestamp: new Date().getTime(),
@@ -159,9 +170,9 @@ export default function useViewSettings() {
           await bulkAddItems(TableName.TESTS, tests)
           await bulkAddItems(TableName.TEST_RECORDS, testRecords)
 
-          log.info('Default Examples loaded')
+          log.info('Defaults loaded')
         } catch (error) {
-          log.error('Failed to load default Examples', error)
+          log.error('Failed to load defaults', error)
         }
       }
     )
@@ -177,7 +188,7 @@ export default function useViewSettings() {
   }
 
   /**
-   * Confirm if you want to import your data from a JSON file.
+   * On confirmation, import your data from a JSON file.
    */
   function onImportFile(): void {
     confirmDialog(
@@ -215,7 +226,7 @@ export default function useViewSettings() {
   }
 
   /**
-   * Confirm if you want to export your data as a JSON file.
+   * On confirmation, export your data as a JSON file.
    */
   function onExportData(): void {
     const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
@@ -234,7 +245,7 @@ export default function useViewSettings() {
 
           // Get all data from each table
           const tableData = await Promise.all(
-            tableKeys.map((table) => getTable(table as TableName))
+            tableKeys.map((table) => dexieWrapper.table(table).toArray())
           )
 
           // Converting the data array into a object with table names as keys
@@ -264,26 +275,26 @@ export default function useViewSettings() {
    * @todo
    * @param table
    */
-  async function onDeleteTableData(table: TableName): Promise<void> {
+  async function onDeleteTableData(tableName: TableName): Promise<void> {
     confirmDialog(
-      `Delete ${table} Data`,
-      `Permanetly delete all ${table} data from the database?`,
+      `Delete ${tableName} Data`,
+      `Permanetly delete all ${tableName} data from the database?`,
       Icon.CLEAR,
       'negative',
       async (): Promise<void> => {
         try {
-          await clearTable(table)
+          await dexieWrapper.table(tableName).clear()
           await initializeSettings()
-          log.info(`${table} data successfully deleted`)
+          log.info(`${tableName} data successfully deleted`)
         } catch (error) {
-          log.error(`Error deleting ${table} data`, error)
+          log.error(`Error deleting ${tableName} data`, error)
         }
       }
     )
   }
 
   /**
-   * @todo
+   * On confirmation, deletes all items from all tables.
    */
   async function onDeleteAllData(): Promise<void> {
     confirmDialog(
@@ -293,7 +304,9 @@ export default function useViewSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await Promise.all(Object.values(TableName).map((table) => clearTable(table as TableName)))
+          await Promise.all(
+            Object.values(TableName).map((table) => dexieWrapper.table(table).clear())
+          )
           await initializeSettings()
           log.info('All data successfully deleted')
         } catch (error) {
@@ -304,7 +317,7 @@ export default function useViewSettings() {
   }
 
   /**
-   * @todo
+   * On confirmation, completely deletes the database and all of its data (must reload the app after).
    */
   async function onDeleteDatabase(): Promise<void> {
     confirmDialog(
@@ -314,7 +327,7 @@ export default function useViewSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await deleteDatabase()
+          await dexieWrapper.delete()
           log.warn('Reload the website now')
         } catch (error) {
           log.error('Database deletion failed', error)
@@ -333,7 +346,7 @@ export default function useViewSettings() {
     deleteDataModel,
     deleteDataOptions,
     onTestLogger,
-    onDefaultExamples,
+    onDefaults,
     onRejectedFile,
     onImportFile,
     onExportData,

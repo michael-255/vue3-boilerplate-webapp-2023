@@ -1,53 +1,13 @@
-import type { IndexableType } from 'dexie'
-import type { SettingValue } from '@/constants/types'
-import type { Setting } from '@/models/models'
 import { Dark } from 'quasar'
-import { TableName, Field, SettingKey } from '@/constants/globals'
+import type { IndexableType } from 'dexie'
+import type { AnyModel, SettingValue } from '@/constants/types'
+import type { Setting } from '@/models/models'
+import { TableName, SettingKey, Field } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
 
-export default function useDBSettings() {
+export default function useDatabaseCommon() {
   const settingsStore = useSettingsStore()
-
-  /**
-   * Gets the setting value by key.
-   * @param key
-   * @returns SettingValue or undefined
-   */
-  async function getSettingValue(key: SettingKey): Promise<SettingValue | undefined> {
-    return (
-      await dexieWrapper.table(TableName.SETTINGS).where(Field.KEY).equalsIgnoreCase(key).first()
-    )?.value
-  }
-
-  /**
-   * Sets the Setting with the provided key to the provided value in the database. Also sets quasar dark mode.
-   * @param key
-   * @param value
-   * @returns Added Setting key, or 1 on successful update
-   */
-  async function setSetting(key: SettingKey, value: SettingValue): Promise<IndexableType> {
-    const existingSetting = await dexieWrapper
-      .table(TableName.SETTINGS)
-      .where(Field.KEY)
-      .equalsIgnoreCase(key)
-      .first()
-
-    // Set Quasar dark mode if the key is for dark mode
-    if (key === SettingKey.DARK_MODE) {
-      Dark.set(!!value) // Cast to boolean
-    }
-
-    // Update setting store value
-    settingsStore[key] = value
-
-    // Add or Update depending on if the Setting already exists
-    if (!existingSetting) {
-      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as Setting)
-    } else {
-      return await dexieWrapper.table(TableName.SETTINGS).update(key, { value })
-    }
-  }
 
   /**
    * Sets the Settings to their database or default values.
@@ -98,9 +58,87 @@ export default function useDBSettings() {
     ])
   }
 
+  /**
+   * Sets the Setting with the provided key to the provided value in the database. Also sets quasar dark mode.
+   * @param key
+   * @param value
+   * @returns Added Setting key, or 1 on successful update
+   */
+  async function setSetting(key: SettingKey, value: SettingValue): Promise<IndexableType> {
+    const existingSetting = await dexieWrapper
+      .table(TableName.SETTINGS)
+      .where(Field.KEY)
+      .equalsIgnoreCase(key)
+      .first()
+
+    // Set Quasar dark mode if the key is for dark mode
+    if (key === SettingKey.DARK_MODE) {
+      Dark.set(!!value) // Cast to boolean
+    }
+
+    // Update setting store value
+    settingsStore[key] = value
+
+    // Add or Update depending on if the Setting already exists
+    if (!existingSetting) {
+      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as Setting)
+    } else {
+      return await dexieWrapper.table(TableName.SETTINGS).update(key, { value })
+    }
+  }
+
+  /**
+   * Gets all data from a table.
+   * @returns Database table data as an array
+   */
+  async function getTable(table: TableName): Promise<AnyModel[]> {
+    return await dexieWrapper.table(table).toArray()
+  }
+
+  /**
+   * Bulk add items into a defined table. Do NOT mismatch tables and item types!
+   * @param table (TableName)
+   * @param items (Matching table model type)
+   * @returns Array of imported item ids
+   */
+  async function bulkAddItems(table: TableName, items: AnyModel[]): Promise<IndexableType[]> {
+    return await dexieWrapper.table(table).bulkAdd(items, { allKeys: true })
+  }
+
+  /**
+   * Delete item in table by id or key.
+   * @param table
+   * @param id id string, log number, or setting key
+   * @returns undefined, even if nothing was deleted
+   */
+  async function deleteItem(table: TableName, id: string | number | SettingKey): Promise<void> {
+    return await dexieWrapper.table(table).delete(id)
+  }
+
+  /**
+   * Deletes all items from table.
+   * @param table
+   * @returns undefined
+   */
+  async function clearTable(table: TableName): Promise<void> {
+    return await dexieWrapper.table(table).clear()
+  }
+
+  /**
+   * Completely deletes the database and all of its data (must reload the app after).
+   * @returns undefined
+   */
+  async function deleteDatabase(): Promise<void> {
+    return await dexieWrapper.delete()
+  }
+
   return {
-    getSettingValue,
-    setSetting,
     initializeSettings,
+    setSetting,
+    getTable,
+    bulkAddItems,
+    deleteItem,
+    clearTable,
+    deleteDatabase,
   }
 }

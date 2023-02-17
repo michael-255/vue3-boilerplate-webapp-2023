@@ -5,21 +5,11 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Misc...
-
-- [ ] `DB` to `Database` (be more verbose)
-
 - Dashboard List Cards
-
-- [ ] Need to finish the `DashboardView` with composable functions for `liveQuery`
 
 - [ ] Finish up `ParentCard` component (pass in TableName for other operations?)
 
 - [ ] Determine how you are going to organize `ParentCard` (useParentCard composable?)
-
-- [ ] `Time Ago` function from other app
-
-- [ ] Finish the `Delete Action`
 
 - [ ] Create `ExampleCard` and `TestCard` components using `ParentCard`
 

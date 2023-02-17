@@ -7,7 +7,7 @@ import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDBCommon from '@/use/useDBCommon'
+import useDatabaseCommon from '@/use/useDatabaseCommon'
 
 const props = defineProps<{
   tableName: TableName
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const { log } = useLogger()
 const { confirmDialog } = useSimpleDialogs()
-const { deleteItem } = useDBCommon()
+const { deleteItem } = useDatabaseCommon()
 
 const rating = ref(0)
 const timeAgo = useTimeAgo(props.item?.createdTimestamp || '')

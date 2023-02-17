@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
-import useDBSettings from '@/use/useDBSettings'
+import useDatabaseCommon from '@/use/useDatabaseCommon'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/use/useLogger'
 
 const { log } = useLogger()
 const route = useRoute()
-const { initializeSettings } = useDBSettings()
+const { initializeSettings } = useDatabaseCommon()
 
 const layout: Ref<any> = ref(null)
 

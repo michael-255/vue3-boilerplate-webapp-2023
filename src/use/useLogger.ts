@@ -1,8 +1,10 @@
-import { Icon, SettingKey, Severity } from '@/constants/globals'
+import type { IndexableType } from 'dexie'
+import type { Log } from '@/models/models'
+import { Field, Icon, SettingKey, Severity, TableName } from '@/constants/globals'
 import { logger } from '@/services/PrettyLogger'
+import { dexieWrapper } from '@/services/DexieWrapper'
 import useNotifications from '@/use/useNotifications'
 import useSettingsStore from '@/stores/settings'
-import useDBLogs from '@/use/useDBLogs'
 
 /**
  * Utilities for logging that include notifications and database entries.
@@ -10,8 +12,26 @@ import useDBLogs from '@/use/useDBLogs'
  */
 export default function useLogger() {
   const settingsStore = useSettingsStore()
-  const { addLog } = useDBLogs()
   const { notify } = useNotifications()
+
+  /**
+   * Adds a Log to the database.
+   * @param severity
+   * @param label
+   * @param error
+   * @param location
+   * @returns Id of new Log
+   */
+  async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
+    const log: Log = {
+      [Field.TIMESTAMP]: new Date().getTime(),
+      [Field.SEVERITY]: severity,
+      [Field.LABEL]: label,
+      [Field.DETAILS]: details,
+    }
+
+    return await dexieWrapper.table(TableName.LOGS).add(log)
+  }
 
   /**
    * Log object with common logger functions.

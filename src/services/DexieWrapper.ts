@@ -17,10 +17,10 @@ export class DexieWrapper extends Dexie {
     this.version(1).stores({
       [TableName.SETTINGS]: `&${Field.KEY}`,
       [TableName.LOGS]: `++${Field.AUTO_ID}`,
-      [TableName.EXAMPLES]: `&${Field.ID}, ${Field.PARENT_STATUS}`,
-      [TableName.EXAMPLE_RECORDS]: `&${Field.ID}, ${Field.RECORD_STATUS}, ${Field.PARENT_ID}`,
-      [TableName.TESTS]: `&${Field.ID}, ${Field.PARENT_STATUS}`,
-      [TableName.TEST_RECORDS]: `&${Field.ID}, ${Field.RECORD_STATUS}, ${Field.PARENT_ID}`,
+      [TableName.EXAMPLES]: `&${Field.ID}, ${Field.NAME}`,
+      [TableName.EXAMPLE_RECORDS]: `&${Field.ID}, ${Field.PARENT_ID}`,
+      [TableName.TESTS]: `&${Field.ID}, ${Field.NAME}`,
+      [TableName.TEST_RECORDS]: `&${Field.ID}, ${Field.PARENT_ID}`,
     })
   }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { QSelect, QBtn } from 'quasar'
 import { AppText, Icon, TableName, Limit, RouteName } from '@/constants/globals'
-import useViewSettings from '@/use/useViewSettings'
+import useSettings from '@/use/useSettings'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import { slugify } from '@/utils/common'
 
@@ -15,14 +15,14 @@ const {
   deleteDataModel,
   deleteDataOptions,
   onTestLogger,
-  onDefaultExamples,
+  onDefaults,
   onRejectedFile,
   onImportFile,
   onExportData,
   onDeleteTableData,
   onDeleteAllData,
   onDeleteDatabase,
-} = useViewSettings()
+} = useSettings()
 </script>
 
 <template>
@@ -55,7 +55,7 @@ const {
         <!-- Examples -->
         <div class="q-mb-md">Load default Examples into the database.</div>
 
-        <QBtn label="Load Examples" color="primary" @click="onDefaultExamples()" />
+        <QBtn label="Load Examples" color="primary" @click="onDefaults()" />
       </QCardSection>
     </QCard>
 

@@ -1,51 +1,14 @@
 <script setup lang="ts">
-import { type Ref, ref, onUnmounted } from 'vue'
-import type { Example, Test } from '@/models/models'
 import { QCard, QCardSection } from 'quasar'
 import { Icon, SettingKey, TableName } from '@/constants/globals'
-import { liveQuery } from 'dexie'
 import useSettingsStore from '@/stores/settings'
-import useViewDashboard from '@/use/useViewDashboard'
+import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ParentCard from '@/components/ParentCard.vue'
 import IntroductionCard from '@/components/IntroductionCard.vue'
-import useLogger from '@/use/useLogger'
 
-const { consoleDebug } = useLogger()
 const settingsStore = useSettingsStore()
-const { parentItemsSelection, parentItemsOptions, getExamples, getTests } = useViewDashboard()
-
-const examples: Ref<Example[]> = ref([])
-const tests: Ref<Test[]> = ref([])
-
-const examplesObservable = liveQuery(() => getExamples())
-const testsObservable = liveQuery(() => getTests())
-
-// TODO - This logic should be isolated to the useViewDashboard hook
-const examplesSubscription = examplesObservable.subscribe({
-  next: (examplesData) => {
-    consoleDebug('examples', examplesData)
-    examples.value = examplesData as Example[]
-  },
-  error: (error) => {
-    consoleDebug('error', error)
-  },
-})
-
-const testsSubscription = testsObservable.subscribe({
-  next: (testsData) => {
-    consoleDebug('tests', testsData)
-    tests.value = testsData as Test[]
-  },
-  error: (error) => {
-    consoleDebug('error', error)
-  },
-})
-
-onUnmounted(() => {
-  examplesSubscription.unsubscribe()
-  testsSubscription.unsubscribe()
-})
+const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboard()
 </script>
 
 <template>
@@ -55,7 +18,7 @@ onUnmounted(() => {
     <!-- Parent Items Selection -->
     <QCard class="q-mb-md">
       <QCardSection>
-        <div class="text-h6 q-mb-xs">What would you like to do?</div>
+        <div class="text-h6 q-mb-xs">What would you like to work on?</div>
 
         <QOptionGroup
           v-model="parentItemsSelection"

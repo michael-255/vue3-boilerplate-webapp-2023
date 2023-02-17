@@ -1,8 +1,8 @@
 import { SettingKey } from '@/constants/globals'
-import useDBSettings from '@/use/useDBSettings'
+import useDatabaseCommon from '@/use/useDatabaseCommon'
 
 export default function useIntroduction() {
-  const { setSetting } = useDBSettings()
+  const { setSetting } = useDatabaseCommon()
 
   /**
    * Set the introduction setting value to false in settings to close the introduction card.
