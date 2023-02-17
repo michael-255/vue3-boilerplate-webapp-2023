@@ -7,13 +7,16 @@ import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
+import useDBCommon from '@/use/useDBCommon'
 
 const props = defineProps<{
+  tableName: TableName
   item: Example
 }>()
 
 const { log } = useLogger()
 const { confirmDialog } = useSimpleDialogs()
+const { deleteItem } = useDBCommon()
 
 const rating = ref(0)
 const timeAgo = useTimeAgo(props.item?.createdTimestamp || '')
@@ -21,12 +24,12 @@ const timeAgo = useTimeAgo(props.item?.createdTimestamp || '')
 async function onDelete(id: string): Promise<void> {
   confirmDialog(
     'Delete',
-    `Permanently delete "${id}" from table?`,
+    `Permanently delete "${id}" from ${props.tableName}?`,
     Icon.DELETE,
     'negative',
     async () => {
       try {
-        // await DB.deleteById(props.table, id)
+        await deleteItem(props.tableName, id)
         // await updateRows()
       } catch (error) {
         log.error('DataTable:onDelete', error)
@@ -124,7 +127,7 @@ async function onDelete(id: string): Promise<void> {
 
               <QSeparator />
 
-              <QItem clickable>
+              <QItem clickable @click="onDelete(item.id)">
                 <QItemSection avatar>
                   <QIcon color="negative" :name="Icon.DELETE" />
                 </QItemSection>

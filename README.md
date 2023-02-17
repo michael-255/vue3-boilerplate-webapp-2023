@@ -11,6 +11,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Dashboard List Cards
 
+- [ ] Need to finish the `DashboardView` with composable functions for `liveQuery`
+
 - [ ] Finish up `ParentCard` component (pass in TableName for other operations?)
 
 - [ ] Determine how you are going to organize `ParentCard` (useParentCard composable?)
