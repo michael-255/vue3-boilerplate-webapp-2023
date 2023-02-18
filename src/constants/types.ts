@@ -16,7 +16,7 @@ export type ParentCardItem = {
   id: string
   name: string
   favorite: boolean
-  previousTimestamp: number
+  previousTimestamp?: number
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@ import { dexieWrapper } from '@/services/DexieWrapper'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
 import useSettingsStore from '@/stores/settings'
 import useLogger from '@/use/useLogger'
-import TableHelper from '@/services/TableHelper'
+import TableUtils from '@/services/TableUtils'
 
 export default function useDashboard() {
   const settingsStore = useSettingsStore()
@@ -66,7 +66,7 @@ export default function useDashboard() {
         next: async (data: ParentModel[]) => {
           const parentCardItems: ParentCardItem[] = await getParentCardItems(
             data,
-            TableHelper.getRecordTable(parentTable) as RecordTable
+            TableUtils.getRecordTable(parentTable)
           )
 
           const favorites = parentCardItems.filter((item) => item.favorite)

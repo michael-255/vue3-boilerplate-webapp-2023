@@ -7,13 +7,15 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Dashboard List Cards
 
-- [ ] Create `ExampleCard` and `TestCard` components using `ParentCard`
+- [ ] `ExampleCard` and `TestCard`
 
-- [ ] Cards text area inputs
+  - [ ] Should use the `ParentCard` component and slot
 
-- [ ] Cards save button disabled on hidden when input is empty
+  - [ ] Add the input for `exampleNumber`
 
-- [ ] Finish the `Inspect Action`
+  - [ ] Add button to save the record when the input is filled (hide and disable button otherwise)
+
+- [ ] Finish the `Inspect Action` (most fun part!)
 
 - [ ] Work on the `Edit Action`
 

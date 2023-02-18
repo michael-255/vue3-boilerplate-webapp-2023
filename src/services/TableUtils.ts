@@ -1,12 +1,18 @@
-import type { ColumnProps } from '@/constants/types'
+import type { ColumnProps, ParentTable, RecordTable } from '@/constants/types'
 import { ActionName, TableName, Icon, Field } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 
-const TableHelper = {
+const TableUtils = {
   getFields(tableName: TableName): Field[] {
     return {
-      [TableName.SETTINGS]: [], // Can't perform actions on this table
-      [TableName.LOGS]: [], // Can't perform actions on this table
+      [TableName.SETTINGS]: [Field.KEY, Field.VALUE],
+      [TableName.LOGS]: [
+        Field.AUTO_ID,
+        Field.TIMESTAMP,
+        Field.SEVERITY,
+        Field.LABEL,
+        Field.DETAILS,
+      ],
       [TableName.EXAMPLES]: [
         Field.ID,
         Field.CREATED_TIMESTAMP,
@@ -88,26 +94,18 @@ const TableHelper = {
     }[tableName]
   },
 
-  getParentTable(tableName: TableName): TableName | null {
+  getParentTable(recordTable: RecordTable): ParentTable {
     return {
-      [TableName.SETTINGS]: null,
-      [TableName.LOGS]: null,
-      [TableName.EXAMPLES]: null,
       [TableName.EXAMPLE_RECORDS]: TableName.EXAMPLES,
-      [TableName.TESTS]: null,
       [TableName.TEST_RECORDS]: TableName.TESTS,
-    }[tableName]
+    }[recordTable] as ParentTable
   },
 
-  getRecordTable(tableName: TableName): TableName | null {
+  getRecordTable(parentTable: ParentTable): RecordTable {
     return {
-      [TableName.SETTINGS]: null,
-      [TableName.LOGS]: null,
       [TableName.EXAMPLES]: TableName.EXAMPLE_RECORDS,
-      [TableName.EXAMPLE_RECORDS]: null,
       [TableName.TESTS]: TableName.TEST_RECORDS,
-      [TableName.TEST_RECORDS]: null,
-    }[tableName]
+    }[parentTable] as RecordTable
   },
 
   getLabelSingular(tableName: TableName): string {
@@ -168,4 +166,4 @@ const TableHelper = {
   },
 }
 
-export default TableHelper
+export default TableUtils
