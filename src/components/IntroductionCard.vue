@@ -9,6 +9,11 @@ const uiStore = useUIStore()
 const { onCloseIntroduction } = useIntroduction()
 
 const rating: Ref<number> = ref(0)
+// TODO
+// - Refine the introduction explanations by including more details
+// - Add a message when you click certain buttons versus routing the user to a new page
+// - Add a message when you click the star icon
+// - Add a message when you click the menu icon
 </script>
 
 <template>

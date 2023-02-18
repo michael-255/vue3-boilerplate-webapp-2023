@@ -2,7 +2,7 @@ import type { ColumnProps } from '@/constants/types'
 import { ActionName, TableName, Icon, Field } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 
-export const TableHelper = {
+const TableHelper = {
   getFields(tableName: TableName): Field[] {
     return {
       [TableName.SETTINGS]: [], // Can't perform actions on this table
@@ -156,3 +156,5 @@ export const TableHelper = {
     }[action]
   },
 }
+
+export default TableHelper

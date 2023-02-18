@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import type { Example } from '@/models/models'
+import type { Example, ExampleRecord } from '@/models/models'
+import type { AnyModel } from '@/constants/types'
+import type { IndexableType } from 'dexie'
 import { QCard, QCardSection, QBtn } from 'quasar'
-import { ActionName, Icon, RouteName, TableName } from '@/constants/globals'
-import { ref } from 'vue'
+import { ActionName, Field, Icon, RouteName, TableName } from '@/constants/globals'
+import { type Ref, onMounted, ref, computed } from 'vue'
 import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
+import { dexieWrapper } from '@/services/DexieWrapper'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
@@ -18,21 +21,71 @@ const { log } = useLogger()
 const { confirmDialog } = useSimpleDialogs()
 const { deleteItem } = useDatabaseCommon()
 
-const rating = ref(0)
+const previousRecord: Ref<ExampleRecord | undefined> = ref(undefined)
+
+onMounted(async () => {
+  previousRecord.value = await getNewestExampleRecord(TableName.EXAMPLE_RECORDS, props.item.id)
+})
+
+/**
+ * Get most recent item by table and field value.
+ * @param table
+ * @param field
+ * @param value
+ * @returns Single item or undefined
+ */
+async function getNewestExampleRecord(
+  tableName: TableName,
+  parentId: string
+): Promise<ExampleRecord | undefined> {
+  return (
+    await dexieWrapper
+      .table(tableName)
+      .where(Field.PARENT_ID)
+      .equalsIgnoreCase(parentId)
+      .sortBy(Field.CREATED_TIMESTAMP)
+  ).reverse()[0]
+}
+
+/**
+ * Update provided properties on table item by the originalId.
+ * @param tableName
+ * @param originalId
+ * @param props
+ * @returns 1 on a successful update
+ */
+async function updateItem(
+  tableName: TableName,
+  originalId: string,
+  props: Partial<AnyModel>
+): Promise<IndexableType> {
+  return await dexieWrapper.table(tableName).update(originalId, props)
+}
+
+const rating = computed({
+  get() {
+    return props.item.favorite ? 1 : 0
+  },
+  async set(num: number) {
+    log.info('Favorites updated')
+    await updateItem(props.tableName, props.item.id, { favorite: num === 1 ? true : false })
+  },
+})
+
 const timeAgo = useTimeAgo(props.item?.createdTimestamp || '')
 
 async function onDelete(id: string): Promise<void> {
   confirmDialog(
     'Delete',
-    `Permanently delete "${id}" from ${props.tableName}?`,
+    `Permanently delete item ${id} from ${props.tableName}?`,
     Icon.DELETE,
     'negative',
     async () => {
       try {
         await deleteItem(props.tableName, id)
-        // await updateRows()
+        log.info(`Successfully deleted item ${id}`)
       } catch (error) {
-        log.error('DataTable:onDelete', error)
+        log.error('Delete failed', error)
       }
     }
   )
@@ -52,7 +105,7 @@ async function onDelete(id: string): Promise<void> {
       <div>
         <QIcon :name="Icon.CALENDAR_CHECK" />
         <span class="text-caption q-ml-xs">
-          {{ new Date(item.createdTimestamp).toDateString() }}
+          {{ new Date(previousRecord?.createdTimestamp || 0).toDateString() }}
         </span>
       </div>
 
@@ -83,7 +136,7 @@ async function onDelete(id: string): Promise<void> {
                 :to="{
                   name: RouteName.ACTIONS,
                   params: {
-                    tableSlug: slugify(TableName.EXAMPLES),
+                    tableSlug: slugify(tableName),
                     actionSlug: slugify(ActionName.INSPECT),
                     id: item.id,
                   },
@@ -100,7 +153,7 @@ async function onDelete(id: string): Promise<void> {
                 :to="{
                   name: RouteName.ACTIONS,
                   params: {
-                    tableSlug: slugify(TableName.EXAMPLES),
+                    tableSlug: slugify(tableName),
                     actionSlug: slugify(ActionName.EDIT),
                     id: item.id,
                   },
@@ -116,7 +169,7 @@ async function onDelete(id: string): Promise<void> {
                 clickable
                 :to="{
                   name: RouteName.CHARTS,
-                  params: { tableSlug: slugify(TableName.EXAMPLES), id: item.id },
+                  params: { tableSlug: slugify(tableName), id: item.id },
                 }"
               >
                 <QItemSection avatar>

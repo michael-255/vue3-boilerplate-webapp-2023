@@ -9,6 +9,8 @@ import IntroductionCard from '@/components/IntroductionCard.vue'
 
 const settingsStore = useSettingsStore()
 const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboard()
+// TODO - Add functions to useDashboard that handle setting up the previous records and more
+// TODO - Add component comment about using v-show instead of v-if
 </script>
 
 <template>
@@ -29,18 +31,16 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
     </QCard>
 
     <!-- Parent Items List -->
-    <!-- Examples -->
-    <div v-if="parentItemsSelection === TableName.EXAMPLES">
+    <div v-show="parentItemsSelection === TableName.EXAMPLES">
       <div v-for="(example, i) in examples" :key="i">
         <ParentCard :table-name="TableName.EXAMPLES" :item="example" class="q-mb-md" />
       </div>
     </div>
 
-    <div v-else-if="parentItemsSelection === TableName.TESTS">
+    <div v-show="parentItemsSelection === TableName.TESTS">
       <div v-for="(test, i) in tests" :key="i">
         <ParentCard :table-name="TableName.TESTS" :item="test" class="q-mb-md" />
       </div>
     </div>
-    <!-- Other items... -->
   </ResponsivePage>
 </template>
