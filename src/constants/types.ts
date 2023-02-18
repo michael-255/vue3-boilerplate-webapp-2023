@@ -1,5 +1,5 @@
-import type { Field } from '@/constants/globals'
-import type { Setting, Log, Example, ExampleRecord } from '@/models/models'
+import type { Field, TableName } from '@/constants/globals'
+import type { Setting, Log, Example, ExampleRecord, Test, TestRecord } from '@/models/models'
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
@@ -12,13 +12,28 @@ import type { Setting, Log, Example, ExampleRecord } from '@/models/models'
  */
 export type AppObject = { [x: string]: any }
 
+export type ParentCardItem = {
+  id: string
+  name: string
+  favorite: boolean
+  previousTimestamp: number
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //     Model Types                                                           //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export type AnyModel = Setting | Log | Example | ExampleRecord
+export type ParentTable = TableName.EXAMPLES | TableName.TESTS
+
+export type RecordTable = TableName.EXAMPLE_RECORDS | TableName.TEST_RECORDS
+
+export type AnyModel = Setting | Log | Example | ExampleRecord | Test | TestRecord
+
+export type ParentModel = Example | Test
+
+export type RecordModel = ExampleRecord | TestRecord
 
 export type SettingValue = any // May make this more specific later
 

@@ -1,21 +1,19 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QBtn } from 'quasar'
+import { QCard, QCardSection, QBtn, date } from 'quasar'
 import { ActionName, Icon, RouteName, TableName } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useParentCard from '@/use/useParentCard'
 
-const props = defineProps<{
+defineProps<{
   tableName: TableName
   id: string
   name: string
   favorite: boolean
+  previousTimestamp?: number // Will be undefined if no records have been recorded yet
 }>()
 
-const { previousRecordTimestamp, previousRecordDate, onFavoriteToggle, onDelete } = useParentCard(
-  props.tableName,
-  props.id
-)
+const { onFavoriteToggle, onDelete } = useParentCard()
 </script>
 
 <template>
@@ -115,15 +113,15 @@ const { previousRecordTimestamp, previousRecordDate, onFavoriteToggle, onDelete 
       <QBadge rounded color="secondary" class="q-py-none">
         <QIcon :name="Icon.PREVIOUS" />
         <span class="text-caption q-ml-xs">
-          {{ useTimeAgo(previousRecordTimestamp || '').value || 'No previous records' }}
+          {{ useTimeAgo(previousTimestamp || '').value || 'No previous records' }}
         </span>
       </QBadge>
 
       <!-- Previous Record Created Date -->
-      <div>
+      <div v-show="previousTimestamp">
         <QIcon :name="Icon.CALENDAR_CHECK" />
         <span class="text-caption q-ml-xs">
-          {{ previousRecordDate }}
+          {{ date.formatDate(previousTimestamp, 'ddd, YYYY MMM Do, h:mm A') }}
         </span>
       </div>
 

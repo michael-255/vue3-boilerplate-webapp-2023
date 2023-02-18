@@ -7,10 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Dashboard List Cards
 
-- [ ] Finish up `ParentCard` component (pass in TableName for other operations?)
-
-- [ ] Determine how you are going to organize `ParentCard` (useParentCard composable?)
-
 - [ ] Create `ExampleCard` and `TestCard` components using `ParentCard`
 
 - [ ] Cards text area inputs

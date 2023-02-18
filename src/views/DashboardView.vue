@@ -9,8 +9,7 @@ import IntroductionCard from '@/components/IntroductionCard.vue'
 
 const settingsStore = useSettingsStore()
 const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboard()
-// TODO - Add functions to useDashboard that handle setting up the previous records and more
-// TODO - Add component comment about using v-show instead of v-if
+// TODO - Add comments about using v-show instead of v-if
 </script>
 
 <template>
@@ -39,6 +38,7 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
           :id="example.id"
           :name="example.name"
           :favorite="example.favorite"
+          :previous-timestamp="example.previousTimestamp"
         />
       </div>
     </div>
@@ -51,6 +51,7 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
           :id="test.id"
           :name="test.name"
           :favorite="test.favorite"
+          :previous-timestamp="test.previousTimestamp"
         />
       </div>
     </div>

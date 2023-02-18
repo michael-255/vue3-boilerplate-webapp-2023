@@ -1,12 +1,12 @@
 import { liveQuery } from 'dexie'
-import type { Example, Test } from '@/models/models'
-import type { AnyModel } from '@/constants/types'
+import type { ParentCardItem, ParentModel, ParentTable, RecordTable } from '@/constants/types'
 import { type Ref, ref, computed, onUnmounted } from 'vue'
 import { Field, SettingKey, TableName } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
 import useSettingsStore from '@/stores/settings'
 import useLogger from '@/use/useLogger'
+import TableHelper from '@/services/TableHelper'
 
 export default function useDashboard() {
   const settingsStore = useSettingsStore()
@@ -14,28 +14,76 @@ export default function useDashboard() {
   const { setSetting } = useDatabaseCommon()
 
   /**
-   * Live queries the table and updates the provided ref with the data sorted by name and favorite status.
+   * Get most recent previous record created timestamp by parent id.
    * @param tableName
+   * @param parentId
+   * @returns Number or undefined
+   */
+  async function getPreviousRecordTimestamp(
+    recordTable: RecordTable,
+    parentId: string
+  ): Promise<number | undefined> {
+    return (
+      await dexieWrapper
+        .table(recordTable)
+        .where(Field.PARENT_ID)
+        .equalsIgnoreCase(parentId)
+        .sortBy(Field.CREATED_TIMESTAMP)
+    ).reverse()[0]?.[Field.CREATED_TIMESTAMP]
+  }
+
+  /**
+   * TODO
+   * @param items
+   * @param recordTable
+   * @returns
+   */
+  async function getParentCardItems(items: ParentModel[], recordTable: RecordTable) {
+    return Promise.all(
+      items.map(async (item) => {
+        return {
+          id: item.id,
+          name: item.name,
+          favorite: item.favorite,
+          previousTimestamp: await getPreviousRecordTimestamp(recordTable, item.id),
+        } as ParentCardItem
+      })
+    )
+  }
+
+  /**
+   * Live queries the table and updates the provided ref with the data as sorted parent card items.
+   * @param parentTable
    * @param resultsRef
    * @returns Subscription
    */
-  function liveQueryFavoritesSubscription(tableName: TableName, resultsRef: Ref<AnyModel[]>) {
-    return liveQuery(() => dexieWrapper.table(tableName).orderBy(Field.NAME).toArray()).subscribe({
-      next: (data) => {
-        const favorites = data.filter((item) => item.favorite)
-        const nonFavorites = data.filter((item) => !item.favorite)
-        const combined = [...favorites, ...nonFavorites]
-        resultsRef.value = combined as AnyModel[]
-        consoleDebug(`Retrieved ${tableName}`, combined)
-      },
-      error: (error) => {
-        log.error(`Failed to retrieve ${tableName}`, error)
-      },
-    })
+  function liveQueryFavoritesSubscription(
+    parentTable: ParentTable,
+    resultsRef: Ref<ParentCardItem[]>
+  ) {
+    return liveQuery(() => dexieWrapper.table(parentTable).orderBy(Field.NAME).toArray()).subscribe(
+      {
+        next: async (data: ParentModel[]) => {
+          const parentCardItems: ParentCardItem[] = await getParentCardItems(
+            data,
+            TableHelper.getRecordTable(parentTable) as RecordTable
+          )
+
+          const favorites = parentCardItems.filter((item) => item.favorite)
+          const nonFavorites = parentCardItems.filter((item) => !item.favorite)
+          const combined = [...favorites, ...nonFavorites]
+          resultsRef.value = combined as ParentCardItem[]
+          consoleDebug(`Retrieved ${parentTable}`, combined)
+        },
+        error: (error) => {
+          log.error(`Failed to retrieve ${parentTable}`, error)
+        },
+      }
+    )
   }
 
-  const examples: Ref<Example[]> = ref([])
-  const tests: Ref<Test[]> = ref([])
+  const examples: Ref<ParentCardItem[]> = ref([])
+  const tests: Ref<ParentCardItem[]> = ref([])
 
   const examplesSubscription = liveQueryFavoritesSubscription(TableName.EXAMPLES, examples)
   const testsSubscription = liveQueryFavoritesSubscription(TableName.TESTS, tests)

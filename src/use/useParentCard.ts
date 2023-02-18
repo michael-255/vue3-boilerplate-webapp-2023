@@ -1,48 +1,12 @@
-import { Field, Icon, TableName } from '@/constants/globals'
+import { Icon, TableName } from '@/constants/globals'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
-import { dexieWrapper } from '@/services/DexieWrapper'
-import { onMounted, ref, type Ref } from 'vue'
-import TableHelper from '@/services/TableHelper'
 
-export default function useParentCard(tableName: TableName, id: string) {
-  const { log, consoleDebug } = useLogger()
+export default function useParentCard() {
+  const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
   const { updateItem, deleteItem } = useDatabaseCommon()
-
-  /**
-   * Get most recent previous record created timestamp by parent id.
-   * @param tableName
-   * @param parentId
-   * @returns Number or undefined
-   */
-  async function getPreviousRecordTimestamp(
-    tableName: TableName,
-    parentId: string
-  ): Promise<number | undefined> {
-    return (
-      await dexieWrapper
-        .table(tableName)
-        .where(Field.PARENT_ID)
-        .equalsIgnoreCase(parentId)
-        .sortBy(Field.CREATED_TIMESTAMP)
-    ).reverse()[0]?.[Field.CREATED_TIMESTAMP]
-  }
-
-  const previousRecordTimestamp: Ref<number | undefined> = ref(undefined)
-  const previousRecordDate: Ref<string> = ref('')
-
-  onMounted(async () => {
-    const recordTable = TableHelper.getRecordTable(tableName) as TableName
-    const timestamp = (await getPreviousRecordTimestamp(recordTable, id)) as number
-    consoleDebug('TEST', {
-      recordTable,
-      timestamp,
-    })
-    previousRecordTimestamp.value = timestamp
-    previousRecordDate.value = new Date(timestamp).toString()
-  })
 
   /**
    * TODO
@@ -82,8 +46,6 @@ export default function useParentCard(tableName: TableName, id: string) {
   }
 
   return {
-    previousRecordTimestamp,
-    previousRecordDate,
     onFavoriteToggle,
     onDelete,
   }
