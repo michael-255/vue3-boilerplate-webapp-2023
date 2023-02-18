@@ -1,7 +1,7 @@
 import { SettingKey } from '@/constants/globals'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
 
-export default function useIntroduction() {
+export default function useIntroductionCard() {
   const { setSetting } = useDatabaseCommon()
 
   /**

@@ -2,11 +2,11 @@
 import { QCard, QCardSection } from 'quasar'
 import { AppText, Icon, RouteName } from '@/constants/globals'
 import { type Ref, ref } from 'vue'
-import useIntroduction from '@/use/useIntroduction'
+import useIntroductionCard from '@/use/useIntroductionCard'
 import useUIStore from '@/stores/ui'
 
 const uiStore = useUIStore()
-const { onCloseIntroduction } = useIntroduction()
+const { onCloseIntroduction } = useIntroductionCard()
 
 const rating: Ref<number> = ref(0)
 // TODO

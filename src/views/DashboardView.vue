@@ -4,7 +4,7 @@ import { Icon, SettingKey, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
 import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import ParentCard from '@/components/ParentCard.vue'
+import TESTParentCard from '@/components/TESTParentCard.vue'
 import IntroductionCard from '@/components/IntroductionCard.vue'
 
 const settingsStore = useSettingsStore()
@@ -33,13 +33,27 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
     <!-- Parent Items List -->
     <div v-show="parentItemsSelection === TableName.EXAMPLES">
       <div v-for="(example, i) in examples" :key="i">
-        <ParentCard :table-name="TableName.EXAMPLES" :item="example" class="q-mb-md" />
+        <TESTParentCard
+          class="q-mb-md"
+          :table-name="TableName.EXAMPLES"
+          :id="example.id"
+          :name="example.name"
+          :favorite="example.favorite"
+          :temp-date="example.createdTimestamp"
+        />
       </div>
     </div>
 
     <div v-show="parentItemsSelection === TableName.TESTS">
       <div v-for="(test, i) in tests" :key="i">
-        <ParentCard :table-name="TableName.TESTS" :item="test" class="q-mb-md" />
+        <TESTParentCard
+          class="q-mb-md"
+          :table-name="TableName.TESTS"
+          :id="test.id"
+          :name="test.name"
+          :favorite="test.favorite"
+          :temp-date="test.createdTimestamp"
+        />
       </div>
     </div>
   </ResponsivePage>

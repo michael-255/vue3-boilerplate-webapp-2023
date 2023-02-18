@@ -88,6 +88,21 @@ export default function useDatabaseCommon() {
   }
 
   /**
+   * Update provided properties on table item by the originalId.
+   * @param tableName
+   * @param originalId
+   * @param props
+   * @returns 1 on a successful update
+   */
+  async function updateItem(
+    tableName: TableName,
+    originalId: string,
+    props: Partial<AnyModel>
+  ): Promise<IndexableType> {
+    return await dexieWrapper.table(tableName).update(originalId, props)
+  }
+
+  /**
    * Gets all data from a table.
    * @returns Database table data as an array
    */
@@ -135,6 +150,7 @@ export default function useDatabaseCommon() {
   return {
     initializeSettings,
     setSetting,
+    updateItem,
     getTable,
     bulkAddItems,
     deleteItem,
