@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn, date } from 'quasar'
-import { ActionName, Icon, RouteName, TableName } from '@/constants/globals'
+import { ActionName, Icon, RouteName } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useParentCard from '@/use/useParentCard'
+import type { ParentTable } from '@/constants/types'
 
 defineProps<{
-  tableName: TableName
+  parentTable: ParentTable
   id: string
   name: string
   favorite: boolean
@@ -29,7 +30,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
           color="warning"
           size="md"
           class="cursor-pointer"
-          @click="onFavoriteToggle(tableName, id, favorite)"
+          @click="onFavoriteToggle(parentTable, id, favorite)"
         />
         <QIcon
           v-show="!favorite"
@@ -37,7 +38,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
           color="grey"
           size="md"
           class="cursor-pointer"
-          @click="onFavoriteToggle(tableName, id, favorite)"
+          @click="onFavoriteToggle(parentTable, id, favorite)"
         />
 
         <!-- Vertical Actions Menu -->
@@ -54,7 +55,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
                 :to="{
                   name: RouteName.ACTIONS,
                   params: {
-                    tableSlug: slugify(tableName),
+                    tableSlug: slugify(parentTable),
                     actionSlug: slugify(ActionName.INSPECT),
                     id,
                   },
@@ -71,7 +72,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
                 :to="{
                   name: RouteName.ACTIONS,
                   params: {
-                    tableSlug: slugify(tableName),
+                    tableSlug: slugify(parentTable),
                     actionSlug: slugify(ActionName.EDIT),
                     id,
                   },
@@ -87,7 +88,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
                 clickable
                 :to="{
                   name: RouteName.CHARTS,
-                  params: { tableSlug: slugify(tableName), id },
+                  params: { tableSlug: slugify(parentTable), id },
                 }"
               >
                 <QItemSection avatar>
@@ -98,7 +99,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
 
               <QSeparator />
 
-              <QItem clickable @click="onDelete(tableName, id)">
+              <QItem clickable @click="onDelete(parentTable, id)">
                 <QItemSection avatar>
                   <QIcon color="negative" :name="Icon.DELETE" />
                 </QItemSection>

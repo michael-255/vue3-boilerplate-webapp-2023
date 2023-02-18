@@ -2,6 +2,7 @@ import { Icon, TableName } from '@/constants/globals'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
+import type { ParentTable } from '@/constants/types'
 
 export default function useParentCard() {
   const { log } = useLogger()
@@ -14,9 +15,9 @@ export default function useParentCard() {
    * @param id
    * @param favorite
    */
-  async function onFavoriteToggle(tableName: TableName, id: string, favorite: boolean) {
+  async function onFavoriteToggle(parentTable: ParentTable, id: string, favorite: boolean) {
     try {
-      await updateItem(tableName, id, { favorite: !favorite })
+      await updateItem(parentTable, id, { favorite: !favorite })
       log.info('Favorites updated')
     } catch (error) {
       log.error('Favorites update failed', error)

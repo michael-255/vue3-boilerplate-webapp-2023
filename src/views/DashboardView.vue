@@ -4,8 +4,8 @@ import { Icon, SettingKey, TableName } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
 import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import ParentCard from '@/components/ParentCard.vue'
 import IntroductionCard from '@/components/IntroductionCard.vue'
+import ExampleCard from '@/components/ExampleCard.vue'
 
 const settingsStore = useSettingsStore()
 const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboard()
@@ -32,9 +32,9 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
     <!-- Parent Items List -->
     <div v-show="parentItemsSelection === TableName.EXAMPLES">
       <div v-for="(example, i) in examples" :key="i">
-        <ParentCard
+        <ExampleCard
           class="q-mb-md"
-          :table-name="TableName.EXAMPLES"
+          :parent-table="TableName.EXAMPLES"
           :id="example.id"
           :name="example.name"
           :favorite="example.favorite"
@@ -45,9 +45,9 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
 
     <div v-show="parentItemsSelection === TableName.TESTS">
       <div v-for="(test, i) in tests" :key="i">
-        <ParentCard
+        <ExampleCard
           class="q-mb-md"
-          :table-name="TableName.TESTS"
+          :parent-table="TableName.TESTS"
           :id="test.id"
           :name="test.name"
           :favorite="test.favorite"
