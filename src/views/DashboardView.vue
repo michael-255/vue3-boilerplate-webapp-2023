@@ -39,7 +39,6 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
           :id="example.id"
           :name="example.name"
           :favorite="example.favorite"
-          :temp-date="example.createdTimestamp"
         />
       </div>
     </div>
@@ -52,7 +51,6 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
           :id="test.id"
           :name="test.name"
           :favorite="test.favorite"
-          :temp-date="test.createdTimestamp"
         />
       </div>
     </div>

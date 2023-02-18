@@ -158,17 +158,15 @@ export default function useSettings() {
             return Math.random() >= 0.5
           }
 
-          let initialTimestamp = new Date('2023-01-01T00:00:00.000Z').getTime()
+          let initialTimestamp = new Date().getTime()
 
-          const addDay = (timestamp: number): number => {
+          const addMinute = (timestamp: number): number => {
             const date = new Date(timestamp)
-            date.setDate(date.getDate() + 1)
+            date.setMinutes(date.getMinutes() + 1)
             return date.getTime()
           }
 
-          const createExampleRecords = (example: Example): ExampleRecord[] => {
-            const records: ExampleRecord[] = []
-
+          const createExampleRecords = (example: Example) => {
             for (let i = 0; i < 3; i++) {
               const record: ExampleRecord = {
                 id: uid(),
@@ -178,16 +176,12 @@ export default function useSettings() {
                 note: `Example Record Note ${i}`,
                 exampleNumber: i,
               }
-              records.push(record)
-              initialTimestamp = addDay(initialTimestamp)
+              exampleRecords.push(record)
+              initialTimestamp = addMinute(initialTimestamp)
             }
-
-            return records
           }
 
-          const createTestRecords = (test: Test): TestRecord[] => {
-            const records: TestRecord[] = []
-
+          const createTestRecords = (test: Test) => {
             for (let i = 0; i < 3; i++) {
               const record: TestRecord = {
                 id: uid(),
@@ -197,11 +191,9 @@ export default function useSettings() {
                 note: `Test Record Note ${i}`,
                 exampleNumber: i,
               }
-              records.push(record)
-              initialTimestamp = addDay(initialTimestamp)
+              testRecords.push(record)
+              initialTimestamp = addMinute(initialTimestamp)
             }
-
-            return records
           }
 
           for (let i = 0; i < 3; i++) {
@@ -214,7 +206,8 @@ export default function useSettings() {
               favorite: randomBoolean(),
               exampleMessage: 'Example Message',
             }
-            const exampleRecords = createExampleRecords(example)
+            examples.push(example)
+            createExampleRecords(example)
             const test: Test = {
               id: uid(),
               createdTimestamp: initialTimestamp,
@@ -224,14 +217,10 @@ export default function useSettings() {
               favorite: randomBoolean(),
               exampleMessage: 'Test Message',
             }
-            const testRecords = createTestRecords(test)
-
-            initialTimestamp = addDay(initialTimestamp)
-
-            examples.push(example)
-            exampleRecords.push(...exampleRecords)
             tests.push(test)
-            testRecords.push(...testRecords)
+            createTestRecords(test)
+
+            initialTimestamp = addMinute(initialTimestamp)
           }
 
           await bulkAddItems(TableName.EXAMPLES, examples)

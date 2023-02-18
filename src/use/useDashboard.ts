@@ -34,26 +34,6 @@ export default function useDashboard() {
     })
   }
 
-  /**
-   * Get most recent item by table and field value.
-   * @param table
-   * @param field
-   * @param value
-   * @returns Single item or undefined
-   */
-  async function getNewestRecord(
-    tableName: TableName,
-    parentId: string
-  ): Promise<AnyModel | undefined> {
-    return (
-      await dexieWrapper
-        .table(tableName)
-        .where(Field.PARENT_ID)
-        .equalsIgnoreCase(parentId)
-        .sortBy(Field.CREATED_TIMESTAMP)
-    ).reverse()[0]
-  }
-
   const examples: Ref<Example[]> = ref([])
   const tests: Ref<Test[]> = ref([])
 

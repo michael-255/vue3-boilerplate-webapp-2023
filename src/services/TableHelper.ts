@@ -99,6 +99,17 @@ const TableHelper = {
     }[tableName]
   },
 
+  getRecordTable(tableName: TableName): TableName | null {
+    return {
+      [TableName.SETTINGS]: null,
+      [TableName.LOGS]: null,
+      [TableName.EXAMPLES]: TableName.EXAMPLE_RECORDS,
+      [TableName.EXAMPLE_RECORDS]: null,
+      [TableName.TESTS]: TableName.TEST_RECORDS,
+      [TableName.TEST_RECORDS]: null,
+    }[tableName]
+  },
+
   getLabelSingular(tableName: TableName): string {
     return {
       [TableName.SETTINGS]: 'Setting',

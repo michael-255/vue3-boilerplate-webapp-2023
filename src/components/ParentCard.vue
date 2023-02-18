@@ -5,15 +5,17 @@ import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useParentCard from '@/use/useParentCard'
 
-defineProps<{
+const props = defineProps<{
   tableName: TableName
   id: string
   name: string
   favorite: boolean
-  tempDate: number
 }>()
 
-const { onFavoriteToggle, onDelete } = useParentCard()
+const { previousRecordTimestamp, previousRecordDate, onFavoriteToggle, onDelete } = useParentCard(
+  props.tableName,
+  props.id
+)
 </script>
 
 <template>
@@ -113,7 +115,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
       <QBadge rounded color="secondary" class="q-py-none">
         <QIcon :name="Icon.PREVIOUS" />
         <span class="text-caption q-ml-xs">
-          {{ useTimeAgo(tempDate || '').value || 'No previous records' }}
+          {{ useTimeAgo(previousRecordTimestamp || '').value || 'No previous records' }}
         </span>
       </QBadge>
 
@@ -121,7 +123,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
       <div>
         <QIcon :name="Icon.CALENDAR_CHECK" />
         <span class="text-caption q-ml-xs">
-          {{ new Date(tempDate).toDateString() }}
+          {{ previousRecordDate }}
         </span>
       </div>
 
