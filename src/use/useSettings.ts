@@ -123,46 +123,115 @@ export default function useSettings() {
           const tests: Test[] = []
           const testRecords: TestRecord[] = []
 
-          for (let i = 0; i < 6; i++) {
-            const example: Example = {
-              id: uid(),
-              createdTimestamp: new Date().getTime(),
-              parentStatus: ParentStatus.ENABLED,
-              name: `Example ${i}`,
-              description: `Example ${i} description goes here.`,
-              favorite: i % 2 === 0 ? true : false,
-              exampleMessage: 'Example Message',
-            }
-            const exampleRecord: ExampleRecord = {
-              id: uid(),
-              createdTimestamp: new Date().getTime(),
-              recordStatus: RecordStatus.COMPLETED,
-              parentId: example.id,
-              note: 'Example Record Note',
-              exampleNumber: i,
-            }
-            const test: Test = {
-              id: uid(),
-              createdTimestamp: new Date().getTime(),
-              parentStatus: ParentStatus.ENABLED,
-              name: `Test ${i}`,
-              description: `Test ${i} description goes here.`,
-              favorite: i % 2 === 0 ? true : false,
-              exampleMessage: 'Test Message',
-            }
-            const testRecord: TestRecord = {
-              id: uid(),
-              createdTimestamp: new Date().getTime(),
-              recordStatus: RecordStatus.COMPLETED,
-              parentId: example.id,
-              note: 'Test Record Note',
-              exampleNumber: i,
+          const greekLetters = [
+            'Alpha',
+            'Beta',
+            'Gamma',
+            'Delta',
+            'Epsilon',
+            'Zeta',
+            'Eta',
+            'Theta',
+            'Iota',
+            'Kappa',
+            'Lambda',
+            'Mu',
+            'Nu',
+            'Xi',
+            'Omicron',
+            'Pi',
+            'Rho',
+            'Sigma',
+            'Tau',
+            'Upsilon',
+            'Phi',
+            'Chi',
+            'Psi',
+            'Omega',
+          ]
+
+          const randomGreekLetter = (): string => {
+            return greekLetters[Math.floor(Math.random() * greekLetters.length)]
+          }
+
+          const randomBoolean = (): boolean => {
+            return Math.random() >= 0.5
+          }
+
+          let initialTimestamp = new Date('2023-01-01T00:00:00.000Z').getTime()
+
+          const addDay = (timestamp: number): number => {
+            const date = new Date(timestamp)
+            date.setDate(date.getDate() + 1)
+            return date.getTime()
+          }
+
+          const createExampleRecords = (example: Example): ExampleRecord[] => {
+            const records: ExampleRecord[] = []
+
+            for (let i = 0; i < 3; i++) {
+              const record: ExampleRecord = {
+                id: uid(),
+                createdTimestamp: initialTimestamp,
+                recordStatus: RecordStatus.COMPLETED,
+                parentId: example.id,
+                note: `Example Record Note ${i}`,
+                exampleNumber: i,
+              }
+              records.push(record)
+              initialTimestamp = addDay(initialTimestamp)
             }
 
+            return records
+          }
+
+          const createTestRecords = (test: Test): TestRecord[] => {
+            const records: TestRecord[] = []
+
+            for (let i = 0; i < 3; i++) {
+              const record: TestRecord = {
+                id: uid(),
+                createdTimestamp: initialTimestamp,
+                recordStatus: RecordStatus.COMPLETED,
+                parentId: test.id,
+                note: `Test Record Note ${i}`,
+                exampleNumber: i,
+              }
+              records.push(record)
+              initialTimestamp = addDay(initialTimestamp)
+            }
+
+            return records
+          }
+
+          for (let i = 0; i < 3; i++) {
+            const example: Example = {
+              id: uid(),
+              createdTimestamp: initialTimestamp,
+              parentStatus: ParentStatus.ENABLED,
+              name: `Example ${randomGreekLetter()} - ${i}`,
+              description: `Example ${i} description goes here.`,
+              favorite: randomBoolean(),
+              exampleMessage: 'Example Message',
+            }
+            const exampleRecords = createExampleRecords(example)
+            const test: Test = {
+              id: uid(),
+              createdTimestamp: initialTimestamp,
+              parentStatus: ParentStatus.ENABLED,
+              name: `Test ${randomGreekLetter()} - ${i}`,
+              description: `Test ${i} description goes here.`,
+              favorite: randomBoolean(),
+              exampleMessage: 'Test Message',
+            }
+            const testRecords = createTestRecords(test)
+
+            initialTimestamp = addDay(initialTimestamp)
+
             examples.push(example)
-            exampleRecords.push(exampleRecord)
+            exampleRecords.push(...exampleRecords)
             tests.push(test)
-            testRecords.push(testRecord)
+            testRecords.push(...testRecords)
           }
 
           await bulkAddItems(TableName.EXAMPLES, examples)
