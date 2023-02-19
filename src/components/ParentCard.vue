@@ -12,6 +12,7 @@ defineProps<{
   name: string
   favorite: boolean
   previousTimestamp?: number // Will be undefined if no records have been recorded yet
+  previousNumber?: number
 }>()
 
 const { onFavoriteToggle, onDelete } = useParentCard()

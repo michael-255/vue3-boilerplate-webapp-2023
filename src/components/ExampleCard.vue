@@ -1,36 +1,27 @@
 <script setup lang="ts">
-import { Field, Icon } from '@/constants/globals'
+import { Icon } from '@/constants/globals'
 import type { ParentTable } from '@/constants/types'
-import { QCard, QCardSection } from 'quasar'
-import { ref, onUpdated } from 'vue'
+import { QIcon, QInput, QBtn } from 'quasar'
+import { onUpdated } from 'vue'
 import ParentCard from './ParentCard.vue'
-import useLogger from '@/use/useLogger'
-import useDatabaseCommon from '@/use/useDatabaseCommon'
+import useExampleCard from '@/use/useExampleCard'
+import TableUtils from '@/services/TableUtils'
 
-const props = defineProps<{
+defineProps<{
   parentTable: ParentTable
   id: string
   name: string
   favorite: boolean
-  previousTimestamp?: number // Will be undefined if no records have been recorded yet
+  // Will be undefined if no records have been recorded yet
+  previousTimestamp?: number
+  previousNumber?: number
 }>()
 
-const { log, consoleDebug } = useLogger()
-const { updateItem } = useDatabaseCommon()
-
-const inputNumber = ref(undefined)
+const { exampleNumberModel, onSaveRecord } = useExampleCard()
 
 onUpdated(() => {
-  consoleDebug('ExampleCard', 'onUpdated', inputNumber.value)
-  inputNumber.value = undefined
+  exampleNumberModel.value = undefined
 })
-
-async function onSaveNumber() {
-  // this should be add a record not update...
-  await updateItem(props.parentTable, props.id, { [Field.EXAMPLE_NUMBER]: inputNumber.value })
-  log.info('Number value saved')
-  inputNumber.value = undefined
-}
 </script>
 
 <template>
@@ -41,22 +32,29 @@ async function onSaveNumber() {
     :favorite="favorite"
     :previous-timestamp="previousTimestamp"
   >
-    <div>
+    <div v-show="previousNumber">
       <QIcon :name="Icon.EXAMPLES" />
-      <span class="text-caption q-ml-xs"> test </span>
+      <span class="text-caption q-ml-xs">{{ previousNumber }}</span>
     </div>
 
-    <QInput class="q-mt-md" type="number" v-model="inputNumber" dense outlined placeholder="Number">
+    <QInput
+      class="q-mt-md"
+      type="number"
+      v-model="exampleNumberModel"
+      dense
+      outlined
+      placeholder="Number"
+    >
       <template v-slot:after>
         <QBtn
-          v-show="inputNumber"
+          v-show="exampleNumberModel"
           color="positive"
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
-          @click="onSaveNumber()"
+          @click="onSaveRecord(TableUtils.getRecordTable(parentTable), id, exampleNumberModel)"
         />
         <QBtn
-          v-show="!inputNumber"
+          v-show="!exampleNumberModel"
           disable
           color="grey"
           class="q-ml-sm q-px-sm"

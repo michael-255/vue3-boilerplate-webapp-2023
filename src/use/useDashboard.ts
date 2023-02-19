@@ -1,5 +1,11 @@
 import { liveQuery } from 'dexie'
-import type { ParentCardItem, ParentModel, ParentTable, RecordTable } from '@/constants/types'
+import type {
+  ParentCardItem,
+  ParentModel,
+  ParentTable,
+  RecordModel,
+  RecordTable,
+} from '@/constants/types'
 import { type Ref, ref, computed, onUnmounted } from 'vue'
 import { Field, SettingKey, TableName } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
@@ -14,22 +20,22 @@ export default function useDashboard() {
   const { setSetting } = useDatabaseCommon()
 
   /**
-   * Get most recent previous record created timestamp by parent id.
+   * Get most recent previous record item by parent id.
    * @param tableName
    * @param parentId
-   * @returns Number or undefined
+   * @returns Record item or undefined
    */
-  async function getPreviousRecordTimestamp(
+  async function getPreviousRecord(
     recordTable: RecordTable,
     parentId: string
-  ): Promise<number | undefined> {
+  ): Promise<RecordModel | undefined> {
     return (
       await dexieWrapper
         .table(recordTable)
         .where(Field.PARENT_ID)
         .equalsIgnoreCase(parentId)
         .sortBy(Field.CREATED_TIMESTAMP)
-    ).reverse()[0]?.[Field.CREATED_TIMESTAMP]
+    ).reverse()[0]
   }
 
   /**
@@ -41,11 +47,16 @@ export default function useDashboard() {
   async function getParentCardItems(items: ParentModel[], recordTable: RecordTable) {
     return Promise.all(
       items.map(async (item) => {
+        const previousRecord = await getPreviousRecord(recordTable, item.id)
+        const previousTimestamp = previousRecord?.[Field.CREATED_TIMESTAMP]
+        const previousNumber = previousRecord?.[Field.EXAMPLE_NUMBER]
+
         return {
           id: item.id,
           name: item.name,
           favorite: item.favorite,
-          previousTimestamp: await getPreviousRecordTimestamp(recordTable, item.id),
+          previousTimestamp,
+          previousNumber,
         } as ParentCardItem
       })
     )

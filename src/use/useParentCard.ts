@@ -1,8 +1,8 @@
+import type { ParentTable } from '@/constants/types'
 import { Icon, TableName } from '@/constants/globals'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabaseCommon from '@/use/useDatabaseCommon'
-import type { ParentTable } from '@/constants/types'
 
 export default function useParentCard() {
   const { log } = useLogger()
@@ -38,7 +38,7 @@ export default function useParentCard() {
       async () => {
         try {
           await deleteItem(tableName, id)
-          log.info(`Successfully deleted item ${id}`)
+          log.info('Successfully deleted item')
         } catch (error) {
           log.error('Delete failed', error)
         }

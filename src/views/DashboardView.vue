@@ -39,6 +39,7 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
           :name="example.name"
           :favorite="example.favorite"
           :previous-timestamp="example.previousTimestamp"
+          :previous-number="example.previousNumber"
         />
       </div>
     </div>
@@ -52,6 +53,7 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
           :name="test.name"
           :favorite="test.favorite"
           :previous-timestamp="test.previousTimestamp"
+          :previous-number="test.previousNumber"
         />
       </div>
     </div>

@@ -158,6 +158,10 @@ export default function useSettings() {
             return Math.random() >= 0.5
           }
 
+          const randomInt = (min: number, max: number): number => {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+          }
+
           let initialTimestamp = new Date().getTime()
 
           const addMinute = (timestamp: number): number => {
@@ -174,7 +178,7 @@ export default function useSettings() {
                 recordStatus: RecordStatus.COMPLETED,
                 parentId: example.id,
                 note: `Example Record Note ${i}`,
-                exampleNumber: i,
+                exampleNumber: randomInt(1, 100),
               }
               exampleRecords.push(record)
               initialTimestamp = addMinute(initialTimestamp)
@@ -189,7 +193,7 @@ export default function useSettings() {
                 recordStatus: RecordStatus.COMPLETED,
                 parentId: test.id,
                 note: `Test Record Note ${i}`,
-                exampleNumber: i,
+                exampleNumber: randomInt(1, 100),
               }
               testRecords.push(record)
               initialTimestamp = addMinute(initialTimestamp)
