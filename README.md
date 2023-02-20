@@ -5,6 +5,18 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- Refactoring and Cleanup
+
+- [ ] Move core Database functions into `useDatabase` (CLEAN THEM UP!)
+
+  - [ ] Remember to include a forced parent update for live query record updates
+
+  - [ ] Make updated date an automatic field???
+
+- [ ] Build separate `Field` enums for each model???
+
+- [ ] Have `Types` for each model enum and combinations
+
 - Dashboard List Cards
 
 - [ ] `ExampleCard` and `TestCard`

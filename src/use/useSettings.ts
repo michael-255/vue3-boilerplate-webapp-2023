@@ -1,4 +1,4 @@
-import type { AnyModel } from '@/constants/types'
+import type { AnyModel, ParentModel, RecordModel } from '@/constants/types'
 import type { IndexableType } from 'dexie'
 import { type Ref, ref, computed } from 'vue'
 import type { Example, ExampleRecord, Test, TestRecord } from '@/models/models'
@@ -118,40 +118,10 @@ export default function useSettings() {
       'info',
       async (): Promise<void> => {
         try {
-          const examples: Example[] = []
-          const exampleRecords: ExampleRecord[] = []
-          const tests: Test[] = []
-          const testRecords: TestRecord[] = []
+          const alphabetLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
-          const greekLetters = [
-            'Alpha',
-            'Beta',
-            'Gamma',
-            'Delta',
-            'Epsilon',
-            'Zeta',
-            'Eta',
-            'Theta',
-            'Iota',
-            'Kappa',
-            'Lambda',
-            'Mu',
-            'Nu',
-            'Xi',
-            'Omicron',
-            'Pi',
-            'Rho',
-            'Sigma',
-            'Tau',
-            'Upsilon',
-            'Phi',
-            'Chi',
-            'Psi',
-            'Omega',
-          ]
-
-          const randomGreekLetter = (): string => {
-            return greekLetters[Math.floor(Math.random() * greekLetters.length)]
+          const randomLetter = (): string => {
+            return alphabetLetters[Math.floor(Math.random() * alphabetLetters.length)]
           }
 
           const randomBoolean = (): boolean => {
@@ -162,7 +132,7 @@ export default function useSettings() {
             return Math.floor(Math.random() * (max - min + 1) + min)
           }
 
-          let initialTimestamp = new Date().getTime()
+          let initialTimestamp = new Date().getTime() - 30 * 24 * 60 * 60 * 1000
 
           const addMinute = (timestamp: number): number => {
             const date = new Date(timestamp)
@@ -170,67 +140,48 @@ export default function useSettings() {
             return date.getTime()
           }
 
-          const createExampleRecords = (example: Example) => {
-            for (let i = 0; i < 3; i++) {
-              const record: ExampleRecord = {
+          const examples: Example[] = []
+          const exampleRecords: ExampleRecord[] = []
+
+          const createExamples = (count: number) => {
+            for (let i = 0; i < count; i++) {
+              examples.push({
                 id: uid(),
                 createdTimestamp: initialTimestamp,
-                recordStatus: RecordStatus.COMPLETED,
-                parentId: example.id,
-                note: `Example Record Note ${i}`,
-                exampleNumber: randomInt(1, 100),
-              }
-              exampleRecords.push(record)
+                updatedTimestamp: initialTimestamp,
+                name: `Parent ${randomLetter()}`,
+                description: `Parent Description ${i}`,
+                parentStatus: ParentStatus.ENABLED,
+                favorite: randomBoolean(),
+                exampleMessage: `Example Message ${i}`,
+              })
+
               initialTimestamp = addMinute(initialTimestamp)
             }
           }
 
-          const createTestRecords = (test: Test) => {
-            for (let i = 0; i < 3; i++) {
-              const record: TestRecord = {
+          const createExampleRecords = (count: number, parent: Example) => {
+            for (let i = 0; i < count; i++) {
+              exampleRecords.push({
                 id: uid(),
                 createdTimestamp: initialTimestamp,
+                updatedTimestamp: initialTimestamp,
                 recordStatus: RecordStatus.COMPLETED,
-                parentId: test.id,
-                note: `Test Record Note ${i}`,
+                parentId: parent.id,
+                note: `Record Note ${i}`,
                 exampleNumber: randomInt(1, 100),
-              }
-              testRecords.push(record)
+              })
+
               initialTimestamp = addMinute(initialTimestamp)
             }
           }
 
-          for (let i = 0; i < 3; i++) {
-            const example: Example = {
-              id: uid(),
-              createdTimestamp: initialTimestamp,
-              parentStatus: ParentStatus.ENABLED,
-              name: `Example ${randomGreekLetter()}`,
-              description: `Example ${i} description goes here.`,
-              favorite: randomBoolean(),
-              exampleMessage: 'Example Message',
-            }
-            examples.push(example)
-            createExampleRecords(example)
-            const test: Test = {
-              id: uid(),
-              createdTimestamp: initialTimestamp,
-              parentStatus: ParentStatus.ENABLED,
-              name: `Test ${randomGreekLetter()}`,
-              description: `Test ${i} description goes here.`,
-              favorite: randomBoolean(),
-              exampleMessage: 'Test Message',
-            }
-            tests.push(test)
-            createTestRecords(test)
-
-            initialTimestamp = addMinute(initialTimestamp)
-          }
+          // Create demo data here...
+          createExamples(15)
+          examples.map((example) => createExampleRecords(365, example))
 
           await bulkAddItems(TableName.EXAMPLES, examples)
           await bulkAddItems(TableName.EXAMPLE_RECORDS, exampleRecords)
-          await bulkAddItems(TableName.TESTS, tests)
-          await bulkAddItems(TableName.TEST_RECORDS, testRecords)
 
           log.info('Defaults loaded')
         } catch (error) {

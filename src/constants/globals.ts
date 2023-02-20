@@ -96,6 +96,7 @@ export enum Field {
   // Entity
   ID = 'id',
   CREATED_TIMESTAMP = 'createdTimestamp',
+  UPDATED_TIMESTAMP = 'updatedTimestamp',
   // Parent
   NAME = 'name',
   DESCRIPTION = 'description',

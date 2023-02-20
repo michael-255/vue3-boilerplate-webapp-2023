@@ -10,6 +10,7 @@ import type { AppObject, SettingValue } from '@/constants/types'
 export interface Entity {
   [Field.ID]: string
   [Field.CREATED_TIMESTAMP]: number
+  [Field.UPDATED_TIMESTAMP]: number
 }
 
 export interface Parent extends Entity {
