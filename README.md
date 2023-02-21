@@ -31,8 +31,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - [ ] `Quasar`
 
-  - [ ] Replace Luxon with Quasar Date Utils (test utils first!)
-
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
 
   - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
@@ -169,8 +167,6 @@ Details on the steps I took to setup this project.
    - Prettier - Yes
 1. Install useful dependencies:
    - `npm i slugify` - For making URL slug from text
-   - `npm i luxon` - Javascript date utilities
-   - `npm i -D @types/luxon`
    - `npm i dexie` - IndexedDB wrapper
    - `npm i -D gh-pages` - GitHub Pages deployment
    - `npm i -D @vitest/coverage-c8` - test coverage output

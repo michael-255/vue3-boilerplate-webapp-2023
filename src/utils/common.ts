@@ -1,5 +1,4 @@
 import * as slug from 'slugify'
-import { DateTime } from 'luxon'
 import { Milliseconds } from '@/constants/globals'
 
 /**
@@ -75,25 +74,6 @@ export function truncateString(
     }
   }
   return '-'
-}
-
-/**
- * Converts timestamp to a human readable local date string.
- * @param timestamp
- * @returns Example: Sun Jun 6 2022 1:30:45 PM EDT
- */
-export function getDateFromTimestamp(timestamp?: number): string | undefined {
-  if (!timestamp) {
-    return undefined
-  }
-
-  const luxonDate = DateTime.fromMillis(timestamp).toFormat('ccc LLL d yyyy ttt')
-
-  if (!luxonDate || luxonDate === 'Invalid DateTime') {
-    return undefined
-  } else {
-    return luxonDate
-  }
 }
 
 /**
