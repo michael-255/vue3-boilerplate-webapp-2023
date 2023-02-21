@@ -1,13 +1,25 @@
-import { Dark } from 'quasar'
+import { Dark, uid } from 'quasar'
 import type { IndexableType } from 'dexie'
-import type { AnyModel, SettingValue } from '@/constants/types'
-import type { Setting } from '@/models/models'
-import { TableName, SettingKey, Field } from '@/constants/globals'
+import type {
+  AnyModel,
+  ParentTable,
+  RecordModel,
+  RecordTable,
+  SettingValue,
+} from '@/constants/types'
+import type { Log, Setting } from '@/models/models'
+import { TableName, SettingKey, Field, Severity, RecordStatus } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
 
-export default function useDatabaseCommon() {
+export default function useDatabase() {
   const settingsStore = useSettingsStore()
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  //     Settings                                                              //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
 
   /**
    * Sets the Settings to their database or default values.
@@ -87,38 +99,133 @@ export default function useDatabaseCommon() {
     }
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  //     Create                                                                //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
+
   /**
-   * Update provided properties on table item by the originalId.
+   * Adds a Log to the database.
+   * @param severity
+   * @param label
+   * @param error
+   * @param location
+   * @returns Id of new Log
+   */
+  async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
+    const log: Log = {
+      [Field.TIMESTAMP]: new Date().getTime(),
+      [Field.SEVERITY]: severity,
+      [Field.LABEL]: label,
+      [Field.DETAILS]: details,
+    }
+
+    return await dexieWrapper.table(TableName.LOGS).add(log)
+  }
+
+  /**
+   * TODO
+   * @param parentId
+   * @param exampleNumber
+   * @returns
+   */
+  async function addExampleRecord(
+    parentId: string,
+    exampleNumber?: number
+  ): Promise<IndexableType> {
+    return await dexieWrapper.table(TableName.EXAMPLE_RECORDS).add({
+      [Field.ID]: uid(),
+      [Field.CREATED_TIMESTAMP]: new Date().getTime(),
+      [Field.UPDATED_TIMESTAMP]: new Date().getTime(),
+      [Field.PARENT_ID]: parentId,
+      [Field.RECORD_STATUS]: RecordStatus.COMPLETED,
+      [Field.NOTE]: '',
+      [Field.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
+    })
+  }
+
+  /**
+   * Bulk add items into a defined table. Do NOT mismatch tables and item types!
+   * @param tableName
+   * @param items Must matching table model type
+   * @returns Array of imported item ids
+   */
+  async function bulkAddItems(table: TableName, items: AnyModel[]): Promise<IndexableType[]> {
+    return await dexieWrapper.table(table).bulkAdd(items, { allKeys: true })
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  //     Update                                                                //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Force a live query update on a table by updating the updated timestamp.
+   * @param tableName
+   * @param id
+   * @returns 1 on a successful update
+   */
+  async function forceLiveQueryUpdate(tableName: TableName, id: string) {
+    await dexieWrapper
+      .table(tableName)
+      .update(id, { [Field.UPDATED_TIMESTAMP]: new Date().getTime() })
+  }
+
+  /**
+   * Update provided properties on a table item by the originalId.
    * @param tableName
    * @param originalId
    * @param props
    * @returns 1 on a successful update
    */
   async function updateItem(
-    tableName: TableName,
+    tableName: ParentTable,
     originalId: string,
     props: Partial<AnyModel>
   ): Promise<IndexableType> {
     return await dexieWrapper.table(tableName).update(originalId, props)
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  //     Read                                                                  //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
+
   /**
    * Gets all data from a table.
    * @returns Database table data as an array
    */
-  async function getTable(table: TableName): Promise<AnyModel[]> {
-    return await dexieWrapper.table(table).toArray()
+  async function getTable(tableName: TableName): Promise<AnyModel[]> {
+    return await dexieWrapper.table(tableName).toArray()
   }
 
   /**
-   * Bulk add items into a defined table. Do NOT mismatch tables and item types!
-   * @param table (TableName)
-   * @param items (Matching table model type)
-   * @returns Array of imported item ids
+   * Get most recent previous record item by parent id.
+   * @param tableName
+   * @param parentId
+   * @returns Record item or undefined
    */
-  async function bulkAddItems(table: TableName, items: AnyModel[]): Promise<IndexableType[]> {
-    return await dexieWrapper.table(table).bulkAdd(items, { allKeys: true })
+  async function getPreviousRecord(
+    recordTable: RecordTable,
+    parentId: string
+  ): Promise<RecordModel | undefined> {
+    return (
+      await dexieWrapper
+        .table(recordTable)
+        .where(Field.PARENT_ID)
+        .equalsIgnoreCase(parentId)
+        .sortBy(Field.CREATED_TIMESTAMP)
+    ).reverse()[0]
   }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  //     Delete                                                                //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
 
   /**
    * Delete item in table by id or key.
@@ -150,8 +257,12 @@ export default function useDatabaseCommon() {
   return {
     initializeSettings,
     setSetting,
+    addLog,
+    addExampleRecord,
+    forceLiveQueryUpdate,
     updateItem,
     getTable,
+    getPreviousRecord,
     bulkAddItems,
     deleteItem,
     clearTable,

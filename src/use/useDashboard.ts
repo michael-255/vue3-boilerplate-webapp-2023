@@ -1,15 +1,9 @@
 import { liveQuery } from 'dexie'
-import type {
-  ParentCardItem,
-  ParentModel,
-  ParentTable,
-  RecordModel,
-  RecordTable,
-} from '@/constants/types'
+import type { ParentCardItem, ParentModel, ParentTable, RecordTable } from '@/constants/types'
 import { type Ref, ref, computed, onUnmounted } from 'vue'
 import { Field, SettingKey, TableName } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import useDatabaseCommon from '@/use/useDatabaseCommon'
+import useDatabase from '@/use/useDatabase'
 import useSettingsStore from '@/stores/settings'
 import useLogger from '@/use/useLogger'
 import TableUtils from '@/services/TableUtils'
@@ -17,44 +11,25 @@ import TableUtils from '@/services/TableUtils'
 export default function useDashboard() {
   const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
-  const { setSetting } = useDatabaseCommon()
+  const { setSetting, getPreviousRecord } = useDatabase()
 
   /**
-   * Get most recent previous record item by parent id.
-   * @param tableName
-   * @param parentId
-   * @returns Record item or undefined
-   */
-  async function getPreviousRecord(
-    recordTable: RecordTable,
-    parentId: string
-  ): Promise<RecordModel | undefined> {
-    return (
-      await dexieWrapper
-        .table(recordTable)
-        .where(Field.PARENT_ID)
-        .equalsIgnoreCase(parentId)
-        .sortBy(Field.CREATED_TIMESTAMP)
-    ).reverse()[0]
-  }
-
-  /**
-   * TODO
+   * Builds the Parent cards for the Dashboard using the parent and previous record data.
    * @param items
    * @param recordTable
-   * @returns
+   * @returns Parent card items
    */
   async function getParentCardItems(items: ParentModel[], recordTable: RecordTable) {
     return Promise.all(
       items.map(async (item) => {
-        const previousRecord = await getPreviousRecord(recordTable, item.id)
+        const previousRecord = await getPreviousRecord(recordTable, item[Field.ID])
         const previousTimestamp = previousRecord?.[Field.CREATED_TIMESTAMP]
         const previousNumber = previousRecord?.[Field.EXAMPLE_NUMBER]
 
         return {
-          id: item.id,
-          name: item.name,
-          favorite: item.favorite,
+          [Field.ID]: item[Field.ID],
+          [Field.NAME]: item[Field.NAME],
+          [Field.FAVORITE]: item[Field.FAVORITE],
           previousTimestamp,
           previousNumber,
         } as ParentCardItem
@@ -72,6 +47,7 @@ export default function useDashboard() {
     parentTable: ParentTable,
     resultsRef: Ref<ParentCardItem[]>
   ) {
+    // Do NOT extract this Dexie function into useDatabase. It will break the live query.
     return liveQuery(() => dexieWrapper.table(parentTable).orderBy(Field.NAME).toArray()).subscribe(
       {
         next: async (data: ParentModel[]) => {
@@ -84,6 +60,7 @@ export default function useDashboard() {
           const nonFavorites = parentCardItems.filter((item) => !item.favorite)
           const combined = [...favorites, ...nonFavorites]
           resultsRef.value = combined as ParentCardItem[]
+
           consoleDebug(`Retrieved ${parentTable}`, combined)
         },
         error: (error) => {

@@ -51,7 +51,7 @@ onUpdated(() => {
           color="positive"
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
-          @click="onSaveRecord(TableUtils.getRecordTable(parentTable), id, exampleNumberModel)"
+          @click="onSaveRecord(TableUtils.getRecordTable(parentTable), id, exampleNumberModel || 0)"
         />
         <QBtn
           v-show="!exampleNumberModel"

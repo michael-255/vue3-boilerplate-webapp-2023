@@ -1,13 +1,10 @@
-import type { AnyModel, ParentModel, RecordModel } from '@/constants/types'
-import type { IndexableType } from 'dexie'
 import { type Ref, ref, computed } from 'vue'
-import type { Example, ExampleRecord, Test, TestRecord } from '@/models/models'
+import type { Example, ExampleRecord } from '@/models/models'
 import { TableName } from '@/constants/globals'
 import { Icon, AppText, SettingKey, ParentStatus, RecordStatus } from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
-import { dexieWrapper } from '@/services/DexieWrapper'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDatabaseCommon from '@/use/useDatabaseCommon'
+import useDatabase from '@/use/useDatabase'
 import useLogger from '@/use/useLogger'
 import useSettingsStore from '@/stores/settings'
 
@@ -15,17 +12,8 @@ export default function useSettings() {
   const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { initializeSettings, setSetting } = useDatabaseCommon()
-
-  /**
-   * Bulk add items into a defined table. Do NOT mismatch tables and item types!
-   * @param tableName (TableName)
-   * @param items (Matching table model type)
-   * @returns Array of imported item ids
-   */
-  async function bulkAddItems(tableName: TableName, items: AnyModel[]): Promise<IndexableType[]> {
-    return await dexieWrapper.table(tableName).bulkAdd(items, { allKeys: true })
-  }
+  const { initializeSettings, setSetting, bulkAddItems, getTable, clearTable, deleteDatabase } =
+    useDatabase()
 
   const importFile: Ref<any> = ref(null)
 
@@ -177,8 +165,8 @@ export default function useSettings() {
           }
 
           // Create demo data here...
-          createExamples(15)
-          examples.map((example) => createExampleRecords(365, example))
+          createExamples(1)
+          examples.map((example) => createExampleRecords(1, example))
 
           await bulkAddItems(TableName.EXAMPLES, examples)
           await bulkAddItems(TableName.EXAMPLE_RECORDS, exampleRecords)
@@ -257,9 +245,7 @@ export default function useSettings() {
           const tableKeys = Object.values(TableName)
 
           // Get all data from each table
-          const tableData = await Promise.all(
-            tableKeys.map((table) => dexieWrapper.table(table).toArray())
-          )
+          const tableData = await Promise.all(tableKeys.map((tableName) => getTable(tableName)))
 
           // Converting the data array into a object with table names as keys
           const exportData = tableKeys.reduce((o, key, i) => ({ ...o, [key]: tableData[i] }), {})
@@ -285,8 +271,8 @@ export default function useSettings() {
   }
 
   /**
-   * @todo
-   * @param table
+   * TODO
+   * @param tableName
    */
   async function onDeleteTableData(tableName: TableName): Promise<void> {
     confirmDialog(
@@ -296,7 +282,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await dexieWrapper.table(tableName).clear()
+          await clearTable(tableName)
           await initializeSettings()
           log.info(`${tableName} data successfully deleted`)
         } catch (error) {
@@ -317,9 +303,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await Promise.all(
-            Object.values(TableName).map((table) => dexieWrapper.table(table).clear())
-          )
+          await Promise.all(Object.values(TableName).map((tableName) => clearTable(tableName)))
           await initializeSettings()
           log.info('All data successfully deleted')
         } catch (error) {
@@ -340,7 +324,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await dexieWrapper.delete()
+          await deleteDatabase()
           log.warn('Reload the website now')
         } catch (error) {
           log.error('Database deletion failed', error)

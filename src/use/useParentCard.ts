@@ -2,12 +2,12 @@ import type { ParentTable } from '@/constants/types'
 import { Icon, TableName } from '@/constants/globals'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDatabaseCommon from '@/use/useDatabaseCommon'
+import useDatabase from '@/use/useDatabase'
 
 export default function useParentCard() {
   const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { updateItem, deleteItem } = useDatabaseCommon()
+  const { updateItem, deleteItem } = useDatabase()
 
   /**
    * TODO
