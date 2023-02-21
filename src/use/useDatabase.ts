@@ -141,7 +141,7 @@ export default function useDatabase() {
       [Field.CREATED_TIMESTAMP]: new Date().getTime(),
       [Field.UPDATED_TIMESTAMP]: new Date().getTime(),
       [Field.PARENT_ID]: parentId,
-      [Field.RECORD_STATUS]: RecordStatus.COMPLETED,
+      [Field.RECORD_STATUS]: RecordStatus.FINISHED,
       [Field.NOTE]: '',
       [Field.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
     })

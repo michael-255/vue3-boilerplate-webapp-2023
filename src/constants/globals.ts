@@ -116,13 +116,11 @@ export enum Field {
 export enum ParentStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
-  // ARCHIVED = 'Archived', // Reserving, but have no planned use for this yet
 }
 
 export enum RecordStatus {
   NONE = 'None',
-  SKIPPED = 'Skipped',
-  COMPLETED = 'Completed',
+  FINISHED = 'Finished',
 }
 
 export enum Severity {

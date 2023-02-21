@@ -9,6 +9,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - [ ] `log.info` details should include information about the operation that just occurred
 
+- [ ] `ParentStatus` determines what shows up on the Dashboard Parent Cards
+
 - Dashboard List Cards
 
 - [ ] `ExampleCard` and `TestCard`

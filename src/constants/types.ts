@@ -32,7 +32,36 @@ export type ParentModel = Example | Test
 
 export type RecordModel = ExampleRecord | TestRecord
 
-export type SettingValue = any // May make this more specific later
+export type SettingValue = any // May make this more specific in the future
+
+export type SettingField = Field.KEY | Field.VALUE
+
+export type LogField =
+  | Field.AUTO_ID
+  | Field.TIMESTAMP
+  | Field.SEVERITY
+  | Field.APP_NAME
+  | Field.LABEL
+  | Field.DETAILS
+
+export type EntityField = Field.ID | Field.CREATED_TIMESTAMP | Field.UPDATED_TIMESTAMP
+
+export type ParentField =
+  | EntityField
+  | Field.NAME
+  | Field.DESCRIPTION
+  | Field.PARENT_STATUS
+  | Field.FAVORITE
+
+export type RecordField = EntityField | Field.PARENT_ID | Field.RECORD_STATUS | Field.NOTE
+
+export type ExampleField = ParentField | Field.EXAMPLE_MESSAGE
+
+export type ExampleRecordField = RecordField | Field.EXAMPLE_NUMBER
+
+export type TestField = ParentField | Field.EXAMPLE_MESSAGE
+
+export type TestRecordField = RecordField | Field.EXAMPLE_NUMBER
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //

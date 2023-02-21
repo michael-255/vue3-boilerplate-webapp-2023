@@ -154,7 +154,7 @@ export default function useSettings() {
                 id: uid(),
                 createdTimestamp: initialTimestamp,
                 updatedTimestamp: initialTimestamp,
-                recordStatus: RecordStatus.COMPLETED,
+                recordStatus: RecordStatus.FINISHED,
                 parentId: parent.id,
                 note: `Record Note ${i}`,
                 exampleNumber: randomInt(1, 100),
