@@ -30,6 +30,7 @@ export interface Log {
   [Field.AUTO_ID]?: number // Optional - Gets auto generated and incremented by the table
   [Field.TIMESTAMP]: number
   [Field.SEVERITY]: Severity
+  [Field.APP_NAME]: string
   [Field.LABEL]: string
   [Field.DETAILS]?: AppObject
 }

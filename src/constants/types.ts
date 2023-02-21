@@ -26,10 +26,6 @@ export type ParentCardItem = {
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export type ParentTable = TableName.EXAMPLES | TableName.TESTS
-
-export type RecordTable = TableName.EXAMPLE_RECORDS | TableName.TEST_RECORDS
-
 export type AnyModel = Setting | Log | Example | ExampleRecord | Test | TestRecord
 
 export type ParentModel = Example | Test
@@ -91,6 +87,10 @@ export type ChartDataset = {
 //     Table Types                                                           //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+export type ParentTable = TableName.EXAMPLES | TableName.TESTS
+
+export type RecordTable = TableName.EXAMPLE_RECORDS | TableName.TEST_RECORDS
 
 /**
  * Properties used to display data items in a QTable.

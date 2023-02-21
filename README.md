@@ -7,9 +7,7 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Refactoring and Cleanup
 
-- [ ] Build separate `Field` enums for each model???
-
-- [ ] Have `Types` for each model enum and combinations
+- [ ] `log.info` details should include information about the operation that just occurred
 
 - Dashboard List Cards
 

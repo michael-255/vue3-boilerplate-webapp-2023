@@ -91,6 +91,7 @@ export enum Field {
   AUTO_ID = 'autoId',
   TIMESTAMP = 'timestamp',
   SEVERITY = 'severity',
+  APP_NAME = 'appName',
   LABEL = 'label',
   DETAILS = 'details',
   // Entity

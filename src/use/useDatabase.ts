@@ -2,13 +2,14 @@ import { Dark, uid } from 'quasar'
 import type { IndexableType } from 'dexie'
 import type {
   AnyModel,
+  ParentModel,
   ParentTable,
   RecordModel,
   RecordTable,
   SettingValue,
 } from '@/constants/types'
 import type { Log, Setting } from '@/models/models'
-import { TableName, SettingKey, Field, Severity, RecordStatus } from '@/constants/globals'
+import { TableName, SettingKey, Field, Severity, RecordStatus, AppText } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
 
@@ -117,6 +118,7 @@ export default function useDatabase() {
     const log: Log = {
       [Field.TIMESTAMP]: new Date().getTime(),
       [Field.SEVERITY]: severity,
+      [Field.APP_NAME]: AppText.APP_NAME,
       [Field.LABEL]: label,
       [Field.DETAILS]: details,
     }
@@ -183,7 +185,7 @@ export default function useDatabase() {
   async function updateItem(
     tableName: ParentTable,
     originalId: string,
-    props: Partial<AnyModel>
+    props: Partial<ParentModel>
   ): Promise<IndexableType> {
     return await dexieWrapper.table(tableName).update(originalId, props)
   }
