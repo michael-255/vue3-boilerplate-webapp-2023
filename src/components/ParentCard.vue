@@ -15,7 +15,7 @@ defineProps<{
   previousNumber?: number
 }>()
 
-const { onFavoriteToggle, onDelete } = useParentCard()
+const { onFavorite, onUnfavorite, onDelete } = useParentCard()
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
           color="warning"
           size="md"
           class="cursor-pointer"
-          @click="onFavoriteToggle(parentTable, id, favorite)"
+          @click="onUnfavorite(parentTable, id, name)"
         />
         <QIcon
           v-show="!favorite"
@@ -39,7 +39,7 @@ const { onFavoriteToggle, onDelete } = useParentCard()
           color="grey"
           size="md"
           class="cursor-pointer"
-          @click="onFavoriteToggle(parentTable, id, favorite)"
+          @click="onFavorite(parentTable, id, name)"
         />
 
         <!-- Vertical Actions Menu -->

@@ -13,15 +13,46 @@ export default function useParentCard() {
    * TODO
    * @param tableName
    * @param id
-   * @param favorite
+   * @param name
    */
-  async function onFavoriteToggle(parentTable: ParentTable, id: string, favorite: boolean) {
-    try {
-      await updateItem(parentTable, id, { favorite: !favorite })
-      log.info('Favorites updated')
-    } catch (error) {
-      log.error('Favorites update failed', error)
-    }
+  async function onFavorite(parentTable: ParentTable, id: string, name: string) {
+    confirmDialog(
+      'Favorite',
+      `Do you want to favorite ${name}?`,
+      Icon.FAVORITE_ON,
+      'info',
+      async () => {
+        try {
+          await updateItem(parentTable, id, { favorite: true })
+          log.info(`${name} favorited`)
+        } catch (error) {
+          log.error('Favorite update failed', error)
+        }
+      }
+    )
+  }
+
+  /**
+   * TODO
+   * @param tableName
+   * @param id
+   * @param name
+   */
+  async function onUnfavorite(parentTable: ParentTable, id: string, name: string) {
+    confirmDialog(
+      'Unfavorite',
+      `Do you want to unfavorite ${name}?`,
+      Icon.FAVORITE_OFF,
+      'info',
+      async () => {
+        try {
+          await updateItem(parentTable, id, { favorite: false })
+          log.info(`${name} unfavorited`)
+        } catch (error) {
+          log.error('Unfavorite update failed', error)
+        }
+      }
+    )
   }
 
   /**
@@ -47,7 +78,8 @@ export default function useParentCard() {
   }
 
   return {
-    onFavoriteToggle,
+    onFavorite,
+    onUnfavorite,
     onDelete,
   }
 }
