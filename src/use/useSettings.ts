@@ -165,8 +165,8 @@ export default function useSettings() {
           }
 
           // Create demo data here...
-          createExamples(1)
-          examples.map((example) => createExampleRecords(1, example))
+          createExamples(5)
+          examples.map((example) => createExampleRecords(9, example))
 
           await bulkAddItems(TableName.EXAMPLES, examples)
           await bulkAddItems(TableName.EXAMPLE_RECORDS, exampleRecords)
