@@ -5,46 +5,45 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Dashboard List Cards
+- Misc. Tasks
 
-- [ ] Finish the `Inspect Action` (most fun part!)
+  - [ ] `Unused Items` and `Orphaned Items` data table views from Settings page
+  - [ ] `TableName` -> `DatabaseTable` (clean up parameter names)
+  - [ ] `Field` -> `DatabaseField` (clean up parameter names)
+  - [ ] `ActionName` -> `DatabaseAction` (clean up parameter names)
+  - [ ] `TableUtils` -> `DatabaseUtils`
+  - [ ] Add `getLabelSingular` and `getLabelPlural` to `DatabaseUtils`
+  - [ ] Setup a TTL for Logs (should it work retroactively???)
+  - [ ] Create new constants for `globals.ts` (arraries with table/field/action names)
 
-- [ ] Work on the `Edit Action`
+- Dashboard
 
-- [ ] Work on the `Charts Action`
+  - [ ] Finish the `Inspect Action` (most fun part!)
+  - [ ] Work on the `Edit Action`
+  - [ ] Work on the `Charts Action`
+    - [ ] Select or slider for date range?
 
-  - [ ] Select or slider for date range?
-
-- Dashboard List Functionality
-
-- [ ] `Quasar`
+- Quasar
 
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
-
   - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
-
   - [ ] Use Quasar Loading plugin when waiting on data tables
-
   - [ ] Use Quasar Meta plugin to improve SEO
 
-- [ ] `Charts`
+- Charts
 
   - [ ] Improve defaults generator with records of different dates so you can test charts
-
   - [ ] How to handle two records of the same Parent on the same day in the chart graph
 
-- [ ] `Possible Features & Updates`
+- Possible Features & Updates
 
   - [ ] Add more tags to the repository
-
   - [ ] `useRules` Composable for input rules and validators
-
   - [ ] Script to quickly updates certain values across the app
 
-- [ ] `Final Steps`
+- Final Steps
 
   - [ ] `Text/Copy Pass` Review app text for good flow and grammer
-
   - [ ] `Add Tests`
         <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
 
