@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn, date } from 'quasar'
-import { ActionName, Icon, RouteName } from '@/constants/globals'
+import { DatabaseAction, Icon, RouteName } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useParentCard from '@/use/useParentCard'
@@ -57,7 +57,7 @@ const { onFavorite, onUnfavorite, onDelete } = useParentCard()
                   name: RouteName.ACTIONS,
                   params: {
                     tableSlug: slugify(parentTable),
-                    actionSlug: slugify(ActionName.INSPECT),
+                    actionSlug: slugify(DatabaseAction.INSPECT),
                     id,
                   },
                 }"
@@ -74,7 +74,7 @@ const { onFavorite, onUnfavorite, onDelete } = useParentCard()
                   name: RouteName.ACTIONS,
                   params: {
                     tableSlug: slugify(parentTable),
-                    actionSlug: slugify(ActionName.EDIT),
+                    actionSlug: slugify(DatabaseAction.EDIT),
                     id,
                   },
                 }"

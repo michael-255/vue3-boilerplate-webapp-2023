@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QCard, QCardSection } from 'quasar'
-import { Icon, SettingKey, TableName } from '@/constants/globals'
+import { Icon, SettingKey, DatabaseTable } from '@/constants/globals'
 import useSettingsStore from '@/stores/settings'
 import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
@@ -30,11 +30,11 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
     </QCard>
 
     <!-- Parent Items List -->
-    <div v-show="parentItemsSelection === TableName.EXAMPLES">
+    <div v-show="parentItemsSelection === DatabaseTable.EXAMPLES">
       <div v-for="(example, i) in examples" :key="i">
         <ExampleCard
           class="q-mb-md"
-          :parent-table="TableName.EXAMPLES"
+          :parent-table="DatabaseTable.EXAMPLES"
           :id="example.id"
           :name="example.name"
           :favorite="example.favorite"
@@ -44,11 +44,11 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
       </div>
     </div>
 
-    <div v-show="parentItemsSelection === TableName.TESTS">
+    <div v-show="parentItemsSelection === DatabaseTable.TESTS">
       <div v-for="(test, i) in tests" :key="i">
         <ExampleCard
           class="q-mb-md"
-          :parent-table="TableName.TESTS"
+          :parent-table="DatabaseTable.TESTS"
           :id="test.id"
           :name="test.name"
           :favorite="test.favorite"

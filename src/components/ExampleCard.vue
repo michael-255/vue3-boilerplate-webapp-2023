@@ -3,9 +3,9 @@ import { Icon } from '@/constants/globals'
 import type { ParentTable } from '@/constants/types'
 import { QIcon, QInput, QBtn } from 'quasar'
 import { onUpdated } from 'vue'
+import { getRecordTable } from '@/services/DatabaseUtils'
 import ParentCard from './ParentCard.vue'
 import useExampleCard from '@/use/useExampleCard'
-import TableUtils from '@/services/TableUtils'
 
 defineProps<{
   parentTable: ParentTable
@@ -51,7 +51,7 @@ onUpdated(() => {
           color="positive"
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
-          @click="onSaveRecord(TableUtils.getRecordTable(parentTable), id, exampleNumberModel || 0)"
+          @click="onSaveRecord(getRecordTable(parentTable), id, exampleNumberModel || 0)"
         />
         <QBtn
           v-show="!exampleNumberModel"

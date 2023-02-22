@@ -83,7 +83,7 @@ export enum Limit {
 /**
  * Field names used by the tables for the database objects.
  */
-export enum Field {
+export enum DatabaseField {
   // Setting
   KEY = 'key',
   VALUE = 'value',
@@ -112,6 +112,98 @@ export enum Field {
   // Example Record
   EXAMPLE_NUMBER = 'exampleNumber',
 }
+
+export type SettingField = DatabaseField.KEY | DatabaseField.VALUE
+
+export const settingFields: SettingField[] = [DatabaseField.KEY, DatabaseField.VALUE]
+
+export type LogField =
+  | DatabaseField.AUTO_ID
+  | DatabaseField.TIMESTAMP
+  | DatabaseField.SEVERITY
+  | DatabaseField.APP_NAME
+  | DatabaseField.LABEL
+  | DatabaseField.DETAILS
+
+export const logFields: LogField[] = [
+  DatabaseField.AUTO_ID,
+  DatabaseField.TIMESTAMP,
+  DatabaseField.SEVERITY,
+  DatabaseField.APP_NAME,
+  DatabaseField.LABEL,
+  DatabaseField.DETAILS,
+]
+
+export type EntityField =
+  | DatabaseField.ID
+  | DatabaseField.CREATED_TIMESTAMP
+  | DatabaseField.UPDATED_TIMESTAMP
+
+export const entityFields: EntityField[] = [
+  DatabaseField.ID,
+  DatabaseField.CREATED_TIMESTAMP,
+  DatabaseField.UPDATED_TIMESTAMP,
+]
+
+export type ParentField =
+  | EntityField
+  | DatabaseField.NAME
+  | DatabaseField.DESCRIPTION
+  | DatabaseField.PARENT_STATUS
+  | DatabaseField.FAVORITE
+
+export const parentFields: ParentField[] = [
+  ...entityFields,
+  DatabaseField.NAME,
+  DatabaseField.DESCRIPTION,
+  DatabaseField.PARENT_STATUS,
+  DatabaseField.FAVORITE,
+]
+
+export type RecordField =
+  | EntityField
+  | DatabaseField.PARENT_ID
+  | DatabaseField.RECORD_STATUS
+  | DatabaseField.NOTE
+
+export const recordFields: RecordField[] = [
+  ...entityFields,
+  DatabaseField.PARENT_ID,
+  DatabaseField.RECORD_STATUS,
+  DatabaseField.NOTE,
+]
+
+export type ExampleField = EntityField | ParentField | DatabaseField.EXAMPLE_MESSAGE
+
+export const exampleFields: ExampleField[] = [
+  ...entityFields,
+  ...parentFields,
+  DatabaseField.EXAMPLE_MESSAGE,
+]
+
+export type ExampleRecordField = EntityField | RecordField | DatabaseField.EXAMPLE_NUMBER
+
+export const exampleRecordFields: ExampleRecordField[] = [
+  ...entityFields,
+  ...recordFields,
+  DatabaseField.EXAMPLE_NUMBER,
+]
+
+export type TestField = EntityField | ParentField | DatabaseField.EXAMPLE_MESSAGE
+
+export const testFields: TestField[] = [
+  ...entityFields,
+  ...parentFields,
+  DatabaseField.EXAMPLE_MESSAGE,
+]
+
+export type TestRecordField = EntityField | RecordField | DatabaseField.EXAMPLE_NUMBER
+
+export const testRecordFields: TestRecordField[] = [
+  ...entityFields,
+  ...recordFields,
+  DatabaseField.EXAMPLE_NUMBER,
+]
 
 export enum ParentStatus {
   ENABLED = 'Enabled',
@@ -182,19 +274,39 @@ export enum RouteName {
 /**
  * Database table names used throughout the app.
  */
-export enum TableName {
-  SETTINGS = 'Settings',
-  LOGS = 'Logs',
-  EXAMPLES = 'Examples',
-  EXAMPLE_RECORDS = 'Example Records',
-  TESTS = 'Tests',
-  TEST_RECORDS = 'Test Records',
+export enum DatabaseTable {
+  // Core
+  SETTINGS = 'settings',
+  LOGS = 'logs',
+  // Parent
+  EXAMPLES = 'examples',
+  TESTS = 'tests',
+  // Record
+  EXAMPLE_RECORDS = 'exampleRecords',
+  TEST_RECORDS = 'testRecords',
 }
+
+export type CoreTable = DatabaseTable.SETTINGS | DatabaseTable.LOGS
+
+export const coreTables: CoreTable[] = [DatabaseTable.SETTINGS, DatabaseTable.LOGS]
+
+export type ParentTable = DatabaseTable.EXAMPLES | DatabaseTable.TESTS
+
+export const parentTables: ParentTable[] = [DatabaseTable.EXAMPLES, DatabaseTable.TESTS]
+
+export type RecordTable = DatabaseTable.EXAMPLE_RECORDS | DatabaseTable.TEST_RECORDS
+
+export const recordTables: RecordTable[] = [
+  DatabaseTable.EXAMPLE_RECORDS,
+  DatabaseTable.TEST_RECORDS,
+]
+
+export const allTables: DatabaseTable[] = [...coreTables, ...parentTables, ...recordTables]
 
 /**
  * Table actions that can be performed. Each table may support a subset of these actions.
  */
-export enum ActionName {
+export enum DatabaseAction {
   NONE = 'None',
   CREATE = 'Create',
   INSPECT = 'Inspect',

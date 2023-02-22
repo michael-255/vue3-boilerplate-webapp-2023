@@ -1,4 +1,10 @@
-import type { Field, ParentStatus, RecordStatus, Severity, SettingKey } from '@/constants/globals'
+import type {
+  DatabaseField,
+  ParentStatus,
+  RecordStatus,
+  Severity,
+  SettingKey,
+} from '@/constants/globals'
 import type { AppObject, SettingValue } from '@/constants/types'
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8,36 +14,36 @@ import type { AppObject, SettingValue } from '@/constants/types'
 ///////////////////////////////////////////////////////////////////////////////
 
 export interface Entity {
-  [Field.ID]: string
-  [Field.CREATED_TIMESTAMP]: number
-  [Field.UPDATED_TIMESTAMP]: number
+  [DatabaseField.ID]: string
+  [DatabaseField.CREATED_TIMESTAMP]: number
+  [DatabaseField.UPDATED_TIMESTAMP]: number
 }
 
 export interface Parent extends Entity {
-  [Field.NAME]: string
-  [Field.DESCRIPTION]: string
-  [Field.PARENT_STATUS]: ParentStatus
-  [Field.FAVORITE]: boolean
+  [DatabaseField.NAME]: string
+  [DatabaseField.DESCRIPTION]: string
+  [DatabaseField.PARENT_STATUS]: ParentStatus
+  [DatabaseField.FAVORITE]: boolean
 }
 
 export interface Record extends Entity {
-  [Field.PARENT_ID]: string
-  [Field.RECORD_STATUS]: RecordStatus
-  [Field.NOTE]: string
+  [DatabaseField.PARENT_ID]: string
+  [DatabaseField.RECORD_STATUS]: RecordStatus
+  [DatabaseField.NOTE]: string
 }
 
 export interface Log {
-  [Field.AUTO_ID]?: number // Optional - Gets auto generated and incremented by the table
-  [Field.TIMESTAMP]: number
-  [Field.SEVERITY]: Severity
-  [Field.APP_NAME]: string
-  [Field.LABEL]: string
-  [Field.DETAILS]?: AppObject
+  [DatabaseField.AUTO_ID]?: number // Optional - Gets auto generated and incremented by the table
+  [DatabaseField.TIMESTAMP]: number
+  [DatabaseField.SEVERITY]: Severity
+  [DatabaseField.APP_NAME]: string
+  [DatabaseField.LABEL]: string
+  [DatabaseField.DETAILS]?: AppObject
 }
 
 export interface Setting {
-  [Field.KEY]: SettingKey
-  [Field.VALUE]: SettingValue
+  [DatabaseField.KEY]: SettingKey
+  [DatabaseField.VALUE]: SettingValue
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,17 +53,17 @@ export interface Setting {
 ///////////////////////////////////////////////////////////////////////////////
 
 export interface Example extends Parent {
-  [Field.EXAMPLE_MESSAGE]: string
+  [DatabaseField.EXAMPLE_MESSAGE]: string
 }
 
 export interface ExampleRecord extends Record {
-  [Field.EXAMPLE_NUMBER]: number
+  [DatabaseField.EXAMPLE_NUMBER]: number
 }
 
 export interface Test extends Parent {
-  [Field.EXAMPLE_MESSAGE]: string
+  [DatabaseField.EXAMPLE_MESSAGE]: string
 }
 
 export interface TestRecord extends Record {
-  [Field.EXAMPLE_NUMBER]: number
+  [DatabaseField.EXAMPLE_NUMBER]: number
 }

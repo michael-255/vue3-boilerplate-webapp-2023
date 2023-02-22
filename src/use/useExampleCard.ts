@@ -1,9 +1,9 @@
 import { Icon } from '@/constants/globals'
 import type { RecordTable } from '@/constants/types'
 import { ref, type Ref } from 'vue'
+import { getParentTable } from '@/services/DatabaseUtils'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
-import TableUtils from '@/services/TableUtils'
 import useDatabase from '@/use/useDatabase'
 
 export default function useExampleCard() {
@@ -28,7 +28,7 @@ export default function useExampleCard() {
       async () => {
         try {
           const id = await addExampleRecord(parentId, exampleNumber)
-          await forceLiveQueryUpdate(TableUtils.getParentTable(recordTable), parentId)
+          await forceLiveQueryUpdate(getParentTable(recordTable), parentId)
           exampleNumberModel.value = undefined
           log.info('Successfully saved record', { table: recordTable, newItemId: id })
         } catch (error) {

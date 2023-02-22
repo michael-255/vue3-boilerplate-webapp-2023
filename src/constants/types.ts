@@ -1,4 +1,4 @@
-import type { Field, TableName } from '@/constants/globals'
+import type { DatabaseField, DatabaseTable } from '@/constants/globals'
 import type { Setting, Log, Example, ExampleRecord, Test, TestRecord } from '@/models/models'
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -34,34 +34,41 @@ export type RecordModel = ExampleRecord | TestRecord
 
 export type SettingValue = any // May make this more specific in the future
 
-export type SettingField = Field.KEY | Field.VALUE
+export type SettingField = DatabaseField.KEY | DatabaseField.VALUE
 
 export type LogField =
-  | Field.AUTO_ID
-  | Field.TIMESTAMP
-  | Field.SEVERITY
-  | Field.APP_NAME
-  | Field.LABEL
-  | Field.DETAILS
+  | DatabaseField.AUTO_ID
+  | DatabaseField.TIMESTAMP
+  | DatabaseField.SEVERITY
+  | DatabaseField.APP_NAME
+  | DatabaseField.LABEL
+  | DatabaseField.DETAILS
 
-export type EntityField = Field.ID | Field.CREATED_TIMESTAMP | Field.UPDATED_TIMESTAMP
+export type EntityField =
+  | DatabaseField.ID
+  | DatabaseField.CREATED_TIMESTAMP
+  | DatabaseField.UPDATED_TIMESTAMP
 
 export type ParentField =
   | EntityField
-  | Field.NAME
-  | Field.DESCRIPTION
-  | Field.PARENT_STATUS
-  | Field.FAVORITE
+  | DatabaseField.NAME
+  | DatabaseField.DESCRIPTION
+  | DatabaseField.PARENT_STATUS
+  | DatabaseField.FAVORITE
 
-export type RecordField = EntityField | Field.PARENT_ID | Field.RECORD_STATUS | Field.NOTE
+export type RecordField =
+  | EntityField
+  | DatabaseField.PARENT_ID
+  | DatabaseField.RECORD_STATUS
+  | DatabaseField.NOTE
 
-export type ExampleField = ParentField | Field.EXAMPLE_MESSAGE
+export type ExampleField = ParentField | DatabaseField.EXAMPLE_MESSAGE
 
-export type ExampleRecordField = RecordField | Field.EXAMPLE_NUMBER
+export type ExampleRecordField = RecordField | DatabaseField.EXAMPLE_NUMBER
 
-export type TestField = ParentField | Field.EXAMPLE_MESSAGE
+export type TestField = ParentField | DatabaseField.EXAMPLE_MESSAGE
 
-export type TestRecordField = RecordField | Field.EXAMPLE_NUMBER
+export type TestRecordField = RecordField | DatabaseField.EXAMPLE_NUMBER
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
@@ -117,16 +124,16 @@ export type ChartDataset = {
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-export type ParentTable = TableName.EXAMPLES | TableName.TESTS
+export type ParentTable = DatabaseTable.EXAMPLES | DatabaseTable.TESTS
 
-export type RecordTable = TableName.EXAMPLE_RECORDS | TableName.TEST_RECORDS
+export type RecordTable = DatabaseTable.EXAMPLE_RECORDS | DatabaseTable.TEST_RECORDS
 
 /**
  * Properties used to display data items in a QTable.
  * Use "hidden_id" for column "0" so a truncated version can be shown.
  */
 export type ColumnProps = {
-  name: Field | 'hidden_id'
+  name: DatabaseField | 'hidden_id'
   label: string
   align: string
   sortable: boolean

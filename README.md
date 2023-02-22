@@ -7,14 +7,10 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Misc. Tasks
 
+  - [ ] Combine `types.ts` with `globals.ts` and remove redundant types (???)
+  - [ ] Use new constants instead of `Object.*` functions
   - [ ] `Unused Items` and `Orphaned Items` data table views from Settings page
-  - [ ] `TableName` -> `DatabaseTable` (clean up parameter names)
-  - [ ] `Field` -> `DatabaseField` (clean up parameter names)
-  - [ ] `ActionName` -> `DatabaseAction` (clean up parameter names)
-  - [ ] `TableUtils` -> `DatabaseUtils`
-  - [ ] Add `getLabelSingular` and `getLabelPlural` to `DatabaseUtils`
   - [ ] Setup a TTL for Logs (should it work retroactively???)
-  - [ ] Create new constants for `globals.ts` (arraries with table/field/action names)
 
 - Dashboard
 

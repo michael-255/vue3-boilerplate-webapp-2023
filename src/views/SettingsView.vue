@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QSelect, QBtn, QOptionGroup } from 'quasar'
-import { AppText, Icon, TableName, Limit, RouteName } from '@/constants/globals'
+import { AppText, Icon, DatabaseTable, Limit, RouteName } from '@/constants/globals'
 import useSettings from '@/use/useSettings'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import { slugify } from '@/utils/common'
@@ -128,7 +128,7 @@ const {
           <QBtn
             label="Logs Table"
             color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.LOGS) } }"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.LOGS) } }"
           />
         </div>
 
@@ -136,7 +136,7 @@ const {
           <QBtn
             label="Settings Table"
             color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.SETTINGS) } }"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.SETTINGS) } }"
           />
         </div>
       </QCardSection>
@@ -200,7 +200,7 @@ const {
               :disable="!deleteDataModel"
               label="Delete Data"
               color="negative"
-              @click="onDeleteTableData(deleteDataModel as TableName)"
+              @click="onDeleteTableData(deleteDataModel as DatabaseTable)"
             />
           </template>
         </QSelect>

@@ -1,5 +1,5 @@
 import type { ParentTable } from '@/constants/types'
-import { Icon, TableName } from '@/constants/globals'
+import { Icon, DatabaseTable } from '@/constants/globals'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabase from '@/use/useDatabase'
@@ -11,7 +11,7 @@ export default function useParentCard() {
 
   /**
    * TODO
-   * @param tableName
+   * @param parentTable
    * @param id
    * @param name
    */
@@ -34,7 +34,7 @@ export default function useParentCard() {
 
   /**
    * TODO
-   * @param tableName
+   * @param parentTable
    * @param id
    * @param name
    */
@@ -60,19 +60,19 @@ export default function useParentCard() {
 
   /**
    * TODO
-   * @param tableName
+   * @param table
    * @param id
    */
-  async function onDelete(tableName: TableName, id: string): Promise<void> {
+  async function onDelete(table: DatabaseTable, id: string): Promise<void> {
     confirmDialog(
       'Delete',
-      `Permanently delete item ${id} from ${tableName}?`,
+      `Permanently delete item ${id} from ${table}?`,
       Icon.DELETE,
       'negative',
       async () => {
         try {
-          await deleteItem(tableName, id)
-          log.info('Successfully deleted item', { deletedItemTable: tableName, deletedItemid: id })
+          await deleteItem(table, id)
+          log.info('Successfully deleted item', { deletedItemTable: table, deletedItemid: id })
         } catch (error) {
           log.error('Delete failed', error)
         }

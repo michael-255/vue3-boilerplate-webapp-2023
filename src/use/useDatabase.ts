@@ -9,7 +9,14 @@ import type {
   SettingValue,
 } from '@/constants/types'
 import type { Log, Setting } from '@/models/models'
-import { TableName, SettingKey, Field, Severity, RecordStatus, AppText } from '@/constants/globals'
+import {
+  DatabaseTable,
+  SettingKey,
+  DatabaseField,
+  Severity,
+  RecordStatus,
+  AppText,
+} from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
 
@@ -27,11 +34,11 @@ export default function useDatabase() {
    */
   async function initializeSettings(): Promise<void> {
     settingsStore.$reset()
-    const settings: Setting[] = await dexieWrapper.table(TableName.SETTINGS).toArray()
+    const settings: Setting[] = await dexieWrapper.table(DatabaseTable.SETTINGS).toArray()
 
     // Function that returns the Setting value field or undefined
     const findSettingValue = (key: SettingKey): SettingValue | undefined => {
-      return settings.find((s: Setting) => s[Field.KEY] === key)?.value
+      return settings.find((s: Setting) => s[DatabaseField.KEY] === key)?.value
     }
 
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
@@ -41,7 +48,7 @@ export default function useDatabase() {
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
     const parentListSelection =
-      findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? TableName.EXAMPLES
+      findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? DatabaseTable.EXAMPLES
     // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
@@ -79,8 +86,8 @@ export default function useDatabase() {
    */
   async function setSetting(key: SettingKey, value: SettingValue): Promise<IndexableType> {
     const existingSetting = await dexieWrapper
-      .table(TableName.SETTINGS)
-      .where(Field.KEY)
+      .table(DatabaseTable.SETTINGS)
+      .where(DatabaseField.KEY)
       .equalsIgnoreCase(key)
       .first()
 
@@ -94,9 +101,9 @@ export default function useDatabase() {
 
     // Add or Update depending on if the Setting already exists
     if (!existingSetting) {
-      return await dexieWrapper.table(TableName.SETTINGS).add({ key, value } as Setting)
+      return await dexieWrapper.table(DatabaseTable.SETTINGS).add({ key, value } as Setting)
     } else {
-      return await dexieWrapper.table(TableName.SETTINGS).update(key, { value })
+      return await dexieWrapper.table(DatabaseTable.SETTINGS).update(key, { value })
     }
   }
 
@@ -116,14 +123,14 @@ export default function useDatabase() {
    */
   async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
     const log: Log = {
-      [Field.TIMESTAMP]: new Date().getTime(),
-      [Field.SEVERITY]: severity,
-      [Field.APP_NAME]: AppText.APP_NAME,
-      [Field.LABEL]: label,
-      [Field.DETAILS]: details,
+      [DatabaseField.TIMESTAMP]: new Date().getTime(),
+      [DatabaseField.SEVERITY]: severity,
+      [DatabaseField.APP_NAME]: AppText.APP_NAME,
+      [DatabaseField.LABEL]: label,
+      [DatabaseField.DETAILS]: details,
     }
 
-    return await dexieWrapper.table(TableName.LOGS).add(log)
+    return await dexieWrapper.table(DatabaseTable.LOGS).add(log)
   }
 
   /**
@@ -136,24 +143,24 @@ export default function useDatabase() {
     parentId: string,
     exampleNumber?: number
   ): Promise<IndexableType> {
-    return await dexieWrapper.table(TableName.EXAMPLE_RECORDS).add({
-      [Field.ID]: uid(),
-      [Field.CREATED_TIMESTAMP]: new Date().getTime(),
-      [Field.UPDATED_TIMESTAMP]: new Date().getTime(),
-      [Field.PARENT_ID]: parentId,
-      [Field.RECORD_STATUS]: RecordStatus.FINISHED,
-      [Field.NOTE]: '',
-      [Field.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
+    return await dexieWrapper.table(DatabaseTable.EXAMPLE_RECORDS).add({
+      [DatabaseField.ID]: uid(),
+      [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
+      [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime(),
+      [DatabaseField.PARENT_ID]: parentId,
+      [DatabaseField.RECORD_STATUS]: RecordStatus.FINISHED,
+      [DatabaseField.NOTE]: '',
+      [DatabaseField.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
     })
   }
 
   /**
    * Bulk add items into a defined table. Do NOT mismatch tables and item types!
-   * @param tableName
+   * @param table
    * @param items Must matching table model type
    * @returns Array of imported item ids
    */
-  async function bulkAddItems(table: TableName, items: AnyModel[]): Promise<IndexableType[]> {
+  async function bulkAddItems(table: DatabaseTable, items: AnyModel[]): Promise<IndexableType[]> {
     return await dexieWrapper.table(table).bulkAdd(items, { allKeys: true })
   }
 
@@ -165,29 +172,29 @@ export default function useDatabase() {
 
   /**
    * Force a live query update on a table by updating the updated timestamp.
-   * @param tableName
+   * @param table
    * @param id
    * @returns 1 on a successful update
    */
-  async function forceLiveQueryUpdate(tableName: TableName, id: string) {
+  async function forceLiveQueryUpdate(table: DatabaseTable, id: string) {
     await dexieWrapper
-      .table(tableName)
-      .update(id, { [Field.UPDATED_TIMESTAMP]: new Date().getTime() })
+      .table(table)
+      .update(id, { [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime() })
   }
 
   /**
    * Update provided properties on a table item by the originalId.
-   * @param tableName
+   * @param table
    * @param originalId
    * @param props
    * @returns 1 on a successful update
    */
   async function updateItem(
-    tableName: ParentTable,
+    table: ParentTable,
     originalId: string,
     props: Partial<ParentModel>
   ): Promise<IndexableType> {
-    return await dexieWrapper.table(tableName).update(originalId, props)
+    return await dexieWrapper.table(table).update(originalId, props)
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -200,13 +207,13 @@ export default function useDatabase() {
    * Gets all data from a table.
    * @returns Database table data as an array
    */
-  async function getTable(tableName: TableName): Promise<AnyModel[]> {
-    return await dexieWrapper.table(tableName).toArray()
+  async function getTable(table: DatabaseTable): Promise<AnyModel[]> {
+    return await dexieWrapper.table(table).toArray()
   }
 
   /**
    * Get most recent previous record item by parent id.
-   * @param tableName
+   * @param table
    * @param parentId
    * @returns Record item or undefined
    */
@@ -217,9 +224,9 @@ export default function useDatabase() {
     return (
       await dexieWrapper
         .table(recordTable)
-        .where(Field.PARENT_ID)
+        .where(DatabaseField.PARENT_ID)
         .equalsIgnoreCase(parentId)
-        .sortBy(Field.CREATED_TIMESTAMP)
+        .sortBy(DatabaseField.CREATED_TIMESTAMP)
     ).reverse()[0]
   }
 
@@ -235,7 +242,7 @@ export default function useDatabase() {
    * @param id id string, log number, or setting key
    * @returns undefined, even if nothing was deleted
    */
-  async function deleteItem(table: TableName, id: string | number | SettingKey): Promise<void> {
+  async function deleteItem(table: DatabaseTable, id: string | number | SettingKey): Promise<void> {
     return await dexieWrapper.table(table).delete(id)
   }
 
@@ -244,7 +251,7 @@ export default function useDatabase() {
    * @param table
    * @returns undefined
    */
-  async function clearTable(table: TableName): Promise<void> {
+  async function clearTable(table: DatabaseTable): Promise<void> {
     return await dexieWrapper.table(table).clear()
   }
 

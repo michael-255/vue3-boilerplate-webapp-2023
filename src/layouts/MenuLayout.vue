@@ -12,7 +12,7 @@ import {
   QItemSection,
   QIcon,
 } from 'quasar'
-import { AppText, Icon, RouteName, TableName } from '@/constants/globals'
+import { AppText, Icon, RouteName, DatabaseTable } from '@/constants/globals'
 import { RouterView, useRoute } from 'vue-router'
 import { slugify } from '@/utils/common'
 import useGoBack from '@/use/useGoBack'
@@ -65,7 +65,7 @@ const route = useRoute()
         <QItem
           clickable
           v-ripple
-          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(TableName.EXAMPLES) } }"
+          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.EXAMPLES) } }"
         >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
@@ -77,7 +77,7 @@ const route = useRoute()
               class="q-px-sm"
               :to="{
                 name: RouteName.DATA,
-                params: { tableSlug: slugify(TableName.EXAMPLE_RECORDS) },
+                params: { tableSlug: slugify(DatabaseTable.EXAMPLE_RECORDS) },
               }"
               :icon="Icon.RECORDS"
             />
