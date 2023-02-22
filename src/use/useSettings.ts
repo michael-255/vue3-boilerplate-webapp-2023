@@ -126,6 +126,10 @@ export default function useSettings() {
             return Math.floor(Math.random() * (max - min + 1) + min)
           }
 
+          const randomParentStatus = (): ParentStatus => {
+            return Math.random() >= 0.5 ? ParentStatus.ENABLED : ParentStatus.DISABLED
+          }
+
           let initialTimestamp = new Date().getTime() - 30 * 24 * 60 * 60 * 1000
 
           const addMinute = (timestamp: number): number => {
@@ -145,7 +149,7 @@ export default function useSettings() {
                 updatedTimestamp: initialTimestamp,
                 name: `Parent ${randomLetter()}`,
                 description: `Parent Description ${i}`,
-                parentStatus: ParentStatus.ENABLED,
+                parentStatus: randomParentStatus(),
                 favorite: randomBoolean(),
                 exampleMessage: `Example Message ${i}`,
               })
@@ -171,7 +175,7 @@ export default function useSettings() {
           }
 
           // Create demo data here...
-          createExamples(5)
+          createExamples(6)
           examples.map((example) => createExampleRecords(9, example))
 
           await bulkAddItems(TableName.EXAMPLES, examples)

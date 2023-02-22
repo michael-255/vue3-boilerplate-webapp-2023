@@ -5,12 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Refactoring and Cleanup
-
-- [ ] `log.info` details should include information about the operation that just occurred
-
-- [ ] `ParentStatus` determines what shows up on the Dashboard Parent Cards (Enabled/Disabled)
-
 - Dashboard List Cards
 
 - [ ] Finish the `Inspect Action` (most fun part!)

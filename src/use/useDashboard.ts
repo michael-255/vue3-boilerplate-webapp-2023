@@ -1,7 +1,7 @@
 import { liveQuery } from 'dexie'
 import type { ParentCardItem, ParentModel, ParentTable, RecordTable } from '@/constants/types'
 import { type Ref, ref, computed, onUnmounted } from 'vue'
-import { Field, SettingKey, TableName } from '@/constants/globals'
+import { Field, SettingKey, TableName, ParentStatus } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useDatabase from '@/use/useDatabase'
 import useSettingsStore from '@/stores/settings'
@@ -48,26 +48,30 @@ export default function useDashboard() {
     resultsRef: Ref<ParentCardItem[]>
   ) {
     // Do NOT extract this Dexie function into useDatabase. It will break the live query.
-    return liveQuery(() => dexieWrapper.table(parentTable).orderBy(Field.NAME).toArray()).subscribe(
-      {
-        next: async (data: ParentModel[]) => {
-          const parentCardItems: ParentCardItem[] = await getParentCardItems(
-            data,
-            TableUtils.getRecordTable(parentTable)
-          )
+    return liveQuery(() =>
+      dexieWrapper
+        .table(parentTable)
+        .orderBy(Field.NAME)
+        .filter((item) => item[Field.PARENT_STATUS] === ParentStatus.ENABLED)
+        .toArray()
+    ).subscribe({
+      next: async (data: ParentModel[]) => {
+        const parentCardItems: ParentCardItem[] = await getParentCardItems(
+          data,
+          TableUtils.getRecordTable(parentTable)
+        )
 
-          const favorites = parentCardItems.filter((item) => item.favorite)
-          const nonFavorites = parentCardItems.filter((item) => !item.favorite)
-          const combined = [...favorites, ...nonFavorites]
-          resultsRef.value = combined as ParentCardItem[]
+        const favorites = parentCardItems.filter((item) => item.favorite)
+        const nonFavorites = parentCardItems.filter((item) => !item.favorite)
+        const combined = [...favorites, ...nonFavorites]
+        resultsRef.value = combined as ParentCardItem[]
 
-          consoleDebug(`Retrieved ${parentTable}`, combined)
-        },
-        error: (error) => {
-          log.error(`Failed to retrieve ${parentTable}`, error)
-        },
-      }
-    )
+        consoleDebug(`Retrieved ${parentTable}`, combined)
+      },
+      error: (error) => {
+        log.error(`Failed to retrieve ${parentTable}`, error)
+      },
+    })
   }
 
   const examples: Ref<ParentCardItem[]> = ref([])
