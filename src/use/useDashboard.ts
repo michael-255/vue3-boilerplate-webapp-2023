@@ -13,6 +13,33 @@ export default function useDashboard() {
   const { log, consoleDebug } = useLogger()
   const { setSetting, getPreviousRecord } = useDatabase()
 
+  const examples: Ref<ParentCardItem[]> = ref([])
+  const tests: Ref<ParentCardItem[]> = ref([])
+
+  const examplesSubscription = liveQueryFavoritesSubscription(TableName.EXAMPLES, examples)
+  const testsSubscription = liveQueryFavoritesSubscription(TableName.TESTS, tests)
+
+  // Edit the parent tables here to add/remove parent tables from the list on the dashboard.
+  const parentOptions = [TableName.EXAMPLES, TableName.TESTS]
+  const parentItemsOptions = parentOptions.map((option) => ({
+    label: option,
+    value: option,
+  }))
+
+  onUnmounted(() => {
+    examplesSubscription.unsubscribe()
+    testsSubscription.unsubscribe()
+  })
+
+  const parentItemsSelection = computed({
+    get() {
+      return settingsStore[SettingKey.PARENT_LIST_SELECTION]
+    },
+    async set(str: string) {
+      await setSetting(SettingKey.PARENT_LIST_SELECTION, str)
+    },
+  })
+
   /**
    * Builds the Parent cards for the Dashboard using the parent and previous record data.
    * @param items
@@ -73,37 +100,6 @@ export default function useDashboard() {
       },
     })
   }
-
-  const examples: Ref<ParentCardItem[]> = ref([])
-  const tests: Ref<ParentCardItem[]> = ref([])
-
-  const examplesSubscription = liveQueryFavoritesSubscription(TableName.EXAMPLES, examples)
-  const testsSubscription = liveQueryFavoritesSubscription(TableName.TESTS, tests)
-
-  onUnmounted(() => {
-    examplesSubscription.unsubscribe()
-    testsSubscription.unsubscribe()
-  })
-
-  const parentItemsSelection = computed({
-    get() {
-      return settingsStore[SettingKey.PARENT_LIST_SELECTION]
-    },
-    async set(str: string) {
-      await setSetting(SettingKey.PARENT_LIST_SELECTION, str)
-    },
-  })
-
-  const parentItemsOptions = [
-    {
-      label: TableName.EXAMPLES,
-      value: TableName.EXAMPLES,
-    },
-    {
-      label: TableName.TESTS,
-      value: TableName.TESTS,
-    },
-  ]
 
   return {
     examples,
