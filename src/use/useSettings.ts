@@ -312,7 +312,9 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await Promise.all(Object.values(TableName).map((tableName) => clearTable(tableName)))
+          await Promise.all(
+            Object.values(TableName).map(async (tableName) => await clearTable(tableName))
+          )
           await initializeSettings()
           log.info('All data successfully deleted')
         } catch (error) {
