@@ -188,7 +188,7 @@ export enum TableName {
   EXAMPLES = 'Examples',
   EXAMPLE_RECORDS = 'Example Records',
   TESTS = 'Tests',
-  TEST_RECORDS = 'Tests Records',
+  TEST_RECORDS = 'Test Records',
 }
 
 /**

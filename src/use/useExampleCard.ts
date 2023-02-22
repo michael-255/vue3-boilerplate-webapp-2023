@@ -27,10 +27,10 @@ export default function useExampleCard() {
       'positive',
       async () => {
         try {
-          await addExampleRecord(parentId, exampleNumber)
+          const id = await addExampleRecord(parentId, exampleNumber)
           await forceLiveQueryUpdate(TableUtils.getParentTable(recordTable), parentId)
           exampleNumberModel.value = undefined
-          log.info('Successfully saved record')
+          log.info('Successfully saved record', { table: recordTable, newItemId: id })
         } catch (error) {
           log.error('Save failed', error)
         }

@@ -20,6 +20,12 @@ export default function useSettings() {
   const deleteDataOptions: Ref<TableName[]> = ref(Object.values(TableName))
   const deleteDataModel: Ref<TableName | null> = ref(null)
 
+  const exportTableOptions = Object.values(TableName).map((tableName) => ({
+    value: tableName,
+    label: tableName,
+  }))
+  const exportTableModel: Ref<TableName[]> = ref([])
+
   //
   // Toggles
   //
@@ -214,7 +220,7 @@ export default function useSettings() {
           consoleDebug('importData =', importData)
 
           await Promise.all(
-            tableKeys.map((table: TableName) => bulkAddItems(table, importData[table]))
+            tableKeys.map(async (table: TableName) => await bulkAddItems(table, importData[table]))
           )
 
           importFile.value = null // Clear input
@@ -229,7 +235,7 @@ export default function useSettings() {
   /**
    * On confirmation, export your data as a JSON file.
    */
-  function onExportData(): void {
+  function onExportData(tableNames: TableName[]): void {
     const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
     const date = new Date().toISOString().split('T')[0]
     const filename = `export-${appName}-${date}.json`
@@ -241,14 +247,13 @@ export default function useSettings() {
       'info',
       async (): Promise<void> => {
         try {
-          // Use table keys as guide for what data can be exported
-          const tableKeys = Object.values(TableName)
-
           // Get all data from each table
-          const tableData = await Promise.all(tableKeys.map((tableName) => getTable(tableName)))
+          const tableData = await Promise.all(
+            tableNames.map(async (tableName) => await getTable(tableName))
+          )
 
-          // Converting the data array into a object with table names as keys
-          const exportData = tableKeys.reduce((o, key, i) => ({ ...o, [key]: tableData[i] }), {})
+          // Converting the data array into an object with table names as keys
+          const exportData = tableNames.reduce((o, key, i) => ({ ...o, [key]: tableData[i] }), {})
 
           consoleDebug('exportData =', exportData)
 
@@ -259,7 +264,7 @@ export default function useSettings() {
           })
 
           if (fileStatus === true) {
-            log.info('File downloaded successfully')
+            log.info('File downloaded successfully', { filename })
           } else {
             throw new Error('Browser denied file download')
           }
@@ -340,8 +345,10 @@ export default function useSettings() {
     showDebugMessages,
     saveInfoMessages,
     importFile,
-    deleteDataModel,
     deleteDataOptions,
+    deleteDataModel,
+    exportTableOptions,
+    exportTableModel,
     onTestLogger,
     onDefaults,
     onRejectedFile,

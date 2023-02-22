@@ -112,7 +112,7 @@ export default function useDatabase() {
    * @param label
    * @param error
    * @param location
-   * @returns Id of new Log
+   * @returns Id of new item
    */
   async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
     const log: Log = {
@@ -130,7 +130,7 @@ export default function useDatabase() {
    * TODO
    * @param parentId
    * @param exampleNumber
-   * @returns
+   * @returns Id of new item
    */
   async function addExampleRecord(
     parentId: string,

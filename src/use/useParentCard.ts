@@ -24,7 +24,7 @@ export default function useParentCard() {
       async () => {
         try {
           await updateItem(parentTable, id, { favorite: true })
-          log.info(`${name} favorited`)
+          log.info(`${name} favorited`, { favoritedItemTable: parentTable, favoritedItemid: id })
         } catch (error) {
           log.error('Favorite update failed', error)
         }
@@ -47,7 +47,10 @@ export default function useParentCard() {
       async () => {
         try {
           await updateItem(parentTable, id, { favorite: false })
-          log.info(`${name} unfavorited`)
+          log.info(`${name} unfavorited`, {
+            unfavoritedItemTable: parentTable,
+            unfavoritedItemid: id,
+          })
         } catch (error) {
           log.error('Unfavorite update failed', error)
         }
@@ -69,7 +72,7 @@ export default function useParentCard() {
       async () => {
         try {
           await deleteItem(tableName, id)
-          log.info('Successfully deleted item')
+          log.info('Successfully deleted item', { deletedItemTable: tableName, deletedItemid: id })
         } catch (error) {
           log.error('Delete failed', error)
         }

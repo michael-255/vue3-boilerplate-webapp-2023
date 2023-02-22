@@ -9,17 +9,9 @@ projects. Read through this README to have a better understanding of how this pr
 
 - [ ] `log.info` details should include information about the operation that just occurred
 
-- [ ] `ParentStatus` determines what shows up on the Dashboard Parent Cards
+- [ ] `ParentStatus` determines what shows up on the Dashboard Parent Cards (Enabled/Disabled)
 
 - Dashboard List Cards
-
-- [ ] `ExampleCard` and `TestCard`
-
-  - [ ] Should use the `ParentCard` component and slot
-
-  - [ ] Add the input for `exampleNumber`
-
-  - [ ] Add button to save the record when the input is filled (hide and disable button otherwise)
 
 - [ ] Finish the `Inspect Action` (most fun part!)
 
@@ -27,9 +19,9 @@ projects. Read through this README to have a better understanding of how this pr
 
 - [ ] Work on the `Charts Action`
 
-- Dashboard List Functionality
+  - [ ] Select or slider for date range?
 
-- [ ] Sort the list: Favorites first, alpha by name (merge together)
+- Dashboard List Functionality
 
 - [ ] `Quasar`
 

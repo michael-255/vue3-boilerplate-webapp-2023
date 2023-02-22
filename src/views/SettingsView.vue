@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { QSelect, QBtn } from 'quasar'
+import { QSelect, QBtn, QOptionGroup } from 'quasar'
 import { AppText, Icon, TableName, Limit, RouteName } from '@/constants/globals'
 import useSettings from '@/use/useSettings'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import { slugify } from '@/utils/common'
+import { ref } from 'vue'
 
 const {
   showIntroduction,
@@ -12,8 +13,10 @@ const {
   showDebugMessages,
   saveInfoMessages,
   importFile,
-  deleteDataModel,
   deleteDataOptions,
+  deleteDataModel,
+  exportTableOptions,
+  exportTableModel,
   onTestLogger,
   onDefaults,
   onRejectedFile,
@@ -97,11 +100,24 @@ const {
 
         <!-- Export -->
         <div class="q-mb-md">
-          Export the entire database as a JSON file. Do this on a regularly basis so you have a
+          Export the selected data tables as a JSON file. Do this on a regularly basis so you have a
           backup of your data.
         </div>
 
-        <QBtn class="q-mb-md" label="Export" color="primary" @click="onExportData()" />
+        <QOptionGroup
+          class="q-mb-md"
+          v-model="exportTableModel"
+          :options="exportTableOptions"
+          type="checkbox"
+        />
+
+        <QBtn
+          class="q-mb-md"
+          :disable="exportTableModel.length === 0"
+          label="Export"
+          color="primary"
+          @click="onExportData(exportTableModel)"
+        />
 
         <!-- Access Internal Tables -->
         <div class="q-mb-md">
