@@ -44,9 +44,10 @@ export default function useDatabase() {
     const darkMode = findSettingValue(SettingKey.DARK_MODE) ?? true
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
-    const saveInfoMessages = findSettingValue(SettingKey.SAVE_INFO_MESSAGES) ?? false
+    const showInfoMessages = findSettingValue(SettingKey.SHOW_INFO_MESSAGES) ?? false
     const parentListSelection =
       findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? DatabaseTable.EXAMPLES
+    const logRetentionDays = findSettingValue(SettingKey.LOG_RETENTION_DAYS) ?? 90
     // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
@@ -66,8 +67,9 @@ export default function useDatabase() {
       setSetting(SettingKey.DARK_MODE, darkMode),
       setSetting(SettingKey.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
-      setSetting(SettingKey.SAVE_INFO_MESSAGES, saveInfoMessages),
+      setSetting(SettingKey.SHOW_INFO_MESSAGES, showInfoMessages),
       setSetting(SettingKey.PARENT_LIST_SELECTION, parentListSelection),
+      setSetting(SettingKey.LOG_RETENTION_DAYS, logRetentionDays),
       // setSetting(SettingKey.FAVORITE_PARENT_IDS, favoriteParentIds),
       // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
       // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),
@@ -103,6 +105,29 @@ export default function useDatabase() {
     } else {
       return await dexieWrapper.table(DatabaseTable.SETTINGS).update(key, { value })
     }
+  }
+
+  /**
+   * TODO
+   * @returns Number of logs to be deleted
+   */
+  async function purgeExpiredLogs(): Promise<number> {
+    // Get milliseconds from days
+    const logRetentionMilliseconds =
+      settingsStore[SettingKey.LOG_RETENTION_DAYS] * 24 * 60 * 60 * 1000
+
+    const logs = await dexieWrapper.table(DatabaseTable.LOGS).toArray()
+
+    const logsToDelete = logs.filter((log: Log) => {
+      const logAgeMilliseconds = new Date().getTime() - log[DatabaseField.TIMESTAMP]
+      return logAgeMilliseconds > logRetentionMilliseconds
+    })
+
+    await dexieWrapper
+      .table(DatabaseTable.LOGS)
+      .bulkDelete(logsToDelete.map((log: Log) => log[DatabaseField.AUTO_ID] as number))
+
+    return logsToDelete.length
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -264,6 +289,7 @@ export default function useDatabase() {
   return {
     initializeSettings,
     setSetting,
+    purgeExpiredLogs,
     addLog,
     addExampleRecord,
     forceLiveQueryUpdate,

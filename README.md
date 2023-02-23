@@ -7,9 +7,9 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Misc. Tasks
 
+  - [ ] Test Logs TTL purging
   - [ ] Clean up Dashboard use of separate tables and conditional rendering
     - [ ] Use custom bottom messages
-  - [ ] Setup a TTL for Logs (should it work retroactively???)
 
 - Dashboard
 

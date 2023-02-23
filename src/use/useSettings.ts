@@ -34,6 +34,9 @@ export default function useSettings() {
   }))
   const exportTableModel: Ref<DatabaseTable[]> = ref([])
 
+  const logRetentionModel = ref(settingsStore[SettingKey.LOG_RETENTION_DAYS])
+  const logRetentionLabel = computed(() => `${logRetentionModel.value} Days`)
+
   //
   // Toggles
   //
@@ -74,12 +77,12 @@ export default function useSettings() {
     },
   })
 
-  const saveInfoMessages = computed({
+  const showInfoMessages = computed({
     get() {
-      return !!settingsStore[SettingKey.SAVE_INFO_MESSAGES]
+      return !!settingsStore[SettingKey.SHOW_INFO_MESSAGES]
     },
     async set(bool: boolean) {
-      await setSetting(SettingKey.SAVE_INFO_MESSAGES, bool)
+      await setSetting(SettingKey.SHOW_INFO_MESSAGES, bool)
     },
   })
 
@@ -289,6 +292,20 @@ export default function useSettings() {
 
   /**
    * TODO
+   * @param days
+   */
+  async function onChangeLogRetention(days: number): Promise<void> {
+    try {
+      await setSetting(SettingKey.LOG_RETENTION_DAYS, days)
+      logRetentionModel.value = days
+      log.info('Updated log retention', { days })
+    } catch (error) {
+      log.error('Log retention update failed', error)
+    }
+  }
+
+  /**
+   * TODO
    * @param table
    */
   async function onDeleteTableData(table: DatabaseTable): Promise<void> {
@@ -355,17 +372,20 @@ export default function useSettings() {
     darkMode,
     showConsoleLogs,
     showDebugMessages,
-    saveInfoMessages,
+    showInfoMessages,
     importFile,
     deleteDataOptions,
     deleteDataModel,
     exportTableOptions,
     exportTableModel,
+    logRetentionModel,
+    logRetentionLabel,
     onTestLogger,
     onDefaults,
     onRejectedFile,
     onImportFile,
     onExportData,
+    onChangeLogRetention,
     onDeleteTableData,
     onDeleteAllData,
     onDeleteDatabase,

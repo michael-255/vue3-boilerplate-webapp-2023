@@ -39,8 +39,7 @@ export default function useLogger() {
     /**
      * INFO
      * - Suppressable console logs
-     * - Can turn off DB saving
-     * - Cannot suppress notifications
+     * - Suppressable notifications
      */
     info: (label: string, details?: any) => {
       const severity = Severity.INFO
@@ -49,16 +48,15 @@ export default function useLogger() {
         logger.info(`[${severity}]`, label, details)
       }
 
-      if (settingsStore[SettingKey.SAVE_INFO_MESSAGES]) {
-        addLog(severity, label, details)
-      }
+      addLog(severity, label, details)
 
-      notify(label, Icon.INFO, 'info')
+      if (settingsStore[SettingKey.SHOW_INFO_MESSAGES]) {
+        notify(label, Icon.INFO, 'info')
+      }
     },
     /**
      * WARN
      * - Suppressable console logs
-     * - Cannot turn off DB saving
      * - Cannot suppress notifications
      */
     warn: (label: string, details?: any) => {
@@ -75,7 +73,6 @@ export default function useLogger() {
     /**
      * ERROR
      * - Suppressable console logs
-     * - Cannot turn off DB saving
      * - Cannot suppress notifications
      */
     error: (label: string, details?: any) => {

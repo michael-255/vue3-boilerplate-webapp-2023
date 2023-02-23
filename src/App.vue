@@ -5,14 +5,26 @@ import useDatabase from '@/use/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/use/useLogger'
 
-const { log } = useLogger()
+const { log, consoleDebug } = useLogger()
 const route = useRoute()
-const { initializeSettings } = useDatabase()
+const { initializeSettings, purgeExpiredLogs } = useDatabase()
 
 const layout: Ref<any> = ref(null)
 
 onMounted(async () => {
-  await initializeSettings()
+  try {
+    await initializeSettings()
+    consoleDebug('Settings initialized')
+  } catch (error) {
+    log.error('Error initializing settings', error)
+  }
+
+  try {
+    const logsPurged = await purgeExpiredLogs()
+    consoleDebug('Expired logs purged', { logsPurged })
+  } catch (error) {
+    log.error('Error purging expired logs', error)
+  }
 })
 
 /**

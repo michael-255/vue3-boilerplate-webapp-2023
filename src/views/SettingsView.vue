@@ -10,17 +10,20 @@ const {
   darkMode,
   showConsoleLogs,
   showDebugMessages,
-  saveInfoMessages,
+  showInfoMessages,
   importFile,
   deleteDataOptions,
   deleteDataModel,
   exportTableOptions,
   exportTableModel,
+  logRetentionModel,
+  logRetentionLabel,
   onTestLogger,
   onDefaults,
   onRejectedFile,
   onImportFile,
   onExportData,
+  onChangeLogRetention,
   onDeleteTableData,
   onDeleteAllData,
   onDeleteDatabase,
@@ -157,10 +160,10 @@ const {
       </QCardSection>
     </QCard>
 
-    <!-- Logging -->
+    <!-- Logs -->
     <QCard class="q-mb-md">
       <QCardSection>
-        <div class="text-h6 q-mb-md">Logging</div>
+        <div class="text-h6 q-mb-md">Logs</div>
 
         <!-- Toggles -->
         <div class="q-mb-md">
@@ -173,12 +176,9 @@ const {
 
         <QToggle v-model="showDebugMessages" class="q-mb-md" label="Show Debug Messages" />
 
-        <div class="q-mb-md">
-          Save Info Messages will save info level messages in the logs table of the database for
-          later review.
-        </div>
+        <div class="q-mb-md">Show Info Messages will display info level notification alerts.</div>
 
-        <QToggle v-model="saveInfoMessages" class="q-mb-md" label="Save Info Messages" />
+        <QToggle v-model="showInfoMessages" class="q-mb-md" label="Show Info Messages" />
 
         <!-- Test Logger -->
         <div class="q-mb-md">
@@ -186,7 +186,29 @@ const {
           below.
         </div>
 
-        <QBtn label="Test Logger" color="primary" @click="onTestLogger()" />
+        <QBtn class="q-mb-md" label="Test Logger" color="primary" @click="onTestLogger()" />
+
+        <!-- Log Retention -->
+        <div class="q-mb-md">
+          Change log retention time by 30 day increments below. Logs older than the selected time
+          will be deleted. This functions retroactivley, so if you change the time to 30 days, all
+          logs older than 30 days will be deleted. Expired log processing occurs every time the app
+          is loaded.
+        </div>
+
+        <QSlider
+          v-model="logRetentionModel"
+          :label-value="logRetentionLabel"
+          class="q-mb-lg"
+          color="primary"
+          markers
+          label-always
+          switch-label-side
+          :min="30"
+          :max="360"
+          :step="30"
+          @change="(val) => onChangeLogRetention(val)"
+        />
       </QCardSection>
     </QCard>
 
