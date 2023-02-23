@@ -1,8 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//     App Constants                                                         //
+//     App                                                                   //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+import type { Example, ExampleRecord, Log, Setting, Test, TestRecord } from '@/models/models'
 
 /**
  * Generic strings that are reused throughout the app.
@@ -74,9 +76,60 @@ export enum Limit {
   FILESIZE = 100000000, // ~100 megabytes
 }
 
+/**
+ * Generic type for an object with string based properties storing any value.
+ */
+export type AppObject = { [x: string]: any }
+
+export type ParentCardItem = {
+  id: string
+  name: string
+  favorite: boolean
+  previousTimestamp?: number
+  previousNumber?: number
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//     Model Constants                                                       //
+//     Charts                                                                //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+export type GeneratedReport = {
+  title: string
+  firstRecordDate: string
+  lastRecordDate: string
+  chartLabels: string[]
+  chartDatasets: ChartDataset[]
+}
+
+export type ReportChart = {
+  options: ChartOptions
+  firstRecordDate: string
+  lastRecordDate: string
+  chartData: ChartData
+}
+
+export type ChartOptions = {
+  responsive: boolean
+  radius: number
+  plugins: { [x: string]: any }
+}
+
+export type ChartData = {
+  labels: string[]
+  datasets: ChartDataset[]
+}
+
+export type ChartDataset = {
+  label: string
+  borderColor: string
+  data: (number | null)[]
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//     Models                                                                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +168,7 @@ export enum DatabaseField {
 
 export type SettingField = DatabaseField.KEY | DatabaseField.VALUE
 
-export const settingFields: SettingField[] = [DatabaseField.KEY, DatabaseField.VALUE]
+export const settingFields: readonly SettingField[] = [DatabaseField.KEY, DatabaseField.VALUE]
 
 export type LogField =
   | DatabaseField.AUTO_ID
@@ -125,7 +178,7 @@ export type LogField =
   | DatabaseField.LABEL
   | DatabaseField.DETAILS
 
-export const logFields: LogField[] = [
+export const logFields: readonly LogField[] = [
   DatabaseField.AUTO_ID,
   DatabaseField.TIMESTAMP,
   DatabaseField.SEVERITY,
@@ -139,7 +192,7 @@ export type EntityField =
   | DatabaseField.CREATED_TIMESTAMP
   | DatabaseField.UPDATED_TIMESTAMP
 
-export const entityFields: EntityField[] = [
+export const entityFields: readonly EntityField[] = [
   DatabaseField.ID,
   DatabaseField.CREATED_TIMESTAMP,
   DatabaseField.UPDATED_TIMESTAMP,
@@ -152,7 +205,7 @@ export type ParentField =
   | DatabaseField.PARENT_STATUS
   | DatabaseField.FAVORITE
 
-export const parentFields: ParentField[] = [
+export const parentFields: readonly ParentField[] = [
   ...entityFields,
   DatabaseField.NAME,
   DatabaseField.DESCRIPTION,
@@ -166,44 +219,50 @@ export type RecordField =
   | DatabaseField.RECORD_STATUS
   | DatabaseField.NOTE
 
-export const recordFields: RecordField[] = [
+export const recordFields: readonly RecordField[] = [
   ...entityFields,
   DatabaseField.PARENT_ID,
   DatabaseField.RECORD_STATUS,
   DatabaseField.NOTE,
 ]
 
-export type ExampleField = EntityField | ParentField | DatabaseField.EXAMPLE_MESSAGE
+export type ExampleField = ParentField | DatabaseField.EXAMPLE_MESSAGE
 
-export const exampleFields: ExampleField[] = [
+export const exampleFields: readonly ExampleField[] = [
   ...entityFields,
   ...parentFields,
   DatabaseField.EXAMPLE_MESSAGE,
 ]
 
-export type ExampleRecordField = EntityField | RecordField | DatabaseField.EXAMPLE_NUMBER
+export type ExampleRecordField = RecordField | DatabaseField.EXAMPLE_NUMBER
 
-export const exampleRecordFields: ExampleRecordField[] = [
+export const exampleRecordFields: readonly ExampleRecordField[] = [
   ...entityFields,
   ...recordFields,
   DatabaseField.EXAMPLE_NUMBER,
 ]
 
-export type TestField = EntityField | ParentField | DatabaseField.EXAMPLE_MESSAGE
+export type TestField = ParentField | DatabaseField.EXAMPLE_MESSAGE
 
-export const testFields: TestField[] = [
+export const testFields: readonly TestField[] = [
   ...entityFields,
   ...parentFields,
   DatabaseField.EXAMPLE_MESSAGE,
 ]
 
-export type TestRecordField = EntityField | RecordField | DatabaseField.EXAMPLE_NUMBER
+export type TestRecordField = RecordField | DatabaseField.EXAMPLE_NUMBER
 
-export const testRecordFields: TestRecordField[] = [
+export const testRecordFields: readonly TestRecordField[] = [
   ...entityFields,
   ...recordFields,
   DatabaseField.EXAMPLE_NUMBER,
 ]
+
+export type AnyModel = Setting | Log | Example | ExampleRecord | Test | TestRecord
+
+export type ParentModel = Example | Test
+
+export type RecordModel = ExampleRecord | TestRecord
 
 export enum ParentStatus {
   ENABLED = 'Enabled',
@@ -234,19 +293,11 @@ export enum SettingKey {
   // RECORDS_TABLE_VISIBLE_COLUMNS = 'records-table-visible-columns',
 }
 
-///////////////////////////////////////////////////////////////////////////////
-//                                                                           //
-//     Report Constants                                                      //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- *
- */
+export type SettingValue = any // May make this more specific in the future
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//     Router Constants                                                      //
+//     Router                                                                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -267,7 +318,7 @@ export enum RouteName {
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//     Table Constants                                                       //
+//     Tables                                                                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -276,32 +327,32 @@ export enum RouteName {
  */
 export enum DatabaseTable {
   // Core
-  SETTINGS = 'settings',
-  LOGS = 'logs',
+  SETTINGS = 'Settings',
+  LOGS = 'Logs',
   // Parent
-  EXAMPLES = 'examples',
-  TESTS = 'tests',
+  EXAMPLES = 'Examples',
+  TESTS = 'Tests',
   // Record
-  EXAMPLE_RECORDS = 'exampleRecords',
-  TEST_RECORDS = 'testRecords',
+  EXAMPLE_RECORDS = 'Example Records',
+  TEST_RECORDS = 'Test Records',
 }
 
 export type CoreTable = DatabaseTable.SETTINGS | DatabaseTable.LOGS
 
-export const coreTables: CoreTable[] = [DatabaseTable.SETTINGS, DatabaseTable.LOGS]
+export const coreTables: readonly CoreTable[] = [DatabaseTable.SETTINGS, DatabaseTable.LOGS]
 
 export type ParentTable = DatabaseTable.EXAMPLES | DatabaseTable.TESTS
 
-export const parentTables: ParentTable[] = [DatabaseTable.EXAMPLES, DatabaseTable.TESTS]
+export const parentTables: readonly ParentTable[] = [DatabaseTable.EXAMPLES, DatabaseTable.TESTS]
 
 export type RecordTable = DatabaseTable.EXAMPLE_RECORDS | DatabaseTable.TEST_RECORDS
 
-export const recordTables: RecordTable[] = [
+export const recordTables: readonly RecordTable[] = [
   DatabaseTable.EXAMPLE_RECORDS,
   DatabaseTable.TEST_RECORDS,
 ]
 
-export const allTables: DatabaseTable[] = [...coreTables, ...parentTables, ...recordTables]
+export const allTables: readonly DatabaseTable[] = [...coreTables, ...parentTables, ...recordTables]
 
 /**
  * Table actions that can be performed. Each table may support a subset of these actions.
@@ -316,9 +367,23 @@ export enum DatabaseAction {
   CHARTS = 'Charts',
 }
 
+/**
+ * Properties used to display data items in a QTable.
+ * Use "hiddenId" for column "0" so a truncated version can be shown.
+ */
+export type ColumnProps = {
+  name: DatabaseField | 'hidden_id'
+  label: string
+  align: string
+  sortable: boolean
+  required: boolean
+  field: (val: any) => any
+  format: (val: any) => any
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
-//     Utility Constants                                                     //
+//     Utilities                                                             //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

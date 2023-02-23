@@ -1,5 +1,4 @@
-import { Icon } from '@/constants/globals'
-import type { RecordTable } from '@/constants/types'
+import { type RecordTable, Icon } from '@/constants/globals'
 import { ref, type Ref } from 'vue'
 import { getParentTable } from '@/services/DatabaseUtils'
 import useLogger from '@/use/useLogger'

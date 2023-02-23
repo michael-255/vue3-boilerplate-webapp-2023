@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn, date } from 'quasar'
-import { DatabaseAction, Icon, RouteName } from '@/constants/globals'
+import { type ParentTable, DatabaseAction, Icon, RouteName } from '@/constants/globals'
 import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import useParentCard from '@/use/useParentCard'
-import type { ParentTable } from '@/constants/types'
 
 defineProps<{
   parentTable: ParentTable

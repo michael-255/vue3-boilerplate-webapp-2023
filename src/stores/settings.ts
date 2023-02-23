@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
-import { SettingKey } from '@/constants/globals'
-import type { SettingValue } from '@/constants/types'
+import { type SettingValue, SettingKey } from '@/constants/globals'
 
 const useSettingsStore = defineStore({
   id: 'settings',
 
   state: () =>
-    Object.values(SettingKey).reduce((o, key) => {
-      return { ...o, [key]: null as SettingValue }
+    Object.values(SettingKey).reduce((accumulateObject, key) => {
+      // Create initial store object with each SettingKey as a key and null as the value
+      return { ...accumulateObject, [key]: null as SettingValue }
     }, {} as { [key in SettingKey]: SettingValue }),
 })
 

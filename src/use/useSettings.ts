@@ -1,7 +1,15 @@
 import { type Ref, ref, computed } from 'vue'
 import type { Example, ExampleRecord } from '@/models/models'
-import { DatabaseTable } from '@/constants/globals'
-import { Icon, AppText, SettingKey, ParentStatus, RecordStatus } from '@/constants/globals'
+import {
+  type AppObject,
+  DatabaseTable,
+  allTables,
+  Icon,
+  AppText,
+  SettingKey,
+  ParentStatus,
+  RecordStatus,
+} from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabase from '@/use/useDatabase'
@@ -17,10 +25,10 @@ export default function useSettings() {
 
   const importFile: Ref<any> = ref(null)
 
-  const deleteDataOptions: Ref<DatabaseTable[]> = ref(Object.values(DatabaseTable))
+  const deleteDataOptions: Ref<DatabaseTable[]> = ref(allTables.map((table) => table))
   const deleteDataModel: Ref<DatabaseTable | null> = ref(null)
 
-  const exportTableOptions = Object.values(DatabaseTable).map((table) => ({
+  const exportTableOptions = allTables.map((table) => ({
     value: table,
     label: table,
   }))
@@ -212,19 +220,19 @@ export default function useSettings() {
           // Imports data properties it can parse that are defined below.
           const parsedFileData = JSON.parse(await importFile.value.text())
 
-          // Use table keys as guide for what data can be imported
-          const tableKeys = Object.values(DatabaseTable)
-
           // Only retrieve data stored under a matching table key
-          const importData = tableKeys.reduce(
-            (o, key: DatabaseTable) => ({ ...o, [key]: parsedFileData[key] || [] }),
-            {} as any
-          )
+          // TODO - Manually add new keys for data here
+          const importData = allTables.reduce((accumulateObject, key: DatabaseTable) => {
+            return {
+              ...accumulateObject,
+              [key]: parsedFileData[key] || [],
+            }
+          }, {} as AppObject)
 
           consoleDebug('importData =', importData)
 
           await Promise.all(
-            tableKeys.map(
+            allTables.map(
               async (table: DatabaseTable) => await bulkAddItems(table, importData[table])
             )
           )
@@ -312,9 +320,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await Promise.all(
-            Object.values(DatabaseTable).map(async (table) => await clearTable(table))
-          )
+          await Promise.all(allTables.map(async (table) => await clearTable(table)))
           await initializeSettings()
           log.info('All data successfully deleted')
         } catch (error) {

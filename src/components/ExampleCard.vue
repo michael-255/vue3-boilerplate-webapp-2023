@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@/constants/globals'
-import type { ParentTable } from '@/constants/types'
+import { type ParentTable, Icon } from '@/constants/globals'
 import { QIcon, QInput, QBtn } from 'quasar'
 import { onUpdated } from 'vue'
 import { getRecordTable } from '@/services/DatabaseUtils'

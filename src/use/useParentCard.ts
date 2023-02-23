@@ -1,5 +1,4 @@
-import type { ParentTable } from '@/constants/types'
-import { Icon, DatabaseTable } from '@/constants/globals'
+import { type ParentTable, Icon, DatabaseTable } from '@/constants/globals'
 import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabase from '@/use/useDatabase'

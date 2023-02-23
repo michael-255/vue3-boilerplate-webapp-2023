@@ -4,8 +4,9 @@ import type {
   RecordStatus,
   Severity,
   SettingKey,
+  AppObject,
+  SettingValue,
 } from '@/constants/globals'
-import type { AppObject, SettingValue } from '@/constants/types'
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //

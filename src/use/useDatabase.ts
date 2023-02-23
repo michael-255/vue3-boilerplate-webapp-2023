@@ -1,15 +1,13 @@
 import { Dark, uid } from 'quasar'
 import type { IndexableType } from 'dexie'
-import type {
-  AnyModel,
-  ParentModel,
-  ParentTable,
-  RecordModel,
-  RecordTable,
-  SettingValue,
-} from '@/constants/types'
 import type { Log, Setting } from '@/models/models'
 import {
+  type AnyModel,
+  type ParentModel,
+  type ParentTable,
+  type RecordModel,
+  type RecordTable,
+  type SettingValue,
   DatabaseTable,
   SettingKey,
   DatabaseField,

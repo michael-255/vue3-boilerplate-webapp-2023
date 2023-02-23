@@ -1,5 +1,7 @@
-import type { ColumnProps, ParentTable, RecordTable } from '@/constants/types'
 import {
+  type ColumnProps,
+  type ParentTable,
+  type RecordTable,
   DatabaseAction,
   DatabaseTable,
   Icon,
@@ -15,12 +17,12 @@ import { slugify } from '@/utils/common'
 
 export function getFields(table: DatabaseTable): DatabaseField[] {
   return {
-    [DatabaseTable.SETTINGS]: settingFields,
-    [DatabaseTable.LOGS]: logFields,
-    [DatabaseTable.EXAMPLES]: exampleFields,
-    [DatabaseTable.EXAMPLE_RECORDS]: exampleRecordFields,
-    [DatabaseTable.TESTS]: testFields,
-    [DatabaseTable.TEST_RECORDS]: testRecordFields,
+    [DatabaseTable.SETTINGS]: settingFields.map((field) => field),
+    [DatabaseTable.LOGS]: logFields.map((field) => field),
+    [DatabaseTable.EXAMPLES]: exampleFields.map((field) => field),
+    [DatabaseTable.EXAMPLE_RECORDS]: exampleRecordFields.map((field) => field),
+    [DatabaseTable.TESTS]: testFields.map((field) => field),
+    [DatabaseTable.TEST_RECORDS]: testRecordFields.map((field) => field),
   }[table]
 }
 
@@ -90,17 +92,6 @@ export function getLabelSingular(table: DatabaseTable): string {
     [DatabaseTable.EXAMPLE_RECORDS]: 'Example Record',
     [DatabaseTable.TESTS]: 'Test',
     [DatabaseTable.TEST_RECORDS]: 'Test Record',
-  }[table]
-}
-
-export function getLabelPlural(table: DatabaseTable): string {
-  return {
-    [DatabaseTable.SETTINGS]: 'Settings',
-    [DatabaseTable.LOGS]: 'Logs',
-    [DatabaseTable.EXAMPLES]: 'Examples',
-    [DatabaseTable.EXAMPLE_RECORDS]: 'Example Records',
-    [DatabaseTable.TESTS]: 'Tests',
-    [DatabaseTable.TEST_RECORDS]: 'Test Records',
   }[table]
 }
 

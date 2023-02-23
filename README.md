@@ -7,8 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Misc. Tasks
 
-  - [ ] Combine `types.ts` with `globals.ts` and remove redundant types (???)
-  - [ ] Use new constants instead of `Object.*` functions
   - [ ] `Unused Items` and `Orphaned Items` data table views from Settings page
   - [ ] Setup a TTL for Logs (should it work retroactively???)
 

@@ -1,7 +1,15 @@
 import { liveQuery } from 'dexie'
-import type { ParentCardItem, ParentModel, ParentTable, RecordTable } from '@/constants/types'
 import { type Ref, ref, computed, onUnmounted } from 'vue'
-import { DatabaseField, SettingKey, DatabaseTable, ParentStatus } from '@/constants/globals'
+import {
+  type ParentCardItem,
+  type ParentModel,
+  type ParentTable,
+  type RecordTable,
+  DatabaseField,
+  SettingKey,
+  DatabaseTable,
+  ParentStatus,
+} from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import { getRecordTable } from '@/services/DatabaseUtils'
 import useDatabase from '@/use/useDatabase'
