@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { QSelect, QBtn, QOptionGroup } from 'quasar'
-import { AppText, Icon, DatabaseTable, Limit, RouteName } from '@/constants/globals'
+import { AppText, Icon, DatabaseTable, Limit, RouteName, ComputedTable } from '@/constants/globals'
+import { slugify } from '@/utils/common'
 import useSettings from '@/use/useSettings'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import { slugify } from '@/utils/common'
-import { ref } from 'vue'
 
 const {
   showIntroduction,
@@ -132,11 +131,27 @@ const {
           />
         </div>
 
-        <div>
+        <div class="q-mb-md">
           <QBtn
             label="Settings Table"
             color="primary"
             :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.SETTINGS) } }"
+          />
+        </div>
+
+        <div class="q-mb-md">
+          <QBtn
+            label="Unused Items Table"
+            color="primary"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(ComputedTable.UNUSED) } }"
+          />
+        </div>
+
+        <div>
+          <QBtn
+            label="Orphaned Items Table"
+            color="primary"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(ComputedTable.ORPHANED) } }"
           />
         </div>
       </QCardSection>

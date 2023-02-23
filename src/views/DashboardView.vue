@@ -57,5 +57,15 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
         />
       </div>
     </div>
+
+    <!-- Bottom of page message -->
+    <div class="row justify-center q-my-xl">
+      <div class="col-12 text-center">
+        <QIcon name="menu_open" size="80px" color="grey" />
+      </div>
+      <!-- TODO -->
+      <div class="col-12 text-grey text-center">{{ examples.length }} items found</div>
+      <div class="col-12 text-grey text-center">Open the menu for more options</div>
+    </div>
   </ResponsivePage>
 </template>

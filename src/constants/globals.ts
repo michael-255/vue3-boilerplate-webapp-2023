@@ -337,6 +337,11 @@ export enum DatabaseTable {
   TEST_RECORDS = 'Test Records',
 }
 
+export enum ComputedTable {
+  UNUSED = 'Unused Items',
+  ORPHANED = 'Orphaned Items',
+}
+
 export type CoreTable = DatabaseTable.SETTINGS | DatabaseTable.LOGS
 
 export const coreTables: readonly CoreTable[] = [DatabaseTable.SETTINGS, DatabaseTable.LOGS]

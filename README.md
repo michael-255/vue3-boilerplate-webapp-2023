@@ -7,7 +7,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Misc. Tasks
 
-  - [ ] `Unused Items` and `Orphaned Items` data table views from Settings page
+  - [ ] Clean up Dashboard use of separate tables and conditional rendering
+    - [ ] Use custom bottom messages
   - [ ] Setup a TTL for Logs (should it work retroactively???)
 
 - Dashboard
