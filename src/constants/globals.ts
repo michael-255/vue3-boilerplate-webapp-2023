@@ -89,6 +89,12 @@ export type ParentCardItem = {
   previousNumber?: number
 }
 
+export type UnusedOrphanedItem = {
+  id: string
+  table: DatabaseTable
+  type: 'Unused' | 'Orphaned'
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //
 //     Charts                                                                //
@@ -345,11 +351,6 @@ export enum DatabaseTable {
   // Record
   EXAMPLE_RECORDS = 'Example Records',
   TEST_RECORDS = 'Test Records',
-}
-
-export enum ComputedTable {
-  UNUSED = 'Unused Items',
-  ORPHANED = 'Orphaned Items',
 }
 
 export type CoreTable = DatabaseTable.SETTINGS | DatabaseTable.LOGS

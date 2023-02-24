@@ -112,7 +112,7 @@ const rows = [
   >
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">Measurement Records</div>
+        <div class="col-10 text-h6 ellipsis">Unused and Orphaned Items</div>
         <QBtn
           round
           flat

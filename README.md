@@ -9,6 +9,7 @@ projects. Read through this README to have a better understanding of how this pr
 
   - [ ] Clean up Dashboard use of separate tables and conditional rendering
     - [ ] Use custom bottom messages
+    - [ ] Add `Create` button to bottom of page
 
 - Dashboard
 
