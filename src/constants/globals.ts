@@ -288,13 +288,22 @@ export enum SettingKey {
   SHOW_DEBUG_MESSAGES = 'show-debug-messages',
   SHOW_INFO_MESSAGES = 'show-info-messages',
   PARENT_LIST_SELECTION = 'primary-list-selection',
-  LOG_RETENTION_DAYS = 'log-retention-time',
+  LOG_RETENTION_TIME = 'log-retention-time',
   // ACTIVE_RECORD_IDS = 'active-record-ids',
   // PARENTS_TABLE_VISIBLE_COLUMNS = 'parents-table-visible-columns',
   // RECORDS_TABLE_VISIBLE_COLUMNS = 'records-table-visible-columns',
 }
 
 export type SettingValue = any // May make this more specific in the future
+
+export enum LogRetention {
+  ONE_WEEK = '1 Week',
+  ONE_MONTH = '1 Month',
+  THREE_MONTHS = '3 Months',
+  SIX_MONTHS = '6 Months',
+  ONE_YEAR = '1 Year',
+  FOREVER = 'Forever',
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                                                           //

@@ -9,6 +9,7 @@ import {
   SettingKey,
   ParentStatus,
   RecordStatus,
+  LogRetention,
 } from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
@@ -34,8 +35,17 @@ export default function useSettings() {
   }))
   const exportTableModel: Ref<DatabaseTable[]> = ref([])
 
-  const logRetentionModel = ref(settingsStore[SettingKey.LOG_RETENTION_DAYS])
-  const logRetentionLabel = computed(() => `${logRetentionModel.value} Days`)
+  const logRetentionModel = computed({
+    get() {
+      const logRetentionTime = settingsStore[SettingKey.LOG_RETENTION_TIME]
+      return Object.values(LogRetention).findIndex((x) => x === logRetentionTime)
+    },
+    async set(logRetentionIndex: number) {
+      const logRetention = Object.values(LogRetention)[logRetentionIndex]
+      await setSetting(SettingKey.LOG_RETENTION_TIME, logRetention)
+    },
+  })
+  const logRetentionLabels = Object.values(LogRetention)
 
   //
   // Toggles
@@ -169,14 +179,14 @@ export default function useSettings() {
             }
           }
 
-          const createExampleRecords = (count: number, parent: Example) => {
+          const createExampleRecords = (count: number, parent?: Example) => {
             for (let i = 0; i < count; i++) {
               exampleRecords.push({
                 id: uid(),
                 createdTimestamp: initialTimestamp,
                 updatedTimestamp: initialTimestamp,
                 recordStatus: RecordStatus.FINISHED,
-                parentId: parent.id,
+                parentId: parent?.id || `orphaned-record-id-${i}`,
                 note: `Record Note ${i}`,
                 exampleNumber: randomInt(1, 100),
               })
@@ -186,6 +196,8 @@ export default function useSettings() {
           }
 
           // Create demo data here...
+          createExamples(2) // Unused parent items
+          createExampleRecords(2) // Orphaned record items
           createExamples(10)
           examples.map((example) => createExampleRecords(5, example))
 
@@ -224,7 +236,7 @@ export default function useSettings() {
           const parsedFileData = JSON.parse(await importFile.value.text())
 
           // Only retrieve data stored under a matching table key
-          // TODO - Manually add new keys for data here
+          // TODO - Manually add new keys for data here???
           const importData = allTables.reduce((accumulateObject, key: DatabaseTable) => {
             return {
               ...accumulateObject,
@@ -292,13 +304,14 @@ export default function useSettings() {
 
   /**
    * TODO
-   * @param days
+   * @param logRetentionIndex
    */
-  async function onChangeLogRetention(days: number): Promise<void> {
+  async function onChangeLogRetention(logRetentionIndex: number): Promise<void> {
     try {
-      await setSetting(SettingKey.LOG_RETENTION_DAYS, days)
-      logRetentionModel.value = days
-      log.info('Updated log retention', { days })
+      const logRetentionTime = Object.values(LogRetention)[logRetentionIndex]
+      await setSetting(SettingKey.LOG_RETENTION_TIME, logRetentionTime)
+      logRetentionModel.value = logRetentionIndex
+      log.info('Updated log retention', { time: logRetentionTime, index: logRetentionIndex })
     } catch (error) {
       log.error('Log retention update failed', error)
     }
@@ -379,7 +392,7 @@ export default function useSettings() {
     exportTableOptions,
     exportTableModel,
     logRetentionModel,
-    logRetentionLabel,
+    logRetentionLabels,
     onTestLogger,
     onDefaults,
     onRejectedFile,

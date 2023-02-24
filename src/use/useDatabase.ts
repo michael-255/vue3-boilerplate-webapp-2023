@@ -14,6 +14,7 @@ import {
   Severity,
   RecordStatus,
   AppText,
+  LogRetention,
 } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
@@ -47,7 +48,8 @@ export default function useDatabase() {
     const showInfoMessages = findSettingValue(SettingKey.SHOW_INFO_MESSAGES) ?? false
     const parentListSelection =
       findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? DatabaseTable.EXAMPLES
-    const logRetentionDays = findSettingValue(SettingKey.LOG_RETENTION_DAYS) ?? 90
+    const logRetentionTime =
+      findSettingValue(SettingKey.LOG_RETENTION_TIME) ?? LogRetention.THREE_MONTHS
     // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
     // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
     // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
@@ -69,7 +71,7 @@ export default function useDatabase() {
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingKey.SHOW_INFO_MESSAGES, showInfoMessages),
       setSetting(SettingKey.PARENT_LIST_SELECTION, parentListSelection),
-      setSetting(SettingKey.LOG_RETENTION_DAYS, logRetentionDays),
+      setSetting(SettingKey.LOG_RETENTION_TIME, logRetentionTime),
       // setSetting(SettingKey.FAVORITE_PARENT_IDS, favoriteParentIds),
       // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
       // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),
@@ -108,13 +110,28 @@ export default function useDatabase() {
   }
 
   /**
-   * TODO
+   * Deletes logs that are past the log retention time.
    * @returns Number of logs to be deleted
    */
   async function purgeExpiredLogs(): Promise<number> {
-    // Get milliseconds from days
-    const logRetentionMilliseconds =
-      settingsStore[SettingKey.LOG_RETENTION_DAYS] * 24 * 60 * 60 * 1000
+    const logRetentionTime = settingsStore[SettingKey.LOG_RETENTION_TIME]
+
+    if (!logRetentionTime || logRetentionTime === LogRetention.FOREVER) {
+      return 0 // No logs purged
+    }
+
+    const getLogRetentionMilliseconds = (logRetention: LogRetention): number => {
+      return {
+        [LogRetention.ONE_WEEK]: 7 * 24 * 60 * 60 * 1000,
+        [LogRetention.ONE_MONTH]: 30 * 24 * 60 * 60 * 1000,
+        [LogRetention.THREE_MONTHS]: 90 * 24 * 60 * 60 * 1000,
+        [LogRetention.SIX_MONTHS]: 180 * 24 * 60 * 60 * 1000,
+        [LogRetention.ONE_YEAR]: 365 * 24 * 60 * 60 * 1000,
+        [LogRetention.FOREVER]: Infinity, // This should never happen
+      }[logRetention]
+    }
+
+    const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime)
 
     const logs = await dexieWrapper.table(DatabaseTable.LOGS).toArray()
 

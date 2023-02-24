@@ -17,7 +17,7 @@ const {
   exportTableOptions,
   exportTableModel,
   logRetentionModel,
-  logRetentionLabel,
+  logRetentionLabels,
   onTestLogger,
   onDefaults,
   onRejectedFile,
@@ -198,16 +198,16 @@ const {
 
         <QSlider
           v-model="logRetentionModel"
-          :label-value="logRetentionLabel"
+          :label-value="logRetentionLabels[logRetentionModel]"
           class="q-mb-lg"
           color="primary"
           markers
           label-always
           switch-label-side
-          :min="30"
-          :max="360"
-          :step="30"
-          @change="(val) => onChangeLogRetention(val)"
+          :min="0"
+          :max="5"
+          :step="1"
+          @change="(logRetentionIndex) => onChangeLogRetention(logRetentionIndex)"
         />
       </QCardSection>
     </QCard>

@@ -4,7 +4,6 @@ import type {
   RecordStatus,
   Severity,
   SettingKey,
-  AppObject,
   SettingValue,
 } from '@/constants/globals'
 
@@ -39,7 +38,7 @@ export interface Log {
   [DatabaseField.SEVERITY]: Severity
   [DatabaseField.APP_NAME]: string
   [DatabaseField.LABEL]: string
-  [DatabaseField.DETAILS]?: AppObject
+  [DatabaseField.DETAILS]?: any
 }
 
 export interface Setting {
