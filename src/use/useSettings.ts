@@ -311,7 +311,7 @@ export default function useSettings() {
       const logRetentionTime = Object.values(LogRetention)[logRetentionIndex]
       await setSetting(SettingKey.LOG_RETENTION_TIME, logRetentionTime)
       logRetentionModel.value = logRetentionIndex
-      log.info('Updated log retention', { time: logRetentionTime, index: logRetentionIndex })
+      log.info('Updated log retention time', { time: logRetentionTime, index: logRetentionIndex })
     } catch (error) {
       log.error('Log retention update failed', error)
     }

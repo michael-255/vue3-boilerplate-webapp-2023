@@ -188,12 +188,11 @@ const {
 
         <QBtn class="q-mb-md" label="Test Logger" color="primary" @click="onTestLogger()" />
 
-        <!-- Log Retention -->
+        <!-- Log Retention Time -->
         <div class="q-mb-md">
-          Change log retention time by 30 day increments below. Logs older than the selected time
-          will be deleted. This functions retroactivley, so if you change the time to 30 days, all
-          logs older than 30 days will be deleted. Expired log processing occurs every time the app
-          is loaded.
+          Change log retention time below. Logs older than the selected time will be deleted. This
+          functions retroactivley, so if you change the time to 3 months, all logs older than 3
+          months will be deleted. Expired log processing occurs every time the app is loaded.
         </div>
 
         <QSlider
