@@ -89,10 +89,9 @@ export type ParentCardItem = {
   previousNumber?: number
 }
 
-export type UnusedOrphanedItem = {
+export type OrphanedItem = {
   id: string
   table: DatabaseTable
-  type: 'Unused' | 'Orphaned'
 }
 
 ///////////////////////////////////////////////////////////////////////////////

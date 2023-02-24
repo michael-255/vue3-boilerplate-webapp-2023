@@ -204,7 +204,7 @@ export default function useSettings() {
           await bulkAddItems(DatabaseTable.EXAMPLES, examples)
           await bulkAddItems(DatabaseTable.EXAMPLE_RECORDS, exampleRecords)
 
-          log.info('Defaults loaded')
+          log.info('Defaults loaded', { count: examples.length + exampleRecords.length })
         } catch (error) {
           log.error('Failed to load defaults', error)
         }
