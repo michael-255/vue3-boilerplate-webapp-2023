@@ -1,5 +1,5 @@
 import { Dark, uid } from 'quasar'
-import { liveQuery, type IndexableType, type Observable, type Subscription } from 'dexie'
+import { liveQuery, type IndexableType, type Observable } from 'dexie'
 import type { Log, Setting } from '@/models/models'
 import {
   type AnyModel,

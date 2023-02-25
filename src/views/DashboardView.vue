@@ -10,8 +10,7 @@ import ExampleCard from '@/components/ExampleCard.vue'
 import { getLabelSingular } from '@/services/DatabaseUtils'
 
 const settingsStore = useSettingsStore()
-const { itemRefs, parentItemsRefs, parentItemsSelection, parentItemsOptions } = useDashboard()
-// TODO - Add comments about using v-show instead of v-if
+const { itemRefs, itemComponents, parentListSelection, parentListOptions } = useDashboard()
 </script>
 
 <template>
@@ -23,19 +22,16 @@ const { itemRefs, parentItemsRefs, parentItemsSelection, parentItemsOptions } = 
       <QCardSection>
         <div class="text-h6 q-mb-xs">What would you like to work on?</div>
 
-        <QOptionGroup
-          v-model="parentItemsSelection"
-          :options="parentItemsOptions"
-          color="primary"
-        />
+        <QOptionGroup v-model="parentListSelection" :options="parentListOptions" color="primary" />
       </QCardSection>
     </QCard>
 
     <!-- Parent Items List -->
     <div v-for="(itemRef, i) in itemRefs" :key="i">
       <div v-for="(item, j) in itemRef.value" :key="j">
-        <!-- TODO: Need TestCard to fix record saving issue -->
-        <div v-show="parentItemsSelection === item.table">
+        <!-- Using v-show so the DOM doesn't get updated when switching the parent selection -->
+        <div v-show="parentListSelection === item.table">
+          <!-- TODO: Need TestCard to fix record saving issue -->
           <ExampleCard
             class="q-mb-md"
             :parent-table="item.table"
@@ -49,24 +45,24 @@ const { itemRefs, parentItemsRefs, parentItemsSelection, parentItemsOptions } = 
       </div>
     </div>
 
-    <!-- Bottom of page message -->
+    <!-- Bottom of page message and create button -->
     <div class="row justify-center q-my-xl">
       <div class="col-12 text-center">
         <QIcon name="menu_open" size="80px" color="grey" />
       </div>
 
       <div class="col-12 text-grey text-center">
-        {{ parentItemsRefs?.[parentItemsSelection]?.value?.length || '0' }} items found
+        {{ itemRefs?.[parentListSelection]?.value?.length || '0' }} items found
       </div>
 
       <QBtn
         class="q-mt-md"
         color="positive"
-        :label="`Create ${getLabelSingular(parentItemsSelection)}`"
+        :label="`Create ${getLabelSingular(parentListSelection)}`"
         :to="{
           name: RouteName.ACTIONS,
           params: {
-            tableSlug: slugify(parentItemsSelection),
+            tableSlug: slugify(parentListSelection),
             actionSlug: slugify(DatabaseAction.CREATE),
           },
         }"

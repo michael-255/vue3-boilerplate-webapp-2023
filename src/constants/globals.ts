@@ -82,6 +82,7 @@ export enum Limit {
 export type AppObject = { [x: string]: any }
 
 export type ParentCardItem = {
+  table: ParentTable
   id: string
   name: string
   favorite: boolean

@@ -7,7 +7,6 @@ import {
   SettingKey,
   DatabaseTable,
   parentTables,
-  type ParentModel,
 } from '@/constants/globals'
 import useDatabase from '@/use/useDatabase'
 import useSettingsStore from '@/stores/settings'
@@ -20,55 +19,42 @@ export default function useDashboard() {
   const { log, consoleDebug } = useLogger()
   const { setSetting, getPreviousRecord, liveQueryDashboard } = useDatabase()
 
-  // TODO -  Not actaully ParentModels, but card items... can't tell which though so may have to be any...
-  const itemRefs: Ref<any[]>[] = parentTables.map(() => ref([]))
-
-  // TODO
-  const itemCardComponents: any[] = parentTables.map((table) => getParentCardComponents(table))
-
-  // TODO
-  const subs = parentTables.map((table, index) => {
-    if (table === DatabaseTable.EXAMPLES) {
-      liveQueryExamples(itemRefs[index])
-    } else if (table === DatabaseTable.TESTS) {
-      liveQueryTests(itemRefs[index])
-    }
-  })
-
   /**
-   * Options for the parent table selection radio buttons.
+   * Options for the parent table radio buttons.
    */
-  const parentItemsOptions = parentTables.map((option: ParentTable) => ({
+  const parentListOptions = parentTables.map((option: ParentTable) => ({
     label: option,
     value: option,
   }))
 
   /**
-   * Object with item refs for each parent table.
+   * Item refs for each parent table.
    */
-  const parentItemsRefs = {
+  const itemRefs = {
     [DatabaseTable.EXAMPLES]: ref([]),
     [DatabaseTable.TESTS]: ref([]),
-  } as { [key in ParentTable]: Ref<ParentModel[]> }
+  } as { [key in ParentTable]: Ref<ParentCardItem[]> }
 
   /**
-   * Object with live query subscriptions for each parent table.
+   * Item card component for each parent table.
    */
-  const subscriptions = {
-    [DatabaseTable.EXAMPLES]: liveQueryExamples(parentItemsRefs[DatabaseTable.EXAMPLES]),
-    [DatabaseTable.TESTS]: liveQueryTests(parentItemsRefs[DatabaseTable.TESTS]),
-  } as { [key in ParentTable]: Subscription }
-
-  // TODO
-  /**
-   * Object with card component for each parent table.
-   */
-  const parentCardComponents = {
+  const itemComponents = {
     [DatabaseTable.EXAMPLES]: getParentCardComponents(DatabaseTable.EXAMPLES),
     [DatabaseTable.TESTS]: getParentCardComponents(DatabaseTable.TESTS),
   } as { [key in ParentTable]: any }
 
-  const parentItemsSelection = computed({
+  /**
+   * Live query subscriptions for each parent table.
+   */
+  const subscriptions = {
+    [DatabaseTable.EXAMPLES]: examplesSubscription(itemRefs[DatabaseTable.EXAMPLES]),
+    [DatabaseTable.TESTS]: testsSubscription(itemRefs[DatabaseTable.TESTS]),
+  } as { [key in ParentTable]: Subscription }
+
+  /**
+   * Settings control for the parent table selection.
+   */
+  const parentListSelection = computed({
     get() {
       return settingsStore[SettingKey.PARENT_LIST_SELECTION]
     },
@@ -82,11 +68,11 @@ export default function useDashboard() {
   })
 
   /**
-   * Live queries the Example table and updates the provided ref with the sorted data items.
-   * @param tableRef
+   * Examples table subscription that live updates the sorted data items.
+   * @param itemsRef
    * @returns Subscription
    */
-  function liveQueryExamples(tableRef: Ref<ParentModel[]>) {
+  function examplesSubscription(itemsRef: Ref<ParentCardItem[]>) {
     return liveQueryDashboard(DatabaseTable.EXAMPLES).subscribe({
       next: async (items: Example[]) => {
         const parentCardItems: ParentCardItem[] = await Promise.all(
@@ -100,7 +86,6 @@ export default function useDashboard() {
 
             return {
               table: DatabaseTable.EXAMPLES,
-              testMessage: 'Example Message',
               [DatabaseField.ID]: item[DatabaseField.ID],
               [DatabaseField.NAME]: item[DatabaseField.NAME],
               [DatabaseField.FAVORITE]: item[DatabaseField.FAVORITE],
@@ -113,7 +98,7 @@ export default function useDashboard() {
         const favorites = parentCardItems.filter((item) => item.favorite)
         const nonFavorites = parentCardItems.filter((item) => !item.favorite)
         const combined = [...favorites, ...nonFavorites]
-        tableRef.value = combined as any[]
+        itemsRef.value = combined as ParentCardItem[]
 
         consoleDebug('Retrieved Examples', combined)
       },
@@ -124,11 +109,11 @@ export default function useDashboard() {
   }
 
   /**
-   * Live queries the Tests table and updates the provided ref with the sorted data items.
-   * @param tableRef
+   * Tests table subscription that live updates the sorted data items.
+   * @param itemsRef
    * @returns Subscription
    */
-  function liveQueryTests(tableRef: Ref<ParentModel[]>) {
+  function testsSubscription(itemsRef: Ref<ParentCardItem[]>) {
     return liveQueryDashboard(DatabaseTable.TESTS).subscribe({
       next: async (items: Test[]) => {
         const parentCardItems: ParentCardItem[] = await Promise.all(
@@ -142,7 +127,6 @@ export default function useDashboard() {
 
             return {
               table: DatabaseTable.TESTS,
-              testMessage: 'Test Message',
               [DatabaseField.ID]: item[DatabaseField.ID],
               [DatabaseField.NAME]: item[DatabaseField.NAME],
               [DatabaseField.FAVORITE]: item[DatabaseField.FAVORITE],
@@ -155,7 +139,7 @@ export default function useDashboard() {
         const favorites = parentCardItems.filter((item) => item.favorite)
         const nonFavorites = parentCardItems.filter((item) => !item.favorite)
         const combined = [...favorites, ...nonFavorites]
-        tableRef.value = combined as any[]
+        itemsRef.value = combined as ParentCardItem[]
 
         consoleDebug('Retrieved Tests', combined)
       },
@@ -167,8 +151,8 @@ export default function useDashboard() {
 
   return {
     itemRefs,
-    parentItemsRefs,
-    parentItemsSelection,
-    parentItemsOptions,
+    itemComponents,
+    parentListSelection,
+    parentListOptions,
   }
 }
