@@ -1,5 +1,5 @@
 import { Dark, uid } from 'quasar'
-import type { IndexableType } from 'dexie'
+import { liveQuery, type IndexableType, type Observable, type Subscription } from 'dexie'
 import type { Log, Setting } from '@/models/models'
 import {
   type AnyModel,
@@ -15,6 +15,7 @@ import {
   RecordStatus,
   AppText,
   LogRetention,
+  ParentStatus,
 } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
@@ -206,6 +207,54 @@ export default function useDatabase() {
 
   ///////////////////////////////////////////////////////////////////////////////
   //                                                                           //
+  //     Read                                                                  //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Do NOT make this function async. TODO
+   * @param table
+   * @returns Observable of Parent Table data
+   */
+  function liveQueryDashboard(table: ParentTable): Observable<ParentModel[]> {
+    return liveQuery(() =>
+      dexieWrapper
+        .table(table)
+        .orderBy(DatabaseField.NAME)
+        .filter((item) => item[DatabaseField.PARENT_STATUS] === ParentStatus.ENABLED)
+        .toArray()
+    )
+  }
+
+  /**
+   * Gets all data from a table.
+   * @returns Database table data as an array
+   */
+  async function getTable(table: DatabaseTable): Promise<AnyModel[]> {
+    return await dexieWrapper.table(table).toArray()
+  }
+
+  /**
+   * Get most recent previous record item by parent id.
+   * @param table
+   * @param parentId
+   * @returns Record item or undefined
+   */
+  async function getPreviousRecord(
+    recordTable: RecordTable,
+    parentId: string
+  ): Promise<RecordModel | undefined> {
+    return (
+      await dexieWrapper
+        .table(recordTable)
+        .where(DatabaseField.PARENT_ID)
+        .equalsIgnoreCase(parentId)
+        .sortBy(DatabaseField.CREATED_TIMESTAMP)
+    ).reverse()[0]
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
   //     Update                                                                //
   //                                                                           //
   ///////////////////////////////////////////////////////////////////////////////
@@ -235,39 +284,6 @@ export default function useDatabase() {
     props: Partial<ParentModel>
   ): Promise<IndexableType> {
     return await dexieWrapper.table(table).update(originalId, props)
-  }
-
-  ///////////////////////////////////////////////////////////////////////////////
-  //                                                                           //
-  //     Read                                                                  //
-  //                                                                           //
-  ///////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * Gets all data from a table.
-   * @returns Database table data as an array
-   */
-  async function getTable(table: DatabaseTable): Promise<AnyModel[]> {
-    return await dexieWrapper.table(table).toArray()
-  }
-
-  /**
-   * Get most recent previous record item by parent id.
-   * @param table
-   * @param parentId
-   * @returns Record item or undefined
-   */
-  async function getPreviousRecord(
-    recordTable: RecordTable,
-    parentId: string
-  ): Promise<RecordModel | undefined> {
-    return (
-      await dexieWrapper
-        .table(recordTable)
-        .where(DatabaseField.PARENT_ID)
-        .equalsIgnoreCase(parentId)
-        .sortBy(DatabaseField.CREATED_TIMESTAMP)
-    ).reverse()[0]
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -311,6 +327,7 @@ export default function useDatabase() {
     addExampleRecord,
     forceLiveQueryUpdate,
     updateItem,
+    liveQueryDashboard,
     getTable,
     getPreviousRecord,
     bulkAddItems,

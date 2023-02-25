@@ -5,18 +5,19 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Misc. Tasks
-
-  - [ ] Clean up Dashboard use of separate tables and conditional rendering
-    - [ ] Use custom bottom messages
-    - [ ] Add `Create` button to bottom of page
-
 - Dashboard
 
   - [ ] Finish the `Inspect Action` (most fun part!)
+  - [ ] `TestCard` and record working in Dashboard
+  - [ ] Preload ParentCard components using asyncComponent (ref fitness app)
+  - [ ] Better way of building useDashboard parent table variables???
   - [ ] Work on the `Edit Action`
   - [ ] Work on the `Charts Action`
     - [ ] Select or slider for date range?
+
+- Data Tables
+
+  - [ ] Live queries for each table
 
 - Quasar
 

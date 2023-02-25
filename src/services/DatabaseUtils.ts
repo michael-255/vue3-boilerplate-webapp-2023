@@ -26,7 +26,7 @@ export function getFields(table: DatabaseTable): DatabaseField[] {
   }[table]
 }
 
-export function getComponents(table: DatabaseTable): any[] {
+export function getInputComponents(table: DatabaseTable): any[] {
   return {
     [DatabaseTable.SETTINGS]: [],
     [DatabaseTable.LOGS]: [],
@@ -34,6 +34,14 @@ export function getComponents(table: DatabaseTable): any[] {
     [DatabaseTable.EXAMPLE_RECORDS]: [],
     [DatabaseTable.TESTS]: [],
     [DatabaseTable.TEST_RECORDS]: [],
+  }[table]
+}
+
+// TODO
+export function getParentCardComponents(table: ParentTable): any {
+  return {
+    [DatabaseTable.EXAMPLES]: 'ExampleCard',
+    [DatabaseTable.TESTS]: 'TestCard',
   }[table]
 }
 

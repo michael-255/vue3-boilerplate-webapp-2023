@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { QCard, QCardSection } from 'quasar'
-import { Icon, SettingKey, DatabaseTable } from '@/constants/globals'
+import { Icon, SettingKey, RouteName, DatabaseAction } from '@/constants/globals'
+import { slugify } from '@/utils/common'
 import useSettingsStore from '@/stores/settings'
 import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import IntroductionCard from '@/components/IntroductionCard.vue'
 import ExampleCard from '@/components/ExampleCard.vue'
+import { getLabelSingular } from '@/services/DatabaseUtils'
 
 const settingsStore = useSettingsStore()
-const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboard()
+const { itemRefs, parentItemsRefs, parentItemsSelection, parentItemsOptions } = useDashboard()
 // TODO - Add comments about using v-show instead of v-if
 </script>
 
@@ -30,31 +32,20 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
     </QCard>
 
     <!-- Parent Items List -->
-    <div v-show="parentItemsSelection === DatabaseTable.EXAMPLES">
-      <div v-for="(example, i) in examples" :key="i">
-        <ExampleCard
-          class="q-mb-md"
-          :parent-table="DatabaseTable.EXAMPLES"
-          :id="example.id"
-          :name="example.name"
-          :favorite="example.favorite"
-          :previous-timestamp="example.previousTimestamp"
-          :previous-number="example.previousNumber"
-        />
-      </div>
-    </div>
-
-    <div v-show="parentItemsSelection === DatabaseTable.TESTS">
-      <div v-for="(test, i) in tests" :key="i">
-        <ExampleCard
-          class="q-mb-md"
-          :parent-table="DatabaseTable.TESTS"
-          :id="test.id"
-          :name="test.name"
-          :favorite="test.favorite"
-          :previous-timestamp="test.previousTimestamp"
-          :previous-number="test.previousNumber"
-        />
+    <div v-for="(itemRef, i) in itemRefs" :key="i">
+      <div v-for="(item, j) in itemRef.value" :key="j">
+        <!-- TODO: Need TestCard to fix record saving issue -->
+        <div v-show="parentItemsSelection === item.table">
+          <ExampleCard
+            class="q-mb-md"
+            :parent-table="item.table"
+            :id="item.id"
+            :name="item.name"
+            :favorite="item.favorite"
+            :previous-timestamp="item.previousTimestamp"
+            :previous-number="item.previousNumber"
+          />
+        </div>
       </div>
     </div>
 
@@ -63,9 +54,24 @@ const { examples, tests, parentItemsSelection, parentItemsOptions } = useDashboa
       <div class="col-12 text-center">
         <QIcon name="menu_open" size="80px" color="grey" />
       </div>
-      <!-- TODO -->
-      <div class="col-12 text-grey text-center">{{ examples.length }} items found</div>
-      <div class="col-12 text-grey text-center">Open the menu for more options</div>
+
+      <div class="col-12 text-grey text-center">
+        {{ parentItemsRefs?.[parentItemsSelection]?.value?.length || '0' }} items found
+      </div>
+
+      <QBtn
+        class="q-mt-md"
+        color="positive"
+        :label="`Create ${getLabelSingular(parentItemsSelection)}`"
+        :to="{
+          name: RouteName.ACTIONS,
+          params: {
+            tableSlug: slugify(parentItemsSelection),
+            actionSlug: slugify(DatabaseAction.CREATE),
+          },
+        }"
+        :icon="Icon.CREATE"
+      />
     </div>
   </ResponsivePage>
 </template>

@@ -10,6 +10,7 @@ import {
   ParentStatus,
   RecordStatus,
   LogRetention,
+  type AnyModel,
 } from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
@@ -203,6 +204,18 @@ export default function useSettings() {
 
           await bulkAddItems(DatabaseTable.EXAMPLES, examples)
           await bulkAddItems(DatabaseTable.EXAMPLE_RECORDS, exampleRecords)
+          await bulkAddItems(DatabaseTable.TESTS, [
+            {
+              id: uid(),
+              createdTimestamp: new Date().getTime(),
+              updatedTimestamp: new Date().getTime(),
+              name: 'Lonely Test',
+              description: 'Test Description',
+              parentStatus: ParentStatus.ENABLED,
+              favorite: false,
+              exampleMessage: 'Test Message',
+            },
+          ])
 
           log.info('Defaults loaded', { count: examples.length + exampleRecords.length })
         } catch (error) {
