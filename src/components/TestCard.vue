@@ -3,7 +3,7 @@ import { type ParentTable, Icon } from '@/constants/globals'
 import { QIcon, QInput, QBtn } from 'quasar'
 import { getRecordTable } from '@/services/DatabaseUtils'
 import ParentCard from './ParentCard.vue'
-import useExampleCard from '@/use/useExampleCard'
+import useTestCard from '@/use/useTestCard'
 
 defineProps<{
   parentTable: ParentTable
@@ -15,7 +15,7 @@ defineProps<{
   previousNumber?: number
 }>()
 
-const { exampleNumberModel, onSaveExampleRecord } = useExampleCard()
+const { exampleNumberModel, onSaveTestRecord } = useTestCard()
 </script>
 
 <template>
@@ -45,7 +45,7 @@ const { exampleNumberModel, onSaveExampleRecord } = useExampleCard()
           color="positive"
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
-          @click="onSaveExampleRecord(getRecordTable(parentTable), id, exampleNumberModel || 0)"
+          @click="onSaveTestRecord(getRecordTable(parentTable), id, exampleNumberModel || 0)"
         />
         <QBtn
           v-show="!exampleNumberModel"

@@ -68,6 +68,20 @@ export default function useDashboard() {
   })
 
   /**
+   * Gets the text for the number of items found for the current parent table.
+   * @returns Items found text
+   */
+  function getItemsCountText() {
+    const count = itemRefs?.[parentListSelection.value]?.value?.length || 0
+
+    if (count === 1) {
+      return '1 item found'
+    } else {
+      return `${count} items found`
+    }
+  }
+
+  /**
    * Examples table subscription that live updates the sorted data items.
    * @param itemsRef
    * @returns Subscription
@@ -154,5 +168,6 @@ export default function useDashboard() {
     itemComponents,
     parentListSelection,
     parentListOptions,
+    getItemsCountText,
   }
 }

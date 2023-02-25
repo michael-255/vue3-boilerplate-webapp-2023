@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { QCard, QCardSection } from 'quasar'
-import { Icon, SettingKey, RouteName, DatabaseAction } from '@/constants/globals'
+import { Icon, SettingKey, RouteName, DatabaseAction, DatabaseTable } from '@/constants/globals'
 import { slugify } from '@/utils/common'
+import { getLabelSingular } from '@/services/DatabaseUtils'
 import useSettingsStore from '@/stores/settings'
 import useDashboard from '@/use/useDashboard'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import IntroductionCard from '@/components/IntroductionCard.vue'
 import ExampleCard from '@/components/ExampleCard.vue'
-import { getLabelSingular } from '@/services/DatabaseUtils'
+import TestCard from '@/components/TestCard.vue'
 
 const settingsStore = useSettingsStore()
-const { itemRefs, itemComponents, parentListSelection, parentListOptions } = useDashboard()
+const { itemRefs, itemComponents, parentListSelection, parentListOptions, getItemsCountText } =
+  useDashboard()
 </script>
 
 <template>
@@ -31,8 +33,21 @@ const { itemRefs, itemComponents, parentListSelection, parentListOptions } = use
       <div v-for="(item, j) in itemRef.value" :key="j">
         <!-- Using v-show so the DOM doesn't get updated when switching the parent selection -->
         <div v-show="parentListSelection === item.table">
-          <!-- TODO: Need TestCard to fix record saving issue -->
           <ExampleCard
+            v-if="item.table === DatabaseTable.EXAMPLES"
+            class="q-mb-md"
+            :parent-table="item.table"
+            :id="item.id"
+            :name="item.name"
+            :favorite="item.favorite"
+            :previous-timestamp="item.previousTimestamp"
+            :previous-number="item.previousNumber"
+          />
+        </div>
+
+        <div v-show="parentListSelection === item.table">
+          <TestCard
+            v-if="item.table === DatabaseTable.TESTS"
             class="q-mb-md"
             :parent-table="item.table"
             :id="item.id"
@@ -51,9 +66,7 @@ const { itemRefs, itemComponents, parentListSelection, parentListOptions } = use
         <QIcon name="menu_open" size="80px" color="grey" />
       </div>
 
-      <div class="col-12 text-grey text-center">
-        {{ itemRefs?.[parentListSelection]?.value?.length || '0' }} items found
-      </div>
+      <div class="col-12 text-grey text-center">{{ getItemsCountText() }}</div>
 
       <QBtn
         class="q-mt-md"

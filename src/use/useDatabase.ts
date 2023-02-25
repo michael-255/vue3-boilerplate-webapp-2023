@@ -196,6 +196,24 @@ export default function useDatabase() {
   }
 
   /**
+   * TODO
+   * @param parentId
+   * @param exampleNumber
+   * @returns Id of new item
+   */
+  async function addTestRecord(parentId: string, exampleNumber?: number): Promise<IndexableType> {
+    return await dexieWrapper.table(DatabaseTable.TEST_RECORDS).add({
+      [DatabaseField.ID]: uid(),
+      [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
+      [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime(),
+      [DatabaseField.PARENT_ID]: parentId,
+      [DatabaseField.RECORD_STATUS]: RecordStatus.FINISHED,
+      [DatabaseField.NOTE]: '',
+      [DatabaseField.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
+    })
+  }
+
+  /**
    * Bulk add items into a defined table. Do NOT mismatch tables and item types!
    * @param table
    * @param items Must matching table model type
@@ -232,6 +250,16 @@ export default function useDatabase() {
    */
   async function getTable(table: DatabaseTable): Promise<AnyModel[]> {
     return await dexieWrapper.table(table).toArray()
+  }
+
+  /**
+   * Get first item by table and id.
+   * @param table
+   * @param id
+   * @returns Single item or undefined
+   */
+  async function getItemById(table: DatabaseTable, id: string): Promise<AnyModel | undefined> {
+    return await dexieWrapper.table(table).where(DatabaseField.ID).equalsIgnoreCase(id).first()
   }
 
   /**
@@ -325,10 +353,12 @@ export default function useDatabase() {
     purgeExpiredLogs,
     addLog,
     addExampleRecord,
+    addTestRecord,
     forceLiveQueryUpdate,
     updateItem,
     liveQueryDashboard,
     getTable,
+    getItemById,
     getPreviousRecord,
     bulkAddItems,
     deleteItem,

@@ -5,10 +5,10 @@ import useLogger from '@/use/useLogger'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useDatabase from '@/use/useDatabase'
 
-export default function useExampleCard() {
+export default function useTestCard() {
   const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { forceLiveQueryUpdate, addExampleRecord } = useDatabase()
+  const { forceLiveQueryUpdate, addTestRecord } = useDatabase()
 
   const exampleNumberModel: Ref<number | undefined> = ref(undefined)
 
@@ -22,7 +22,7 @@ export default function useExampleCard() {
    * @param parentId
    * @param exampleNumber
    */
-  async function onSaveExampleRecord(
+  async function onSaveTestRecord(
     recordTable: RecordTable,
     parentId: string,
     exampleNumber?: number
@@ -34,7 +34,7 @@ export default function useExampleCard() {
       'positive',
       async () => {
         try {
-          const id = await addExampleRecord(parentId, exampleNumber)
+          const id = await addTestRecord(parentId, exampleNumber)
           await forceLiveQueryUpdate(getParentTable(recordTable), parentId)
           exampleNumberModel.value = undefined
           log.info('Successfully saved record', { table: recordTable, newItemId: id })
@@ -45,5 +45,5 @@ export default function useExampleCard() {
     )
   }
 
-  return { exampleNumberModel, onSaveExampleRecord }
+  return { exampleNumberModel, onSaveTestRecord }
 }
