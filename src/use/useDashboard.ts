@@ -9,6 +9,7 @@ import {
   SettingKey,
   DatabaseTable,
   ParentStatus,
+  parentTables,
 } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import { getRecordTable } from '@/services/DatabaseUtils'
@@ -27,9 +28,7 @@ export default function useDashboard() {
   const examplesSubscription = liveQueryFavoritesSubscription(DatabaseTable.EXAMPLES, examples)
   const testsSubscription = liveQueryFavoritesSubscription(DatabaseTable.TESTS, tests)
 
-  // Edit the parent tables here to add/remove parent tables from the list on the dashboard.
-  const parentOptions = [DatabaseTable.EXAMPLES, DatabaseTable.TESTS]
-  const parentItemsOptions = parentOptions.map((option) => ({
+  const parentItemsOptions = parentTables.map((option) => ({
     label: option,
     value: option,
   }))
