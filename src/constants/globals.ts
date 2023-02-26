@@ -388,7 +388,7 @@ export enum DatabaseAction {
  * Use "hiddenId" for column "0" so a truncated version can be shown.
  */
 export type ColumnProps = {
-  name: DatabaseField | 'hidden_id'
+  name: DatabaseField | 'hiddenId'
   label: string
   align: string
   sortable: boolean

@@ -11,10 +11,10 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/data/:tableSlug', // Data table
+      path: '/data-table/:tableSlug', // Data table
       name: RouteName.DATA,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/DataView.vue'),
+      component: () => import('../views/DataTableView.vue'),
     },
     {
       path: '/actions/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect, etc.)

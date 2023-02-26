@@ -84,6 +84,28 @@ const route = useRoute()
           </QItemSection>
         </QItem>
 
+        <QItem
+          clickable
+          v-ripple
+          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.TESTS) } }"
+        >
+          <QItemSection avatar>
+            <QIcon color="primary" :name="Icon.TESTS" />
+          </QItemSection>
+          <QItemSection>Tests</QItemSection>
+          <QItemSection side>
+            <QBtn
+              flat
+              class="q-px-sm"
+              :to="{
+                name: RouteName.DATA,
+                params: { tableSlug: slugify(DatabaseTable.TEST_RECORDS) },
+              }"
+              :icon="Icon.RECORDS"
+            />
+          </QItemSection>
+        </QItem>
+
         <QSeparator spaced="md" inset />
 
         <!-- Section 3 -->

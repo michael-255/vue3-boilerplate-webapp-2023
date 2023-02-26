@@ -5,15 +5,15 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- Data Tables
+
+  - [ ] Live queries for each table
+
 - Dashboard
 
   - [ ] Work on the `Edit Action`
   - [ ] Work on the `Charts Action`
     - [ ] Select or slider for date range?
-
-- Data Tables
-
-  - [ ] Live queries for each table
 
 - Quasar
 

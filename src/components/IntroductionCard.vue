@@ -2,18 +2,26 @@
 import { QCard, QCardSection } from 'quasar'
 import { AppText, Icon, RouteName } from '@/constants/globals'
 import { type Ref, ref } from 'vue'
-import useIntroductionCard from '@/use/useIntroductionCard'
+import { SettingKey } from '@/constants/globals'
+import useDatabase from '@/use/useDatabase'
 import useUIStore from '@/stores/ui'
 
 const uiStore = useUIStore()
-const { onCloseIntroduction } = useIntroductionCard()
+const { setSetting } = useDatabase()
 
-const rating: Ref<number> = ref(0)
+const exampleFavorite: Ref<number> = ref(0)
 // TODO
 // - Refine the introduction explanations by including more details
 // - Add a message when you click certain buttons versus routing the user to a new page
 // - Add a message when you click the star icon
 // - Add a message when you click the menu icon
+
+/**
+ * Set the introduction setting value to false in settings to close the introduction card.
+ */
+async function onCloseIntroduction(): Promise<void> {
+  await setSetting(SettingKey.SHOW_INTRODUCTION, false)
+}
 </script>
 
 <template>
@@ -33,8 +41,8 @@ const rating: Ref<number> = ref(0)
         item to the top of the list.
       </div>
 
-      <QRating
-        v-model="rating"
+      <QexampleFavorite
+        v-model="exampleFavorite"
         :max="1"
         :icon="Icon.FAVORITE_OFF"
         :icon-selected="Icon.FAVORITE_ON"
