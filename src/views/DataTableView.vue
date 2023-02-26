@@ -1,104 +1,32 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { Icon } from '@/constants/globals'
-import { ref } from 'vue'
+import { Icon, type AnyModel } from '@/constants/globals'
+import { onMounted, ref, type Ref } from 'vue'
+import { getTableFromSlug, getTableColumnProps } from '@/services/DatabaseUtils'
+import { useRoute } from 'vue-router'
 import useGoBack from '@/use/useGoBack'
+import useLogger from '@/use/useLogger'
+import useDatabase from '@/use/useDatabase'
 
+const route = useRoute()
+const { log } = useLogger()
 const { onGoBack } = useGoBack()
+const { getTable } = useDatabase()
 
+const routeTable = getTableFromSlug(route?.params?.tableSlug as string)
+const rows: Ref<AnyModel[]> = ref([])
+const columns: Ref<any[]> = ref([])
 const searchFilter = ref('')
 
-const columns = [
-  {
-    name: 'name',
-    required: true,
-    label: 'Dessert (100g serving)',
-    align: 'left',
-    field: (row: any) => row.name,
-    format: (val: any) => `${val}`,
-    sortable: true,
-  },
-  { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
-] as any[]
-
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-  },
-  {
-    name: 'Gingerbread',
-    calories: 356,
-  },
-  {
-    name: 'Jelly bean',
-    calories: 375,
-  },
-  {
-    name: 'Lollipop',
-    calories: 392,
-  },
-  {
-    name: 'Honeycomb',
-    calories: 408,
-  },
-  {
-    name: 'Donut',
-    calories: 452,
-  },
-  {
-    name: 'KitKat',
-    calories: 518,
-  },
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-  },
-  {
-    name: 'KitKat',
-    calories: 518,
-  },
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-  },
-]
+onMounted(async () => {
+  try {
+    // TODO - This needs to be handled by a live query that will give me more control and auto update when changed
+    rows.value = (await getTable(routeTable)) as AnyModel[]
+    columns.value = getTableColumnProps(routeTable)
+  } catch (error) {
+    log.error('Failed to retrieve table data', error)
+  }
+})
 </script>
 
 <template>
@@ -108,11 +36,27 @@ const rows = [
     :rows-per-page-options="[0]"
     virtual-scroll
     fullscreen
-    row-key="name"
+    row-key="id"
   >
+    <!-- Column Headers -->
+    <!-- Hiding "hiddenId" so only the truncated Id* is shown -->
+    <template v-slot:header="props">
+      <QTr :props="props">
+        <QTh
+          v-show="col.name !== 'hiddenId'"
+          v-for="col in props.cols"
+          :key="col.name"
+          :props="props"
+        >
+          {{ col.label }}
+        </QTh>
+        <QTh auto-width />
+      </QTr>
+    </template>
+
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">Orphaned Items</div>
+        <div class="col-10 text-h6 ellipsis">{{ routeTable }}</div>
         <QBtn
           round
           flat
@@ -147,7 +91,8 @@ const rows = [
     <template v-slot:bottom>
       <div class="row justify-between full-width">
         <QBtn color="positive" class="q-px-sm" :icon="Icon.ADD" />
-        <div class="q-mt-sm">{{ columns.length || 0 }} items found</div>
+        <!-- Use getItemsCountText from Dashboard (make it a composable?) -->
+        <div class="q-mt-sm">{{ rows.length || 0 }} items found</div>
       </div>
     </template>
   </QTable>

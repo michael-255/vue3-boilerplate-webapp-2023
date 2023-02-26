@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { getActionFromSlug, getActionIcon, getTableFromSlug } from '@/services/DatabaseUtils'
+import { DatabaseAction } from '@/constants/globals'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ActionInspect from '@/components/ActionInspect.vue'
-import { DatabaseAction } from '@/constants/globals'
 
 const route = useRoute()
 

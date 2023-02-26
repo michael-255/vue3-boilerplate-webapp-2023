@@ -395,6 +395,7 @@ export type ColumnProps = {
   required: boolean
   field: (val: any) => any
   format: (val: any) => any
+  style?: string
 }
 
 ///////////////////////////////////////////////////////////////////////////////
