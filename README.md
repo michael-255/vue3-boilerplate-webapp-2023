@@ -7,7 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Dashboard
 
-  - [ ] Preload ParentCard components using asyncComponent (ref fitness app)
   - [ ] Work on the `Edit Action`
   - [ ] Work on the `Charts Action`
     - [ ] Select or slider for date range?

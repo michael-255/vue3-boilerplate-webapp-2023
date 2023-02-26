@@ -14,6 +14,7 @@ import {
   testRecordFields,
 } from '@/constants/globals'
 import { slugify } from '@/utils/common'
+import { defineAsyncComponent } from 'vue'
 
 export function getFields(table: DatabaseTable): DatabaseField[] {
   return {
@@ -40,8 +41,8 @@ export function getInputComponents(table: DatabaseTable): any[] {
 // TODO
 export function getParentCardComponents(table: ParentTable): any {
   return {
-    [DatabaseTable.EXAMPLES]: 'ExampleCard',
-    [DatabaseTable.TESTS]: 'TestCard',
+    [DatabaseTable.EXAMPLES]: defineAsyncComponent(() => import('@/components/ExampleCard.vue')),
+    [DatabaseTable.TESTS]: defineAsyncComponent(() => import('@/components/TestCard.vue')),
   }[table]
 }
 
