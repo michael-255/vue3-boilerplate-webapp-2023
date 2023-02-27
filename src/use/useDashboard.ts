@@ -64,7 +64,7 @@ export default function useDashboard() {
   })
 
   onUnmounted(() => {
-    Object.values(subscriptions).forEach((subscription) => subscription.unsubscribe())
+    Object.values(subscriptions).forEach((subscription) => subscription?.unsubscribe())
   })
 
   /**

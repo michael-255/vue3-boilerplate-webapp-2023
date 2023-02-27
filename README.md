@@ -7,7 +7,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Data Tables
 
-  - [ ] Live queries for each table
+  - [ ] Build live query for Orphaned items in Data Table
+  - [ ] WIP
 
 - Dashboard
 

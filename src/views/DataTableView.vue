@@ -1,31 +1,50 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { Icon, type AnyModel } from '@/constants/globals'
-import { onMounted, ref, type Ref } from 'vue'
+import { DatabaseTable, Icon } from '@/constants/globals'
+import { onMounted, ref, type Ref, onUnmounted } from 'vue'
 import { getTableFromSlug, getTableColumnProps } from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
 import useGoBack from '@/use/useGoBack'
 import useLogger from '@/use/useLogger'
 import useDatabase from '@/use/useDatabase'
+import type { Subscription } from 'dexie'
 
 const route = useRoute()
-const { log } = useLogger()
+const { log, consoleDebug } = useLogger()
 const { onGoBack } = useGoBack()
-const { getTable } = useDatabase()
+const { liveQueryDataTable } = useDatabase()
 
 const routeTable = getTableFromSlug(route?.params?.tableSlug as string)
-const rows: Ref<AnyModel[]> = ref([])
+const subscription: Ref<Subscription | null> = ref(null)
+const rows: Ref<any[]> = ref([])
 const columns: Ref<any[]> = ref([])
 const searchFilter = ref('')
 
 onMounted(async () => {
   try {
-    // TODO - This needs to be handled by a live query that will give me more control and auto update when changed
-    rows.value = (await getTable(routeTable)) as AnyModel[]
-    columns.value = getTableColumnProps(routeTable)
+    if (Object.values(DatabaseTable).includes(routeTable)) {
+      // Setup subscription and load data
+      subscription.value = liveQueryDataTable(routeTable).subscribe({
+        next: (items: any[]) => {
+          rows.value = items
+          consoleDebug(`Retrieved ${routeTable}`, items)
+        },
+        error: (error) => {
+          log.error(`Failed to retrieve ${routeTable}`, error)
+        },
+      })
+      // Load column props for table
+      columns.value = getTableColumnProps(routeTable)
+    } else {
+      // TODO - Load Orphaned items table
+    }
   } catch (error) {
     log.error('Failed to retrieve table data', error)
   }
+})
+
+onUnmounted(() => {
+  subscription?.value?.unsubscribe()
 })
 </script>
 

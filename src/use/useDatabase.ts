@@ -16,6 +16,7 @@ import {
   AppText,
   LogRetention,
   ParentStatus,
+  type OrphanedModel,
 } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
 import useSettingsStore from '@/stores/settings'
@@ -245,6 +246,29 @@ export default function useDatabase() {
   }
 
   /**
+   * Do NOT make this function async. TODO
+   * @param table
+   * @returns Observable of Database Table data
+   */
+  function liveQueryDataTable(table: DatabaseTable): Observable<any[]> {
+    return liveQuery(() => dexieWrapper.table(table).toArray())
+  }
+
+  /**
+   * Do NOT make this function async. TODO
+   * @param table
+   * @returns Observable of Orphaned items
+   */
+  function liveQueryOrphanedItems(): Observable<OrphanedModel[]> {
+    // TODO
+    // Look through Parent tables for the following:
+    // - Any Parent items that have no corresponding Records (Unused)
+    // Look through Record tables for the following:
+    // - Any Record items whose Parent Id links to no Parent (Orphaned)
+    return liveQuery(() => dexieWrapper.table(DatabaseTable.EXAMPLES).toArray())
+  }
+
+  /**
    * Gets all data from a table.
    * @returns Database table data as an array
    */
@@ -357,6 +381,7 @@ export default function useDatabase() {
     forceLiveQueryUpdate,
     updateItem,
     liveQueryDashboard,
+    liveQueryDataTable,
     getTable,
     getItemById,
     getPreviousRecord,

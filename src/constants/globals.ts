@@ -270,6 +270,12 @@ export type ParentModel = Example | Test
 
 export type RecordModel = ExampleRecord | TestRecord
 
+export type OrphanedModel = {
+  table: DatabaseTable
+  id: string
+  type: 'Unused' | 'Orphaned'
+}
+
 export enum ParentStatus {
   ENABLED = 'Enabled',
   DISABLED = 'Disabled',
