@@ -16,9 +16,9 @@ import {
   AppText,
   LogRetention,
   ParentStatus,
-  type OrphanedModel,
 } from '@/constants/globals'
 import { dexieWrapper } from '@/services/DexieWrapper'
+import { getRecordTable, getParentTable } from '@/services/DatabaseUtils'
 import useSettingsStore from '@/stores/settings'
 
 export default function useDatabase() {
@@ -254,18 +254,40 @@ export default function useDatabase() {
     return liveQuery(() => dexieWrapper.table(table).toArray())
   }
 
-  /**
-   * Do NOT make this function async. TODO
-   * @param table
-   * @returns Observable of Orphaned items
-   */
-  function liveQueryOrphanedItems(): Observable<OrphanedModel[]> {
-    // TODO
-    // Look through Parent tables for the following:
-    // - Any Parent items that have no corresponding Records (Unused)
-    // Look through Record tables for the following:
-    // - Any Record items whose Parent Id links to no Parent (Orphaned)
-    return liveQuery(() => dexieWrapper.table(DatabaseTable.EXAMPLES).toArray())
+  // TODO
+  async function getUnusedParentIds(table: ParentTable): Promise<string[]> {
+    const parents = await dexieWrapper.table(table).toArray()
+    const records = await dexieWrapper.table(getRecordTable(table)).toArray()
+
+    // Build array of parent ids
+    const parentIds = parents.map((parent) => parent[DatabaseField.ID])
+
+    const unusedParentIds: string[] = []
+
+    parentIds.forEach((parentId) => {
+      const hasRecord = records.some((record) => record[DatabaseField.PARENT_ID] === parentId)
+      if (!hasRecord) unusedParentIds.push(parentId)
+    })
+
+    return unusedParentIds
+  }
+
+  // TODO
+  async function getOrphanedRecordIds(table: RecordTable): Promise<string[]> {
+    const records = await dexieWrapper.table(table).toArray()
+    const parents = await dexieWrapper.table(getParentTable(table)).toArray()
+
+    // Build array of parent ids
+    const parentIds = parents.map((parent) => parent[DatabaseField.ID])
+
+    const orphanedRecordIds: string[] = []
+
+    records.forEach((record) => {
+      const hasParent = parentIds.some((parentId) => parentId === record[DatabaseField.PARENT_ID])
+      if (!hasParent) orphanedRecordIds.push(record[DatabaseField.ID])
+    })
+
+    return orphanedRecordIds
   }
 
   /**
@@ -355,6 +377,16 @@ export default function useDatabase() {
   }
 
   /**
+   * TODO
+   * @param table
+   * @param ids
+   * @returns undefined
+   */
+  async function bulkDeleteItems(table: DatabaseTable, ids: string[]): Promise<void> {
+    return await dexieWrapper.table(table).bulkDelete(ids)
+  }
+
+  /**
    * Deletes all items from table.
    * @param table
    * @returns undefined
@@ -382,11 +414,14 @@ export default function useDatabase() {
     updateItem,
     liveQueryDashboard,
     liveQueryDataTable,
+    getUnusedParentIds,
+    getOrphanedRecordIds,
     getTable,
     getItemById,
     getPreviousRecord,
     bulkAddItems,
     deleteItem,
+    bulkDeleteItems,
     clearTable,
     deleteDatabase,
   }

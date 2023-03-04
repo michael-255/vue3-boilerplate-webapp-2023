@@ -71,7 +71,7 @@ export default function useDashboard() {
    * Gets the text for the number of items found for the current parent table.
    * @returns Items found text
    */
-  function getItemsCountText() {
+  function getDashboardItemsCountText() {
     const count = itemRefs?.[parentListSelection.value]?.value?.length || 0
 
     if (count === 1) {
@@ -168,6 +168,6 @@ export default function useDashboard() {
     itemComponents,
     parentListSelection,
     parentListOptions,
-    getItemsCountText,
+    getDashboardItemsCountText,
   }
 }

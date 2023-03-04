@@ -10,7 +10,8 @@ import {
   ParentStatus,
   RecordStatus,
   LogRetention,
-  type AnyModel,
+  parentTables,
+  recordTables,
 } from '@/constants/globals'
 import { exportFile, uid } from 'quasar'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
@@ -22,8 +23,17 @@ export default function useSettings() {
   const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { initializeSettings, setSetting, bulkAddItems, getTable, clearTable, deleteDatabase } =
-    useDatabase()
+  const {
+    initializeSettings,
+    setSetting,
+    bulkAddItems,
+    getTable,
+    clearTable,
+    deleteDatabase,
+    getUnusedParentIds,
+    getOrphanedRecordIds,
+    bulkDeleteItems,
+  } = useDatabase()
 
   const importFile: Ref<any> = ref(null)
 
@@ -199,8 +209,8 @@ export default function useSettings() {
           // Create demo data here...
           createExamples(2) // Unused parent items
           createExampleRecords(2) // Orphaned record items
-          createExamples(10)
-          examples.map((example) => createExampleRecords(5, example))
+          createExamples(4)
+          examples.map((example) => createExampleRecords(2, example))
 
           await bulkAddItems(DatabaseTable.EXAMPLES, examples)
           await bulkAddItems(DatabaseTable.EXAMPLE_RECORDS, exampleRecords)
@@ -353,6 +363,52 @@ export default function useSettings() {
   }
 
   /**
+   * TODO
+   */
+  async function onDeleteUnusedData(): Promise<void> {
+    confirmDialog(
+      'Delete Unused Data',
+      `Permanetly delete all unused parent data from the database?`,
+      Icon.CLEAR,
+      'negative',
+      async (): Promise<void> => {
+        try {
+          parentTables.map(async (table) => {
+            const parentIds = await getUnusedParentIds(table)
+            await bulkDeleteItems(table, parentIds)
+          })
+          log.info('successfully deleted unused parents')
+        } catch (error) {
+          log.error('Error deleting unused parent data', error)
+        }
+      }
+    )
+  }
+
+  /**
+   * TODO
+   */
+  async function onDeleteOrphanedData(): Promise<void> {
+    confirmDialog(
+      'Delete Orphaned Data',
+      `Permanetly delete all orphaned record data from the database?`,
+      Icon.CLEAR,
+      'negative',
+      async (): Promise<void> => {
+        try {
+          recordTables.map(async (table) => {
+            const recordIds = await getOrphanedRecordIds(table)
+            await bulkDeleteItems(table, recordIds)
+          })
+          log.info('successfully deleted orphaned records')
+        } catch (error) {
+          log.error('Error deleting orphaned record data', error)
+        }
+      }
+    )
+  }
+
+  /**
    * On confirmation, deletes all items from all tables.
    */
   async function onDeleteAllData(): Promise<void> {
@@ -412,6 +468,8 @@ export default function useSettings() {
     onImportFile,
     onExportData,
     onChangeLogRetention,
+    onDeleteUnusedData,
+    onDeleteOrphanedData,
     onDeleteTableData,
     onDeleteAllData,
     onDeleteDatabase,

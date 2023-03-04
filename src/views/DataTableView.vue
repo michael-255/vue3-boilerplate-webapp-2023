@@ -4,10 +4,10 @@ import { DatabaseTable, Icon } from '@/constants/globals'
 import { onMounted, ref, type Ref, onUnmounted } from 'vue'
 import { getTableFromSlug, getTableColumnProps } from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
+import type { Subscription } from 'dexie'
 import useGoBack from '@/use/useGoBack'
 import useLogger from '@/use/useLogger'
 import useDatabase from '@/use/useDatabase'
-import type { Subscription } from 'dexie'
 
 const route = useRoute()
 const { log, consoleDebug } = useLogger()
@@ -15,7 +15,7 @@ const { onGoBack } = useGoBack()
 const { liveQueryDataTable } = useDatabase()
 
 const routeTable = getTableFromSlug(route?.params?.tableSlug as string)
-const subscription: Ref<Subscription | null> = ref(null)
+const subscriptions: Ref<Subscription[]> = ref([])
 const rows: Ref<any[]> = ref([])
 const columns: Ref<any[]> = ref([])
 const searchFilter = ref('')
@@ -24,19 +24,24 @@ onMounted(async () => {
   try {
     if (Object.values(DatabaseTable).includes(routeTable)) {
       // Setup subscription and load data
-      subscription.value = liveQueryDataTable(routeTable).subscribe({
-        next: (items: any[]) => {
-          rows.value = items
-          consoleDebug(`Retrieved ${routeTable}`, items)
-        },
-        error: (error) => {
-          log.error(`Failed to retrieve ${routeTable}`, error)
-        },
-      })
+      subscriptions.value.push(
+        liveQueryDataTable(routeTable).subscribe({
+          next: (items: any[]) => {
+            rows.value = items
+            consoleDebug(`Retrieved ${routeTable}`, items)
+          },
+          error: (error) => {
+            log.error(`Failed to retrieve ${routeTable}`, error)
+          },
+        })
+      )
       // Load column props for table
       columns.value = getTableColumnProps(routeTable)
     } else {
-      // TODO - Load Orphaned items table
+      // Table is invalid
+      rows.value = []
+      columns.value = []
+      log.error('Invalid table', { tableSlug: route?.params?.tableSlug })
     }
   } catch (error) {
     log.error('Failed to retrieve table data', error)
@@ -44,8 +49,22 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  subscription?.value?.unsubscribe()
+  subscriptions.value?.map((sub) => sub.unsubscribe())
 })
+
+/**
+ * Gets the text for the number of items found for the current table.
+ * @returns Items found text
+ */
+function getTableItemsCountText() {
+  const count = rows?.value?.length || 0
+
+  if (count === 1) {
+    return '1 item found'
+  } else {
+    return `${count} items found`
+  }
+}
 </script>
 
 <template>
@@ -55,6 +74,7 @@ onUnmounted(() => {
     :rows-per-page-options="[0]"
     virtual-scroll
     fullscreen
+    no-data-label=""
     row-key="id"
   >
     <!-- Column Headers -->
@@ -75,7 +95,7 @@ onUnmounted(() => {
 
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">{{ routeTable }}</div>
+        <div class="col-10 text-h6 ellipsis">{{ routeTable || 'No Table Found' }}</div>
         <QBtn
           round
           flat
@@ -96,7 +116,8 @@ onUnmounted(() => {
             placeholder="Search"
           >
             <template v-slot:before>
-              <QBtn color="primary" class="q-px-sm" :icon="Icon.OPTIONS" />
+              <QBtn color="primary" class="q-px-sm q-mr-xs" :icon="Icon.OPTIONS" />
+              <QBtn color="positive" class="q-px-sm" :icon="Icon.ADD" />
             </template>
 
             <template v-slot:append>
@@ -107,12 +128,6 @@ onUnmounted(() => {
       </div>
     </template>
 
-    <template v-slot:bottom>
-      <div class="row justify-between full-width">
-        <QBtn color="positive" class="q-px-sm" :icon="Icon.ADD" />
-        <!-- Use getItemsCountText from Dashboard (make it a composable?) -->
-        <div class="q-mt-sm">{{ rows.length || 0 }} items found</div>
-      </div>
-    </template>
+    <template v-slot:bottom>{{ getTableItemsCountText() }}</template>
   </QTable>
 </template>

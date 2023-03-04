@@ -7,8 +7,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Data Tables
 
-  - [ ] Build live query for Orphaned items in Data Table
-  - [ ] WIP
+  - [ ] Add `Action` buttons to the data tables based on supported actions
+  - [ ] Implement `Visible Columns` feature and the defaults for them
 
 - Dashboard
 

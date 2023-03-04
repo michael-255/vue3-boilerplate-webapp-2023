@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QCard, QCardSection } from 'quasar'
+import { QCard, QCardSection, QRating } from 'quasar'
 import { AppText, Icon, RouteName } from '@/constants/globals'
 import { type Ref, ref } from 'vue'
 import { SettingKey } from '@/constants/globals'
@@ -41,7 +41,7 @@ async function onCloseIntroduction(): Promise<void> {
         item to the top of the list.
       </div>
 
-      <QexampleFavorite
+      <QRating
         v-model="exampleFavorite"
         :max="1"
         :icon="Icon.FAVORITE_OFF"

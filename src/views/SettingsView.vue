@@ -24,6 +24,8 @@ const {
   onImportFile,
   onExportData,
   onChangeLogRetention,
+  onDeleteUnusedData,
+  onDeleteOrphanedData,
   onDeleteTableData,
   onDeleteAllData,
   onDeleteDatabase,
@@ -134,19 +136,11 @@ const {
           />
         </div>
 
-        <div class="q-mb-md">
+        <div>
           <QBtn
             label="Settings Table"
             color="primary"
             :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.SETTINGS) } }"
-          />
-        </div>
-
-        <div class="q-mb-md">
-          <QBtn
-            label="Orphaned Table"
-            color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: 'orphaned' } }"
           />
         </div>
       </QCardSection>
@@ -232,6 +226,30 @@ const {
             />
           </template>
         </QSelect>
+
+        <!-- Delete Unused Parent Items -->
+        <div class="q-mb-md">
+          Delete all unused parent items that have no record items associated with them.
+        </div>
+
+        <QBtn
+          class="q-mb-md"
+          label="Delete Unused Items"
+          color="negative"
+          @click="onDeleteUnusedData()"
+        />
+
+        <!-- Delete Orphaned Record Items -->
+        <div class="q-mb-md">
+          Delete all orphaned record items that have no parent item associated with them.
+        </div>
+
+        <QBtn
+          class="q-mb-md"
+          label="Delete Orphaned Items"
+          color="negative"
+          @click="onDeleteOrphanedData()"
+        />
 
         <!-- Delete All Data -->
         <div class="q-mb-md">Permanently delete all data from the database.</div>

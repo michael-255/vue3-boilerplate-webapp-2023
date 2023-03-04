@@ -143,6 +143,9 @@ export type ChartDataset = {
  * Field names used by the tables for the database objects.
  */
 export enum DatabaseField {
+  // Orphaned
+  TABLE = 'table',
+  TYPE = 'type',
   // Setting
   KEY = 'key',
   VALUE = 'value',
@@ -171,6 +174,8 @@ export enum DatabaseField {
   // Example Record
   EXAMPLE_NUMBER = 'exampleNumber',
 }
+
+export type OrphanedType = 'Unused' | 'Orphaned'
 
 export type SettingField = DatabaseField.KEY | DatabaseField.VALUE
 

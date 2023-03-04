@@ -9,8 +9,13 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 import IntroductionCard from '@/components/IntroductionCard.vue'
 
 const settingsStore = useSettingsStore()
-const { itemRefs, itemComponents, parentListSelection, parentListOptions, getItemsCountText } =
-  useDashboard()
+const {
+  itemRefs,
+  itemComponents,
+  parentListSelection,
+  parentListOptions,
+  getDashboardItemsCountText,
+} = useDashboard()
 </script>
 
 <template>
@@ -52,7 +57,7 @@ const { itemRefs, itemComponents, parentListSelection, parentListOptions, getIte
         <QIcon name="menu_open" size="80px" color="grey" />
       </div>
 
-      <div class="col-12 text-grey text-center">{{ getItemsCountText() }}</div>
+      <div class="col-12 text-grey text-center">{{ getDashboardItemsCountText() }}</div>
 
       <QBtn
         class="q-mt-md"

@@ -17,6 +17,7 @@ import {
   type AppObject,
   RecordStatus,
   ParentStatus,
+  type OrphanedType,
 } from '@/constants/globals'
 import { slugify, truncateString } from '@/utils/common'
 import { defineAsyncComponent } from 'vue'
