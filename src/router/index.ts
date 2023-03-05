@@ -23,7 +23,7 @@ const router = createRouter({
       component: () => import('../views/ActionsView.vue'),
     },
     {
-      path: '/charts/:tableSlug/:id?', // Charts for id on tables
+      path: '/charts/:tableSlug/:id', // Charts for id on tables
       name: RouteName.CHARTS,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ChartsView.vue'),

@@ -390,7 +390,6 @@ export enum DatabaseAction {
   INSPECT = 'Inspect',
   EDIT = 'Edit',
   DELETE = 'Delete',
-  CLEAR = 'Clear',
   CHARTS = 'Charts',
 }
 

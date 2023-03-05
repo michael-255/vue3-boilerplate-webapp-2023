@@ -77,12 +77,34 @@ export function getVisibleColumns(table: DatabaseTable): DatabaseField[] {
 
 export function getSupportedActions(table: DatabaseTable): DatabaseAction[] {
   return {
-    [DatabaseTable.SETTINGS]: [],
-    [DatabaseTable.LOGS]: [],
-    [DatabaseTable.EXAMPLES]: [],
-    [DatabaseTable.EXAMPLE_RECORDS]: [],
-    [DatabaseTable.TESTS]: [],
-    [DatabaseTable.TEST_RECORDS]: [],
+    [DatabaseTable.SETTINGS]: [DatabaseAction.INSPECT],
+    [DatabaseTable.LOGS]: [DatabaseAction.INSPECT, DatabaseAction.DELETE],
+    [DatabaseTable.EXAMPLES]: [
+      DatabaseAction.INSPECT,
+      DatabaseAction.CREATE,
+      DatabaseAction.EDIT,
+      DatabaseAction.DELETE,
+      DatabaseAction.CHARTS,
+    ],
+    [DatabaseTable.EXAMPLE_RECORDS]: [
+      DatabaseAction.INSPECT,
+      DatabaseAction.CREATE,
+      DatabaseAction.EDIT,
+      DatabaseAction.DELETE,
+    ],
+    [DatabaseTable.TESTS]: [
+      DatabaseAction.INSPECT,
+      DatabaseAction.CREATE,
+      DatabaseAction.EDIT,
+      DatabaseAction.DELETE,
+      DatabaseAction.CHARTS,
+    ],
+    [DatabaseTable.TEST_RECORDS]: [
+      DatabaseAction.INSPECT,
+      DatabaseAction.CREATE,
+      DatabaseAction.EDIT,
+      DatabaseAction.DELETE,
+    ],
   }[table]
 }
 
@@ -140,7 +162,6 @@ export function getActionFromSlug(actionSlug: string): DatabaseAction {
     [slugify(DatabaseAction.INSPECT)]: DatabaseAction.INSPECT,
     [slugify(DatabaseAction.EDIT)]: DatabaseAction.EDIT,
     [slugify(DatabaseAction.DELETE)]: DatabaseAction.DELETE,
-    [slugify(DatabaseAction.CLEAR)]: DatabaseAction.CLEAR,
     [slugify(DatabaseAction.CHARTS)]: DatabaseAction.CHARTS,
   }[actionSlug]
 }
@@ -152,7 +173,6 @@ export function getActionIcon(action: DatabaseAction): Icon {
     [DatabaseAction.INSPECT]: Icon.INSPECT,
     [DatabaseAction.EDIT]: Icon.EDIT,
     [DatabaseAction.DELETE]: Icon.DELETE,
-    [DatabaseAction.CLEAR]: Icon.CLEAR,
     [DatabaseAction.CHARTS]: Icon.CHARTS,
   }[action]
 }

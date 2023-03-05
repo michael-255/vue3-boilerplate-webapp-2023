@@ -1,24 +1,28 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { DatabaseTable, Icon } from '@/constants/globals'
+import { DatabaseAction, DatabaseTable, Icon, RouteName } from '@/constants/globals'
 import { onMounted, ref, type Ref, onUnmounted } from 'vue'
 import { getTableFromSlug, getTableColumnProps } from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
 import type { Subscription } from 'dexie'
+import { getSupportedActions } from '@/services/DatabaseUtils'
+import { slugify } from '@/utils/common'
+import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useGoBack from '@/use/useGoBack'
 import useLogger from '@/use/useLogger'
 import useDatabase from '@/use/useDatabase'
 
 const route = useRoute()
 const { log, consoleDebug } = useLogger()
+const { confirmDialog } = useSimpleDialogs()
 const { onGoBack } = useGoBack()
-const { liveQueryDataTable } = useDatabase()
+const { liveQueryDataTable, deleteItem } = useDatabase()
 
 const routeTable = getTableFromSlug(route?.params?.tableSlug as string)
 const subscriptions: Ref<Subscription[]> = ref([])
 const rows: Ref<any[]> = ref([])
 const columns: Ref<any[]> = ref([])
-const searchFilter = ref('')
+const searchFilter: Ref<string> = ref('')
 
 onMounted(async () => {
   try {
@@ -65,6 +69,23 @@ function getTableItemsCountText() {
     return `${count} items found`
   }
 }
+
+async function onDelete(id: string): Promise<void> {
+  confirmDialog(
+    'Delete Item',
+    `Permanently delete "${id}" from ${routeTable}?`,
+    Icon.DELETE,
+    'negative',
+    async () => {
+      try {
+        await deleteItem(routeTable, id)
+        log.info('Item successfully deleted', { id, table: routeTable })
+      } catch (error) {
+        log.error(`Error deleting item from ${routeTable}`, error)
+      }
+    }
+  )
+}
 </script>
 
 <template>
@@ -72,15 +93,15 @@ function getTableItemsCountText() {
     :rows="rows"
     :columns="columns"
     :rows-per-page-options="[0]"
+    :filter="searchFilter"
     virtual-scroll
     fullscreen
-    no-data-label=""
     row-key="id"
   >
     <!-- Column Headers -->
-    <!-- Hiding "hiddenId" so only the truncated Id* is shown -->
     <template v-slot:header="props">
       <QTr :props="props">
+        <!-- Hiding "hiddenId" so only the truncated Id* is shown -->
         <QTh
           v-show="col.name !== 'hiddenId'"
           v-for="col in props.cols"
@@ -89,7 +110,82 @@ function getTableItemsCountText() {
         >
           {{ col.label }}
         </QTh>
-        <QTh auto-width />
+        <QTh auto-width>Actions</QTh>
+      </QTr>
+    </template>
+
+    <!-- Rows -->
+    <template v-slot:body="props">
+      <QTr :props="props">
+        <QTd v-for="col in props.cols" :key="col.name" :props="props">
+          {{ col.value }}
+        </QTd>
+        <QTd auto-width>
+          <!-- CHARTS -->
+          <QBtn
+            v-if="getSupportedActions(routeTable).includes(DatabaseAction.CHARTS)"
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="accent"
+            :icon="Icon.CHARTS"
+            :to="{
+              name: RouteName.CHARTS,
+              params: {
+                tableSlug: slugify(routeTable),
+                id: props.cols[0].value,
+              },
+            }"
+          />
+          <!-- INSPECT -->
+          <QBtn
+            v-if="getSupportedActions(routeTable).includes(DatabaseAction.INSPECT)"
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="primary"
+            :icon="Icon.INSPECT"
+            :to="{
+              name: RouteName.ACTIONS,
+              params: {
+                tableSlug: slugify(routeTable),
+                actionSlug: slugify(DatabaseAction.INSPECT),
+                id: props.cols[0].value,
+              },
+            }"
+          />
+          <!-- EDIT -->
+          <QBtn
+            v-if="getSupportedActions(routeTable).includes(DatabaseAction.EDIT)"
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="orange-9"
+            :icon="Icon.EDIT"
+            :to="{
+              name: RouteName.ACTIONS,
+              params: {
+                tableSlug: slugify(routeTable),
+                actionSlug: slugify(DatabaseAction.EDIT),
+                id: props.cols[0].value,
+              },
+            }"
+          />
+          <!-- DELETE -->
+          <QBtn
+            v-if="getSupportedActions(routeTable).includes(DatabaseAction.DELETE)"
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="negative"
+            @click="onDelete(props.cols[0].value)"
+            :icon="Icon.DELETE"
+          />
+        </QTd>
       </QTr>
     </template>
 
@@ -107,7 +203,9 @@ function getTableItemsCountText() {
 
       <div class="row justify-start full-width">
         <div class="col-12">
+          <!-- SEARCH -->
           <QInput
+            :disable="!rows.length"
             outlined
             dense
             clearable
@@ -116,8 +214,22 @@ function getTableItemsCountText() {
             placeholder="Search"
           >
             <template v-slot:before>
-              <QBtn color="primary" class="q-px-sm q-mr-xs" :icon="Icon.OPTIONS" />
-              <QBtn color="positive" class="q-px-sm" :icon="Icon.ADD" />
+              <!-- OPTIONS (Visible Columns) -->
+              <QBtn color="primary" class="q-px-sm" :icon="Icon.OPTIONS" />
+              <!-- CREATE -->
+              <QBtn
+                v-if="getSupportedActions(routeTable).includes(DatabaseAction.CREATE)"
+                color="positive"
+                class="q-px-sm q-ml-xs"
+                :icon="Icon.ADD"
+                :to="{
+                  name: RouteName.ACTIONS,
+                  params: {
+                    tableSlug: slugify(routeTable),
+                    actionSlug: slugify(DatabaseAction.CREATE),
+                  },
+                }"
+              />
             </template>
 
             <template v-slot:append>

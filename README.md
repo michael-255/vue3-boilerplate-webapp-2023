@@ -7,7 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Data Tables
 
-  - [ ] Add `Action` buttons to the data tables based on supported actions
   - [ ] Implement `Visible Columns` feature and the defaults for them
 
 - Dashboard

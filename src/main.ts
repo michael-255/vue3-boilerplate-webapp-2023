@@ -28,7 +28,7 @@ app.use(Quasar, {
     brand: {
       primary: '#1976d2', // indigo (Primary Brand Color)
       secondary: '#607d8b', // blue-grey (LOG)
-      accent: '#4527a0', // deep-purple-9 (DEBUG)
+      accent: '#673ab7', // deep-purple-6 (DEBUG)
       info: '#0d47a1', // blue-10 (INFO)
       warning: '#ff6f00', // amber-10 (WARN)
       negative: '#C10015', // negative (ERROR)
