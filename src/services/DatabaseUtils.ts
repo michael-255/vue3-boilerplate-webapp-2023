@@ -54,12 +54,24 @@ export function getParentCardComponents(table: ParentTable): any {
 
 export function getVisibleColumns(table: DatabaseTable): DatabaseField[] {
   return {
-    [DatabaseTable.SETTINGS]: [],
-    [DatabaseTable.LOGS]: [],
-    [DatabaseTable.EXAMPLES]: [],
-    [DatabaseTable.EXAMPLE_RECORDS]: [],
-    [DatabaseTable.TESTS]: [],
-    [DatabaseTable.TEST_RECORDS]: [],
+    [DatabaseTable.SETTINGS]: [DatabaseField.KEY, DatabaseField.VALUE],
+    [DatabaseTable.LOGS]: [DatabaseField.TIMESTAMP, DatabaseField.SEVERITY, DatabaseField.LABEL],
+    [DatabaseTable.EXAMPLES]: [
+      DatabaseField.ID,
+      DatabaseField.CREATED_TIMESTAMP,
+      DatabaseField.NAME,
+    ],
+    [DatabaseTable.EXAMPLE_RECORDS]: [
+      DatabaseField.ID,
+      DatabaseField.CREATED_TIMESTAMP,
+      DatabaseField.PARENT_ID,
+    ],
+    [DatabaseTable.TESTS]: [DatabaseField.ID, DatabaseField.CREATED_TIMESTAMP, DatabaseField.NAME],
+    [DatabaseTable.TEST_RECORDS]: [
+      DatabaseField.ID,
+      DatabaseField.CREATED_TIMESTAMP,
+      DatabaseField.PARENT_ID,
+    ],
   }[table]
 }
 

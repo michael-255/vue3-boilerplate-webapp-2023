@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QCard, date } from 'quasar'
-import { DatabaseField, type AppObject, type DatabaseTable } from '@/constants/globals'
+import { DatabaseField, DatabaseTable, SettingKey, type AppObject } from '@/constants/globals'
 import { onMounted, ref, type Ref } from 'vue'
 import { truncateString } from '@/utils/common'
 import useDatabase from '@/use/useDatabase'
@@ -8,16 +8,22 @@ import { getFields } from '@/services/DatabaseUtils'
 
 const props = defineProps<{
   table: DatabaseTable
-  id: string
+  id: string | number | SettingKey
 }>()
 
-const { getItemById } = useDatabase()
+const { getItemById, getSettingByKey, getLogById } = useDatabase()
 
 const item: Ref<AppObject | null> = ref(null)
 const fields = getFields(props.table)
 
 onMounted(async () => {
-  item.value = (await getItemById(props.table, props.id)) as AppObject
+  if (props.table === DatabaseTable.SETTINGS) {
+    item.value = (await getSettingByKey(props.id as SettingKey)) as AppObject
+  } else if (props.table === DatabaseTable.LOGS) {
+    item.value = (await getLogById(Number(props.id))) as AppObject
+  } else {
+    item.value = (await getItemById(props.table, props.id as string)) as AppObject
+  }
 })
 </script>
 

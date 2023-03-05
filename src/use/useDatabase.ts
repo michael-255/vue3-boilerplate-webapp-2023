@@ -112,6 +112,58 @@ export default function useDatabase() {
   }
 
   /**
+   * TODO
+   * @param key
+   * @returns
+   */
+  async function getSettingByKey(key: SettingKey): Promise<SettingValue | undefined> {
+    return await dexieWrapper
+      .table(DatabaseTable.SETTINGS)
+      .where(DatabaseField.KEY)
+      .equalsIgnoreCase(key)
+      .first()
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  //     Logs                                                                  //
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * TODO
+   * @param autoId
+   * @returns
+   */
+  async function getLogById(autoId: number): Promise<Log | undefined> {
+    return await dexieWrapper
+      .table(DatabaseTable.LOGS)
+      .where(DatabaseField.AUTO_ID)
+      .equals(autoId)
+      .first()
+  }
+
+  /**
+   * Adds a Log to the database.
+   * @param severity
+   * @param label
+   * @param error
+   * @param location
+   * @returns Id of new item
+   */
+  async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
+    const log: Log = {
+      [DatabaseField.TIMESTAMP]: new Date().getTime(),
+      [DatabaseField.SEVERITY]: severity,
+      [DatabaseField.APP_NAME]: AppText.APP_NAME,
+      [DatabaseField.LABEL]: label,
+      [DatabaseField.DETAILS]: details,
+    }
+
+    return await dexieWrapper.table(DatabaseTable.LOGS).add(log)
+  }
+
+  /**
    * Deletes logs that are past the log retention time.
    * @returns Number of logs to be deleted
    */
@@ -154,26 +206,6 @@ export default function useDatabase() {
   //     Create                                                                //
   //                                                                           //
   ///////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * Adds a Log to the database.
-   * @param severity
-   * @param label
-   * @param error
-   * @param location
-   * @returns Id of new item
-   */
-  async function addLog(severity: Severity, label: string, details?: any): Promise<IndexableType> {
-    const log: Log = {
-      [DatabaseField.TIMESTAMP]: new Date().getTime(),
-      [DatabaseField.SEVERITY]: severity,
-      [DatabaseField.APP_NAME]: AppText.APP_NAME,
-      [DatabaseField.LABEL]: label,
-      [DatabaseField.DETAILS]: details,
-    }
-
-    return await dexieWrapper.table(DatabaseTable.LOGS).add(log)
-  }
 
   /**
    * TODO
@@ -406,6 +438,8 @@ export default function useDatabase() {
   return {
     initializeSettings,
     setSetting,
+    getSettingByKey,
+    getLogById,
     purgeExpiredLogs,
     addLog,
     addExampleRecord,

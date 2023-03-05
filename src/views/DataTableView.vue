@@ -9,7 +9,7 @@ import {
   type ColumnProps,
 } from '@/constants/globals'
 import { onMounted, ref, type Ref, onUnmounted } from 'vue'
-import { getTableFromSlug, getTableColumnProps, getFields } from '@/services/DatabaseUtils'
+import { getTableFromSlug, getTableColumnProps, getVisibleColumns } from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
 import type { Subscription } from 'dexie'
 import { getSupportedActions } from '@/services/DatabaseUtils'
@@ -67,7 +67,7 @@ onMounted(async () => {
       (col: ColumnProps) => !col.required && col.name !== DatabaseField.ID
     )
     // This sets up what is currently visible on the data table
-    visibleColumns.value = getFields(routeTable)
+    visibleColumns.value = getVisibleColumns(routeTable)
   } catch (error) {
     log.error('Failed to retrieve visible columns', error)
   }
