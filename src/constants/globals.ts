@@ -240,7 +240,6 @@ export const recordFields: readonly RecordField[] = [
 export type ExampleField = ParentField | DatabaseField.EXAMPLE_MESSAGE
 
 export const exampleFields: readonly ExampleField[] = [
-  ...entityFields,
   ...parentFields,
   DatabaseField.EXAMPLE_MESSAGE,
 ]
@@ -248,7 +247,6 @@ export const exampleFields: readonly ExampleField[] = [
 export type ExampleRecordField = RecordField | DatabaseField.EXAMPLE_NUMBER
 
 export const exampleRecordFields: readonly ExampleRecordField[] = [
-  ...entityFields,
   ...recordFields,
   DatabaseField.EXAMPLE_NUMBER,
 ]

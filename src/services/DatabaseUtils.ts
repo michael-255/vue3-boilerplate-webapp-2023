@@ -17,7 +17,6 @@ import {
   type AppObject,
   RecordStatus,
   ParentStatus,
-  type OrphanedType,
 } from '@/constants/globals'
 import { slugify, truncateString } from '@/utils/common'
 import { defineAsyncComponent } from 'vue'
@@ -50,17 +49,6 @@ export function getParentCardComponents(table: ParentTable): any {
   return {
     [DatabaseTable.EXAMPLES]: defineAsyncComponent(() => import('@/components/ExampleCard.vue')),
     [DatabaseTable.TESTS]: defineAsyncComponent(() => import('@/components/TestCard.vue')),
-  }[table]
-}
-
-export function getColumns(table: DatabaseTable): ColumnProps[] {
-  return {
-    [DatabaseTable.SETTINGS]: [],
-    [DatabaseTable.LOGS]: [],
-    [DatabaseTable.EXAMPLES]: [],
-    [DatabaseTable.EXAMPLE_RECORDS]: [],
-    [DatabaseTable.TESTS]: [],
-    [DatabaseTable.TEST_RECORDS]: [],
   }[table]
 }
 

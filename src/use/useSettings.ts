@@ -209,7 +209,7 @@ export default function useSettings() {
           // Create demo data here...
           createExamples(2) // Unused parent items
           createExampleRecords(2) // Orphaned record items
-          createExamples(4)
+          createExamples(5)
           examples.map((example) => createExampleRecords(2, example))
 
           await bulkAddItems(DatabaseTable.EXAMPLES, examples)

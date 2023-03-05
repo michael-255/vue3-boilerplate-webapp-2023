@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { QTable } from 'quasar'
-import { DatabaseAction, DatabaseTable, Icon, RouteName } from '@/constants/globals'
+import {
+  DatabaseAction,
+  DatabaseTable,
+  Icon,
+  RouteName,
+  DatabaseField,
+  type ColumnProps,
+} from '@/constants/globals'
 import { onMounted, ref, type Ref, onUnmounted } from 'vue'
-import { getTableFromSlug, getTableColumnProps } from '@/services/DatabaseUtils'
+import { getTableFromSlug, getTableColumnProps, getFields } from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
 import type { Subscription } from 'dexie'
 import { getSupportedActions } from '@/services/DatabaseUtils'
@@ -22,6 +29,8 @@ const routeTable = getTableFromSlug(route?.params?.tableSlug as string)
 const subscriptions: Ref<Subscription[]> = ref([])
 const rows: Ref<any[]> = ref([])
 const columns: Ref<any[]> = ref([])
+const columnOptions: Ref<ColumnProps[]> = ref([])
+const visibleColumns: Ref<string[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 onMounted(async () => {
@@ -49,6 +58,18 @@ onMounted(async () => {
     }
   } catch (error) {
     log.error('Failed to retrieve table data', error)
+  }
+
+  // Load visible columns
+  try {
+    // This sets up the options for the column selector while removing ID and required columns
+    columnOptions.value = columns.value.filter(
+      (col: ColumnProps) => !col.required && col.name !== DatabaseField.ID
+    )
+    // This sets up what is currently visible on the data table
+    visibleColumns.value = getFields(routeTable)
+  } catch (error) {
+    log.error('Failed to retrieve visible columns', error)
   }
 })
 
@@ -92,6 +113,7 @@ async function onDelete(id: string): Promise<void> {
   <QTable
     :rows="rows"
     :columns="columns"
+    :visible-columns="visibleColumns"
     :rows-per-page-options="[0]"
     :filter="searchFilter"
     virtual-scroll
@@ -214,13 +236,11 @@ async function onDelete(id: string): Promise<void> {
             placeholder="Search"
           >
             <template v-slot:before>
-              <!-- OPTIONS (Visible Columns) -->
-              <QBtn color="primary" class="q-px-sm" :icon="Icon.OPTIONS" />
               <!-- CREATE -->
               <QBtn
                 v-if="getSupportedActions(routeTable).includes(DatabaseAction.CREATE)"
                 color="positive"
-                class="q-px-sm q-ml-xs"
+                class="q-px-sm q-mr-xs"
                 :icon="Icon.ADD"
                 :to="{
                   name: RouteName.ACTIONS,
@@ -230,6 +250,24 @@ async function onDelete(id: string): Promise<void> {
                   },
                 }"
               />
+              <!-- OPTIONS (Visible Columns) -->
+              <QSelect
+                v-model="visibleColumns"
+                :options="columnOptions"
+                :disable="!rows.length"
+                multiple
+                outlined
+                dense
+                options-dense
+                emit-value
+                map-options
+                option-value="name"
+                display-value=""
+              >
+                <template v-slot:prepend>
+                  <QIcon :name="Icon.OPTIONS" />
+                </template>
+              </QSelect>
             </template>
 
             <template v-slot:append>
