@@ -44,6 +44,8 @@ export enum Icon {
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
   // Misc
+  NOTE = 'sticky_note_2',
+  ADD_NOTE = 'post_add',
   DESCRIPTION = 'description',
   HELP = 'help_center',
   LIST = 'view_list',
@@ -86,6 +88,7 @@ export type ParentCardItem = {
   id: string
   name: string
   favorite: boolean
+  previousNote?: string
   previousTimestamp?: number
   previousNumber?: number
 }

@@ -10,6 +10,7 @@ export default function useExampleCard() {
   const { confirmDialog } = useSimpleDialogs()
   const { forceLiveQueryUpdate, addExampleRecord } = useDatabase()
 
+  const recordNoteModel: Ref<string> = ref('')
   const exampleNumberModel: Ref<number | undefined> = ref(undefined)
 
   onUpdated(() => {
@@ -25,6 +26,7 @@ export default function useExampleCard() {
   async function onSaveExampleRecord(
     recordTable: RecordTable,
     parentId: string,
+    recordNote?: string,
     exampleNumber?: number
   ) {
     confirmDialog(
@@ -34,8 +36,9 @@ export default function useExampleCard() {
       'positive',
       async () => {
         try {
-          const id = await addExampleRecord(parentId, exampleNumber)
+          const id = await addExampleRecord(parentId, recordNote, exampleNumber)
           await forceLiveQueryUpdate(getParentTable(recordTable), parentId)
+          recordNoteModel.value = ''
           exampleNumberModel.value = undefined
           log.info('Successfully saved record', { table: recordTable, newItemId: id })
         } catch (error) {
@@ -45,5 +48,5 @@ export default function useExampleCard() {
     )
   }
 
-  return { exampleNumberModel, onSaveExampleRecord }
+  return { recordNoteModel, exampleNumberModel, onSaveExampleRecord }
 }

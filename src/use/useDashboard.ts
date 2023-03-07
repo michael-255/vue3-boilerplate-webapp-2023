@@ -95,6 +95,7 @@ export default function useDashboard() {
               DatabaseTable.EXAMPLE_RECORDS,
               item[DatabaseField.ID]
             )
+            const previousNote = previousRecord?.[DatabaseField.NOTE]
             const previousTimestamp = previousRecord?.[DatabaseField.CREATED_TIMESTAMP]
             const previousNumber = previousRecord?.[DatabaseField.EXAMPLE_NUMBER]
 
@@ -103,6 +104,7 @@ export default function useDashboard() {
               [DatabaseField.ID]: item[DatabaseField.ID],
               [DatabaseField.NAME]: item[DatabaseField.NAME],
               [DatabaseField.FAVORITE]: item[DatabaseField.FAVORITE],
+              previousNote,
               previousTimestamp,
               previousNumber,
             } as ParentCardItem
@@ -136,6 +138,7 @@ export default function useDashboard() {
               DatabaseTable.TEST_RECORDS,
               item[DatabaseField.ID]
             )
+            const previousNote = previousRecord?.[DatabaseField.NOTE]
             const previousTimestamp = previousRecord?.[DatabaseField.CREATED_TIMESTAMP]
             const previousNumber = previousRecord?.[DatabaseField.EXAMPLE_NUMBER]
 
@@ -144,6 +147,7 @@ export default function useDashboard() {
               [DatabaseField.ID]: item[DatabaseField.ID],
               [DatabaseField.NAME]: item[DatabaseField.NAME],
               [DatabaseField.FAVORITE]: item[DatabaseField.FAVORITE],
+              previousNote,
               previousTimestamp,
               previousNumber,
             } as ParentCardItem

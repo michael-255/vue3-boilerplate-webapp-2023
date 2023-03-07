@@ -197,11 +197,13 @@ export default function useDatabase() {
   /**
    * TODO
    * @param parentId
+   * @param recordNote
    * @param exampleNumber
    * @returns Id of new item
    */
   async function addExampleRecord(
     parentId: string,
+    recordNote?: string,
     exampleNumber?: number
   ): Promise<IndexableType> {
     return await dexieWrapper.table(DatabaseTable.EXAMPLE_RECORDS).add({
@@ -209,7 +211,7 @@ export default function useDatabase() {
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.PARENT_ID]: parentId,
-      [DatabaseField.NOTE]: '',
+      [DatabaseField.NOTE]: recordNote,
       [DatabaseField.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
     })
   }
@@ -217,16 +219,21 @@ export default function useDatabase() {
   /**
    * TODO
    * @param parentId
+   * @param recordNote
    * @param exampleNumber
    * @returns Id of new item
    */
-  async function addTestRecord(parentId: string, exampleNumber?: number): Promise<IndexableType> {
+  async function addTestRecord(
+    parentId: string,
+    recordNote?: string,
+    exampleNumber?: number
+  ): Promise<IndexableType> {
     return await dexieWrapper.table(DatabaseTable.TEST_RECORDS).add({
       [DatabaseField.ID]: uid(),
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.PARENT_ID]: parentId,
-      [DatabaseField.NOTE]: '',
+      [DatabaseField.NOTE]: recordNote,
       [DatabaseField.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
     })
   }

@@ -5,8 +5,16 @@ import useDatabase from '@/use/useDatabase'
 
 export default function useParentCard() {
   const { log } = useLogger()
-  const { confirmDialog } = useSimpleDialogs()
+  const { confirmDialog, dismissDialog } = useSimpleDialogs()
   const { updateItem, deleteItem } = useDatabase()
+
+  /**
+   * TODO
+   * @param note
+   */
+  async function viewPreviousNote(note: string) {
+    dismissDialog('Previous Note', note, Icon.NOTE, 'info')
+  }
 
   /**
    * TODO
@@ -80,6 +88,7 @@ export default function useParentCard() {
   }
 
   return {
+    viewPreviousNote,
     onFavorite,
     onUnfavorite,
     onDelete,

@@ -11,11 +11,12 @@ defineProps<{
   name: string
   favorite: boolean
   // Will be undefined if no records have been recorded yet
+  previousNote?: string
   previousTimestamp?: number
   previousNumber?: number
 }>()
 
-const { exampleNumberModel, onSaveExampleRecord } = useExampleCard()
+const { recordNoteModel, exampleNumberModel, onSaveExampleRecord } = useExampleCard()
 </script>
 
 <template>
@@ -24,6 +25,7 @@ const { exampleNumberModel, onSaveExampleRecord } = useExampleCard()
     :id="id"
     :name="name"
     :favorite="favorite"
+    :previous-note="previousNote"
     :previous-timestamp="previousTimestamp"
   >
     <div v-show="previousNumber">
@@ -40,12 +42,20 @@ const { exampleNumberModel, onSaveExampleRecord } = useExampleCard()
       placeholder="Number"
     >
       <template v-slot:after>
+        <!-- SAVE -->
         <QBtn
           v-show="exampleNumberModel"
           color="positive"
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
-          @click="onSaveExampleRecord(getRecordTable(parentTable), id, exampleNumberModel || 0)"
+          @click="
+            onSaveExampleRecord(
+              getRecordTable(parentTable),
+              id,
+              recordNoteModel,
+              exampleNumberModel || 0
+            )
+          "
         />
         <QBtn
           v-show="!exampleNumberModel"
@@ -54,6 +64,21 @@ const { exampleNumberModel, onSaveExampleRecord } = useExampleCard()
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
         />
+      </template>
+    </QInput>
+
+    <QInput
+      v-model="recordNoteModel"
+      :hint="`Record Note (${recordNoteModel?.length || 0}/500)`"
+      class="q-mt-md"
+      type="textarea"
+      autogrow
+      dense
+      outlined
+      clearable
+    >
+      <template v-slot:prepend>
+        <QIcon :name="Icon.ADD_NOTE" />
       </template>
     </QInput>
   </ParentCard>

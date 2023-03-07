@@ -44,6 +44,7 @@ const {
             :id="item.id"
             :name="item.name"
             :favorite="item.favorite"
+            :previous-note="item.previousNote"
             :previous-timestamp="item.previousTimestamp"
             :previous-number="item.previousNumber"
           />

@@ -10,11 +10,13 @@ defineProps<{
   id: string
   name: string
   favorite: boolean
-  previousTimestamp?: number // Will be undefined if no records have been recorded yet
+  // Will be undefined if no records have been recorded yet
+  previousNote?: string
+  previousTimestamp?: number
   previousNumber?: number
 }>()
 
-const { onFavorite, onUnfavorite, onDelete } = useParentCard()
+const { viewPreviousNote, onFavorite, onUnfavorite, onDelete } = useParentCard()
 </script>
 
 <template>
@@ -23,6 +25,16 @@ const { onFavorite, onUnfavorite, onDelete } = useParentCard()
       <div class="text-h6 q-mb-md">{{ name }}</div>
 
       <div class="absolute-top-right q-ma-xs">
+        <!-- Note -->
+        <QIcon
+          v-show="previousNote"
+          :name="Icon.NOTE"
+          color="primary"
+          size="md"
+          class="cursor-pointer q-mr-xs"
+          @click="viewPreviousNote(previousNote || '')"
+        />
+
         <!-- Favorite Star -->
         <QIcon
           v-show="favorite"

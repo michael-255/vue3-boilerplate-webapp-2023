@@ -5,17 +5,22 @@ import { getRecordTable } from '@/services/DatabaseUtils'
 import ParentCard from './ParentCard.vue'
 import useTestCard from '@/use/useTestCard'
 
+/**
+ * This is just a duplicate of ExampleCard as an example!
+ */
+
 defineProps<{
   parentTable: ParentTable
   id: string
   name: string
   favorite: boolean
   // Will be undefined if no records have been recorded yet
+  previousNote?: string
   previousTimestamp?: number
   previousNumber?: number
 }>()
 
-const { exampleNumberModel, onSaveTestRecord } = useTestCard()
+const { recordNoteModel, exampleNumberModel, onSaveExampleRecord } = useTestCard()
 </script>
 
 <template>
@@ -24,6 +29,7 @@ const { exampleNumberModel, onSaveTestRecord } = useTestCard()
     :id="id"
     :name="name"
     :favorite="favorite"
+    :previous-note="previousNote"
     :previous-timestamp="previousTimestamp"
   >
     <div v-show="previousNumber">
@@ -40,12 +46,20 @@ const { exampleNumberModel, onSaveTestRecord } = useTestCard()
       placeholder="Number"
     >
       <template v-slot:after>
+        <!-- SAVE -->
         <QBtn
           v-show="exampleNumberModel"
           color="positive"
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
-          @click="onSaveTestRecord(getRecordTable(parentTable), id, exampleNumberModel || 0)"
+          @click="
+            onSaveExampleRecord(
+              getRecordTable(parentTable),
+              id,
+              recordNoteModel,
+              exampleNumberModel || 0
+            )
+          "
         />
         <QBtn
           v-show="!exampleNumberModel"
@@ -54,6 +68,21 @@ const { exampleNumberModel, onSaveTestRecord } = useTestCard()
           class="q-ml-sm q-px-sm"
           :icon="Icon.SAVE"
         />
+      </template>
+    </QInput>
+
+    <QInput
+      v-model="recordNoteModel"
+      :hint="`Record Note (${recordNoteModel?.length || 0}/500)`"
+      class="q-mt-md"
+      type="textarea"
+      autogrow
+      dense
+      outlined
+      clearable
+    >
+      <template v-slot:prepend>
+        <QIcon :name="Icon.ADD_NOTE" />
       </template>
     </QInput>
   </ParentCard>

@@ -205,7 +205,7 @@ export default function useSettings() {
                 createdTimestamp: initialTimestamp,
                 updatedTimestamp: initialTimestamp,
                 parentId: parent?.id || `orphaned-record-id-${i}`,
-                note: `Record Note ${i}`,
+                note: randomBoolean() ? `Previous record note = ${parent?.id} [${i}]` : '',
                 exampleNumber: randomInt(1, 100),
               })
 
