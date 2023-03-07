@@ -12,7 +12,6 @@ import {
   SettingKey,
   DatabaseField,
   Severity,
-  RecordStatus,
   AppText,
   LogRetention,
   ParentStatus,
@@ -45,6 +44,7 @@ export default function useDatabase() {
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
     const showIntroduction = findSettingValue(SettingKey.SHOW_INTRODUCTION) ?? true
     const darkMode = findSettingValue(SettingKey.DARK_MODE) ?? true
+    const showAllDataColumns = findSettingValue(SettingKey.SHOW_ALL_DATA_COLUMNS) ?? false
     const showConsoleLogs = findSettingValue(SettingKey.SHOW_CONSOLE_LOGS) ?? false
     const showDebugMessages = findSettingValue(SettingKey.SHOW_DEBUG_MESSAGES) ?? false
     const showInfoMessages = findSettingValue(SettingKey.SHOW_INFO_MESSAGES) ?? false
@@ -60,6 +60,7 @@ export default function useDatabase() {
     await Promise.all([
       setSetting(SettingKey.SHOW_INTRODUCTION, showIntroduction),
       setSetting(SettingKey.DARK_MODE, darkMode),
+      setSetting(SettingKey.SHOW_ALL_DATA_COLUMNS, showAllDataColumns),
       setSetting(SettingKey.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingKey.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingKey.SHOW_INFO_MESSAGES, showInfoMessages),
@@ -208,7 +209,6 @@ export default function useDatabase() {
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.PARENT_ID]: parentId,
-      [DatabaseField.RECORD_STATUS]: RecordStatus.FINISHED,
       [DatabaseField.NOTE]: '',
       [DatabaseField.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
     })
@@ -226,7 +226,6 @@ export default function useDatabase() {
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.UPDATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.PARENT_ID]: parentId,
-      [DatabaseField.RECORD_STATUS]: RecordStatus.FINISHED,
       [DatabaseField.NOTE]: '',
       [DatabaseField.EXAMPLE_NUMBER]: Number(exampleNumber) || 0,
     })

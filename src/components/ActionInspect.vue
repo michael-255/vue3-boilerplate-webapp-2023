@@ -161,14 +161,6 @@ onMounted(async () => {
     </QCardSection>
   </QCard>
 
-  <QCard v-if="fields.includes(DatabaseField.RECORD_STATUS) && item" class="q-mb-md">
-    <QCardSection>
-      <div class="text-h6 q-mb-md">Record Status</div>
-
-      <div>{{ item[DatabaseField.RECORD_STATUS] }}</div>
-    </QCardSection>
-  </QCard>
-
   <QCard v-if="fields.includes(DatabaseField.NOTE) && item" class="q-mb-md">
     <QCardSection>
       <div class="text-h6 q-mb-md">Note</div>

@@ -8,7 +8,6 @@ import {
   AppText,
   SettingKey,
   ParentStatus,
-  RecordStatus,
   LogRetention,
   parentTables,
   recordTables,
@@ -77,6 +76,15 @@ export default function useSettings() {
     },
     async set(bool: boolean) {
       await setSetting(SettingKey.DARK_MODE, bool)
+    },
+  })
+
+  const showAllDataColumns = computed({
+    get() {
+      return !!settingsStore[SettingKey.SHOW_ALL_DATA_COLUMNS]
+    },
+    async set(bool: boolean) {
+      await setSetting(SettingKey.SHOW_ALL_DATA_COLUMNS, bool)
     },
   })
 
@@ -196,7 +204,6 @@ export default function useSettings() {
                 id: uid(),
                 createdTimestamp: initialTimestamp,
                 updatedTimestamp: initialTimestamp,
-                recordStatus: RecordStatus.FINISHED,
                 parentId: parent?.id || `orphaned-record-id-${i}`,
                 note: `Record Note ${i}`,
                 exampleNumber: randomInt(1, 100),
@@ -452,6 +459,7 @@ export default function useSettings() {
   return {
     showIntroduction,
     darkMode,
+    showAllDataColumns,
     showConsoleLogs,
     showDebugMessages,
     showInfoMessages,

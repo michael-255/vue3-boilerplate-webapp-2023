@@ -1,7 +1,6 @@
 import type {
   DatabaseField,
   ParentStatus,
-  RecordStatus,
   Severity,
   SettingKey,
   SettingValue,
@@ -29,7 +28,6 @@ export interface Parent extends Entity {
 
 export interface Record extends Entity {
   [DatabaseField.PARENT_ID]: string
-  [DatabaseField.RECORD_STATUS]: RecordStatus
   [DatabaseField.NOTE]: string
 }
 

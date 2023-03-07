@@ -167,7 +167,6 @@ export enum DatabaseField {
   FAVORITE = 'favorite',
   // Record
   PARENT_ID = 'parentId',
-  RECORD_STATUS = 'recordStatus',
   NOTE = 'note',
   // Example Parent
   EXAMPLE_MESSAGE = 'exampleMessage',
@@ -224,16 +223,11 @@ export const parentFields: readonly ParentField[] = [
   DatabaseField.FAVORITE,
 ]
 
-export type RecordField =
-  | EntityField
-  | DatabaseField.PARENT_ID
-  | DatabaseField.RECORD_STATUS
-  | DatabaseField.NOTE
+export type RecordField = EntityField | DatabaseField.PARENT_ID | DatabaseField.NOTE
 
 export const recordFields: readonly RecordField[] = [
   ...entityFields,
   DatabaseField.PARENT_ID,
-  DatabaseField.RECORD_STATUS,
   DatabaseField.NOTE,
 ]
 
@@ -284,11 +278,6 @@ export enum ParentStatus {
   DISABLED = 'Disabled',
 }
 
-export enum RecordStatus {
-  NONE = 'None',
-  FINISHED = 'Finished',
-}
-
 export enum Severity {
   DEBUG = 'Debug',
   INFO = 'Info',
@@ -299,14 +288,12 @@ export enum Severity {
 export enum SettingKey {
   SHOW_INTRODUCTION = 'show-introduction',
   DARK_MODE = 'dark-mode',
+  SHOW_ALL_DATA_COLUMNS = 'show-all-data-columns',
   SHOW_CONSOLE_LOGS = 'show-console-logs',
   SHOW_DEBUG_MESSAGES = 'show-debug-messages',
   SHOW_INFO_MESSAGES = 'show-info-messages',
   PARENT_LIST_SELECTION = 'primary-list-selection',
   LOG_RETENTION_TIME = 'log-retention-time',
-  // ACTIVE_RECORD_IDS = 'active-record-ids',
-  // PARENTS_TABLE_VISIBLE_COLUMNS = 'parents-table-visible-columns',
-  // RECORDS_TABLE_VISIBLE_COLUMNS = 'records-table-visible-columns',
 }
 
 export type SettingValue = any // May make this more specific in the future

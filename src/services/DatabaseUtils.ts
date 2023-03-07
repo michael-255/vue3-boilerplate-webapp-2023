@@ -15,7 +15,6 @@ import {
   testFields,
   testRecordFields,
   type AppObject,
-  RecordStatus,
   ParentStatus,
 } from '@/constants/globals'
 import { slugify, truncateString } from '@/utils/common'
@@ -409,15 +408,6 @@ function getRecordColumnProps(): ColumnProps[] {
       required: false,
       field: (row: any) => row[DatabaseField.PARENT_ID],
       format: (val: string) => truncateString(val, 8, '*'),
-    },
-    {
-      name: DatabaseField.RECORD_STATUS,
-      label: 'Record Status',
-      align: 'left',
-      sortable: true,
-      required: false,
-      field: (row: any) => row[DatabaseField.RECORD_STATUS],
-      format: (val: RecordStatus) => `${val}`,
     },
     {
       name: DatabaseField.NOTE,

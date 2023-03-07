@@ -7,19 +7,27 @@ import {
   RouteName,
   DatabaseField,
   type ColumnProps,
+  SettingKey,
 } from '@/constants/globals'
 import { onMounted, ref, type Ref, onUnmounted } from 'vue'
-import { getTableFromSlug, getTableColumnProps, getVisibleColumns } from '@/services/DatabaseUtils'
+import {
+  getTableFromSlug,
+  getTableColumnProps,
+  getVisibleColumns,
+  getFields,
+} from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
 import type { Subscription } from 'dexie'
 import { getSupportedActions } from '@/services/DatabaseUtils'
 import { slugify } from '@/utils/common'
+import useSettingsStore from '@/stores/settings'
 import useSimpleDialogs from '@/use/useSimpleDialogs'
 import useGoBack from '@/use/useGoBack'
 import useLogger from '@/use/useLogger'
 import useDatabase from '@/use/useDatabase'
 
 const route = useRoute()
+const settingsStore = useSettingsStore()
 const { log, consoleDebug } = useLogger()
 const { confirmDialog } = useSimpleDialogs()
 const { onGoBack } = useGoBack()
@@ -62,12 +70,24 @@ onMounted(async () => {
 
   // Load visible columns
   try {
+    consoleDebug('Loading visible columns')
     // This sets up the options for the column selector while removing ID and required columns
     columnOptions.value = columns.value.filter(
       (col: ColumnProps) => !col.required && col.name !== DatabaseField.ID
     )
+
     // This sets up what is currently visible on the data table
-    visibleColumns.value = getVisibleColumns(routeTable)
+    if (settingsStore[SettingKey.SHOW_ALL_DATA_COLUMNS]) {
+      // All columns
+      const a = getFields(routeTable)
+      consoleDebug('All columns', a)
+      visibleColumns.value = a
+    } else {
+      // Default columns
+      const b = getVisibleColumns(routeTable)
+      consoleDebug('Default columns', b)
+      visibleColumns.value = b
+    }
   } catch (error) {
     log.error('Failed to retrieve visible columns', error)
   }

@@ -8,6 +8,7 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 const {
   showIntroduction,
   darkMode,
+  showAllDataColumns,
   showConsoleLogs,
   showDebugMessages,
   showInfoMessages,
@@ -50,7 +51,14 @@ const {
           Dark Mode allows you to switch between a light or dark theme for the app.
         </div>
 
-        <QToggle v-model="darkMode" label="Dark Mode" />
+        <QToggle v-model="darkMode" class="q-mb-md" label="Dark Mode" />
+
+        <div class="q-mb-md">
+          Show all columns while on the data table page or only show the default columns. You can
+          change the individual columns while on the page.
+        </div>
+
+        <QToggle v-model="showAllDataColumns" label="Show All Data Columns" />
       </QCardSection>
     </QCard>
 
