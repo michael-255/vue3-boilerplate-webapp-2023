@@ -7,7 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Data Tables
 
-  - [ ] Implement `Visible Columns` feature and the defaults for them
   - [ ] Move functionality to `useDataTables` composable
 
 - Dashboard

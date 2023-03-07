@@ -52,15 +52,6 @@ export default function useDatabase() {
       findSettingValue(SettingKey.PARENT_LIST_SELECTION) ?? DatabaseTable.EXAMPLES
     const logRetentionTime =
       findSettingValue(SettingKey.LOG_RETENTION_TIME) ?? LogRetention.THREE_MONTHS
-    // const favoriteParentIds = findSettingValue(SettingKey.FAVORITE_PARENT_IDS) ?? []
-    // const orphanedRecordIds = findSettingValue(SettingKey.ORPHANED_RECORD_IDS) ?? []
-    // const activeRecordIds = findSettingValue(SettingKey.ACTIVE_RECORD_IDS) ?? []
-    // const parentsTableVisibleColumns = findSettingValue(
-    //   SettingKey.PARENTS_TABLE_VISIBLE_COLUMNS
-    // ) ?? [Field.NAME]
-    // const recordsTableVisibleColumns = findSettingValue(
-    //   SettingKey.RECORDS_TABLE_VISIBLE_COLUMNS
-    // ) ?? [Field.PARENT_ID]
 
     // Set Quasar dark mode
     Dark.set(!!darkMode) // Cast to boolean
@@ -74,11 +65,6 @@ export default function useDatabase() {
       setSetting(SettingKey.SHOW_INFO_MESSAGES, showInfoMessages),
       setSetting(SettingKey.PARENT_LIST_SELECTION, parentListSelection),
       setSetting(SettingKey.LOG_RETENTION_TIME, logRetentionTime),
-      // setSetting(SettingKey.FAVORITE_PARENT_IDS, favoriteParentIds),
-      // setSetting(SettingKey.ORPHANED_RECORD_IDS, orphanedRecordIds),
-      // setSetting(SettingKey.ACTIVE_RECORD_IDS, activeRecordIds),
-      // setSetting(SettingKey.PARENTS_TABLE_VISIBLE_COLUMNS, parentsTableVisibleColumns),
-      // setSetting(SettingKey.RECORDS_TABLE_VISIBLE_COLUMNS, recordsTableVisibleColumns),
     ])
   }
 
