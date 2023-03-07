@@ -5,15 +5,11 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Data Tables
-
-  - [ ] Move functionality to `useDataTables` composable
-
 - Dashboard
 
+  - [ ] Work on the `Create Action` (ActionInput\* from older app)
   - [ ] Work on the `Edit Action`
-  - [ ] Work on the `Charts Action`
-    - [ ] Select or slider for date range?
+  - [ ] Work on the `Charts Action` (Select for date range - enum)
 
 - Quasar
 
