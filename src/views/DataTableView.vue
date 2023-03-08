@@ -165,8 +165,9 @@ const { onGoBack } = useGoBack()
                 v-model="visibleColumns"
                 :options="columnOptions"
                 :disable="!rows.length"
+                bg-color="primary"
+                standout
                 multiple
-                outlined
                 dense
                 options-dense
                 emit-value
@@ -175,7 +176,7 @@ const { onGoBack } = useGoBack()
                 display-value=""
               >
                 <template v-slot:prepend>
-                  <QIcon :name="Icon.OPTIONS" />
+                  <QIcon color="white" :name="Icon.OPTIONS" />
                 </template>
               </QSelect>
             </template>
