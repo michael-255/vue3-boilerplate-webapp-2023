@@ -61,7 +61,7 @@ function validateInput(): void {
             :disable="locked"
             :icon="Icon.REFRESH"
             color="primary"
-            class="q-ml-xs q-px-sm"
+            class="q-px-sm"
             @click="generateId()"
           />
         </template>

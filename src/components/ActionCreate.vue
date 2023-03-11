@@ -2,9 +2,16 @@
 import { QCard } from 'quasar'
 import type { DatabaseTable, SettingKey } from '@/constants/globals'
 import ActionInputId from '@/components/ActionInputId.vue'
-import ActionInputTimestamp from '@/components/ActionInputTimestamp.vue'
+import ActionInputCreatedTimestamp from '@/components/ActionInputCreatedTimestamp.vue'
+import ActionInputUpdatedTimestamp from '@/components/ActionInputUpdatedTimestamp.vue'
 import ActionInputName from '@/components/ActionInputName.vue'
-import ActionInputTextArea from '@/components/ActionInputTextArea.vue'
+import ActionInputDescription from '@/components/ActionInputDescription.vue'
+import ActionInputParentStatus from '@/components/ActionInputParentStatus.vue'
+import ActionInputFavorite from '@/components/ActionInputFavorite.vue'
+import ActionInputExampleMessage from '@/components/ActionInputExampleMessage.vue'
+import ActionInputParentId from '@/components/ActionInputParentId.vue'
+import ActionInputNote from '@/components/ActionInputNote.vue'
+import ActionInputExampleNumber from '@/components/ActionInputExampleNumber.vue'
 
 defineProps<{
   table: DatabaseTable
@@ -23,8 +30,14 @@ defineProps<{
   </QCard>
 
   <ActionInputId class="q-mb-md" />
-  <ActionInputTimestamp class="q-mb-md" type="CreatedTimestamp" />
-  <ActionInputTimestamp class="q-mb-md" type="UpdatedTimestamp" :locked="true" />
+  <ActionInputCreatedTimestamp class="q-mb-md" />
+  <ActionInputUpdatedTimestamp class="q-mb-md" :locked="true" />
   <ActionInputName class="q-mb-md" />
-  <ActionInputTextArea class="q-mb-md" type="Note" />
+  <ActionInputDescription class="q-mb-md" />
+  <ActionInputParentStatus class="q-mb-md" />
+  <ActionInputFavorite class="q-mb-md" />
+  <ActionInputExampleMessage class="q-mb-md" />
+  <ActionInputParentId class="q-mb-md" :table="table" />
+  <ActionInputNote class="q-mb-md" :locked="true" />
+  <ActionInputExampleNumber class="q-mb-md" />
 </template>

@@ -315,6 +315,19 @@ export default function useDatabase() {
   }
 
   /**
+   * TODO
+   * @param table
+   * @returns Name sorted and enabled parent data
+   */
+  async function getSelectableParentTable(table: ParentTable): Promise<ParentModel[]> {
+    return await dexieWrapper
+      .table(table)
+      .orderBy(DatabaseField.NAME)
+      .filter((item) => item[DatabaseField.PARENT_STATUS] === ParentStatus.ENABLED)
+      .toArray()
+  }
+
+  /**
    * Gets all data from a table.
    * @returns Database table data as an array
    */
@@ -443,6 +456,7 @@ export default function useDatabase() {
     getUnusedParentIds,
     getOrphanedRecordIds,
     getTable,
+    getSelectableParentTable,
     getItemById,
     getPreviousRecord,
     bulkAddItems,

@@ -4,44 +4,26 @@ import { type Ref, ref } from 'vue'
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-const props = defineProps<{
-  type: 'CreatedTimestamp' | 'UpdatedTimestamp'
+defineProps<{
   locked?: boolean
 }>()
 
 const itemsStore = useItemsStore()
-const inputLabel: Ref<string> = ref('')
 const inputRef: Ref<any> = ref(null)
 const displayedDate: Ref<string> = ref('')
 const dateTimePicker: Ref<string> = ref('')
 
 // Default component state must be valid
-if (props.type === 'CreatedTimestamp') {
-  inputLabel.value = 'Created Date'
-  if (itemsStore?.oldItem?.[DatabaseField.CREATED_TIMESTAMP]) {
-    updateDates(itemsStore.oldItem[DatabaseField.CREATED_TIMESTAMP])
-  } else {
-    updateDates()
-  }
-  itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = true
-} else if (props.type === 'UpdatedTimestamp') {
-  inputLabel.value = 'Updated Date'
-  if (itemsStore?.oldItem?.[DatabaseField.UPDATED_TIMESTAMP]) {
-    updateDates(itemsStore.oldItem[DatabaseField.UPDATED_TIMESTAMP])
-  } else {
-    updateDates()
-  }
-  itemsStore.validateItem[DatabaseField.UPDATED_TIMESTAMP] = true
+if (itemsStore?.oldItem?.[DatabaseField.CREATED_TIMESTAMP]) {
+  updateDates(itemsStore.oldItem[DatabaseField.CREATED_TIMESTAMP])
+} else {
+  updateDates()
 }
+itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = true
 
 function updateDates(timestamp: number = new Date().getTime()): void {
-  if (props.type === 'CreatedTimestamp') {
-    itemsStore.newItem[DatabaseField.CREATED_TIMESTAMP] = timestamp
-    itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = true
-  } else if (props.type === 'UpdatedTimestamp') {
-    itemsStore.newItem[DatabaseField.UPDATED_TIMESTAMP] = timestamp
-    itemsStore.validateItem[DatabaseField.UPDATED_TIMESTAMP] = true
-  }
+  itemsStore.newItem[DatabaseField.CREATED_TIMESTAMP] = timestamp
+  itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = true
   displayedDate.value = date.formatDate(timestamp, 'ddd, YYYY MMM Do, h:mm A')
 }
 
@@ -55,11 +37,7 @@ function onPickerDateTime(): void {
 }
 
 function validateInput(): void {
-  if (props.type === 'CreatedTimestamp') {
-    itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = !!inputRef?.value?.validate()
-  } else if (props.type === 'UpdatedTimestamp') {
-    itemsStore.validateItem[DatabaseField.UPDATED_TIMESTAMP] = !!inputRef?.value?.validate()
-  }
+  itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -67,17 +45,16 @@ function validateInput(): void {
   <QCard>
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        {{ inputLabel }}
+        Created Date
         <QIcon v-if="locked" :name="Icon.LOCK" color="primary" class="q-pb-xs" />
       </div>
 
-      <div v-if="type === 'CreatedTimestamp'" class="q-mb-md">TODO Created Date</div>
-      <div v-if="type === 'UpdatedTimestamp'" class="q-mb-md">TODO Updated Date</div>
+      <div class="q-mb-md">TODO Created Date</div>
 
       <QInput
         v-model="displayedDate"
         ref="inputRef"
-        label="Created Date"
+        label="Updated Date"
         dense
         outlined
         disable
@@ -87,12 +64,7 @@ function validateInput(): void {
       >
         <template v-slot:after>
           <!-- Date Picker -->
-          <QBtn
-            :disable="locked"
-            :icon="Icon.CALENDAR_DATE"
-            color="primary"
-            class="q-ml-xs q-px-sm"
-          >
+          <QBtn :disable="locked" :icon="Icon.CALENDAR_DATE" color="primary" class="q-px-sm">
             <QPopupProxy cover transition-show="scale" transition-hide="scale">
               <QDate v-model="dateTimePicker" mask="YYYY-MM-DDTHH:mm:ss.000Z">
                 <div class="row items-center justify-end q-gutter-sm">

@@ -1,10 +1,11 @@
-import { DatabaseField } from '@/constants/globals'
+import { DatabaseField, DatabaseTable } from '@/constants/globals'
 import { defineStore, type StoreDefinition } from 'pinia'
 
 const useItemsStore: StoreDefinition = defineStore({
   id: 'items',
 
   state: () => ({
+    currentTable: null as DatabaseTable | null,
     oldItem: Object.values(DatabaseField).reduce(
       (accumulateObject, field) => ({ ...accumulateObject, [field]: null as any }),
       {} as { [key in DatabaseField]: any }
