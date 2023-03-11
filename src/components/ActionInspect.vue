@@ -118,6 +118,17 @@ onMounted(async () => {
     </QCardSection>
   </QCard>
 
+  <QCard v-if="fields.includes(DatabaseField.UPDATED_TIMESTAMP) && item" class="q-mb-md">
+    <QCardSection>
+      <div class="text-h6 q-mb-md">Updated Date</div>
+
+      <div>{{ item[DatabaseField.UPDATED_TIMESTAMP] }}</div>
+      <div>
+        {{ date.formatDate(item[DatabaseField.UPDATED_TIMESTAMP], 'dddd, YYYY MMM Do, h:mm A') }}
+      </div>
+    </QCardSection>
+  </QCard>
+
   <!-- Parent Fields -->
   <QCard v-if="fields.includes(DatabaseField.NAME) && item" class="q-mb-md">
     <QCardSection>

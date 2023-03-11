@@ -44,6 +44,7 @@ export enum Icon {
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
   // Misc
+  LOCK = 'lock',
   NOTE = 'sticky_note_2',
   ADD_NOTE = 'post_add',
   DESCRIPTION = 'description',

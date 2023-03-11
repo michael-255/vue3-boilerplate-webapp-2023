@@ -36,10 +36,16 @@ export function getInputComponents(table: DatabaseTable): any[] {
   return {
     [DatabaseTable.SETTINGS]: [],
     [DatabaseTable.LOGS]: [],
-    [DatabaseTable.EXAMPLES]: [],
-    [DatabaseTable.EXAMPLE_RECORDS]: [],
-    [DatabaseTable.TESTS]: [],
-    [DatabaseTable.TEST_RECORDS]: [],
+    [DatabaseTable.EXAMPLES]: [
+      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+    ],
+    [DatabaseTable.EXAMPLE_RECORDS]: [
+      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+    ],
+    [DatabaseTable.TESTS]: [defineAsyncComponent(() => import('@/components/ActionInputId.vue'))],
+    [DatabaseTable.TEST_RECORDS]: [
+      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+    ],
   }[table]
 }
 
