@@ -13,12 +13,10 @@ import ActionCreate from '@/components/ActionCreate.vue'
 import ActionEdit from '@/components/ActionEdit.vue'
 
 const route = useRoute()
-
 const routeId = route?.params?.id as string
 const routeTable = getTableFromSlug(route?.params?.tableSlug as string)
 const routeAction = getActionFromSlug(route?.params?.actionSlug as string)
 const routeActionIcon = getActionIcon(routeAction)
-
 const bannerTitle = `${routeAction} ${getLabelSingular(routeTable)}`
 </script>
 

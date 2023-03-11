@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { QCard } from 'quasar'
-import type { DatabaseTable, SettingKey } from '@/constants/globals'
+import type { AnyModel, DatabaseTable } from '@/constants/globals'
+import { onMounted, ref, type Ref } from 'vue'
 import ActionInputId from '@/components/ActionInputId.vue'
 import ActionInputCreatedTimestamp from '@/components/ActionInputCreatedTimestamp.vue'
 import ActionInputUpdatedTimestamp from '@/components/ActionInputUpdatedTimestamp.vue'
@@ -12,13 +13,27 @@ import ActionInputExampleMessage from '@/components/ActionInputExampleMessage.vu
 import ActionInputParentId from '@/components/ActionInputParentId.vue'
 import ActionInputNote from '@/components/ActionInputNote.vue'
 import ActionInputExampleNumber from '@/components/ActionInputExampleNumber.vue'
+import useDatabase from '@/use/useDatabase'
 
-defineProps<{
+const props = defineProps<{
   table: DatabaseTable
-  id?: string | number | SettingKey
+  id?: string // Not for Settings or Logs (Key or Auto Id)
 }>()
 
-// TODO - If id exists, restrict fields cause its a record creation
+const { getItemById } = useDatabase()
+const item: Ref<AnyModel | undefined> = ref(undefined)
+
+onMounted(async () => {
+  // Load an item if an id was provided
+  if (props.id) {
+    item.value = await getItemById(props.table, props.id)
+  }
+})
+
+// TODO
+// - item can be passed to the components to populate the "oldItem" fields
+// - An id existing during a "create" then lock certain inputs
+// - You may have to do these components like you do "ActionInspect" (no need for getTableComponents)
 </script>
 
 <template>
