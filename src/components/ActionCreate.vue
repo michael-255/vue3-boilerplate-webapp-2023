@@ -3,8 +3,8 @@ import { QCard } from 'quasar'
 import type { DatabaseTable, SettingKey } from '@/constants/globals'
 import ActionInputId from '@/components/ActionInputId.vue'
 import ActionInputTimestamp from '@/components/ActionInputTimestamp.vue'
-import ActionInputName from './ActionInputName.vue'
-import ActionInputDescription from './ActionInputDescription.vue'
+import ActionInputName from '@/components/ActionInputName.vue'
+import ActionInputTextArea from '@/components/ActionInputTextArea.vue'
 
 defineProps<{
   table: DatabaseTable
@@ -26,5 +26,5 @@ defineProps<{
   <ActionInputTimestamp class="q-mb-md" type="CreatedTimestamp" />
   <ActionInputTimestamp class="q-mb-md" type="UpdatedTimestamp" :locked="true" />
   <ActionInputName class="q-mb-md" />
-  <ActionInputDescription class="q-mb-md" />
+  <ActionInputTextArea class="q-mb-md" type="Note" />
 </template>
