@@ -7,9 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Dashboard
 
-  - [ ] Building `ActionInput*` components
-    - [ ] Add descriptions for each component input
-    - [ ] Move input control buttons below the input
   - [ ] Work on the `Create Action` (ActionInput\* from older app)
     - [ ] Create route should use route id as the `parentId` for records (nothing with Parents)
     - [ ] Lock fields when creating a record with a route `parentId` provided
