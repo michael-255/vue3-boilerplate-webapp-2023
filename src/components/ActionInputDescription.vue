@@ -4,17 +4,16 @@ import { QInput } from 'quasar'
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldDescription?: string
 }>()
 
 const itemsStore = useItemsStore()
 const inputRef: Ref<any> = ref(null)
 
 // Default component state must be valid
-itemsStore.newItem[DatabaseField.DESCRIPTION] = itemsStore?.oldItem?.[DatabaseField.DESCRIPTION]
-  ? itemsStore.oldItem[DatabaseField.DESCRIPTION]
-  : ''
+itemsStore.newItem[DatabaseField.DESCRIPTION] = props.oldDescription ? props.oldDescription : ''
 itemsStore.validateItem[DatabaseField.DESCRIPTION] = true
 
 function descriptionRule(description: string) {

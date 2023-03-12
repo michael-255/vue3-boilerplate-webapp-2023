@@ -4,16 +4,15 @@ import { QInput } from 'quasar'
 import useItemsStore from '@/stores/items'
 import { DatabaseField, Icon } from '@/constants/globals'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldName?: string
 }>()
 
 const itemsStore = useItemsStore()
 const inputRef: Ref<any> = ref(null)
 
-itemsStore.newItem[DatabaseField.NAME] = itemsStore?.oldItem?.[DatabaseField.NAME]
-  ? itemsStore.oldItem[DatabaseField.NAME]
-  : 'Example'
+itemsStore.newItem[DatabaseField.NAME] = props.oldName ? props.oldName : 'Example'
 itemsStore.validateItem[DatabaseField.NAME] = true
 
 function nameRule(name: string) {

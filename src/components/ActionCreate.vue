@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { QCard } from 'quasar'
-import type { AnyModel, DatabaseTable } from '@/constants/globals'
+import { DatabaseField, type DatabaseTable } from '@/constants/globals'
 import { onMounted, ref, type Ref } from 'vue'
+import { getFields } from '@/services/DatabaseUtils'
+import useDatabase from '@/use/useDatabase'
 import ActionInputId from '@/components/ActionInputId.vue'
 import ActionInputCreatedTimestamp from '@/components/ActionInputCreatedTimestamp.vue'
 import ActionInputUpdatedTimestamp from '@/components/ActionInputUpdatedTimestamp.vue'
@@ -13,46 +14,58 @@ import ActionInputExampleMessage from '@/components/ActionInputExampleMessage.vu
 import ActionInputParentId from '@/components/ActionInputParentId.vue'
 import ActionInputNote from '@/components/ActionInputNote.vue'
 import ActionInputExampleNumber from '@/components/ActionInputExampleNumber.vue'
-import useDatabase from '@/use/useDatabase'
 
 const props = defineProps<{
   table: DatabaseTable
-  id?: string // Not for Settings or Logs (Key or Auto Id)
+  id?: string // Not for Settings (KEY) or Logs (AUTO_ID)
 }>()
 
 const { getItemById } = useDatabase()
-const item: Ref<AnyModel | undefined> = ref(undefined)
+const lockField: Ref<boolean> = ref(false)
+const fields = getFields(props.table)
+const parentId: Ref<string | undefined> = ref(undefined)
 
 onMounted(async () => {
-  // Load an item if an id was provided
   if (props.id) {
-    item.value = await getItemById(props.table, props.id)
+    // Load the parent item if an id was provided
+    const parentItem = (await getItemById(props.table, props.id)) as any
+
+    if (parentItem) {
+      parentId.value = parentItem[DatabaseField.ID]
+      // Certian fields should be locked if a parent item is loaded
+      lockField.value = true
+    }
   }
 })
-
-// TODO
-// - item can be passed to the components to populate the "oldItem" fields
-// - An id existing during a "create" then lock certain inputs
-// - You may have to do these components like you do "ActionInspect" (no need for getTableComponents)
 </script>
 
 <template>
-  <QCard class="q-mb-md">
-    <QCardSection>
-      <div class="text-h6 q-mb-sm">{{ table || 'None' }}</div>
-      <div class="text-h6 q-mb-sm">{{ id || 'None' }}</div>
-    </QCardSection>
-  </QCard>
-
-  <ActionInputId class="q-mb-md" />
-  <ActionInputCreatedTimestamp class="q-mb-md" />
-  <ActionInputUpdatedTimestamp class="q-mb-md" :locked="true" />
-  <ActionInputName class="q-mb-md" />
-  <ActionInputDescription class="q-mb-md" />
-  <ActionInputParentStatus class="q-mb-md" />
-  <ActionInputFavorite class="q-mb-md" />
-  <ActionInputExampleMessage class="q-mb-md" />
-  <ActionInputParentId class="q-mb-md" :table="table" />
-  <ActionInputNote class="q-mb-md" :locked="true" />
-  <ActionInputExampleNumber class="q-mb-md" />
+  <ActionInputId v-if="fields.includes(DatabaseField.ID)" class="q-mb-md" />
+  <ActionInputCreatedTimestamp
+    v-if="fields.includes(DatabaseField.CREATED_TIMESTAMP)"
+    :locked="lockField"
+    class="q-mb-md"
+  />
+  <ActionInputUpdatedTimestamp
+    v-if="fields.includes(DatabaseField.UPDATED_TIMESTAMP)"
+    :locked="lockField"
+    class="q-mb-md"
+  />
+  <ActionInputName v-if="fields.includes(DatabaseField.NAME)" class="q-mb-md" />
+  <ActionInputDescription v-if="fields.includes(DatabaseField.DESCRIPTION)" class="q-mb-md" />
+  <ActionInputParentStatus v-if="fields.includes(DatabaseField.PARENT_STATUS)" class="q-mb-md" />
+  <ActionInputFavorite v-if="fields.includes(DatabaseField.FAVORITE)" class="q-mb-md" />
+  <ActionInputExampleMessage
+    v-if="fields.includes(DatabaseField.EXAMPLE_MESSAGE)"
+    class="q-mb-md"
+  />
+  <ActionInputParentId
+    v-if="fields.includes(DatabaseField.PARENT_ID)"
+    class="q-mb-md"
+    :locked="lockField"
+    :table="table"
+    :oldParentId="parentId"
+  />
+  <ActionInputNote v-if="fields.includes(DatabaseField.NOTE)" class="q-mb-md" />
+  <ActionInputExampleNumber v-if="fields.includes(DatabaseField.EXAMPLE_NUMBER)" class="q-mb-md" />
 </template>

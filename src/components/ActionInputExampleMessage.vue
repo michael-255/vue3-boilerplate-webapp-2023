@@ -4,17 +4,16 @@ import { QInput } from 'quasar'
 import useItemsStore from '@/stores/items'
 import { DatabaseField, Icon } from '@/constants/globals'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldExampleMessage?: string
 }>()
 
 const itemsStore = useItemsStore()
 const inputRef: Ref<any> = ref(null)
 
-itemsStore.newItem[DatabaseField.EXAMPLE_MESSAGE] = itemsStore?.oldItem?.[
-  DatabaseField.EXAMPLE_MESSAGE
-]
-  ? itemsStore.oldItem[DatabaseField.EXAMPLE_MESSAGE]
+itemsStore.newItem[DatabaseField.EXAMPLE_MESSAGE] = props.oldExampleMessage
+  ? props.oldExampleMessage
   : 'Example Message'
 itemsStore.validateItem[DatabaseField.EXAMPLE_MESSAGE] = true
 

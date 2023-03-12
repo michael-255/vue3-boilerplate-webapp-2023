@@ -11,6 +11,7 @@ import useItemsStore from '@/stores/items'
 const props = defineProps<{
   locked?: boolean
   table: DatabaseTable
+  oldParentId?: string
 }>()
 
 const { log } = useLogger()
@@ -41,10 +42,8 @@ onMounted(async () => {
 
     // Set the current option
     // Must do this first so it can be null if parent was deleted versus being the first option
-    if (itemsStore?.oldItem?.[DatabaseField.PARENT_ID]) {
-      const parent = options.value?.find(
-        (opt) => opt.value === itemsStore.oldItem[DatabaseField.PARENT_ID]
-      )?.value
+    if (props.oldParentId) {
+      const parent = options.value?.find((opt) => opt.value === props.oldParentId)?.value
 
       if (parent) {
         itemsStore.newItem[DatabaseField.PARENT_ID] = parent

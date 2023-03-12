@@ -4,8 +4,9 @@ import { type Ref, ref } from 'vue'
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldTimestamp?: number
 }>()
 
 const itemsStore = useItemsStore()
@@ -14,8 +15,8 @@ const displayedDate: Ref<string> = ref('')
 const dateTimePicker: Ref<string> = ref('')
 
 // Default component state must be valid
-if (itemsStore?.oldItem?.[DatabaseField.UPDATED_TIMESTAMP]) {
-  updateDates(itemsStore.oldItem[DatabaseField.UPDATED_TIMESTAMP])
+if (props.oldTimestamp) {
+  updateDates(props.oldTimestamp)
 } else {
   updateDates()
 }

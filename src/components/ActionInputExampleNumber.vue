@@ -4,19 +4,16 @@ import { ref, type Ref } from 'vue'
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldNumber?: number
 }>()
 
 const itemsStore = useItemsStore()
 const inputRef: Ref<any> = ref(null)
 
 // Default component state must be valid
-itemsStore.newItem[DatabaseField.EXAMPLE_NUMBER] = itemsStore?.oldItem?.[
-  DatabaseField.EXAMPLE_NUMBER
-]
-  ? itemsStore.oldItem[DatabaseField.EXAMPLE_NUMBER]
-  : 1
+itemsStore.newItem[DatabaseField.EXAMPLE_NUMBER] = props.oldNumber ? props.oldNumber : 1
 itemsStore.validateItem[DatabaseField.EXAMPLE_NUMBER] = true
 
 function exampleNumberRule(num: number): boolean {

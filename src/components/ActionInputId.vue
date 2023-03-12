@@ -4,17 +4,16 @@ import { ref, type Ref } from 'vue'
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldId?: string
 }>()
 
 const itemsStore = useItemsStore()
 const inputRef: Ref<any> = ref(null)
 
 // Default component state must be valid
-itemsStore.newItem[DatabaseField.ID] = itemsStore?.oldItem?.[DatabaseField.ID]
-  ? itemsStore.oldItem[DatabaseField.ID]
-  : uid()
+itemsStore.newItem[DatabaseField.ID] = props.oldId ? props.oldId : uid()
 itemsStore.validateItem[DatabaseField.ID] = true
 
 function idRule(id: string) {

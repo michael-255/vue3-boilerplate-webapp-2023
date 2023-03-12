@@ -4,8 +4,9 @@ import { QSelect } from 'quasar'
 import { DatabaseField, Icon, ParentStatus } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldParentStatus?: ParentStatus
 }>()
 
 const itemsStore = useItemsStore()
@@ -13,8 +14,8 @@ const inputRef: Ref<any> = ref(null)
 const options: Ref<ParentStatus[]> = ref(Object.values(ParentStatus) || [])
 
 // Default component state must be valid
-itemsStore.newItem[DatabaseField.PARENT_STATUS] = itemsStore?.oldItem?.[DatabaseField.PARENT_STATUS]
-  ? itemsStore.oldItem[DatabaseField.PARENT_STATUS]
+itemsStore.newItem[DatabaseField.PARENT_STATUS] = props.oldParentStatus
+  ? props.oldParentStatus
   : options.value[0]
 itemsStore.validateItem[DatabaseField.PARENT_STATUS] = true
 

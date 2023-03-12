@@ -2,16 +2,15 @@
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldFavorite?: boolean
 }>()
 
 const itemsStore = useItemsStore()
 
 // Default component state must be valid
-itemsStore.newItem[DatabaseField.FAVORITE] = itemsStore?.oldItem?.[DatabaseField.FAVORITE]
-  ? itemsStore.oldItem[DatabaseField.FAVORITE]
-  : false
+itemsStore.newItem[DatabaseField.FAVORITE] = props.oldFavorite ? props.oldFavorite : false
 itemsStore.validateItem[DatabaseField.FAVORITE] = true
 </script>
 

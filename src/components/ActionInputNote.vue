@@ -4,17 +4,16 @@ import { QInput } from 'quasar'
 import { DatabaseField, Icon } from '@/constants/globals'
 import useItemsStore from '@/stores/items'
 
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  oldNote?: string
 }>()
 
 const itemsStore = useItemsStore()
 const inputRef: Ref<any> = ref(null)
 
 // Default component state must be valid
-itemsStore.newItem[DatabaseField.NOTE] = itemsStore?.oldItem?.[DatabaseField.NOTE]
-  ? itemsStore.oldItem[DatabaseField.NOTE]
-  : ''
+itemsStore.newItem[DatabaseField.NOTE] = props.oldNote ? props.oldNote : ''
 itemsStore.validateItem[DatabaseField.NOTE] = true
 
 function noteRule(note: string) {
