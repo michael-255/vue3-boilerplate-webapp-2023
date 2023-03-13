@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { RouteName } from '@/constants/globals'
+import { RouteName } from '@/router/route-names'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,19 +11,37 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/data-table/:tableSlug', // Data table
+      path: '/data/:databaseTypeSlug',
       name: RouteName.DATA,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/DataTableView.vue'),
+      component: () => import('../views/DataView.vue'),
     },
     {
-      path: '/actions/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect, etc.)
-      name: RouteName.ACTIONS,
+      path: '/inspect/:databaseTypeSlug/:id',
+      name: RouteName.INSPECT,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ActionsView.vue'),
+      component: () => import('../views/InspectView.vue'),
     },
     {
-      path: '/charts/:tableSlug/:id', // Charts for id on tables
+      path: '/create-new/:databaseTypeSlug',
+      name: RouteName.CREATE_NEW,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/CreateNewView.vue'),
+    },
+    {
+      path: '/create-for-id/:databaseTypeSlug/:id',
+      name: RouteName.CREATE_FOR_ID,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/CreateForIdView.vue'),
+    },
+    {
+      path: '/edit/:databaseTypeSlug/:id',
+      name: RouteName.EDIT,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/EditView.vue'),
+    },
+    {
+      path: '/charts/:databaseTypeSlug/:id',
       name: RouteName.CHARTS,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ChartsView.vue'),

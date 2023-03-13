@@ -1,4 +1,4 @@
-import { AppText } from '@/constants/globals'
+import { AppText } from '@/constants/misc'
 import { colors } from 'quasar'
 
 const { getPaletteColor } = colors

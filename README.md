@@ -5,6 +5,12 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- REFACTOR (trying single table design for database)
+
+  - [ ] Go through get `use*` and get them using the new files
+  - [ ] Get each view working with new files (start with Settings)
+  - [ ] Continue refatcor...
+
 - Dashboard
 
   - [ ] `ActionCreate` component

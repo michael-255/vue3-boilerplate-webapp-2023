@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
+import type { Optional } from '@/constants/misc'
 import useDatabase from '@/use/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/use/useLogger'
@@ -31,14 +32,13 @@ onMounted(async () => {
  * Watching route for the meta layout property to change. Sets the layout component.
  */
 watch(
-  () => route.meta?.layout as string | undefined,
+  () => route.meta?.layout as Optional<string>,
   async (metaLayout) => {
     try {
       // metaLayout must exist && the imported component
       const component = metaLayout && (await import(`./layouts/${metaLayout}.vue`))
       // markRaw to avoid reactivity on component definition
-      // default is the component
-      // Use the default layout if the component is missing
+      // Use the error layout if the component is missing
       layout.value = markRaw(component?.default || ErrorLayout)
     } catch (error) {
       layout.value = markRaw(ErrorLayout)

@@ -12,11 +12,14 @@ import {
   QItemSection,
   QIcon,
 } from 'quasar'
-import { AppText, Icon, RouteName, DatabaseTable } from '@/constants/globals'
 import { RouterView, useRoute } from 'vue-router'
 import { slugify } from '@/utils/common'
+import { Icon } from '@/constants/icons'
+import { AppText } from '@/constants/misc'
+import { RouteName } from '@/router/route-names'
 import useGoBack from '@/use/useGoBack'
 import useUIStore from '@/stores/ui'
+import { DatabaseType } from '@/constants/database'
 
 const { onGoBack } = useGoBack()
 const uiStore = useUIStore()
@@ -65,7 +68,7 @@ const route = useRoute()
         <QItem
           clickable
           v-ripple
-          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.EXAMPLES) } }"
+          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseType.EXAMPLES) } }"
         >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
@@ -77,7 +80,7 @@ const route = useRoute()
               class="q-px-sm"
               :to="{
                 name: RouteName.DATA,
-                params: { tableSlug: slugify(DatabaseTable.EXAMPLE_RECORDS) },
+                params: { tableSlug: slugify(DatabaseType.EXAMPLE_RESULTS) },
               }"
               :icon="Icon.RECORDS"
             />
@@ -87,7 +90,7 @@ const route = useRoute()
         <QItem
           clickable
           v-ripple
-          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.TESTS) } }"
+          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseType.TESTS) } }"
         >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.TESTS" />
@@ -99,7 +102,7 @@ const route = useRoute()
               class="q-px-sm"
               :to="{
                 name: RouteName.DATA,
-                params: { tableSlug: slugify(DatabaseTable.TEST_RECORDS) },
+                params: { tableSlug: slugify(DatabaseType.TEST_RESULTS) },
               }"
               :icon="Icon.RECORDS"
             />
