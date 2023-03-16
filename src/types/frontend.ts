@@ -1,8 +1,8 @@
-import type { DatabaseField, DatabaseParentType } from '@/constants/database'
+import type { DatabaseField, DatabaseParentType } from '@/types/database'
 
 /**
  * Properties used to display data items in a QTable.
- * Use "hiddenId" for column "0" so a truncated version can be shown.
+ * Use "hiddenId" for column "0" so a truncated version can be shown to save horizontal space.
  */
 export type ColumnProps = {
   name: DatabaseField | 'hiddenId'
@@ -18,7 +18,7 @@ export type ColumnProps = {
 /**
  * Used to display data from parent types on the dashboard.
  */
-export type DashboardParentCard = {
+export type DashboardParent = {
   type: DatabaseParentType
   [DatabaseField.ID]: string
   [DatabaseField.NAME]: string

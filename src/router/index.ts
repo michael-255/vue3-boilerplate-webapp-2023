@@ -18,33 +18,28 @@ const router = createRouter({
     },
     {
       path: '/inspect/:databaseTypeSlug/:id',
-      name: RouteName.INSPECT,
+      name: RouteName.ACTION_INSPECT,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/InspectView.vue'),
+      component: () => import('../views/ActionInspectView.vue'),
     },
     {
-      path: '/create-new/:databaseTypeSlug',
-      name: RouteName.CREATE_NEW,
+      // id is optional for creating child items with a specific parent id
+      path: '/create/:databaseTypeSlug/:id?',
+      name: RouteName.ACTION_CREATE,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/CreateNewView.vue'),
-    },
-    {
-      path: '/create-for-id/:databaseTypeSlug/:id',
-      name: RouteName.CREATE_FOR_ID,
-      meta: { layout: 'MenuLayout' },
-      component: () => import('../views/CreateForIdView.vue'),
+      component: () => import('../views/ActionCreateView.vue'),
     },
     {
       path: '/edit/:databaseTypeSlug/:id',
-      name: RouteName.EDIT,
+      name: RouteName.ACTION_EDIT,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/EditView.vue'),
+      component: () => import('../views/ActionEditView.vue'),
     },
     {
       path: '/charts/:databaseTypeSlug/:id',
-      name: RouteName.CHARTS,
+      name: RouteName.ACTION_CHARTS,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ChartsView.vue'),
+      component: () => import('../views/ActionChartsView.vue'),
     },
     {
       path: '/settings',

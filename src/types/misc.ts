@@ -19,21 +19,21 @@ export enum AppText {
  * Limits for various rules and inputs.
  */
 export enum Limit {
-  FILESIZE = 100000000, // ~100 megabytes
+  FILESIZE = 100_000_000, // ~100 megabytes
 }
 
 /**
  * Milliseconds per time value.
  */
 export enum Milliseconds {
-  PER_DAY = 86400000,
-  PER_HOUR = 3600000,
-  PER_MINUTE = 60000,
-  PER_SECOND = 1000,
+  PER_DAY = 86_400_000,
+  PER_HOUR = 3_600_000,
+  PER_MINUTE = 60_000,
+  PER_SECOND = 1_000,
 }
 
 /**
- * Log retention time strings.
+ * Log retention duration strings.
  */
 export enum LogRetention {
   ONE_WEEK = '1 Week',
