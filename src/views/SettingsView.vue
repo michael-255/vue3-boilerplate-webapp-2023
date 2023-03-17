@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { QSelect, QBtn, QOptionGroup } from 'quasar'
-import { slugify } from '@/utils/common'
-import useSettings from '@/composables/useSettings'
-import ResponsivePage from '@/components/ResponsivePage.vue'
 import { Icon } from '@/types/icons'
 import { AppText, Limit, LogRetention } from '@/types/misc'
-import { RouteName } from '@/router/route-names'
 import { DatabaseType, SettingId } from '@/types/database'
 import useDatabase from '@/composables/useDatabase'
+import useSettings from '@/composables/useSettings'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 
 const { setSetting } = useDatabase()
 const {
   settings,
   importFile,
-  deleteDataOptions,
-  deleteDataModel,
-  exportTableOptions,
-  exportTableModel,
+  exportOptions,
+  exportModel,
   logRetentionIndex,
+  accessModel,
+  accessOptions,
+  deleteModel,
+  deleteOptions,
+  onAccessData,
   onTestLogger,
   onDefaults,
   onRejectedFile,
@@ -131,17 +132,17 @@ const {
 
         <QOptionGroup
           class="q-mb-md"
-          v-model="exportTableModel"
-          :options="exportTableOptions"
+          v-model="exportModel"
+          :options="exportOptions"
           type="checkbox"
         />
 
         <QBtn
           class="q-mb-md"
-          :disable="exportTableModel.length === 0"
+          :disable="exportModel.length === 0"
           label="Export"
           color="primary"
-          @click="onExportData(exportTableModel)"
+          @click="onExportData(exportModel)"
         />
 
         <!-- Access Internal Tables -->
@@ -149,21 +150,22 @@ const {
           Access the internal {{ AppText.APP_NAME }} data tables if you need to troubleshoot issues.
         </div>
 
-        <div class="q-mb-md">
-          <QBtn
-            label="Logs Table"
-            color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseType.LOGS) } }"
-          />
-        </div>
-
-        <div>
-          <QBtn
-            label="Settings Table"
-            color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseType.SETTINGS) } }"
-          />
-        </div>
+        <QSelect
+          v-model="accessModel"
+          outlined
+          dense
+          label="Database Type"
+          :options="accessOptions"
+        >
+          <template v-slot:before>
+            <QBtn
+              :disable="!accessModel"
+              label="Access Data"
+              color="primary"
+              @click="onAccessData(accessModel as DatabaseType)"
+            />
+          </template>
+        </QSelect>
       </QCardSection>
     </QCard>
 
@@ -246,19 +248,19 @@ const {
         <div class="q-mb-md">Select a table and permanently delete all of its data.</div>
 
         <QSelect
-          v-model="deleteDataModel"
+          v-model="deleteModel"
           outlined
           dense
-          label="Database Table"
+          label="Database Type"
           class="q-mb-md"
-          :options="deleteDataOptions"
+          :options="deleteOptions"
         >
           <template v-slot:before>
             <QBtn
-              :disable="!deleteDataModel"
+              :disable="!deleteModel"
               label="Delete Data"
               color="negative"
-              @click="onDeleteTableData(deleteDataModel as DatabaseType)"
+              @click="onDeleteTableData(deleteModel as DatabaseType)"
             />
           </template>
         </QSelect>

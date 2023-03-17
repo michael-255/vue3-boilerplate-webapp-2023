@@ -2,8 +2,11 @@ import { type Ref, ref, onUnmounted } from 'vue'
 import { exportFile, uid } from 'quasar'
 import { DatabaseChildType, DatabaseParentType, DatabaseType, SettingId } from '@/types/database'
 import { Icon } from '@/types/icons'
-import { AppText, LogRetention } from '@/types/misc'
+import { AppText, LogRetention, type Optional } from '@/types/misc'
 import type { DatabaseRecord, Example, ExampleResult } from '@/types/models'
+import { RouteName } from '@/router/route-names'
+import { useRouter } from 'vue-router'
+import { slugify } from '@/utils/common'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
@@ -11,6 +14,7 @@ import useLogger from '@/composables/useLogger'
 export default function useSettings() {
   const { log, consoleDebug } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
+  const router = useRouter()
   const {
     liveSettings,
     initSettings,
@@ -26,14 +30,18 @@ export default function useSettings() {
 
   const settings: Ref<any[]> = ref([])
   const logRetentionIndex: Ref<number> = ref(0)
+  // Data Management
   const importFile: Ref<any> = ref(null)
-  const deleteDataOptions: Ref<DatabaseType[]> = ref(Object.values(DatabaseType))
-  const deleteDataModel: Ref<DatabaseType | null> = ref(null)
-  const exportTableModel: Ref<DatabaseType[]> = ref([])
-  const exportTableOptions = Object.values(DatabaseType).map((table) => ({
+  const exportModel: Ref<DatabaseType[]> = ref([])
+  const exportOptions = Object.values(DatabaseType).map((table) => ({
     value: table,
     label: table,
   }))
+  const accessModel: Ref<Optional<DatabaseType>> = ref(null)
+  const accessOptions: Ref<DatabaseType[]> = ref(Object.values(DatabaseType))
+  // Danger Zone
+  const deleteModel: Ref<Optional<DatabaseType>> = ref(null)
+  const deleteOptions: Ref<DatabaseType[]> = ref(Object.values(DatabaseType))
 
   const subscription = liveSettings().subscribe({
     next: (records) => {
@@ -265,6 +273,21 @@ export default function useSettings() {
 
   /**
    * TODO
+   * @param databaseType
+   */
+  async function onAccessData(databaseType: DatabaseType) {
+    try {
+      router.push({
+        name: RouteName.DATA,
+        params: { databaseTypeSlug: slugify(databaseType) },
+      })
+    } catch (error) {
+      log.error('Error accessing data type', error)
+    }
+  }
+
+  /**
+   * TODO
    * @param table
    */
   async function onDeleteTableData(table: DatabaseType): Promise<void> {
@@ -377,11 +400,14 @@ export default function useSettings() {
   return {
     settings,
     importFile,
-    deleteDataOptions,
-    deleteDataModel,
-    exportTableOptions,
-    exportTableModel,
+    exportModel,
+    exportOptions,
     logRetentionIndex,
+    accessModel,
+    accessOptions,
+    deleteModel,
+    deleteOptions,
+    onAccessData,
     onTestLogger,
     onDefaults,
     onRejectedFile,
