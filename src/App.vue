@@ -5,9 +5,12 @@ import type { Optional } from '@/types/misc'
 import useDatabase from '@/composables/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/composables/useLogger'
+import useNotifications from '@/composables/useNotifications'
+import { Icon } from './types/icons'
 
 const { initSettings, purgeExpiredLogs } = useDatabase()
 const { log, consoleDebug, consoleLog } = useLogger()
+const { notify } = useNotifications()
 const route = useRoute()
 
 const layout: Ref<any> = ref(null)
@@ -19,6 +22,7 @@ onMounted(async () => {
   } catch (error) {
     // If the settings are not initialized, the database may have had an error or not be open
     consoleLog('Error initializing settings', error)
+    notify('Error initializing settings', Icon.ERROR, 'error')
   }
 
   try {

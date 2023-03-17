@@ -1,8 +1,8 @@
 import { type Ref, ref, onUnmounted } from 'vue'
 import { exportFile, uid } from 'quasar'
-import { DatabaseChildType, DatabaseParentType, DatabaseType, SettingId } from '@/types/database'
+import { DatabaseType, SettingId } from '@/types/database'
 import { Icon } from '@/types/icons'
-import { AppText, LogRetention, type Optional } from '@/types/misc'
+import { AppText, LogRetention, type AppObject, type Optional } from '@/types/misc'
 import type { DatabaseRecord, Example, ExampleResult } from '@/types/models'
 import { RouteName } from '@/router/route-names'
 import { useRouter } from 'vue-router'
@@ -10,22 +10,24 @@ import { slugify } from '@/utils/common'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
+import useNotifications from '@/composables/useNotifications'
 
 export default function useSettings() {
-  const { log, consoleDebug } = useLogger()
+  const { log, consoleDebug, consoleLog } = useLogger()
+  const { notify } = useNotifications()
   const { confirmDialog } = useSimpleDialogs()
   const router = useRouter()
   const {
     liveSettings,
     initSettings,
     setSetting,
-    bulkAddItems,
-    getTable,
-    clearTable,
+    bulkAddRecords,
+    getAllRecords,
+    clearDataByType,
     deleteDatabase,
-    getUnusedParentIds,
-    getOrphanedRecordIds,
-    bulkDeleteItems,
+    // getUnusedParentIds,
+    // getOrphanedRecordIds,
+    // bulkDeleteItems,
   } = useDatabase()
 
   const settings: Ref<any[]> = ref([])
@@ -144,9 +146,9 @@ export default function useSettings() {
           createExamples(5)
           examples.map((example) => createExampleRecords(2, example))
 
-          await bulkAddItems(DatabaseType.EXAMPLES, examples)
-          await bulkAddItems(DatabaseType.EXAMPLE_RESULTS, exampleRecords)
-          await bulkAddItems(DatabaseType.TESTS, [
+          await bulkAddRecords(examples)
+          await bulkAddRecords(exampleRecords)
+          await bulkAddRecords([
             {
               id: uid(),
               createdTimestamp: new Date().getTime(),
@@ -154,7 +156,7 @@ export default function useSettings() {
               text: 'Test Description',
               isFavorited: false,
             },
-          ])
+          ] as DatabaseRecord[])
 
           log.info('Defaults loaded', { count: examples.length + exampleRecords.length })
         } catch (error) {
@@ -187,23 +189,19 @@ export default function useSettings() {
           // Imports data properties it can parse that are defined below.
           const parsedFileData = JSON.parse(await importFile.value.text())
 
-          // Only retrieve data stored under a matching table key
-          // TODO - Manually add new keys for data here???
-          const importData = Object.values(DatabaseType).reduce(
-            (accumulateObject, key: DatabaseType) => {
-              return {
-                ...accumulateObject,
-                [key]: parsedFileData[key] || [],
-              }
-            },
-            {} as DatabaseRecord
-          )
+          // Only retrieve data stored under matching database type keys
+          const importData = Object.values(DatabaseType).reduce((acc, key: DatabaseType) => {
+            return {
+              ...acc,
+              [key]: parsedFileData[key] || [],
+            }
+          }, {} as AppObject)
 
           consoleDebug('importData =', importData)
 
           await Promise.all(
             Object.values(DatabaseType).map(
-              async (table: DatabaseType) => await bulkAddItems(table, importData[table])
+              async (table: DatabaseType) => await bulkAddRecords(importData[table])
             )
           )
 
@@ -231,11 +229,14 @@ export default function useSettings() {
       'info',
       async (): Promise<void> => {
         try {
-          // Get all data from each table
-          const tableData = await Promise.all(tables.map(async (table) => await getTable(table)))
+          // Get all data from the database
+          const allData = await getAllRecords()
 
           // Converting the data array into an object with table names as keys
-          const exportData = tables.reduce((o, key, i) => ({ ...o, [key]: tableData[i] }), {})
+          const exportData = tables.reduce(
+            (acc, key, i) => ({ ...acc, [key]: allData[i] }),
+            {} as AppObject
+          )
 
           consoleDebug('exportData =', exportData)
 
@@ -298,7 +299,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await clearTable(table)
+          await clearDataByType(table)
           await initSettings()
           log.info(`${table} data successfully deleted`)
         } catch (error) {
@@ -318,15 +319,15 @@ export default function useSettings() {
       Icon.CLEAR,
       'negative',
       async (): Promise<void> => {
-        try {
-          Object.values(DatabaseParentType).map(async (table) => {
-            const parentIds = await getUnusedParentIds(table)
-            await bulkDeleteItems(table, parentIds)
-          })
-          log.info('successfully deleted unused parents')
-        } catch (error) {
-          log.error('Error deleting unused parent data', error)
-        }
+        // try {
+        //   Object.values(DatabaseParentType).map(async (table) => {
+        //     const parentIds = await getUnusedParentIds(table)
+        //     await bulkDeleteItems(table, parentIds)
+        //   })
+        //   log.info('successfully deleted unused parents')
+        // } catch (error) {
+        //   log.error('Error deleting unused parent data', error)
+        // }
       }
     )
   }
@@ -341,15 +342,15 @@ export default function useSettings() {
       Icon.CLEAR,
       'negative',
       async (): Promise<void> => {
-        try {
-          Object.values(DatabaseChildType).map(async (table) => {
-            const recordIds = await getOrphanedRecordIds(table)
-            await bulkDeleteItems(table, recordIds)
-          })
-          log.info('successfully deleted orphaned records')
-        } catch (error) {
-          log.error('Error deleting orphaned record data', error)
-        }
+        // try {
+        //   Object.values(DatabaseChildType).map(async (table) => {
+        //     const recordIds = await getOrphanedRecordIds(table)
+        //     await bulkDeleteItems(table, recordIds)
+        //   })
+        //   log.info('successfully deleted orphaned records')
+        // } catch (error) {
+        //   log.error('Error deleting orphaned record data', error)
+        // }
       }
     )
   }
@@ -366,7 +367,7 @@ export default function useSettings() {
       async (): Promise<void> => {
         try {
           await Promise.all(
-            Object.values(DatabaseType).map(async (table) => await clearTable(table))
+            Object.values(DatabaseType).map(async (table) => await clearDataByType(table))
           )
           await initSettings()
           log.info('All data successfully deleted')
@@ -389,7 +390,7 @@ export default function useSettings() {
       async (): Promise<void> => {
         try {
           await deleteDatabase()
-          log.warn('Reload the website now')
+          notify('Reload the website now', Icon.WARN, 'warning')
         } catch (error) {
           log.error('Database deletion failed', error)
         }

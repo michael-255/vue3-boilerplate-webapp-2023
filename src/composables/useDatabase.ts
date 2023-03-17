@@ -7,10 +7,11 @@ import { dexieWrapper } from '@/services/DexieWrapper'
 
 export default function useDatabase() {
   // Only table used by the app for now is the "Records" table.
-  const records = dexieWrapper[DatabaseTable.RECORDS]
+  const db = dexieWrapper[DatabaseTable.RECORDS]
 
+  // TODO
   async function initSettings(): Promise<void> {
-    const settings: Setting[] = await records
+    const settings: Setting[] = await db
       .where(DatabaseField.TYPE)
       .equals(DatabaseType.SETTINGS)
       .toArray()
@@ -48,16 +49,17 @@ export default function useDatabase() {
     ])
   }
 
+  // TODO
   function liveSettings(): Observable<Setting[]> {
-    return liveQuery(() =>
-      records.where(DatabaseField.TYPE).equals(DatabaseType.SETTINGS).toArray()
-    )
+    return liveQuery(() => db.where(DatabaseField.TYPE).equals(DatabaseType.SETTINGS).toArray())
   }
 
+  // TODO
   async function getSetting(id: SettingId): Promise<Optional<Setting>> {
-    return await records.get([DatabaseType.SETTINGS, id])
+    return await db.get([DatabaseType.SETTINGS, id])
   }
 
+  // TODO
   async function setSetting(id: SettingId, value: any): Promise<IndexableType> {
     const existingSetting = await getSetting(id)
 
@@ -74,12 +76,13 @@ export default function useDatabase() {
 
     // Add or Update depending on if the Setting already exists
     if (!existingSetting) {
-      return await records.add(setting as DatabaseRecord)
+      return await db.add(setting as DatabaseRecord)
     } else {
-      return await records.update([DatabaseType.SETTINGS, id], { value })
+      return await db.update([DatabaseType.SETTINGS, id], { value })
     }
   }
 
+  // TODO
   async function addLog(
     severity: Severity,
     name: string,
@@ -94,9 +97,10 @@ export default function useDatabase() {
       [DatabaseField.DETAILS]: details,
     }
 
-    return await records.add(log as DatabaseRecord)
+    return await db.add(log as DatabaseRecord)
   }
 
+  // TODO
   async function purgeExpiredLogs(): Promise<number> {
     const logRetentionTime = (await getSetting(SettingId.LOG_RETENTION_TIME))?.value as LogRetention
 
@@ -118,10 +122,7 @@ export default function useDatabase() {
     const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime)
 
     // Get all logs
-    const logs = (await records
-      .where(DatabaseField.TYPE)
-      .equals(DatabaseType.LOGS)
-      .toArray()) as Log[]
+    const logs = (await db.where(DatabaseField.TYPE).equals(DatabaseType.LOGS).toArray()) as Log[]
 
     const logsToDelete = logs.filter((log: Log) => {
       const logCreatedTimestamp = log[DatabaseField.CREATED_TIMESTAMP] ?? 0
@@ -130,11 +131,49 @@ export default function useDatabase() {
     })
 
     // Delete all logs that are older than the retention time
-    await records.bulkDelete(logsToDelete.map((log: Log) => log[DatabaseField.ID]))
+    await db.bulkDelete(logsToDelete.map((log: Log) => log[DatabaseField.ID]))
 
     // Return the number of logs deleted
     return logsToDelete.length
   }
 
-  return { initSettings, liveSettings, getSetting, setSetting, addLog, purgeExpiredLogs }
+  // TODO
+  async function getAllRecords() {
+    return await db.toArray()
+  }
+
+  // TODO
+  async function getRecordsByType(type: DatabaseType) {
+    return await db.where(DatabaseField.TYPE).equals(type).toArray()
+  }
+
+  // TODO
+  async function bulkAddRecords(records: DatabaseRecord[]) {
+    // allKeys = true will ensure a list of added ids is returned
+    return await db.bulkAdd(records, { allKeys: true })
+  }
+
+  // TODO
+  async function clearDataByType(type: DatabaseType) {
+    await db.where(DatabaseField.TYPE).equals(type).delete()
+  }
+
+  // TODO
+  async function deleteDatabase() {
+    return await dexieWrapper.delete()
+  }
+
+  return {
+    initSettings,
+    liveSettings,
+    getSetting,
+    setSetting,
+    addLog,
+    purgeExpiredLogs,
+    getAllRecords,
+    getRecordsByType,
+    bulkAddRecords,
+    clearDataByType,
+    deleteDatabase,
+  }
 }
