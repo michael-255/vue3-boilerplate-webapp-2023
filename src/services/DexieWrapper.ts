@@ -1,15 +1,17 @@
 import Dexie, { type Table } from 'dexie'
-import { DatabaseField, type DatabaseRecord } from '@/constants/database'
-import { AppText } from '@/constants/misc'
+import type { DatabaseRecord } from '@/types/models'
+import { DatabaseField } from '@/types/database'
+import { AppText } from '@/types/misc'
+import { DatabaseTable } from '@/types/database'
 
 export class DexieWrapper extends Dexie {
-  Records!: Table<DatabaseRecord>
+  [DatabaseTable.RECORDS]!: Table<DatabaseRecord>
 
   constructor(name: string) {
     super(name)
 
     this.version(1).stores({
-      Records: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], ${DatabaseField.PARENT_ID}}`,
+      [DatabaseTable.RECORDS]: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], ${DatabaseField.PARENT_ID}`,
     })
   }
 }

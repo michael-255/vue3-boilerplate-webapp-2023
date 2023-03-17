@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { colors } from 'quasar'
-import { Icon } from '@/constants/globals'
+import { Icon } from '@/types/icons'
 import { Bar } from 'vue-chartjs'
 import {
   Chart as ChartJS,

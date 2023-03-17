@@ -1,4 +1,4 @@
-import { RouteName } from '@/constants/globals'
+import { RouteName } from '@/router/route-names'
 import { useRouter } from 'vue-router'
 
 export default function useGoBack() {

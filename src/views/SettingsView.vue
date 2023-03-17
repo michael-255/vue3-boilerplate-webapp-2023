@@ -1,35 +1,34 @@
 <script setup lang="ts">
 import { QSelect, QBtn, QOptionGroup } from 'quasar'
-import { AppText, Icon, DatabaseTable, Limit, RouteName } from '@/constants/globals'
 import { slugify } from '@/utils/common'
-import useSettings from '@/use/useSettings'
+import useSettings from '@/composables/useSettings'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import { Icon } from '@/types/icons'
+import { AppText, Limit, LogRetention } from '@/types/misc'
+import { RouteName } from '@/router/route-names'
+import { DatabaseType, SettingId } from '@/types/database'
+import useDatabase from '@/composables/useDatabase'
 
+const { setSetting } = useDatabase()
 const {
-  showIntroduction,
-  darkMode,
-  showAllDataColumns,
-  showConsoleLogs,
-  showDebugMessages,
-  showInfoMessages,
+  settings,
   importFile,
   deleteDataOptions,
   deleteDataModel,
   exportTableOptions,
   exportTableModel,
-  logRetentionModel,
-  logRetentionLabels,
+  logRetentionIndex,
   onTestLogger,
   onDefaults,
   onRejectedFile,
   onImportFile,
   onExportData,
-  onChangeLogRetention,
   onDeleteUnusedData,
   onDeleteOrphanedData,
   onDeleteTableData,
   onDeleteAllData,
   onDeleteDatabase,
+  onChangeLogRetention,
 } = useSettings()
 </script>
 
@@ -45,20 +44,34 @@ const {
           Introduction provides instructions on the Home page on how to use the app.
         </div>
 
-        <QToggle v-model="showIntroduction" class="q-mb-md" label="Show Introduction" />
+        <QToggle
+          class="q-mb-md"
+          label="Show Introduction"
+          :model-value="settings.find((s) => s.id === SettingId.SHOW_INTRODUCTION)?.value"
+          @update:model-value="setSetting(SettingId.SHOW_INTRODUCTION, $event)"
+        />
 
         <div class="q-mb-md">
           Dark Mode allows you to switch between a light or dark theme for the app.
         </div>
 
-        <QToggle v-model="darkMode" class="q-mb-md" label="Dark Mode" />
+        <QToggle
+          class="q-mb-md"
+          label="Dark Mode"
+          :model-value="settings.find((s) => s.id === SettingId.DARK_MODE)?.value"
+          @update:model-value="setSetting(SettingId.DARK_MODE, $event)"
+        />
 
         <div class="q-mb-md">
           Show all columns while on the data table page or only show the default columns. You can
           change the individual columns while on the page.
         </div>
 
-        <QToggle v-model="showAllDataColumns" label="Show All Data Columns" />
+        <QToggle
+          label="Show All Data Columns"
+          :model-value="settings.find((s) => s.id === SettingId.SHOW_ALL_DATA_COLUMNS)?.value"
+          @update:model-value="setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, $event)"
+        />
       </QCardSection>
     </QCard>
 
@@ -140,7 +153,7 @@ const {
           <QBtn
             label="Logs Table"
             color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.LOGS) } }"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseType.LOGS) } }"
           />
         </div>
 
@@ -148,7 +161,7 @@ const {
           <QBtn
             label="Settings Table"
             color="primary"
-            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.SETTINGS) } }"
+            :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseType.SETTINGS) } }"
           />
         </div>
       </QCardSection>
@@ -164,15 +177,30 @@ const {
           Show Console Logs will display all log messages in the developer console.
         </div>
 
-        <QToggle v-model="showConsoleLogs" class="q-mb-md" label="Show Console Logs" />
+        <QToggle
+          class="q-mb-md"
+          label="Show Console Logs"
+          :model-value="settings.find((s) => s.id === SettingId.SHOW_CONSOLE_LOGS)?.value"
+          @update:model-value="setSetting(SettingId.SHOW_CONSOLE_LOGS, $event)"
+        />
 
         <div class="q-mb-md">Show Debug Messages will display debug level notification alerts.</div>
 
-        <QToggle v-model="showDebugMessages" class="q-mb-md" label="Show Debug Messages" />
+        <QToggle
+          class="q-mb-md"
+          label="Show Debug Messages"
+          :model-value="settings.find((s) => s.id === SettingId.SHOW_DEBUG_MESSAGES)?.value"
+          @update:model-value="setSetting(SettingId.SHOW_DEBUG_MESSAGES, $event)"
+        />
 
         <div class="q-mb-md">Show Info Messages will display info level notification alerts.</div>
 
-        <QToggle v-model="showInfoMessages" class="q-mb-md" label="Show Info Messages" />
+        <QToggle
+          class="q-mb-md"
+          label="Show Info Messages"
+          :model-value="settings.find((s) => s.id === SettingId.SHOW_INFO_MESSAGES)?.value"
+          @update:model-value="setSetting(SettingId.SHOW_INFO_MESSAGES, $event)"
+        />
 
         <!-- Test Logger -->
         <div class="q-mb-md">
@@ -190,8 +218,8 @@ const {
         </div>
 
         <QSlider
-          v-model="logRetentionModel"
-          :label-value="logRetentionLabels[logRetentionModel]"
+          v-model="logRetentionIndex"
+          :label-value="Object.values(LogRetention)[logRetentionIndex]"
           class="q-mb-lg"
           color="primary"
           markers
@@ -200,7 +228,7 @@ const {
           :min="0"
           :max="5"
           :step="1"
-          @change="(logRetentionIndex) => onChangeLogRetention(logRetentionIndex)"
+          @change="(index) => onChangeLogRetention(index)"
         />
       </QCardSection>
     </QCard>
@@ -230,7 +258,7 @@ const {
               :disable="!deleteDataModel"
               label="Delete Data"
               color="negative"
-              @click="onDeleteTableData(deleteDataModel as DatabaseTable)"
+              @click="onDeleteTableData(deleteDataModel as DatabaseType)"
             />
           </template>
         </QSelect>

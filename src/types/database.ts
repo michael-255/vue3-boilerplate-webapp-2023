@@ -42,7 +42,7 @@ export enum DatabaseField {
   TYPE = 'type',
   ID = 'id',
   CREATED_TIMESTAMP = 'createdTimestamp',
-  SETTING = 'setting',
+  VALUE = 'value',
   SEVERITY = 'severity',
   DETAILS = 'details',
   NAME = 'name',

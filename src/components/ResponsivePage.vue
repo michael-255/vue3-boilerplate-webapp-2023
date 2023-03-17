@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Icon } from '@/constants/globals'
 import { QPage, QPageScroller, QBtn } from 'quasar'
+import { Icon } from '@/types/icons'
 
 defineProps<{
   bannerIcon?: Icon

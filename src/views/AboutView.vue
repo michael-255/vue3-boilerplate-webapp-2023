@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn } from 'quasar'
-import { AppText, Icon, RouteName } from '@/constants/globals'
+import { Icon } from '@/types/icons'
+import { AppText } from '@/types/misc'
+import { RouteName } from '@/router/route-names'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 </script>
 

@@ -6,32 +6,31 @@ import {
   DatabaseType,
   DatabaseParentType,
   DatabaseChildType,
+} from '@/types/database'
+import { Icon } from '@/types/icons'
+import type { ColumnProps } from '@/types/frontend'
+import {
+  getDetailsColumnProp,
+  getEnabledColumnProp,
+  getFavoritedColumnProp,
+  getIdColumnProp,
+  getNameColumnProp,
+  getNumberColumnProp,
+  getParentIdColumnProp,
+  getValueColumnProp,
+  getSeverityColumnProp,
+  getTextColumnProp,
+  getCreatedTimestampColumnProp,
+  getTypeColumnProp,
+} from './column-props'
+import {
   exampleFields,
   exampleResultFields,
   logFields,
   settingFields,
   testFields,
   testResultFields,
-} from '@/constants/database'
-import { Icon } from '@/constants/icons'
-import type { ColumnProps } from '@/constants/app'
-import {
-  getActiveColumnProp,
-  getAppNameColumnProp,
-  getDetailsColumnProp,
-  getEnabledColumnProp,
-  getFavoritedColumnProp,
-  getIdColumnProp,
-  getMessageColumnProp,
-  getNameColumnProp,
-  getNumberColumnProp,
-  getParentIdColumnProp,
-  getSettingColumnProp,
-  getSeverityColumnProp,
-  getTextColumnProp,
-  getTimestampColumnProp,
-  getTypeColumnProp,
-} from './column-props'
+} from '@/constants/model-fields'
 
 export function getFields(table: DatabaseType): DatabaseField[] {
   return {
@@ -49,51 +48,51 @@ export function getInputComponents(table: DatabaseType): any[] {
     [DatabaseType.SETTINGS]: [],
     [DatabaseType.LOGS]: [],
     [DatabaseType.EXAMPLES]: [
-      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputName.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputDescription.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputParentStatus.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputFavorite.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputExampleMessage.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputName.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputDescription.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputParentStatus.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputFavorite.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputExampleMessage.vue')),
     ],
     [DatabaseType.EXAMPLE_RESULTS]: [
-      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputParentId.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputNote.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputExampleNumber.vue')),
+      //   defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+      //   defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
+      //   defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
+      //   defineAsyncComponent(() => import('@/components/ActionInputParentId.vue')),
+      //   defineAsyncComponent(() => import('@/components/ActionInputNote.vue')),
+      //   defineAsyncComponent(() => import('@/components/ActionInputExampleNumber.vue')),
     ],
     [DatabaseType.TESTS]: [
-      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputName.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputDescription.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputParentStatus.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputFavorite.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputExampleMessage.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputName.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputDescription.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputParentStatus.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputFavorite.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputExampleMessage.vue')),
     ],
     [DatabaseType.TEST_RESULTS]: [
-      defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputParentId.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputNote.vue')),
-      defineAsyncComponent(() => import('@/components/ActionInputExampleNumber.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputUpdatedTimestamp.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputParentId.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputNote.vue')),
+      // defineAsyncComponent(() => import('@/components/ActionInputExampleNumber.vue')),
     ],
   }[table]
 }
 
 // TODO
-export function getParentCardComponents(table: DatabaseParentType): any {
-  return {
-    [DatabaseType.EXAMPLES]: defineAsyncComponent(() => import('@/components/ExampleCard.vue')),
-    [DatabaseType.TESTS]: defineAsyncComponent(() => import('@/components/TestCard.vue')),
-  }[table]
-}
+// export function getParentCardComponents(table: DatabaseParentType): any {
+//   return {
+//     [DatabaseType.EXAMPLES]: defineAsyncComponent(() => import('@/components/ExampleCard.vue')),
+//     [DatabaseType.TESTS]: defineAsyncComponent(() => import('@/components/TestCard.vue')),
+//   }[table]
+// }
 
 export function getVisibleColumns(table: DatabaseType): DatabaseField[] {
   return {
@@ -120,30 +119,26 @@ export function getVisibleColumns(table: DatabaseType): DatabaseField[] {
 
 export function getSupportedActions(table: DatabaseType): DatabaseAction[] {
   return {
-    [DatabaseType.SETTINGS]: [DatabaseAction.INSPECT],
-    [DatabaseType.LOGS]: [DatabaseAction.INSPECT, DatabaseAction.DELETE],
+    [DatabaseType.SETTINGS]: [],
+    [DatabaseType.LOGS]: [DatabaseAction.DELETE],
     [DatabaseType.EXAMPLES]: [
-      DatabaseAction.INSPECT,
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
       DatabaseAction.DELETE,
       DatabaseAction.CHARTS,
     ],
     [DatabaseType.EXAMPLE_RESULTS]: [
-      DatabaseAction.INSPECT,
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
       DatabaseAction.DELETE,
     ],
     [DatabaseType.TESTS]: [
-      DatabaseAction.INSPECT,
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
       DatabaseAction.DELETE,
       DatabaseAction.CHARTS,
     ],
     [DatabaseType.TEST_RESULTS]: [
-      DatabaseAction.INSPECT,
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
       DatabaseAction.DELETE,
@@ -220,62 +215,45 @@ export function getTableFromSlug(tableSlug: string): DatabaseType {
 
 export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
   return {
-    [DatabaseType.SETTINGS]: [
-      getTypeColumnProp(),
-      getIdColumnProp(),
-      getTimestampColumnProp(DatabaseField.CREATED_TIMESTAMP),
-      getTimestampColumnProp(DatabaseField.UPDATED_TIMESTAMP),
-      getSettingColumnProp(),
-    ],
+    [DatabaseType.SETTINGS]: [getTypeColumnProp(), getIdColumnProp(), getValueColumnProp()],
     [DatabaseType.LOGS]: [
       getTypeColumnProp(),
       getIdColumnProp(),
-      getTimestampColumnProp(DatabaseField.CREATED_TIMESTAMP),
+      getCreatedTimestampColumnProp(),
       getSeverityColumnProp(),
-      getAppNameColumnProp(),
       getNameColumnProp('Error'),
       getDetailsColumnProp(),
     ],
     [DatabaseType.EXAMPLES]: [
       getTypeColumnProp(),
       getIdColumnProp(),
-      getTimestampColumnProp(DatabaseField.CREATED_TIMESTAMP),
-      getTimestampColumnProp(DatabaseField.UPDATED_TIMESTAMP),
       getNameColumnProp(),
       getTextColumnProp('Description'),
       getFavoritedColumnProp(),
       getEnabledColumnProp(),
-      getMessageColumnProp(),
     ],
     [DatabaseType.EXAMPLE_RESULTS]: [
       getTypeColumnProp(),
       getIdColumnProp(),
-      getTimestampColumnProp(DatabaseField.CREATED_TIMESTAMP),
-      getTimestampColumnProp(DatabaseField.UPDATED_TIMESTAMP),
+      getCreatedTimestampColumnProp(),
       getParentIdColumnProp(),
       getTextColumnProp('Note'),
-      getActiveColumnProp(),
       getNumberColumnProp(),
     ],
     [DatabaseType.TESTS]: [
       getTypeColumnProp(),
       getIdColumnProp(),
-      getTimestampColumnProp(DatabaseField.CREATED_TIMESTAMP),
-      getTimestampColumnProp(DatabaseField.UPDATED_TIMESTAMP),
       getNameColumnProp(),
       getTextColumnProp('Description'),
       getFavoritedColumnProp(),
       getEnabledColumnProp(),
-      getMessageColumnProp(),
     ],
     [DatabaseType.TEST_RESULTS]: [
       getTypeColumnProp(),
       getIdColumnProp(),
-      getTimestampColumnProp(DatabaseField.CREATED_TIMESTAMP),
-      getTimestampColumnProp(DatabaseField.UPDATED_TIMESTAMP),
+      getCreatedTimestampColumnProp(),
       getParentIdColumnProp(),
       getTextColumnProp('Note'),
-      getActiveColumnProp(),
       getNumberColumnProp(),
     ],
   }[type]

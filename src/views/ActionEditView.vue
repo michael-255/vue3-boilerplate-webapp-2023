@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { Icon } from '@/types/icons'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import { Icon } from '@/constants/icons'
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.DONATE" banner-title="Donate">
+  <ResponsivePage :banner-icon="Icon.EDIT" banner-title="Edit">
     <QCard>
-      <QCardSection> Edit - PLACEHOLDER </QCardSection>
+      <QCardSection>Edit</QCardSection>
     </QCard>
   </ResponsivePage>
 </template>

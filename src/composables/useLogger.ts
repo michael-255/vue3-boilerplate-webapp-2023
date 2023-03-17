@@ -1,18 +1,15 @@
-import { Icon } from '@/constants/icons'
-import { SettingId, Severity } from '@/constants/database'
+import { Icon } from '@/types/icons'
+import { SettingId, Severity } from '@/types/database'
 import { logger } from '@/services/PrettyLogger'
-import useNotifications from '@/use/useNotifications'
-import useSettingsStore from '@/stores/settings'
-import useDatabase from '@/use/useDatabase'
+import useNotifications from '@/composables/useNotifications'
+import useDatabase from '@/composables/useDatabase'
 
 /**
  * Utilities for logging that include notifications and database entries.
- * Never awaiting for any logging calls. Don't want to slow down the UI.
  */
 export default function useLogger() {
-  const settingsStore = useSettingsStore()
   const { notify } = useNotifications()
-  const { addLog } = useDatabase()
+  const { getSetting, addLog } = useDatabase()
 
   /**
    * Log object with common logger functions.
@@ -28,12 +25,12 @@ export default function useLogger() {
      * - Never saved in DB
      * - Suppressable notifications
      */
-    debug: (label: string, details?: any) => {
-      if (settingsStore[SettingId.SHOW_CONSOLE_LOGS]) {
+    debug: async (label: string, details?: any) => {
+      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
         logger.debug(`[${Severity.DEBUG}]`, label, details)
       }
 
-      if (settingsStore[SettingId.SHOW_DEBUG_MESSAGES]) {
+      if (await getSetting(SettingId.SHOW_DEBUG_MESSAGES)) {
         notify(label, Icon.DEBUG, 'accent')
       }
     },
@@ -42,16 +39,16 @@ export default function useLogger() {
      * - Suppressable console logs
      * - Suppressable notifications
      */
-    info: (label: string, details?: any) => {
+    info: async (label: string, details?: any) => {
       const severity = Severity.INFO
 
-      if (settingsStore[SettingId.SHOW_CONSOLE_LOGS]) {
+      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
         logger.info(`[${severity}]`, label, details)
       }
 
-      addLog(severity, label, details)
+      await addLog(severity, label, details)
 
-      if (settingsStore[SettingId.SHOW_INFO_MESSAGES]) {
+      if (await getSetting(SettingId.SHOW_INFO_MESSAGES)) {
         notify(label, Icon.INFO, 'info')
       }
     },
@@ -60,14 +57,14 @@ export default function useLogger() {
      * - Suppressable console logs
      * - Cannot suppress notifications
      */
-    warn: (label: string, details?: any) => {
+    warn: async (label: string, details?: any) => {
       const severity = Severity.WARN
 
-      if (settingsStore[SettingId.SHOW_CONSOLE_LOGS]) {
+      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
         logger.warn(`[${severity}]`, label, details)
       }
 
-      addLog(severity, label, details)
+      await addLog(severity, label, details)
 
       notify(label, Icon.WARN, 'warning')
     },
@@ -76,14 +73,14 @@ export default function useLogger() {
      * - Suppressable console logs
      * - Cannot suppress notifications
      */
-    error: (label: string, details?: any) => {
+    error: async (label: string, details?: any) => {
       const severity = Severity.ERROR
 
-      if (settingsStore[SettingId.SHOW_CONSOLE_LOGS]) {
+      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
         logger.error(`[${severity}]`, label, details)
       }
 
-      addLog(severity, label, details)
+      await addLog(severity, label, details)
 
       notify(label, Icon.ERROR, 'negative')
     },
@@ -94,7 +91,7 @@ export default function useLogger() {
    * @param message
    * @param args
    */
-  function consoleLog(message: any, ...args: any): void {
+  function consoleLog(message: any, ...args: any) {
     logger.log(message, ...args)
   }
 
@@ -103,8 +100,8 @@ export default function useLogger() {
    * @param message
    * @param args
    */
-  function consoleDebug(message: any, ...args: any): void {
-    if (settingsStore[SettingId.SHOW_CONSOLE_LOGS]) {
+  async function consoleDebug(message: any, ...args: any) {
+    if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
       logger.debug(message, ...args)
     }
   }

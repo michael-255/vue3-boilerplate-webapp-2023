@@ -1,29 +1,19 @@
-import { type Ref, ref, computed } from 'vue'
-import type { Example, ExampleRecord } from '@/models/models'
-import {
-  type AppObject,
-  DatabaseTable,
-  allTables,
-  Icon,
-  AppText,
-  SettingKey,
-  ParentStatus,
-  LogRetention,
-  parentTables,
-  recordTables,
-} from '@/constants/globals'
+import { type Ref, ref, computed, onUnmounted } from 'vue'
 import { exportFile, uid } from 'quasar'
-import useSimpleDialogs from '@/use/useSimpleDialogs'
-import useDatabase from '@/use/useDatabase'
-import useLogger from '@/use/useLogger'
-import useSettingsStore from '@/stores/settings'
+import { DatabaseChildType, DatabaseParentType, DatabaseType, SettingId } from '@/types/database'
+import { Icon } from '@/types/icons'
+import { AppText, LogRetention, type AppObject, type Optional } from '@/types/misc'
+import type { Example, ExampleResult } from '@/types/models'
+import useSimpleDialogs from '@/composables/useSimpleDialogs'
+import useDatabase from '@/composables/useDatabase'
+import useLogger from '@/composables/useLogger'
 
 export default function useSettings() {
-  const settingsStore = useSettingsStore()
   const { log, consoleDebug } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
   const {
-    initializeSettings,
+    liveSettings,
+    initSettings,
     setSetting,
     bulkAddItems,
     getTable,
@@ -34,85 +24,34 @@ export default function useSettings() {
     bulkDeleteItems,
   } = useDatabase()
 
+  const settings: Ref<any[]> = ref([])
+  const logRetentionIndex: Ref<number> = ref(0)
   const importFile: Ref<any> = ref(null)
-
-  const deleteDataOptions: Ref<DatabaseTable[]> = ref(allTables.map((table) => table))
-  const deleteDataModel: Ref<DatabaseTable | null> = ref(null)
-
-  const exportTableOptions = allTables.map((table) => ({
+  const deleteDataOptions: Ref<DatabaseType[]> = ref(Object.values(DatabaseType))
+  const deleteDataModel: Ref<DatabaseType | null> = ref(null)
+  const exportTableModel: Ref<DatabaseType[]> = ref([])
+  const exportTableOptions = Object.values(DatabaseType).map((table) => ({
     value: table,
     label: table,
   }))
-  const exportTableModel: Ref<DatabaseTable[]> = ref([])
 
-  const logRetentionModel = computed({
-    get() {
-      const logRetentionTime = settingsStore[SettingKey.LOG_RETENTION_TIME]
-      return Object.values(LogRetention).findIndex((x) => x === logRetentionTime)
-    },
-    async set(logRetentionIndex: number) {
-      const logRetention = Object.values(LogRetention)[logRetentionIndex]
-      await setSetting(SettingKey.LOG_RETENTION_TIME, logRetention)
-    },
-  })
-  const logRetentionLabels = Object.values(LogRetention)
+  const subscription = liveSettings().subscribe({
+    next: (records) => {
+      settings.value = records
 
-  //
-  // Toggles
-  //
+      const logRetentionTime = settings.value.find(
+        (s) => s.id === SettingId.LOG_RETENTION_TIME
+      )?.value
 
-  const showIntroduction = computed({
-    get() {
-      return !!settingsStore[SettingKey.SHOW_INTRODUCTION]
+      logRetentionIndex.value = Object.values(LogRetention).findIndex((i) => i === logRetentionTime)
     },
-    async set(bool: boolean) {
-      await setSetting(SettingKey.SHOW_INTRODUCTION, bool)
+    error: (error) => {
+      log.error('Error loading settings', error)
     },
   })
 
-  const darkMode = computed({
-    get() {
-      return !!settingsStore[SettingKey.DARK_MODE]
-    },
-    async set(bool: boolean) {
-      await setSetting(SettingKey.DARK_MODE, bool)
-    },
-  })
-
-  const showAllDataColumns = computed({
-    get() {
-      return !!settingsStore[SettingKey.SHOW_ALL_DATA_COLUMNS]
-    },
-    async set(bool: boolean) {
-      await setSetting(SettingKey.SHOW_ALL_DATA_COLUMNS, bool)
-    },
-  })
-
-  const showConsoleLogs = computed({
-    get() {
-      return !!settingsStore[SettingKey.SHOW_CONSOLE_LOGS]
-    },
-    async set(bool: boolean) {
-      await setSetting(SettingKey.SHOW_CONSOLE_LOGS, bool)
-    },
-  })
-
-  const showDebugMessages = computed({
-    get() {
-      return !!settingsStore[SettingKey.SHOW_DEBUG_MESSAGES]
-    },
-    async set(bool: boolean) {
-      await setSetting(SettingKey.SHOW_DEBUG_MESSAGES, bool)
-    },
-  })
-
-  const showInfoMessages = computed({
-    get() {
-      return !!settingsStore[SettingKey.SHOW_INFO_MESSAGES]
-    },
-    async set(bool: boolean) {
-      await setSetting(SettingKey.SHOW_INFO_MESSAGES, bool)
-    },
+  onUnmounted(() => {
+    subscription.unsubscribe()
   })
 
   /**
@@ -166,10 +105,6 @@ export default function useSettings() {
             return Math.floor(Math.random() * (max - min + 1) + min)
           }
 
-          const randomParentStatus = (): ParentStatus => {
-            return Math.random() >= 0.5 ? ParentStatus.ENABLED : ParentStatus.DISABLED
-          }
-
           let initialTimestamp = new Date().getTime() - 30 * 24 * 60 * 60 * 1000
 
           const addMinute = (timestamp: number): number => {
@@ -179,19 +114,17 @@ export default function useSettings() {
           }
 
           const examples: Example[] = []
-          const exampleRecords: ExampleRecord[] = []
+          const exampleRecords: ExampleResult[] = []
 
           const createExamples = (count: number) => {
             for (let i = 0; i < count; i++) {
               examples.push({
+                type: DatabaseType.EXAMPLES,
                 id: uid(),
-                createdTimestamp: initialTimestamp,
-                updatedTimestamp: initialTimestamp,
                 name: `Parent ${randomLetter()}`,
-                description: `Parent Description ${i}`,
-                parentStatus: randomParentStatus(),
-                favorite: randomBoolean(),
-                exampleMessage: `Example Message ${i}`,
+                text: `Parent Description ${i}`,
+                isFavorited: randomBoolean(),
+                isEnabled: randomBoolean(),
               })
 
               initialTimestamp = addMinute(initialTimestamp)
@@ -201,12 +134,12 @@ export default function useSettings() {
           const createExampleRecords = (count: number, parent?: Example) => {
             for (let i = 0; i < count; i++) {
               exampleRecords.push({
+                type: DatabaseType.EXAMPLE_RESULTS,
                 id: uid(),
                 createdTimestamp: initialTimestamp,
-                updatedTimestamp: initialTimestamp,
                 parentId: parent?.id || `orphaned-record-id-${i}`,
-                note: randomBoolean() ? `Previous record note = ${parent?.id} [${i}]` : '',
-                exampleNumber: randomInt(1, 100),
+                text: randomBoolean() ? `Previous record note = ${parent?.id} [${i}]` : '',
+                number: randomInt(1, 100),
               })
 
               initialTimestamp = addMinute(initialTimestamp)
@@ -219,18 +152,15 @@ export default function useSettings() {
           createExamples(5)
           examples.map((example) => createExampleRecords(2, example))
 
-          await bulkAddItems(DatabaseTable.EXAMPLES, examples)
-          await bulkAddItems(DatabaseTable.EXAMPLE_RECORDS, exampleRecords)
-          await bulkAddItems(DatabaseTable.TESTS, [
+          await bulkAddItems(DatabaseType.EXAMPLES, examples)
+          await bulkAddItems(DatabaseType.EXAMPLE_RESULTS, exampleRecords)
+          await bulkAddItems(DatabaseType.TESTS, [
             {
               id: uid(),
               createdTimestamp: new Date().getTime(),
-              updatedTimestamp: new Date().getTime(),
               name: 'Lonely Test',
-              description: 'Test Description',
-              parentStatus: ParentStatus.ENABLED,
-              favorite: false,
-              exampleMessage: 'Test Message',
+              text: 'Test Description',
+              isFavorited: false,
             },
           ])
 
@@ -267,18 +197,21 @@ export default function useSettings() {
 
           // Only retrieve data stored under a matching table key
           // TODO - Manually add new keys for data here???
-          const importData = allTables.reduce((accumulateObject, key: DatabaseTable) => {
-            return {
-              ...accumulateObject,
-              [key]: parsedFileData[key] || [],
-            }
-          }, {} as AppObject)
+          const importData = Object.values(DatabaseType).reduce(
+            (accumulateObject, key: DatabaseType) => {
+              return {
+                ...accumulateObject,
+                [key]: parsedFileData[key] || [],
+              }
+            },
+            {} as AppObject
+          )
 
           consoleDebug('importData =', importData)
 
           await Promise.all(
-            allTables.map(
-              async (table: DatabaseTable) => await bulkAddItems(table, importData[table])
+            Object.values(DatabaseType).map(
+              async (table: DatabaseType) => await bulkAddItems(table, importData[table])
             )
           )
 
@@ -294,7 +227,7 @@ export default function useSettings() {
   /**
    * On confirmation, export your data as a JSON file.
    */
-  function onExportData(tables: DatabaseTable[]): void {
+  function onExportData(tables: DatabaseType[]): void {
     const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
     const date = new Date().toISOString().split('T')[0]
     const filename = `export-${appName}-${date}.json`
@@ -339,8 +272,7 @@ export default function useSettings() {
   async function onChangeLogRetention(logRetentionIndex: number): Promise<void> {
     try {
       const logRetentionTime = Object.values(LogRetention)[logRetentionIndex]
-      await setSetting(SettingKey.LOG_RETENTION_TIME, logRetentionTime)
-      logRetentionModel.value = logRetentionIndex
+      await setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime)
       log.info('Updated log retention time', { time: logRetentionTime, index: logRetentionIndex })
     } catch (error) {
       log.error('Log retention update failed', error)
@@ -351,7 +283,7 @@ export default function useSettings() {
    * TODO
    * @param table
    */
-  async function onDeleteTableData(table: DatabaseTable): Promise<void> {
+  async function onDeleteTableData(table: DatabaseType): Promise<void> {
     confirmDialog(
       `Delete ${table} Data`,
       `Permanetly delete all ${table} data from the database?`,
@@ -360,7 +292,7 @@ export default function useSettings() {
       async (): Promise<void> => {
         try {
           await clearTable(table)
-          await initializeSettings()
+          await initSettings()
           log.info(`${table} data successfully deleted`)
         } catch (error) {
           log.error(`Error deleting ${table} data`, error)
@@ -380,7 +312,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          parentTables.map(async (table) => {
+          Object.values(DatabaseParentType).map(async (table) => {
             const parentIds = await getUnusedParentIds(table)
             await bulkDeleteItems(table, parentIds)
           })
@@ -403,7 +335,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          recordTables.map(async (table) => {
+          Object.values(DatabaseChildType).map(async (table) => {
             const recordIds = await getOrphanedRecordIds(table)
             await bulkDeleteItems(table, recordIds)
           })
@@ -426,8 +358,10 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await Promise.all(allTables.map(async (table) => await clearTable(table)))
-          await initializeSettings()
+          await Promise.all(
+            Object.values(DatabaseType).map(async (table) => await clearTable(table))
+          )
+          await initSettings()
           log.info('All data successfully deleted')
         } catch (error) {
           log.error('Error deleting all data', error)
@@ -457,19 +391,13 @@ export default function useSettings() {
   }
 
   return {
-    showIntroduction,
-    darkMode,
-    showAllDataColumns,
-    showConsoleLogs,
-    showDebugMessages,
-    showInfoMessages,
+    settings,
     importFile,
     deleteDataOptions,
     deleteDataModel,
     exportTableOptions,
     exportTableModel,
-    logRetentionModel,
-    logRetentionLabels,
+    logRetentionIndex,
     onTestLogger,
     onDefaults,
     onRejectedFile,

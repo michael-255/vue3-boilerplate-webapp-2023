@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
-import type { Optional } from '@/constants/misc'
-import useDatabase from '@/use/useDatabase'
+import type { Optional } from '@/types/misc'
+import useDatabase from '@/composables/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
-import useLogger from '@/use/useLogger'
+import useLogger from '@/composables/useLogger'
 
-const { log, consoleDebug } = useLogger()
+const { initSettings, purgeExpiredLogs } = useDatabase()
+const { log, consoleDebug, consoleLog } = useLogger()
 const route = useRoute()
-const { initializeSettings, purgeExpiredLogs } = useDatabase()
 
 const layout: Ref<any> = ref(null)
 
 onMounted(async () => {
   try {
-    await initializeSettings()
+    await initSettings()
     consoleDebug('Settings initialized')
   } catch (error) {
-    log.error('Error initializing settings', error)
+    // If the settings are not initialized, the database may have had an error or not be open
+    consoleLog('Error initializing settings', error)
   }
 
   try {

@@ -4,20 +4,21 @@ import type { Optional } from '@/types/misc'
 
 /**
  * All database record types. Cast your result to the one you are currently working with if known.
+ * Cast back to this type when saving or updating the database.
  */
 export interface DatabaseRecord {
   [DatabaseField.TYPE]: DatabaseType
   [DatabaseField.ID]: string | SettingId
-  [DatabaseField.SETTING]: any
-  [DatabaseField.CREATED_TIMESTAMP]: number
-  [DatabaseField.SEVERITY]: Severity
-  [DatabaseField.NAME]: string
-  [DatabaseField.DETAILS]: Optional<AppObject>
-  [DatabaseField.TEXT]: Optional<string>
-  [DatabaseField.IS_FAVORITED]: boolean
-  [DatabaseField.IS_ENABLED]: boolean
-  [DatabaseField.PARENT_ID]: string
-  [DatabaseField.NUMBER]: number
+  [DatabaseField.VALUE]?: any
+  [DatabaseField.CREATED_TIMESTAMP]?: number
+  [DatabaseField.SEVERITY]?: Severity
+  [DatabaseField.NAME]?: string
+  [DatabaseField.DETAILS]?: Optional<AppObject>
+  [DatabaseField.TEXT]?: Optional<string>
+  [DatabaseField.IS_FAVORITED]?: boolean
+  [DatabaseField.IS_ENABLED]?: boolean
+  [DatabaseField.PARENT_ID]?: string
+  [DatabaseField.NUMBER]?: number
 }
 
 /**
@@ -25,7 +26,7 @@ export interface DatabaseRecord {
  */
 export type Setting = Pick<
   DatabaseRecord,
-  DatabaseField.TYPE | DatabaseField.ID | DatabaseField.SETTING
+  DatabaseField.TYPE | DatabaseField.ID | DatabaseField.VALUE
 >
 
 /**
@@ -63,6 +64,7 @@ export type ExampleResult = Pick<
   | DatabaseField.ID
   | DatabaseField.CREATED_TIMESTAMP
   | DatabaseField.PARENT_ID
+  | DatabaseField.TEXT
   | DatabaseField.NUMBER
 >
 

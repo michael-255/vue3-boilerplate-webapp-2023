@@ -5,7 +5,7 @@ export const allFields: readonly DatabaseField[] = Object.values(DatabaseField)
 export const settingFields: readonly DatabaseField[] = [
   DatabaseField.TYPE,
   DatabaseField.ID,
-  DatabaseField.SETTING,
+  DatabaseField.VALUE,
 ]
 
 export const logFields: readonly DatabaseField[] = [

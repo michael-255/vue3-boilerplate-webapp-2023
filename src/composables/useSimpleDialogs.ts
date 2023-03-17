@@ -1,5 +1,5 @@
 import { useQuasar } from 'quasar'
-import { Icon } from '@/constants/icons'
+import { Icon } from '@/types/icons'
 import SimpleDialog from '@/components/SimpleDialog.vue'
 
 /**

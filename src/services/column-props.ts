@@ -1,6 +1,6 @@
-import type { ColumnProps } from '@/constants/app'
-import { DatabaseField, DatabaseType, Severity } from '@/constants/database'
-import type { AppObject } from '@/constants/misc'
+import type { ColumnProps } from '@/types/frontend'
+import { DatabaseField, DatabaseType, Severity } from '@/types/database'
+import type { AppObject } from '@/types/misc'
 import { truncateString } from '@/utils/common'
 import { date } from 'quasar'
 
@@ -28,28 +28,26 @@ export function getIdColumnProp(): ColumnProps {
   }
 }
 
-export function getTimestampColumnProp(
-  field: DatabaseField.CREATED_TIMESTAMP | DatabaseField.UPDATED_TIMESTAMP
-): ColumnProps {
+export function getCreatedTimestampColumnProp(): ColumnProps {
   return {
-    name: field,
-    label: field === DatabaseField.CREATED_TIMESTAMP ? 'Created Date' : 'Updated Date',
+    name: DatabaseField.CREATED_TIMESTAMP,
+    label: 'Created Date',
     align: 'left',
     sortable: true,
     required: false,
-    field: (row: any) => row[field],
+    field: (row: any) => row[DatabaseField.CREATED_TIMESTAMP],
     format: (val: number) => date.formatDate(val, 'ddd, YYYY MMM Do, h:mm A'),
   }
 }
 
-export function getSettingColumnProp(): ColumnProps {
+export function getValueColumnProp(): ColumnProps {
   return {
-    name: DatabaseField.SETTING,
+    name: DatabaseField.VALUE,
     label: 'Setting Value',
     align: 'left',
     sortable: true,
     required: false,
-    field: (row: any) => row[DatabaseField.SETTING],
+    field: (row: any) => row[DatabaseField.VALUE],
     format: (val: any) => truncateString(JSON.stringify(val), 30, '...'),
   }
 }
@@ -63,18 +61,6 @@ export function getSeverityColumnProp(): ColumnProps {
     required: false,
     field: (row: any) => row[DatabaseField.SEVERITY],
     format: (val: Severity) => `${val}`,
-  }
-}
-
-export function getAppNameColumnProp(): ColumnProps {
-  return {
-    name: DatabaseField.APP_NAME,
-    label: 'Application Name',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.APP_NAME],
-    format: (val: string) => `${val}`,
   }
 }
 
@@ -138,18 +124,6 @@ export function getEnabledColumnProp(): ColumnProps {
   }
 }
 
-export function getActiveColumnProp(): ColumnProps {
-  return {
-    name: DatabaseField.IS_ACTIVE,
-    label: 'Active',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.IS_ACTIVE],
-    format: (val: boolean) => (val ? 'Yes' : 'No'),
-  }
-}
-
 export function getParentIdColumnProp(): ColumnProps {
   return {
     name: DatabaseField.PARENT_ID,
@@ -159,30 +133,6 @@ export function getParentIdColumnProp(): ColumnProps {
     required: false,
     field: (row: any) => row[DatabaseField.PARENT_ID],
     format: (val: string) => truncateString(val, 8, '*'),
-  }
-}
-
-export function getLinkedIdsColumnProp(customLabel?: string): ColumnProps {
-  return {
-    name: DatabaseField.LINKED_IDS,
-    label: customLabel ? customLabel : 'Linked Ids',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.LINKED_IDS],
-    format: (val: string[]) => truncateString(JSON.stringify(val), 30, '...'),
-  }
-}
-
-export function getMessageColumnProp(): ColumnProps {
-  return {
-    name: DatabaseField.MESSAGE,
-    label: 'Message',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.MESSAGE],
-    format: (val: string) => truncateString(val, 30, '...'),
   }
 }
 

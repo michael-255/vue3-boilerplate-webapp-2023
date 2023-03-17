@@ -1,5 +1,5 @@
 import * as slug from 'slugify'
-import { Milliseconds } from '@/constants/globals'
+import { Milliseconds } from '@/types/misc'
 
 /**
  * Slugify a string so it can be used as a URL.
