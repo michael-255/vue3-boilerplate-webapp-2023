@@ -25,13 +25,13 @@ export default function useLogger() {
      * - Never saved in DB
      * - Suppressable notifications
      */
-    debug: async (label: string, details?: any) => {
+    debug: async (name: string, details?: any) => {
       if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
-        logger.debug(`[${Severity.DEBUG}]`, label, details)
+        logger.debug(`[${Severity.DEBUG}]`, name, details)
       }
 
       if (await getSetting(SettingId.SHOW_DEBUG_MESSAGES)) {
-        notify(label, Icon.DEBUG, 'accent')
+        notify(name, Icon.DEBUG, 'accent')
       }
     },
     /**
@@ -39,17 +39,17 @@ export default function useLogger() {
      * - Suppressable console logs
      * - Suppressable notifications
      */
-    info: async (label: string, details?: any) => {
+    info: async (name: string, details?: any) => {
       const severity = Severity.INFO
 
       if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
-        logger.info(`[${severity}]`, label, details)
+        logger.info(`[${severity}]`, name, details)
       }
 
-      await addLog(severity, label, details)
+      await addLog(severity, name, details)
 
       if (await getSetting(SettingId.SHOW_INFO_MESSAGES)) {
-        notify(label, Icon.INFO, 'info')
+        notify(name, Icon.INFO, 'info')
       }
     },
     /**
@@ -57,32 +57,32 @@ export default function useLogger() {
      * - Suppressable console logs
      * - Cannot suppress notifications
      */
-    warn: async (label: string, details?: any) => {
+    warn: async (name: string, details?: any) => {
       const severity = Severity.WARN
 
       if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
-        logger.warn(`[${severity}]`, label, details)
+        logger.warn(`[${severity}]`, name, details)
       }
 
-      await addLog(severity, label, details)
+      await addLog(severity, name, details)
 
-      notify(label, Icon.WARN, 'warning')
+      notify(name, Icon.WARN, 'warning')
     },
     /**
      * ERROR
      * - Suppressable console logs
      * - Cannot suppress notifications
      */
-    error: async (label: string, details?: any) => {
+    error: async (name: string, details?: any) => {
       const severity = Severity.ERROR
 
       if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
-        logger.error(`[${severity}]`, label, details)
+        logger.error(`[${severity}]`, name, details)
       }
 
-      await addLog(severity, label, details)
+      await addLog(severity, name, details)
 
-      notify(label, Icon.ERROR, 'negative')
+      notify(name, Icon.ERROR, 'negative')
     },
   }
 

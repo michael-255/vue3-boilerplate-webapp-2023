@@ -1,9 +1,9 @@
-import { type Ref, ref, computed, onUnmounted } from 'vue'
+import { type Ref, ref, onUnmounted } from 'vue'
 import { exportFile, uid } from 'quasar'
 import { DatabaseChildType, DatabaseParentType, DatabaseType, SettingId } from '@/types/database'
 import { Icon } from '@/types/icons'
-import { AppText, LogRetention, type AppObject, type Optional } from '@/types/misc'
-import type { Example, ExampleResult } from '@/types/models'
+import { AppText, LogRetention } from '@/types/misc'
+import type { DatabaseRecord, Example, ExampleResult } from '@/types/models'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
@@ -58,26 +58,10 @@ export default function useSettings() {
    * Generates example logs that can be examined on the Logs table and the console.
    */
   function onTestLogger(): void {
-    log.debug('This is a Debug Log', {
-      name: 'Debug',
-      message: 'Debug message',
-      stack: 'Debug stack trace',
-    })
-    log.info('This is an Info Log', {
-      name: 'Info',
-      message: 'Info message',
-      stack: 'Info stack trace',
-    })
-    log.warn('This is a Warning Log', {
-      name: 'Warning',
-      message: 'Warning message',
-      stack: 'Warning stack trace',
-    })
-    log.error('This is an Error Log', {
-      name: 'Error',
-      message: 'Error message',
-      stack: 'Error stack trace',
-    })
+    log.debug('This is a Debug Log', { name: 'Debug' })
+    log.info('This is an Info Log', { name: 'Info' })
+    log.warn('This is a Warning Log', { name: 'Warning' })
+    log.error('This is an Error Log', { name: 'Error' })
   }
 
   /**
@@ -204,7 +188,7 @@ export default function useSettings() {
                 [key]: parsedFileData[key] || [],
               }
             },
-            {} as AppObject
+            {} as DatabaseRecord
           )
 
           consoleDebug('importData =', importData)
