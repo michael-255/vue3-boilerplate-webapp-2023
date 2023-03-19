@@ -49,14 +49,12 @@ export default function useSettings() {
     next: (records) => {
       settings.value = records
 
-      const logRetentionTime = settings.value.find(
-        (s) => s.id === SettingId.LOG_RETENTION_TIME
-      )?.value
+      const logRetentionTime = records.find((s) => s.id === SettingId.LOG_RETENTION_TIME)?.value
 
       logRetentionIndex.value = Object.values(LogRetention).findIndex((i) => i === logRetentionTime)
     },
     error: (error) => {
-      log.error('Error loading settings', error)
+      log.error('Error loading live settings', error)
     },
   })
 

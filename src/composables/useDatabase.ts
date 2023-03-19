@@ -29,7 +29,7 @@ export default function useDatabase() {
     const showDebugMessages = findSettingValue(SettingId.SHOW_DEBUG_MESSAGES) ?? false
     const showInfoMessages = findSettingValue(SettingId.SHOW_INFO_MESSAGES) ?? false
     const dashboardListSelection =
-      findSettingValue(SettingId.DASHBOARD_LIST_SELECTIONG) ?? DatabaseType.EXAMPLES
+      findSettingValue(SettingId.DASHBOARD_LIST_SELECTION) ?? DatabaseType.EXAMPLES
     const logRetentionTime =
       findSettingValue(SettingId.LOG_RETENTION_TIME) ?? LogRetention.THREE_MONTHS
 
@@ -44,7 +44,7 @@ export default function useDatabase() {
       setSetting(SettingId.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingId.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingId.SHOW_INFO_MESSAGES, showInfoMessages),
-      setSetting(SettingId.DASHBOARD_LIST_SELECTIONG, dashboardListSelection),
+      setSetting(SettingId.DASHBOARD_LIST_SELECTION, dashboardListSelection),
       setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime),
     ])
   }
