@@ -23,7 +23,7 @@ const {
   onDefaults,
   onRejectedFile,
   onImportFile,
-  onExportData,
+  onExportRecords,
   onDeleteUnusedData,
   onDeleteOrphanedData,
   onDeleteTableData,
@@ -142,7 +142,7 @@ const {
           :disable="exportModel.length === 0"
           label="Export"
           color="primary"
-          @click="onExportData(exportModel)"
+          @click="onExportRecords(exportModel)"
         />
 
         <!-- Access Internal Tables -->

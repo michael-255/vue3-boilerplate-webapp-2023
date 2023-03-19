@@ -154,7 +154,7 @@ export default function useDatabase() {
   }
 
   // TODO
-  async function clearDataByType(type: DatabaseType) {
+  async function clearRecordsByType(type: DatabaseType) {
     await db.where(DatabaseField.TYPE).equals(type).delete()
   }
 
@@ -173,7 +173,7 @@ export default function useDatabase() {
     getAllRecords,
     getRecordsByType,
     bulkAddRecords,
-    clearDataByType,
+    clearRecordsByType,
     deleteDatabase,
   }
 }

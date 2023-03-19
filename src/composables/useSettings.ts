@@ -1,9 +1,9 @@
 import { type Ref, ref, onUnmounted } from 'vue'
 import { exportFile, uid } from 'quasar'
-import { DatabaseType, SettingId } from '@/types/database'
+import { DatabaseParentType, DatabaseType, SettingId } from '@/types/database'
 import { Icon } from '@/types/icons'
-import { AppText, LogRetention, type AppObject, type Optional } from '@/types/misc'
-import type { DatabaseRecord, Example, ExampleResult } from '@/types/models'
+import { AppText, LogRetention, type Optional } from '@/types/misc'
+import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/models'
 import { RouteName } from '@/router/route-names'
 import { useRouter } from 'vue-router'
 import { slugify } from '@/utils/common'
@@ -13,7 +13,7 @@ import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 
 export default function useSettings() {
-  const { log, consoleDebug, consoleLog } = useLogger()
+  const { log, consoleDebug } = useLogger()
   const { notify } = useNotifications()
   const { confirmDialog } = useSimpleDialogs()
   const router = useRouter()
@@ -23,7 +23,7 @@ export default function useSettings() {
     setSetting,
     bulkAddRecords,
     getAllRecords,
-    clearDataByType,
+    clearRecordsByType,
     deleteDatabase,
     // getUnusedParentIds,
     // getOrphanedRecordIds,
@@ -107,58 +107,57 @@ export default function useSettings() {
             return date.getTime()
           }
 
-          const examples: Example[] = []
-          const exampleRecords: ExampleResult[] = []
+          const records: DatabaseRecord[] = []
 
           const createExamples = (count: number) => {
             for (let i = 0; i < count; i++) {
-              examples.push({
+              records.push({
                 type: DatabaseType.EXAMPLES,
                 id: uid(),
-                name: `Parent ${randomLetter()}`,
-                text: `Parent Description ${i}`,
+                name: `Example ${randomLetter()}`,
+                text: `Example Description ${i}`,
                 isFavorited: randomBoolean(),
                 isEnabled: randomBoolean(),
-              })
+              } as Example)
 
               initialTimestamp = addMinute(initialTimestamp)
             }
           }
 
-          const createExampleRecords = (count: number, parent?: Example) => {
+          const createExampleResults = (count: number, parent?: Example) => {
             for (let i = 0; i < count; i++) {
-              exampleRecords.push({
+              records.push({
                 type: DatabaseType.EXAMPLE_RESULTS,
                 id: uid(),
                 createdTimestamp: initialTimestamp,
                 parentId: parent?.id || `orphaned-record-id-${i}`,
                 text: randomBoolean() ? `Previous record note = ${parent?.id} [${i}]` : '',
                 number: randomInt(1, 100),
-              })
+              } as ExampleResult)
 
               initialTimestamp = addMinute(initialTimestamp)
             }
           }
 
-          // Create demo data here...
-          createExamples(2) // Unused parent items
-          createExampleRecords(2) // Orphaned record items
+          // Creating demo data
           createExamples(5)
-          examples.map((example) => createExampleRecords(2, example))
+          records.map((example) => createExampleResults(2, example))
+          // Unused parents and orphaned results
+          createExamples(2)
+          createExampleResults(2)
 
-          await bulkAddRecords(examples)
-          await bulkAddRecords(exampleRecords)
-          await bulkAddRecords([
-            {
-              id: uid(),
-              createdTimestamp: new Date().getTime(),
-              name: 'Lonely Test',
-              text: 'Test Description',
-              isFavorited: false,
-            },
-          ] as DatabaseRecord[])
+          records.push({
+            type: DatabaseType.TESTS,
+            id: uid(),
+            name: 'Lonely Test',
+            text: 'Test Description',
+            isFavorited: false,
+            isEnabled: true,
+          } as Test)
 
-          log.info('Defaults loaded', { count: examples.length + exampleRecords.length })
+          await bulkAddRecords(records)
+
+          log.info('Defaults loaded', { count: records.length })
         } catch (error) {
           log.error('Failed to load defaults', error)
         }
@@ -186,26 +185,29 @@ export default function useSettings() {
       'info',
       async (): Promise<void> => {
         try {
-          // Imports data properties it can parse that are defined below.
           const parsedFileData = JSON.parse(await importFile.value.text())
 
-          // Only retrieve data stored under matching database type keys
-          const importData = Object.values(DatabaseType).reduce((acc, key: DatabaseType) => {
-            return {
-              ...acc,
-              [key]: parsedFileData[key] || [],
-            }
-          }, {} as AppObject)
+          consoleDebug('parsedFileData =', parsedFileData)
 
-          consoleDebug('importData =', importData)
+          const { appName, records } = parsedFileData
 
-          await Promise.all(
-            Object.values(DatabaseType).map(
-              async (table: DatabaseType) => await bulkAddRecords(importData[table])
-            )
+          // Do NOT allow importing data from another app
+          if (parsedFileData?.appName !== AppText.APP_NAME) {
+            throw new Error(`Cannot import data from this app: ${appName} `)
+          }
+
+          const types = Object.values(DatabaseType)
+
+          const importedData = records?.filter((record: DatabaseRecord) =>
+            types.includes(record.type)
           )
 
+          consoleDebug('importedData =', importedData)
+
+          await bulkAddRecords(importedData)
+
           importFile.value = null // Clear input
+
           log.info('Successfully imported available data')
         } catch (error) {
           log.error('Import failed', error)
@@ -215,32 +217,39 @@ export default function useSettings() {
   }
 
   /**
-   * On confirmation, export your data as a JSON file.
+   * On confirmation, export your records as a JSON file.
    */
-  function onExportData(tables: DatabaseType[]): void {
+  function onExportRecords(types: DatabaseType[]): void {
+    // Build export file name
     const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
     const date = new Date().toISOString().split('T')[0]
     const filename = `export-${appName}-${date}.json`
 
     confirmDialog(
       'Export',
-      `Export the file "${filename}" with all of your data?`,
+      `Export the file "${filename}" with all of your records?`,
       Icon.INFO,
       'info',
       async (): Promise<void> => {
         try {
-          // Get all data from the database
-          const allData = await getAllRecords()
+          // Get all data records from the database
+          const records = await getAllRecords()
 
-          // Converting the data array into an object with table names as keys
-          const exportData = tables.reduce(
-            (acc, key, i) => ({ ...acc, [key]: allData[i] }),
-            {} as AppObject
-          )
+          // Include record in export if it is one of the selected types
+          const exportRecords = records.filter((record) => types.includes(record.type))
+
+          // Build export file meta data
+          // TODO - this should be a type
+          const exportData = {
+            appName: AppText.APP_NAME,
+            exportedTimestamp: new Date().getTime(),
+            exportedRecordsCount: exportRecords.length,
+            records: exportRecords,
+          }
 
           consoleDebug('exportData =', exportData)
 
-          // Attempt to download the export data
+          // Attempt to download the export records as a JSON file
           const fileStatus = exportFile(filename, JSON.stringify(exportData), {
             encoding: 'UTF-8',
             mimeType: 'application/json',
@@ -299,7 +308,7 @@ export default function useSettings() {
       'negative',
       async (): Promise<void> => {
         try {
-          await clearDataByType(table)
+          await clearRecordsByType(table)
           await initSettings()
           log.info(`${table} data successfully deleted`)
         } catch (error) {
@@ -367,7 +376,7 @@ export default function useSettings() {
       async (): Promise<void> => {
         try {
           await Promise.all(
-            Object.values(DatabaseType).map(async (table) => await clearDataByType(table))
+            Object.values(DatabaseType).map(async (table) => await clearRecordsByType(table))
           )
           await initSettings()
           log.info('All data successfully deleted')
@@ -413,7 +422,7 @@ export default function useSettings() {
     onDefaults,
     onRejectedFile,
     onImportFile,
-    onExportData,
+    onExportRecords,
     onChangeLogRetention,
     onDeleteUnusedData,
     onDeleteOrphanedData,

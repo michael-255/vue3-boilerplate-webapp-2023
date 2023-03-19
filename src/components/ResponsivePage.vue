@@ -22,6 +22,9 @@ defineProps<{
 
         <!-- Additional Components Slot -->
         <slot />
+
+        <!-- Extra space at page bottom so scroller doesn't cover content  -->
+        <div class="q-mb-xl" />
       </div>
     </div>
 
