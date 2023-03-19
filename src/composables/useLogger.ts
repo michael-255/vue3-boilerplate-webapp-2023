@@ -26,11 +26,11 @@ export default function useLogger() {
      * - Suppressable notifications
      */
     debug: async (name: string, details?: any) => {
-      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
+      if ((await getSetting(SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.debug(`[${Severity.DEBUG}]`, name, details)
       }
 
-      if (await getSetting(SettingId.SHOW_DEBUG_MESSAGES)) {
+      if ((await getSetting(SettingId.SHOW_DEBUG_MESSAGES))?.value) {
         notify(name, Icon.DEBUG, 'accent')
       }
     },
@@ -42,13 +42,13 @@ export default function useLogger() {
     info: async (name: string, details?: any) => {
       const severity = Severity.INFO
 
-      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
+      if ((await getSetting(SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.info(`[${severity}]`, name, details)
       }
 
       await addLog(severity, name, details)
 
-      if (await getSetting(SettingId.SHOW_INFO_MESSAGES)) {
+      if ((await getSetting(SettingId.SHOW_INFO_MESSAGES))?.value) {
         notify(name, Icon.INFO, 'info')
       }
     },
@@ -60,7 +60,7 @@ export default function useLogger() {
     warn: async (name: string, details?: any) => {
       const severity = Severity.WARN
 
-      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
+      if ((await getSetting(SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.warn(`[${severity}]`, name, details)
       }
 
@@ -76,7 +76,7 @@ export default function useLogger() {
     error: async (name: string, details?: any) => {
       const severity = Severity.ERROR
 
-      if (await getSetting(SettingId.SHOW_CONSOLE_LOGS)) {
+      if ((await getSetting(SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.error(`[${severity}]`, name, details)
       }
 

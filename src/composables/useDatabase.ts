@@ -1,7 +1,7 @@
 import { Dark, uid } from 'quasar'
 import { liveQuery, type IndexableType, type Observable } from 'dexie'
 import { DatabaseField, DatabaseTable, DatabaseType, SettingId, Severity } from '@/types/database'
-import { LogRetention, type AppObject, type Optional } from '@/types/misc'
+import { LogRetention, type AppObject } from '@/types/misc'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { dexieWrapper } from '@/services/DexieWrapper'
 
@@ -11,27 +11,17 @@ export default function useDatabase() {
 
   // TODO
   async function initSettings(): Promise<void> {
-    const settings: Setting[] = await db
-      .where(DatabaseField.TYPE)
-      .equals(DatabaseType.SETTINGS)
-      .toArray()
-
-    // Function that returns the Setting value field or undefined
-    const findSettingValue = (id: SettingId): any => {
-      return settings.find((s: Setting) => s[DatabaseField.ID] === id)?.value
-    }
-
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
-    const showIntroduction = findSettingValue(SettingId.SHOW_INTRODUCTION) ?? true
-    const darkMode = findSettingValue(SettingId.DARK_MODE) ?? true
-    const showAllDataColumns = findSettingValue(SettingId.SHOW_ALL_DATA_COLUMNS) ?? false
-    const showConsoleLogs = findSettingValue(SettingId.SHOW_CONSOLE_LOGS) ?? false
-    const showDebugMessages = findSettingValue(SettingId.SHOW_DEBUG_MESSAGES) ?? false
-    const showInfoMessages = findSettingValue(SettingId.SHOW_INFO_MESSAGES) ?? false
+    const showIntroduction = (await getSetting(SettingId.SHOW_INTRODUCTION))?.value ?? true
+    const darkMode = (await getSetting(SettingId.DARK_MODE))?.value ?? true
+    const showAllDataColumns = (await getSetting(SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
+    const showConsoleLogs = (await getSetting(SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
+    const showDebugMessages = (await getSetting(SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
+    const showInfoMessages = (await getSetting(SettingId.SHOW_INFO_MESSAGES))?.value ?? false
     const dashboardListSelection =
-      findSettingValue(SettingId.DASHBOARD_LIST_SELECTION) ?? DatabaseType.EXAMPLES
+      (await getSetting(SettingId.DASHBOARD_LIST_SELECTION))?.value ?? DatabaseType.EXAMPLES
     const logRetentionTime =
-      findSettingValue(SettingId.LOG_RETENTION_TIME) ?? LogRetention.THREE_MONTHS
+      (await getSetting(SettingId.LOG_RETENTION_TIME))?.value ?? LogRetention.THREE_MONTHS
 
     // Set Quasar dark mode
     Dark.set(!!darkMode) // Cast to boolean
@@ -55,7 +45,7 @@ export default function useDatabase() {
   }
 
   // TODO
-  async function getSetting(id: SettingId): Promise<Optional<Setting>> {
+  async function getSetting(id: SettingId): Promise<any> {
     return await db.get([DatabaseType.SETTINGS, id])
   }
 
@@ -102,7 +92,7 @@ export default function useDatabase() {
 
   // TODO
   async function purgeExpiredLogs(): Promise<number> {
-    const logRetentionTime = (await getSetting(SettingId.LOG_RETENTION_TIME))?.value as LogRetention
+    const logRetentionTime = (await getSetting(SettingId.LOG_RETENTION_TIME))?.value
 
     if (!logRetentionTime || logRetentionTime === LogRetention.FOREVER) {
       return 0 // No logs purged
