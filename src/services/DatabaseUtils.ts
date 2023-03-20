@@ -4,8 +4,8 @@ import {
   DatabaseAction,
   DatabaseField,
   DatabaseType,
-  DatabaseParentType,
-  DatabaseChildType,
+  type DatabaseParentType,
+  type DatabaseChildType,
 } from '@/types/database'
 import { Icon } from '@/types/icons'
 import type { ColumnProps } from '@/types/frontend'
@@ -153,11 +153,11 @@ export function getParentTable(recordTable: DatabaseChildType): DatabaseParentTy
   }[recordTable] as any
 }
 
-export function getRecordTable(parentTable: DatabaseParentType): DatabaseChildType {
+export function getChildType(parentType: DatabaseParentType): DatabaseChildType {
   return {
     [DatabaseType.EXAMPLES]: DatabaseType.EXAMPLE_RESULTS,
     [DatabaseType.TESTS]: DatabaseType.TEST_RESULTS,
-  }[parentTable] as any
+  }[parentType] as any
 }
 
 export function getLabelSingular(table: DatabaseType): string {

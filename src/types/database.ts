@@ -21,18 +21,12 @@ export enum DatabaseType {
 /**
  * Parent types in the database.
  */
-export enum DatabaseParentType {
-  EXAMPLES = 'Examples',
-  TESTS = 'Tests',
-}
+export type DatabaseParentType = DatabaseType.EXAMPLES | DatabaseType.TESTS
 
 /**
  * Child types to parent types in the database.
  */
-export enum DatabaseChildType {
-  EXAMPLE_RESULTS = 'Example Results',
-  TEST_RESULTS = 'Test Results',
-}
+export type DatabaseChildType = DatabaseType.EXAMPLE_RESULTS | DatabaseType.TEST_RESULTS
 
 /**
  * All field names used by database records.

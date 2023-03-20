@@ -11,7 +11,7 @@ export class DexieWrapper extends Dexie {
     super(name)
 
     this.version(1).stores({
-      [DatabaseTable.RECORDS]: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], ${DatabaseField.PARENT_ID}`,
+      [DatabaseTable.RECORDS]: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
     })
   }
 }
