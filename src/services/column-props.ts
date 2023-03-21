@@ -5,6 +5,7 @@ import { truncateString } from '@/utils/common'
 import { getDisplayDate } from '@/utils/common'
 
 export function getTypeColumnProp(): ColumnProps {
+  // Must be at position 0 (props.cols[0])
   return {
     name: DatabaseField.TYPE,
     label: 'Type',
@@ -16,15 +17,33 @@ export function getTypeColumnProp(): ColumnProps {
   }
 }
 
-export function getIdColumnProp(): ColumnProps {
+/**
+ * Used for data table row operations and shouldn't be seen by the user.
+ * This save horizontal screen space due to the large length of UIDs.
+ */
+export function getHiddenIdColumnProp(): ColumnProps {
+  // Must be at position 1 (props.cols[1])
   return {
-    name: DatabaseField.ID,
-    label: 'Id',
+    name: 'hiddenId',
+    label: '',
     align: 'left',
     sortable: true,
     required: true,
     field: (row: any) => row[DatabaseField.ID],
     format: (val: string) => `${val}`,
+    style: 'display: none',
+  }
+}
+
+export function getIdColumnProp(): ColumnProps {
+  return {
+    name: DatabaseField.ID,
+    label: 'Id*',
+    align: 'left',
+    sortable: true,
+    required: true,
+    field: (row: any) => row[DatabaseField.ID],
+    format: (val: string) => truncateString(val, 8, '*'),
   }
 }
 

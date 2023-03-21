@@ -18,6 +18,7 @@ export enum Icon {
   INSPECT = 'manage_search',
   DELETE = 'delete',
   CREATE = 'add_circle',
+  NEW = 'add_box',
   CLEAR = 'delete_sweep',
   // Pages
   DONATE = 'redeem',

@@ -21,6 +21,7 @@ import {
   getTextColumnProp,
   getCreatedTimestampColumnProp,
   getTypeColumnProp,
+  getHiddenIdColumnProp,
 } from './column-props'
 import {
   exampleFields,
@@ -97,22 +98,10 @@ export function getVisibleColumns(table: DatabaseType): DatabaseField[] {
   return {
     [DatabaseType.SETTINGS]: [],
     [DatabaseType.LOGS]: [],
-    [DatabaseType.EXAMPLES]: [
-      DatabaseField.ID,
-      DatabaseField.CREATED_TIMESTAMP,
-      DatabaseField.NAME,
-    ],
-    [DatabaseType.EXAMPLE_RESULTS]: [
-      DatabaseField.ID,
-      DatabaseField.CREATED_TIMESTAMP,
-      DatabaseField.PARENT_ID,
-    ],
-    [DatabaseType.TESTS]: [DatabaseField.ID, DatabaseField.CREATED_TIMESTAMP, DatabaseField.NAME],
-    [DatabaseType.TEST_RESULTS]: [
-      DatabaseField.ID,
-      DatabaseField.CREATED_TIMESTAMP,
-      DatabaseField.PARENT_ID,
-    ],
+    [DatabaseType.EXAMPLES]: [],
+    [DatabaseType.EXAMPLE_RESULTS]: [],
+    [DatabaseType.TESTS]: [],
+    [DatabaseType.TEST_RESULTS]: [],
   }[table]
 }
 
@@ -181,7 +170,7 @@ export function getTableIcon(table: DatabaseType): Icon {
   }[table]
 }
 
-export function getTableFromSlug(tableSlug: string): DatabaseType {
+export function getTypeFromSlug(databaseTypeSlug: string) {
   return {
     [slugify(DatabaseType.SETTINGS)]: DatabaseType.SETTINGS,
     [slugify(DatabaseType.LOGS)]: DatabaseType.LOGS,
@@ -189,7 +178,7 @@ export function getTableFromSlug(tableSlug: string): DatabaseType {
     [slugify(DatabaseType.EXAMPLE_RESULTS)]: DatabaseType.EXAMPLE_RESULTS,
     [slugify(DatabaseType.TESTS)]: DatabaseType.TESTS,
     [slugify(DatabaseType.TEST_RESULTS)]: DatabaseType.TEST_RESULTS,
-  }[tableSlug]
+  }[databaseTypeSlug]
 }
 
 // export function getActionFromSlug(actionSlug: string): DatabaseAction {
@@ -214,9 +203,15 @@ export function getTableFromSlug(tableSlug: string): DatabaseType {
 
 export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
   return {
-    [DatabaseType.SETTINGS]: [getTypeColumnProp(), getIdColumnProp(), getValueColumnProp()],
+    [DatabaseType.SETTINGS]: [
+      getTypeColumnProp(),
+      getHiddenIdColumnProp(),
+      getIdColumnProp(),
+      getValueColumnProp(),
+    ],
     [DatabaseType.LOGS]: [
       getTypeColumnProp(),
+      getHiddenIdColumnProp(),
       getIdColumnProp(),
       getCreatedTimestampColumnProp(),
       getSeverityColumnProp(),
@@ -225,6 +220,7 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
     ],
     [DatabaseType.EXAMPLES]: [
       getTypeColumnProp(),
+      getHiddenIdColumnProp(),
       getIdColumnProp(),
       getNameColumnProp(),
       getTextColumnProp('Description'),
@@ -233,6 +229,7 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
     ],
     [DatabaseType.EXAMPLE_RESULTS]: [
       getTypeColumnProp(),
+      getHiddenIdColumnProp(),
       getIdColumnProp(),
       getCreatedTimestampColumnProp(),
       getParentIdColumnProp(),
@@ -241,6 +238,7 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
     ],
     [DatabaseType.TESTS]: [
       getTypeColumnProp(),
+      getHiddenIdColumnProp(),
       getIdColumnProp(),
       getNameColumnProp(),
       getTextColumnProp('Description'),
@@ -249,6 +247,7 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
     ],
     [DatabaseType.TEST_RESULTS]: [
       getTypeColumnProp(),
+      getHiddenIdColumnProp(),
       getIdColumnProp(),
       getCreatedTimestampColumnProp(),
       getParentIdColumnProp(),

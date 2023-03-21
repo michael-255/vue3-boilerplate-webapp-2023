@@ -17,6 +17,7 @@ defineProps<{
   // Will be undefined if no records have been recorded yet
   previousText?: string
   previousCreatedTimestamp?: number
+  previousNumber?: number
 }>()
 
 const { log } = useLogger()
@@ -146,22 +147,32 @@ async function onUnfavorite(type: DatabaseParentType, id: string, name: string) 
         </QBtn>
       </div>
 
-      <!-- Time Ago Display -->
-      <QBadge rounded color="secondary" class="q-py-none">
-        <QIcon :name="Icon.PREVIOUS" />
-        <span class="text-caption q-ml-xs">
-          {{ useTimeAgo(previousCreatedTimestamp || '').value || 'No previous records' }}
-        </span>
-      </QBadge>
+      <div class="q-mb-md">
+        <!-- Time Ago Display -->
+        <QBadge rounded color="secondary" class="q-py-none">
+          <QIcon :name="Icon.PREVIOUS" />
+          <span class="text-caption q-ml-xs">
+            {{ useTimeAgo(previousCreatedTimestamp || '').value || 'No previous records' }}
+          </span>
+        </QBadge>
 
-      <!-- Previous Record Created Date -->
-      <div v-show="previousCreatedTimestamp">
-        <QIcon :name="Icon.CALENDAR_CHECK" />
-        <span class="text-caption q-ml-xs">{{ getDisplayDate(previousCreatedTimestamp) }}</span>
+        <!-- Previous Record Created Date -->
+        <div v-if="previousCreatedTimestamp">
+          <QIcon :name="Icon.CALENDAR_CHECK" />
+          <span class="text-caption q-ml-xs">{{ getDisplayDate(previousCreatedTimestamp) }}</span>
+        </div>
+
+        <!-- Previous Record Number -->
+        <div v-if="previousNumber">
+          <QIcon :name="Icon.EXAMPLES" />
+          <span class="text-caption q-ml-xs">{{ previousNumber }}</span>
+        </div>
       </div>
 
       <!-- Additional Components Slot -->
-      <slot />
+      <div>
+        <slot />
+      </div>
     </QCardSection>
   </QCard>
 </template>

@@ -48,18 +48,25 @@ export default function useDatabase() {
   }
 
   // TODO
-  function liveSettings(): Observable<Setting[]> {
-    return liveQuery(() => db.where(DatabaseField.TYPE).equals(DatabaseType.SETTINGS).toArray())
+  function liveSettings() {
+    return liveQuery(() =>
+      db.where(DatabaseField.TYPE).equals(DatabaseType.SETTINGS).sortBy(DatabaseField.ID)
+    )
   }
 
   // TODO
-  function liveDashboard(): Observable<DatabaseRecord[]> {
+  function liveDashboard() {
     return liveQuery(() =>
       db
         .where(DatabaseField.TYPE)
         .anyOf(DatabaseType.SETTINGS, DatabaseType.EXAMPLES, DatabaseType.TESTS)
-        .toArray()
+        .sortBy(DatabaseField.NAME)
     )
+  }
+
+  // TODO
+  function liveDataType(type: DatabaseType) {
+    return liveQuery(() => db.where(DatabaseField.TYPE).equals(type).toArray())
   }
 
   // TODO
@@ -68,7 +75,7 @@ export default function useDatabase() {
   }
 
   // TODO
-  async function setSetting(id: SettingId, value: any): Promise<IndexableType> {
+  async function setSetting(id: SettingId, value: any) {
     const existingSetting = await getSetting(id)
 
     // Set Quasar dark mode if the key is for dark mode
@@ -198,6 +205,7 @@ export default function useDatabase() {
     initSettings,
     liveSettings,
     liveDashboard,
+    liveDataType,
     getPreviousChildRecord,
     getSetting,
     setSetting,

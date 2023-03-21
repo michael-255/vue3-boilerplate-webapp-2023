@@ -11,7 +11,7 @@ import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
 import useActions from '@/composables/useActions'
-import DashboardParentData from '@/components/DashboardParentData.vue'
+import DashboardParentCard from '@/components/DashboardParentCard.vue'
 
 const { log, consoleLog } = useLogger()
 const { goToCreate } = useActions()
@@ -47,11 +47,6 @@ const subscription = liveDashboard().subscribe({
     const dashboardExamples = await Promise.all(
       records
         .filter((r) => r.type === DatabaseType.EXAMPLES && r[DatabaseField.IS_ENABLED] === true)
-        .sort((a, b) => {
-          const aName = a[DatabaseField.NAME] ?? ''
-          const bName = b[DatabaseField.NAME] ?? ''
-          return aName.localeCompare(bName)
-        })
         .map(async (r) => {
           const previousChild = await getPreviousChildRecord(
             r[DatabaseField.TYPE] as DatabaseParentType,
@@ -82,11 +77,6 @@ const subscription = liveDashboard().subscribe({
     const dashboardTests = await Promise.all(
       records
         .filter((r) => r.type === DatabaseType.TESTS && r[DatabaseField.IS_ENABLED] === true)
-        .sort((a, b) => {
-          const aName = a[DatabaseField.NAME] ?? ''
-          const bName = b[DatabaseField.NAME] ?? ''
-          return aName.localeCompare(bName)
-        })
         .map(async (r) => {
           const previousChild = await getPreviousChildRecord(
             r[DatabaseField.TYPE] as DatabaseParentType,
@@ -119,7 +109,7 @@ onUnmounted(() => {
 })
 
 // TODO
-function getRecordsCountText() {
+function getDashboardRecordsCountText() {
   const count =
     dashboardRecordRefs?.[dashboardListSelection.value as DatabaseParentType]?.value?.length ?? 0
 
@@ -152,30 +142,48 @@ function getRecordsCountText() {
     <!-- Examples - Using v-show so the DOM doesn't get updated when switching selections -->
     <div v-show="dashboardListSelection === DatabaseType.EXAMPLES">
       <div v-for="(record, i) in dashboardRecordRefs[DatabaseType.EXAMPLES].value" :key="i">
-        <DashboardParentData
+        <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
           :id="record[DatabaseField.ID]"
           :name="record[DatabaseField.NAME]"
           :isFavorite="record[DatabaseField.IS_FAVORITED]"
           :previousText="record.previousText"
           :previousCreatedTimestamp="record.previousCreatedTimestamp"
+          :previousNumber="record.previousNumber"
           class="q-mb-md"
-        />
+        >
+          <QBtn
+            outline
+            color="positive"
+            label="Add Entry"
+            :icon="Icon.NEW"
+            @click="goToCreate(DatabaseType.EXAMPLES, record[DatabaseField.ID])"
+          />
+        </DashboardParentCard>
       </div>
     </div>
 
     <!-- Tests - Using v-show so the DOM doesn't get updated when switching selections -->
     <div v-show="dashboardListSelection === DatabaseType.TESTS">
       <div v-for="(record, j) in dashboardRecordRefs[DatabaseType.TESTS].value" :key="j">
-        <DashboardParentData
+        <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
           :id="record[DatabaseField.ID]"
           :name="record[DatabaseField.NAME]"
           :isFavorite="record[DatabaseField.IS_FAVORITED]"
           :previousText="record.previousText"
           :previousCreatedTimestamp="record.previousCreatedTimestamp"
+          :previousNumber="record.previousNumber"
           class="q-mb-md"
-        />
+        >
+          <QBtn
+            outline
+            color="positive"
+            label="Add Entry"
+            :icon="Icon.NEW"
+            @click="goToCreate(DatabaseType.TESTS, record[DatabaseField.ID])"
+          />
+        </DashboardParentCard>
       </div>
     </div>
 
@@ -185,7 +193,7 @@ function getRecordsCountText() {
         <QIcon name="menu_open" size="80px" color="grey" />
       </div>
 
-      <div class="col-12 text-grey text-center q-mb-md">{{ getRecordsCountText() }}</div>
+      <div class="col-12 text-grey text-center q-mb-md">{{ getDashboardRecordsCountText() }}</div>
 
       <QBtn
         color="positive"
