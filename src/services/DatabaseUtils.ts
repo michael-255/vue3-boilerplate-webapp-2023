@@ -11,8 +11,7 @@ import { Icon } from '@/types/icons'
 import type { ColumnProps } from '@/types/frontend'
 import {
   getDetailsColumnProp,
-  getEnabledColumnProp,
-  getFavoritedColumnProp,
+  getToggleColumnProp,
   getIdColumnProp,
   getNameColumnProp,
   getNumberColumnProp,
@@ -229,8 +228,8 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
       getIdColumnProp(),
       getNameColumnProp(),
       getTextColumnProp('Description'),
-      getFavoritedColumnProp(),
-      getEnabledColumnProp(),
+      getToggleColumnProp(DatabaseField.IS_FAVORITED, 'Favorite'),
+      getToggleColumnProp(DatabaseField.IS_ENABLED, 'Enabled'),
     ],
     [DatabaseType.EXAMPLE_RESULTS]: [
       getTypeColumnProp(),
@@ -245,8 +244,8 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
       getIdColumnProp(),
       getNameColumnProp(),
       getTextColumnProp('Description'),
-      getFavoritedColumnProp(),
-      getEnabledColumnProp(),
+      getToggleColumnProp(DatabaseField.IS_FAVORITED, 'Favorite'),
+      getToggleColumnProp(DatabaseField.IS_ENABLED, 'Enabled'),
     ],
     [DatabaseType.TEST_RESULTS]: [
       getTypeColumnProp(),

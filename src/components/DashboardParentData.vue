@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QBtn, date } from 'quasar'
+import { QCard, QCardSection, QBtn } from 'quasar'
 import { useTimeAgo } from '@vueuse/core'
 import { DatabaseField, type DatabaseParentType } from '@/types/database'
 import { Icon } from '@/types/icons'
+import { getDisplayDate } from '@/utils/common'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
@@ -156,9 +157,7 @@ async function onUnfavorite(type: DatabaseParentType, id: string, name: string) 
       <!-- Previous Record Created Date -->
       <div v-show="previousCreatedTimestamp">
         <QIcon :name="Icon.CALENDAR_CHECK" />
-        <span class="text-caption q-ml-xs">
-          {{ date.formatDate(previousCreatedTimestamp, 'ddd, YYYY MMM Do, h:mm A') }}
-        </span>
+        <span class="text-caption q-ml-xs">{{ getDisplayDate(previousCreatedTimestamp) }}</span>
       </div>
 
       <!-- Additional Components Slot -->

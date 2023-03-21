@@ -2,7 +2,7 @@ import type { ColumnProps } from '@/types/frontend'
 import { DatabaseField, DatabaseType, Severity } from '@/types/database'
 import type { AppObject } from '@/types/misc'
 import { truncateString } from '@/utils/common'
-import { date } from 'quasar'
+import { getDisplayDate } from '@/utils/common'
 
 export function getTypeColumnProp(): ColumnProps {
   return {
@@ -36,7 +36,7 @@ export function getCreatedTimestampColumnProp(): ColumnProps {
     sortable: true,
     required: false,
     field: (row: any) => row[DatabaseField.CREATED_TIMESTAMP],
-    format: (val: number) => date.formatDate(val, 'ddd, YYYY MMM Do, h:mm A'),
+    format: (val: number) => getDisplayDate(val),
   }
 }
 
@@ -100,26 +100,17 @@ export function getTextColumnProp(customLabel?: string): ColumnProps {
   }
 }
 
-export function getFavoritedColumnProp(): ColumnProps {
+export function getToggleColumnProp(
+  field: DatabaseField.IS_FAVORITED | DatabaseField.IS_ENABLED,
+  customLabel?: string
+): ColumnProps {
   return {
-    name: DatabaseField.IS_FAVORITED,
-    label: 'Favorited',
+    name: field,
+    label: customLabel ? customLabel : 'Toggle',
     align: 'left',
     sortable: true,
     required: false,
-    field: (row: any) => row[DatabaseField.IS_FAVORITED],
-    format: (val: boolean) => (val ? 'Yes' : 'No'),
-  }
-}
-
-export function getEnabledColumnProp(): ColumnProps {
-  return {
-    name: DatabaseField.IS_ENABLED,
-    label: 'Enabled',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.IS_ENABLED],
+    field: (row: any) => row[field],
     format: (val: boolean) => (val ? 'Yes' : 'No'),
   }
 }
