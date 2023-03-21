@@ -14,10 +14,10 @@ import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
+const router = useRouter()
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
-const router = useRouter()
 const {
   liveSettings,
   initSettings,

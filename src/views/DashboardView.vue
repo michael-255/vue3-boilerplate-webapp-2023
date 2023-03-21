@@ -2,13 +2,19 @@
 import { Icon } from '@/types/icons'
 import { type Ref, ref, onUnmounted } from 'vue'
 import { DatabaseType, DatabaseField, SettingId, type DatabaseParentType } from '@/types/database'
+import type { Optional } from '@/types/misc'
+import { parentTypes } from '@/constants/database-types'
+import { RouteName } from '@/router/route-names'
+import { slugify } from '@/utils/common'
+import { getLabelSingular } from '@/services/DatabaseUtils'
+import { useRouter } from 'vue-router'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
-import type { Optional } from '@/types/misc'
-import { parentTypes } from '@/constants/database-types'
+import DashboardParentData from '@/components/DashboardParentData.vue'
 
+const router = useRouter()
 const { log, consoleLog } = useLogger()
 const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
 
@@ -19,8 +25,10 @@ const dashboardListOptions = parentTypes.map((type) => ({
 
 const showIntroduction: Ref<Optional<boolean>> = ref(null)
 const dashboardListSelection: Ref<Optional<DatabaseType>> = ref(null)
-const examples: Ref<any[]> = ref([])
-const tests: Ref<any[]> = ref([])
+const dashboardRecordRefs = {
+  [DatabaseType.EXAMPLES]: ref([]),
+  [DatabaseType.TESTS]: ref([]),
+} as { [key in DatabaseParentType]: Ref<any[]> }
 
 const subscription = liveDashboard().subscribe({
   next: async (records) => {
@@ -31,6 +39,8 @@ const subscription = liveDashboard().subscribe({
     dashboardListSelection.value = records.find(
       (s) => s.id === SettingId.DASHBOARD_LIST_SELECTION
     )?.value
+
+    consoleLog('dashboardListSelection =', dashboardListSelection.value)
 
     // Examples
     // Include only enabled examples
@@ -65,45 +75,14 @@ const subscription = liveDashboard().subscribe({
     const exampleNonFavorites = dashboardExamples.filter(
       (r) => r[DatabaseField.IS_FAVORITED] === false
     )
-    examples.value = [...exampleFavorites, ...exampleNonFavorites]
-
-    /*
-        const parentCardItems: ParentCardItem[] = await Promise.all(
-          items.map(async (item) => {
-            const previousRecord = await getPreviousRecord(
-              DatabaseTable.EXAMPLE_RECORDS,
-              item[DatabaseField.ID]
-            )
-            const previousNote = previousRecord?.[DatabaseField.NOTE]
-            const previousTimestamp = previousRecord?.[DatabaseField.CREATED_TIMESTAMP]
-            const previousNumber = previousRecord?.[DatabaseField.EXAMPLE_NUMBER]
-
-            return {
-              table: DatabaseTable.EXAMPLES,
-              [DatabaseField.ID]: item[DatabaseField.ID],
-              [DatabaseField.NAME]: item[DatabaseField.NAME],
-              [DatabaseField.FAVORITE]: item[DatabaseField.FAVORITE],
-              previousNote,
-              previousTimestamp,
-              previousNumber,
-            } as ParentCardItem
-          })
-        )
-
-        const favorites = parentCardItems.filter((item) => item.favorite)
-        const nonFavorites = parentCardItems.filter((item) => !item.favorite)
-        const combined = [...favorites, ...nonFavorites]
-        itemsRef.value = combined as ParentCardItem[]
-
-        consoleDebug('Retrieved Examples', combined)
-    */
+    dashboardRecordRefs[DatabaseType.EXAMPLES].value = [...exampleFavorites, ...exampleNonFavorites]
 
     // Tests
     // Include only enabled tests
     // Sort them by name
     const dashboardTests = await Promise.all(
       records
-        .filter((r) => r.type === DatabaseType.EXAMPLES && r[DatabaseField.IS_ENABLED] === true)
+        .filter((r) => r.type === DatabaseType.TESTS && r[DatabaseField.IS_ENABLED] === true)
         .sort((a, b) => {
           const aName = a[DatabaseField.NAME] ?? ''
           const bName = b[DatabaseField.NAME] ?? ''
@@ -129,7 +108,7 @@ const subscription = liveDashboard().subscribe({
     // Group favorites at the top
     const testFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
     const testNonFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === false)
-    tests.value = [...testFavorites, ...testNonFavorites]
+    dashboardRecordRefs[DatabaseType.TESTS].value = [...testFavorites, ...testNonFavorites]
   },
   error: (error) => {
     log.error('Error loading live dashboard records', error)
@@ -139,6 +118,30 @@ const subscription = liveDashboard().subscribe({
 onUnmounted(() => {
   subscription.unsubscribe()
 })
+
+// TODO
+function getRecordsCountText() {
+  const count =
+    dashboardRecordRefs?.[dashboardListSelection.value as DatabaseParentType]?.value?.length ?? 0
+
+  if (count === 1) {
+    return '1 record found'
+  } else {
+    return `${count} records found`
+  }
+}
+
+// TODO
+async function onCreate(databaseType: DatabaseType) {
+  try {
+    router.push({
+      name: RouteName.ACTION_CREATE,
+      params: { databaseTypeSlug: slugify(databaseType) },
+    })
+  } catch (error) {
+    log.error('Error accessing data type', error)
+  }
+}
 </script>
 
 <template>
@@ -159,16 +162,50 @@ onUnmounted(() => {
       </QCardSection>
     </QCard>
 
-    <QCard class="q-mb-md">
-      <QCardSection>
-        {{ examples }}
-      </QCardSection>
+    <!-- Examples - Using v-show so the DOM doesn't get updated when switching selections -->
+    <div v-show="dashboardListSelection === DatabaseType.EXAMPLES">
+      <div v-for="(record, i) in dashboardRecordRefs[DatabaseType.EXAMPLES].value" :key="i">
+        <DashboardParentData
+          :type="record[DatabaseField.TYPE]"
+          :id="record[DatabaseField.ID]"
+          :name="record[DatabaseField.NAME]"
+          :isFavorite="record[DatabaseField.IS_FAVORITED]"
+          :previousText="record.previousText"
+          :previousTimestamp="record.previousTimestamp"
+          class="q-mb-md"
+        />
+      </div>
+    </div>
 
-      <QCardSection>
-        {{ tests }}
-      </QCardSection>
-    </QCard>
+    <!-- Tests - Using v-show so the DOM doesn't get updated when switching selections -->
+    <div v-show="dashboardListSelection === DatabaseType.TESTS">
+      <div v-for="(record, j) in dashboardRecordRefs[DatabaseType.TESTS].value" :key="j">
+        <DashboardParentData
+          :type="record[DatabaseField.TYPE]"
+          :id="record[DatabaseField.ID]"
+          :name="record[DatabaseField.NAME]"
+          :isFavorite="record[DatabaseField.IS_FAVORITED]"
+          :previousText="record.previousText"
+          :previousTimestamp="record.previousTimestamp"
+          class="q-mb-md"
+        />
+      </div>
+    </div>
 
-    <!-- TODO -->
+    <!-- Bottom of page message and create button -->
+    <div class="row justify-center q-my-md">
+      <div class="col-12 text-center">
+        <QIcon name="menu_open" size="80px" color="grey" />
+      </div>
+
+      <div class="col-12 text-grey text-center q-mb-md">{{ getRecordsCountText() }}</div>
+
+      <QBtn
+        color="positive"
+        :icon="Icon.CREATE"
+        :label="`Create ${getLabelSingular(dashboardListSelection as DatabaseType)}`"
+        @click="onCreate(dashboardListSelection as DatabaseType)"
+      />
+    </div>
   </ResponsivePage>
 </template>

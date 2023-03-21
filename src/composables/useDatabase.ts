@@ -181,6 +181,20 @@ export default function useDatabase() {
     ).reverse()[0]
   }
 
+  // TODO
+  async function deleteRecord(type: DatabaseType, id: string | SettingId) {
+    return await db.delete([type, id])
+  }
+
+  // TODO
+  async function updateRecord(
+    type: DatabaseType,
+    originalId: string | SettingId,
+    updateProps: Partial<DatabaseRecord>
+  ) {
+    return await db.update([type, originalId], updateProps)
+  }
+
   return {
     initSettings,
     liveSettings,
@@ -195,5 +209,7 @@ export default function useDatabase() {
     bulkAddRecords,
     clearRecordsByType,
     deleteDatabase,
+    deleteRecord,
+    updateRecord,
   }
 }
