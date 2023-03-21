@@ -12,7 +12,8 @@ import type { ColumnProps } from '@/types/frontend'
 import {
   getDetailsColumnProp,
   getToggleColumnProp,
-  getIdColumnProp,
+  getTruncatedIdColumnProp,
+  getFullIdColumnProp,
   getNameColumnProp,
   getNumberColumnProp,
   getParentIdColumnProp,
@@ -86,22 +87,18 @@ export function getInputComponents(table: DatabaseType): any[] {
   }[table]
 }
 
-// TODO
-// export function getParentCardComponents(table: DatabaseParentType): any {
-//   return {
-//     [DatabaseType.EXAMPLES]: defineAsyncComponent(() => import('@/components/ExampleCard.vue')),
-//     [DatabaseType.TESTS]: defineAsyncComponent(() => import('@/components/TestCard.vue')),
-//   }[table]
-// }
-
 export function getVisibleColumns(table: DatabaseType): DatabaseField[] {
   return {
-    [DatabaseType.SETTINGS]: [],
-    [DatabaseType.LOGS]: [],
-    [DatabaseType.EXAMPLES]: [],
-    [DatabaseType.EXAMPLE_RESULTS]: [],
-    [DatabaseType.TESTS]: [],
-    [DatabaseType.TEST_RESULTS]: [],
+    [DatabaseType.SETTINGS]: [DatabaseField.VALUE],
+    [DatabaseType.LOGS]: [
+      DatabaseField.CREATED_TIMESTAMP,
+      DatabaseField.SEVERITY,
+      DatabaseField.NAME,
+    ],
+    [DatabaseType.EXAMPLES]: [DatabaseField.CREATED_TIMESTAMP, DatabaseField.NAME],
+    [DatabaseType.EXAMPLE_RESULTS]: [DatabaseField.CREATED_TIMESTAMP, DatabaseField.PARENT_ID],
+    [DatabaseType.TESTS]: [DatabaseField.CREATED_TIMESTAMP, DatabaseField.NAME],
+    [DatabaseType.TEST_RESULTS]: [DatabaseField.CREATED_TIMESTAMP, DatabaseField.PARENT_ID],
   }[table]
 }
 
@@ -181,74 +178,54 @@ export function getTypeFromSlug(databaseTypeSlug: string) {
   }[databaseTypeSlug]
 }
 
-// export function getActionFromSlug(actionSlug: string): DatabaseAction {
-//   return {
-//     [slugify(DatabaseAction.CREATE)]: DatabaseAction.CREATE,
-//     [slugify(DatabaseAction.INSPECT)]: DatabaseAction.INSPECT,
-//     [slugify(DatabaseAction.EDIT)]: DatabaseAction.EDIT,
-//     [slugify(DatabaseAction.DELETE)]: DatabaseAction.DELETE,
-//     [slugify(DatabaseAction.CHARTS)]: DatabaseAction.CHARTS,
-//   }[actionSlug]
-// }
-
-// export function getActionIcon(action: DatabaseAction): Icon {
-//   return {
-//     [DatabaseAction.CREATE]: Icon.CREATE,
-//     [DatabaseAction.INSPECT]: Icon.INSPECT,
-//     [DatabaseAction.EDIT]: Icon.EDIT,
-//     [DatabaseAction.DELETE]: Icon.DELETE,
-//     [DatabaseAction.CHARTS]: Icon.CHARTS,
-//   }[action]
-// }
-
 export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
   return {
     [DatabaseType.SETTINGS]: [
-      getTypeColumnProp(),
-      getHiddenIdColumnProp(),
-      getIdColumnProp(),
+      getTypeColumnProp(), // required
+      getHiddenIdColumnProp(), // required
+      getFullIdColumnProp(), // Full or Truncated should be used (not both)
       getValueColumnProp(),
     ],
     [DatabaseType.LOGS]: [
-      getTypeColumnProp(),
-      getHiddenIdColumnProp(),
-      getIdColumnProp(),
+      getTypeColumnProp(), // required
+      getHiddenIdColumnProp(), // required
+      getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
       getCreatedTimestampColumnProp(),
       getSeverityColumnProp(),
       getNameColumnProp('Error'),
       getDetailsColumnProp(),
     ],
     [DatabaseType.EXAMPLES]: [
-      getTypeColumnProp(),
-      getHiddenIdColumnProp(),
-      getIdColumnProp(),
+      getTypeColumnProp(), // required
+      getHiddenIdColumnProp(), // required
+      getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
       getNameColumnProp(),
       getTextColumnProp('Description'),
       getToggleColumnProp(DatabaseField.IS_FAVORITED, 'Favorite'),
       getToggleColumnProp(DatabaseField.IS_ENABLED, 'Enabled'),
     ],
     [DatabaseType.EXAMPLE_RESULTS]: [
-      getTypeColumnProp(),
-      getHiddenIdColumnProp(),
-      getIdColumnProp(),
+      getTypeColumnProp(), // required
+      getHiddenIdColumnProp(), // required
+      getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
       getCreatedTimestampColumnProp(),
       getParentIdColumnProp(),
       getTextColumnProp('Note'),
       getNumberColumnProp(),
     ],
     [DatabaseType.TESTS]: [
-      getTypeColumnProp(),
-      getHiddenIdColumnProp(),
-      getIdColumnProp(),
+      getTypeColumnProp(), // required
+      getHiddenIdColumnProp(), // required
+      getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
       getNameColumnProp(),
       getTextColumnProp('Description'),
       getToggleColumnProp(DatabaseField.IS_FAVORITED, 'Favorite'),
       getToggleColumnProp(DatabaseField.IS_ENABLED, 'Enabled'),
     ],
     [DatabaseType.TEST_RESULTS]: [
-      getTypeColumnProp(),
-      getHiddenIdColumnProp(),
-      getIdColumnProp(),
+      getTypeColumnProp(), // required
+      getHiddenIdColumnProp(), // required
+      getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
       getCreatedTimestampColumnProp(),
       getParentIdColumnProp(),
       getTextColumnProp('Note'),

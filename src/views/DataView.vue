@@ -18,13 +18,13 @@ import useActions from '@/composables/useActions'
 import useDatabase from '@/composables/useDatabase'
 
 const route = useRoute()
-const { log, consoleDebug } = useLogger()
+const { log } = useLogger()
 const { goToCharts, goToInspect, goToEdit, goToCreate, goBack, onDeleteRecord } = useActions()
 const { getSetting, liveDataType } = useDatabase()
 
 // TODO
 const routeTable = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
-const rows: Ref<DatabaseRecord[]> = ref([])
+// TODO
 const columns: Ref<ColumnProps[]> = ref(getDatabaseTypeColumnProps(routeTable) ?? [])
 // TODO
 const columnOptions: Ref<ColumnProps[]> = ref(
@@ -34,6 +34,7 @@ const columnOptions: Ref<ColumnProps[]> = ref(
   )
 )
 const visibleColumns: Ref<string[]> = ref([])
+const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 // TODO
@@ -53,15 +54,9 @@ onMounted(async () => {
 
     // This sets up what is currently visible on the data table
     if (showAllDataColumns) {
-      // All columns
-      const allCols = getFields(routeTable)
-      consoleDebug('All columns', allCols)
-      visibleColumns.value = allCols
+      visibleColumns.value = getFields(routeTable) ?? [] // All columns
     } else {
-      // Default columns
-      const visibleCols = getVisibleColumns(routeTable)
-      consoleDebug('Default columns', visibleCols)
-      visibleColumns.value = visibleCols
+      visibleColumns.value = getVisibleColumns(routeTable) ?? [] // Default columns
     }
   } catch (error) {
     log.error('Failed to retrieve visible columns', error)

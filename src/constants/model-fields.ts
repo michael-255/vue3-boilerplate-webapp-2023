@@ -31,6 +31,7 @@ export const exampleResultFields: readonly DatabaseField[] = [
   DatabaseField.ID,
   DatabaseField.CREATED_TIMESTAMP,
   DatabaseField.PARENT_ID,
+  DatabaseField.TEXT,
   DatabaseField.NUMBER,
 ]
 

@@ -66,7 +66,9 @@ export default function useDatabase() {
 
   // TODO
   function liveDataType(type: DatabaseType) {
-    return liveQuery(() => db.where(DatabaseField.TYPE).equals(type).toArray())
+    return liveQuery(() =>
+      db.where(DatabaseField.TYPE).equals(type).sortBy(DatabaseField.CREATED_TIMESTAMP)
+    )
   }
 
   // TODO

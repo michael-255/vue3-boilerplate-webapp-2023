@@ -35,7 +35,7 @@ export function getHiddenIdColumnProp(): ColumnProps {
   }
 }
 
-export function getIdColumnProp(): ColumnProps {
+export function getTruncatedIdColumnProp(): ColumnProps {
   return {
     name: DatabaseField.ID,
     label: 'Id*',
@@ -44,6 +44,18 @@ export function getIdColumnProp(): ColumnProps {
     required: true,
     field: (row: any) => row[DatabaseField.ID],
     format: (val: string) => truncateString(val, 8, '*'),
+  }
+}
+
+export function getFullIdColumnProp(): ColumnProps {
+  return {
+    name: DatabaseField.ID,
+    label: 'Id',
+    align: 'left',
+    sortable: true,
+    required: true,
+    field: (row: any) => row[DatabaseField.ID],
+    format: (val: string) => `${val}`,
   }
 }
 
