@@ -5,14 +5,11 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- REFACTOR (trying single table design for database)
+- Inspect
 
-  - [ ] Go through get `use*` and get them using the new files
-  - [ ] Get each view working with new files (start with Settings)
-  - [ ] Continue refatcor...
-  - [ ] Clean up code and files that are no loonger needed (post refactor)
-
-  - [ ] Move the `Record Types` table views to the settings page (remove from menu)
+  - [ ] Get `Inspect` working with refactor
+  - [ ] Get `Create` working with refactor
+  - [ ] Merge (PR) refactor into `main` branch
 
 - Dashboard
 
