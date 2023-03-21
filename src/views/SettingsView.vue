@@ -10,12 +10,12 @@ import useNotifications from '@/composables/useNotifications'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import useAppRoutes from '@/composables/useAppRoutes'
+import useActions from '@/composables/useActions'
 
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
-const { onDataRoute } = useAppRoutes()
+const { goToData } = useActions()
 const {
   liveSettings,
   initSettings,
@@ -82,9 +82,8 @@ async function onDefaults(): Promise<void> {
     'info',
     async (): Promise<void> => {
       try {
-        const alphabetLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
-
         const randomLetter = (): string => {
+          const alphabetLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
           return alphabetLetters[Math.floor(Math.random() * alphabetLetters.length)]
         }
 
@@ -128,7 +127,7 @@ async function onDefaults(): Promise<void> {
               id: uid(),
               createdTimestamp: initialTimestamp,
               parentId: parent?.id || `orphaned-record-id-${i}`,
-              text: randomBoolean() ? `Previous record note = ${parent?.id} [${i}]` : '',
+              text: randomBoolean() ? `Previous note ${parent?.id}` : '',
               number: randomInt(1, 100),
             } as ExampleResult)
 
@@ -176,8 +175,8 @@ function onRejectedFile(entries: any): void {
  */
 function onImportFile(): void {
   confirmDialog(
-    'Import',
-    `Import file "${importFile.value.name}" and attempt to load data from it?`,
+    'Import Data',
+    `Import file ${importFile?.value?.name} and attempt to load data from it?`,
     Icon.INFO,
     'info',
     async (): Promise<void> => {
@@ -223,8 +222,8 @@ function onExportRecords(types: DatabaseType[]): void {
   const filename = `export-${appName}-${date}.json`
 
   confirmDialog(
-    'Export',
-    `Export the file "${filename}" with all of your records?`,
+    'Export Data',
+    `Export all of your data as the file ${filename}?`,
     Icon.INFO,
     'info',
     async (): Promise<void> => {
@@ -519,7 +518,7 @@ async function onDeleteDatabase(): Promise<void> {
               :disable="!accessModel"
               label="Access Data"
               color="primary"
-              @click="onDataRoute(accessModel as DatabaseType)"
+              @click="goToData(accessModel as DatabaseType)"
             />
           </template>
         </QSelect>

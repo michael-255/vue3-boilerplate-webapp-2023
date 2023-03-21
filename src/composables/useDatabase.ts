@@ -173,10 +173,9 @@ export default function useDatabase() {
 
   // TODO
   async function getPreviousChildRecord(type: DatabaseParentType, id: string) {
-    const childType = getChildType(type)
     return (
       await db
-        .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: id })
+        .where({ [DatabaseField.TYPE]: getChildType(type), [DatabaseField.PARENT_ID]: id })
         .sortBy(DatabaseField.CREATED_TIMESTAMP)
     ).reverse()[0]
   }

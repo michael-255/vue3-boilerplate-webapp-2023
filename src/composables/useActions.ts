@@ -2,17 +2,25 @@ import type { DatabaseType, SettingId } from '@/types/database'
 import { RouteName } from '@/router/route-names'
 import { slugify } from '@/utils/common'
 import { useRouter } from 'vue-router'
+import { Icon } from '@/types/icons'
 import useLogger from '@/composables/useLogger'
+import useSimpleDialogs from './useSimpleDialogs'
+import useDatabase from '@/composables/useDatabase'
 
-export default function useAppRoutes() {
+/**
+ * Composable with actions that relate to CRUD operations and navigation.
+ */
+export default function useActions() {
   const router = useRouter()
   const { log } = useLogger()
+  const { confirmDialog } = useSimpleDialogs()
+  const { deleteRecord } = useDatabase()
 
   /**
-   * Go to data table route. The type can be 'orphaned' to show orphaned records.
+   * Go to data table route. The type can also be 'orphaned' to show orphaned records.
    * @param type
    */
-  async function onDataRoute(type: DatabaseType | 'orphaned') {
+  async function goToData(type: DatabaseType | 'orphaned') {
     try {
       router.push({
         name: RouteName.DATA,
@@ -28,7 +36,7 @@ export default function useAppRoutes() {
    * @param type
    * @param id
    */
-  function onInspectRoute(type: DatabaseType, id: string | SettingId) {
+  function goToInspect(type: DatabaseType, id: string | SettingId) {
     try {
       router.push({
         name: RouteName.ACTION_INSPECT,
@@ -47,7 +55,7 @@ export default function useAppRoutes() {
    * @param type
    * @param parentId Optional parent id
    */
-  function onCreateRoute(type: DatabaseType, parentId?: string) {
+  function goToCreate(type: DatabaseType, parentId?: string) {
     try {
       router.push({
         name: RouteName.ACTION_CREATE,
@@ -66,7 +74,7 @@ export default function useAppRoutes() {
    * @param type
    * @param id
    */
-  function onEditRoute(type: DatabaseType, id: string) {
+  function goToEdit(type: DatabaseType, id: string) {
     try {
       router.push({
         name: RouteName.ACTION_EDIT,
@@ -85,7 +93,7 @@ export default function useAppRoutes() {
    * @param type
    * @param id
    */
-  function onChartsRoute(type: DatabaseType, id: string) {
+  function goToCharts(type: DatabaseType, id: string) {
     try {
       router.push({
         name: RouteName.ACTION_CHARTS,
@@ -102,7 +110,7 @@ export default function useAppRoutes() {
   /**
    * Go back if previous route state is part of the app history, otherwise go to Dashboard.
    */
-  function onGoBackRoute() {
+  function goBack() {
     try {
       if (router?.options?.history?.state?.back) {
         router.back()
@@ -114,12 +122,35 @@ export default function useAppRoutes() {
     }
   }
 
+  /**
+   * On confirmation, delete the matching record from the database.
+   * @param type
+   * @param id
+   */
+  async function onDeleteRecord(type: DatabaseType, id: string) {
+    confirmDialog(
+      'Delete Record',
+      `Permanently delete record ${id} from ${type}?`,
+      Icon.DELETE,
+      'negative',
+      async () => {
+        try {
+          await deleteRecord(type, id)
+          log.info('Successfully deleted record', { deletedRecordType: type, deletedRecordId: id })
+        } catch (error) {
+          log.error('Delete failed', error)
+        }
+      }
+    )
+  }
+
   return {
-    onDataRoute,
-    onInspectRoute,
-    onCreateRoute,
-    onEditRoute,
-    onChartsRoute,
-    onGoBackRoute,
+    goToData,
+    goToInspect,
+    goToCreate,
+    goToEdit,
+    goToCharts,
+    goBack,
+    onDeleteRecord,
   }
 }

@@ -2,9 +2,6 @@ import { useQuasar } from 'quasar'
 import { Icon } from '@/types/icons'
 import SimpleDialog from '@/components/SimpleDialog.vue'
 
-/**
- * Simple customizable dialogs.
- */
 export default function useSimpleDialogs() {
   const $q = useQuasar()
 
@@ -22,7 +19,7 @@ export default function useSimpleDialogs() {
     icon: Icon,
     color: string,
     onOkFunc: () => void
-  ): void {
+  ) {
     $q.dialog({
       component: SimpleDialog,
       componentProps: {
@@ -50,7 +47,7 @@ export default function useSimpleDialogs() {
     message: string,
     icon: Icon = Icon.INFO,
     color: string = 'info'
-  ): void {
+  ) {
     $q.dialog({
       component: SimpleDialog,
       componentProps: {

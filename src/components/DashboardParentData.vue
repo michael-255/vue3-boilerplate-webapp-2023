@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn, date } from 'quasar'
 import { useTimeAgo } from '@vueuse/core'
-import { DatabaseField, type DatabaseParentType, type DatabaseType } from '@/types/database'
+import { DatabaseField, type DatabaseParentType } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
-import useAppRoutes from '@/composables/useAppRoutes'
+import useActions from '@/composables/useActions'
 
 defineProps<{
   type: DatabaseParentType
@@ -19,9 +19,9 @@ defineProps<{
 }>()
 
 const { log } = useLogger()
-const { onInspectRoute, onEditRoute, onChartsRoute } = useAppRoutes()
+const { goToInspect, goToEdit, goToCharts, onDeleteRecord } = useActions()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
-const { updateRecord, deleteRecord } = useDatabase()
+const { updateRecord } = useDatabase()
 
 // TODO
 async function viewPreviousNote(note: string) {
@@ -62,24 +62,6 @@ async function onUnfavorite(type: DatabaseParentType, id: string, name: string) 
         })
       } catch (error) {
         log.error('Unfavorite update failed', error)
-      }
-    }
-  )
-}
-
-// TODO
-async function onDelete(type: DatabaseType, id: string): Promise<void> {
-  confirmDialog(
-    'Delete',
-    `Permanently delete item ${id} from ${type}?`,
-    Icon.DELETE,
-    'negative',
-    async () => {
-      try {
-        await deleteRecord(type, id)
-        log.info('Successfully deleted item', { deletedRecordType: type, deletedRecordId: id })
-      } catch (error) {
-        log.error('Delete failed', error)
       }
     }
   )
@@ -129,21 +111,21 @@ async function onDelete(type: DatabaseType, id: string): Promise<void> {
             transition-hide="flip-left"
           >
             <QList>
-              <QItem clickable @click="onInspectRoute(type, id)">
+              <QItem clickable @click="goToInspect(type, id)">
                 <QItemSection avatar>
                   <QIcon color="primary" :name="Icon.INSPECT" />
                 </QItemSection>
                 <QItemSection>Inspect</QItemSection>
               </QItem>
 
-              <QItem clickable @click="onEditRoute(type, id)">
+              <QItem clickable @click="goToEdit(type, id)">
                 <QItemSection avatar>
                   <QIcon color="primary" :name="Icon.EDIT" />
                 </QItemSection>
                 <QItemSection>Edit</QItemSection>
               </QItem>
 
-              <QItem clickable @click="onChartsRoute(type, id)">
+              <QItem clickable @click="goToCharts(type, id)">
                 <QItemSection avatar>
                   <QIcon color="primary" :name="Icon.CHARTS" />
                 </QItemSection>
@@ -152,7 +134,7 @@ async function onDelete(type: DatabaseType, id: string): Promise<void> {
 
               <QSeparator />
 
-              <QItem clickable @click="onDelete(type, id)">
+              <QItem clickable @click="onDeleteRecord(type, id)">
                 <QItemSection avatar>
                   <QIcon color="negative" :name="Icon.DELETE" />
                 </QItemSection>

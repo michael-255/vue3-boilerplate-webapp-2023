@@ -10,11 +10,11 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
-import useAppRoutes from '@/composables/useAppRoutes'
+import useActions from '@/composables/useActions'
 import DashboardParentData from '@/components/DashboardParentData.vue'
 
 const { log, consoleLog } = useLogger()
-const { onCreateRoute } = useAppRoutes()
+const { goToCreate } = useActions()
 const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
 
 const dashboardListOptions = parentTypes.map((type) => ({
@@ -191,7 +191,7 @@ function getRecordsCountText() {
         color="positive"
         :icon="Icon.CREATE"
         :label="`Create ${getLabelSingular(dashboardListSelection as DatabaseType)}`"
-        @click="onCreateRoute(dashboardListSelection as DatabaseType)"
+        @click="goToCreate(dashboardListSelection as DatabaseType)"
       />
     </div>
   </ResponsivePage>

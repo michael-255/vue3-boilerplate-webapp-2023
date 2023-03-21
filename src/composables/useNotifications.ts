@@ -1,9 +1,6 @@
 import { useQuasar } from 'quasar'
 import { Icon } from '@/types/icons'
 
-/**
- * Simple customizable notifications.
- */
 export default function useNotifications() {
   const $q = useQuasar()
 
@@ -12,27 +9,8 @@ export default function useNotifications() {
    * @param message
    * @param icon
    * @param color
-   * @param multiLine
-   * @param position
-   * @param timeout
    */
-  function notify(
-    message: string,
-    icon: Icon = Icon.INFO,
-    color: string = 'info',
-    multiLine = false,
-    position:
-      | 'top-left'
-      | 'top-right'
-      | 'bottom-left'
-      | 'bottom-right'
-      | 'top'
-      | 'bottom'
-      | 'left'
-      | 'right'
-      | 'center' = 'top',
-    timeout = 4000
-  ): void {
+  function notify(message: string, icon: Icon = Icon.INFO, color: string = 'info') {
     const textColor = 'white'
 
     $q.notify({
@@ -40,9 +18,9 @@ export default function useNotifications() {
       icon,
       color,
       textColor,
-      position,
-      multiLine,
-      timeout,
+      position: 'top',
+      multiLine: false,
+      timeout: 4000,
       actions: [
         {
           label: 'Dismiss',
