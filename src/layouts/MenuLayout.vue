@@ -17,11 +17,11 @@ import { slugify } from '@/utils/common'
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'
-import useGoBack from '@/composables/useGoBack'
+import useAppRoutes from '@/composables/useAppRoutes'
 import useUIStore from '@/stores/ui'
 import { DatabaseType } from '@/types/database'
 
-const { onGoBack } = useGoBack()
+const { onGoBackRoute } = useAppRoutes()
 const uiStore = useUIStore()
 const route = useRoute()
 </script>
@@ -40,7 +40,7 @@ const route = useRoute()
           flat
           round
           :icon="Icon.BACK"
-          @click="onGoBack()"
+          @click="onGoBackRoute()"
         />
       </QToolbar>
     </QHeader>

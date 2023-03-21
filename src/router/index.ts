@@ -23,8 +23,8 @@ const router = createRouter({
       component: () => import('../views/ActionInspectView.vue'),
     },
     {
-      // id is optional for creating child items with a specific parent id
-      path: '/create/:databaseTypeSlug/:id?',
+      // parentId is optional for creating child records with a specific parent id
+      path: '/create/:databaseTypeSlug/:parentId?',
       name: RouteName.ACTION_CREATE,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionCreateView.vue'),

@@ -3,21 +3,19 @@ import { QSelect, QBtn, QOptionGroup, uid, exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
 import { AppText, Limit, LogRetention, type Optional } from '@/types/misc'
 import { DatabaseType, SettingId } from '@/types/database'
-import { useRouter } from 'vue-router'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/models'
-import { RouteName } from '@/router/route-names'
-import { slugify } from '@/utils/common'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import useAppRoutes from '@/composables/useAppRoutes'
 
-const router = useRouter()
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
+const { onDataRoute } = useAppRoutes()
 const {
   liveSettings,
   initSettings,
@@ -282,21 +280,6 @@ async function onChangeLogRetention(logRetentionIndex: number): Promise<void> {
 
 /**
  * TODO
- * @param databaseType
- */
-async function onAccessData(databaseType: DatabaseType) {
-  try {
-    router.push({
-      name: RouteName.DATA,
-      params: { databaseTypeSlug: slugify(databaseType) },
-    })
-  } catch (error) {
-    log.error('Error accessing data type', error)
-  }
-}
-
-/**
- * TODO
  * @param table
  */
 async function onDeleteTableData(table: DatabaseType): Promise<void> {
@@ -536,7 +519,7 @@ async function onDeleteDatabase(): Promise<void> {
               :disable="!accessModel"
               label="Access Data"
               color="primary"
-              @click="onAccessData(accessModel as DatabaseType)"
+              @click="onDataRoute(accessModel as DatabaseType)"
             />
           </template>
         </QSelect>

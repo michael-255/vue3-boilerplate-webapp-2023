@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn, date } from 'quasar'
-import { slugify } from '@/utils/common'
 import { useTimeAgo } from '@vueuse/core'
 import { DatabaseField, type DatabaseParentType, type DatabaseType } from '@/types/database'
 import { Icon } from '@/types/icons'
-import { RouteName } from '@/router/route-names'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
+import useAppRoutes from '@/composables/useAppRoutes'
 
 defineProps<{
   type: DatabaseParentType
@@ -16,10 +15,11 @@ defineProps<{
   isFavorite: boolean
   // Will be undefined if no records have been recorded yet
   previousText?: string
-  previousTimestamp?: number
+  previousCreatedTimestamp?: number
 }>()
 
 const { log } = useLogger()
+const { onInspectRoute, onEditRoute, onChartsRoute } = useAppRoutes()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
 const { updateRecord, deleteRecord } = useDatabase()
 
@@ -129,45 +129,21 @@ async function onDelete(type: DatabaseType, id: string): Promise<void> {
             transition-hide="flip-left"
           >
             <QList>
-              <QItem
-                clickable
-                :to="{
-                  name: RouteName.ACTION_INSPECT,
-                  params: {
-                    databaseTypeSlug: slugify(type),
-                    id,
-                  },
-                }"
-              >
+              <QItem clickable @click="onInspectRoute(type, id)">
                 <QItemSection avatar>
                   <QIcon color="primary" :name="Icon.INSPECT" />
                 </QItemSection>
                 <QItemSection>Inspect</QItemSection>
               </QItem>
 
-              <QItem
-                clickable
-                :to="{
-                  name: RouteName.ACTION_EDIT,
-                  params: {
-                    databaseTypeSlug: slugify(type),
-                    id,
-                  },
-                }"
-              >
+              <QItem clickable @click="onEditRoute(type, id)">
                 <QItemSection avatar>
                   <QIcon color="primary" :name="Icon.EDIT" />
                 </QItemSection>
                 <QItemSection>Edit</QItemSection>
               </QItem>
 
-              <QItem
-                clickable
-                :to="{
-                  name: RouteName.ACTION_CHARTS,
-                  params: { databaseTypeSlug: slugify(type), id },
-                }"
-              >
+              <QItem clickable @click="onChartsRoute(type, id)">
                 <QItemSection avatar>
                   <QIcon color="primary" :name="Icon.CHARTS" />
                 </QItemSection>
@@ -191,15 +167,15 @@ async function onDelete(type: DatabaseType, id: string): Promise<void> {
       <QBadge rounded color="secondary" class="q-py-none">
         <QIcon :name="Icon.PREVIOUS" />
         <span class="text-caption q-ml-xs">
-          {{ useTimeAgo(previousTimestamp || '').value || 'No previous records' }}
+          {{ useTimeAgo(previousCreatedTimestamp || '').value || 'No previous records' }}
         </span>
       </QBadge>
 
       <!-- Previous Record Created Date -->
-      <div v-show="previousTimestamp">
+      <div v-show="previousCreatedTimestamp">
         <QIcon :name="Icon.CALENDAR_CHECK" />
         <span class="text-caption q-ml-xs">
-          {{ date.formatDate(previousTimestamp, 'ddd, YYYY MMM Do, h:mm A') }}
+          {{ date.formatDate(previousCreatedTimestamp, 'ddd, YYYY MMM Do, h:mm A') }}
         </span>
       </div>
 

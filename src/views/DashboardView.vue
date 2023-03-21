@@ -2,20 +2,19 @@
 import { Icon } from '@/types/icons'
 import { type Ref, ref, onUnmounted } from 'vue'
 import { DatabaseType, DatabaseField, SettingId, type DatabaseParentType } from '@/types/database'
+import type { DashboardParent } from '@/types/frontend'
 import type { Optional } from '@/types/misc'
 import { parentTypes } from '@/constants/database-types'
-import { RouteName } from '@/router/route-names'
-import { slugify } from '@/utils/common'
 import { getLabelSingular } from '@/services/DatabaseUtils'
-import { useRouter } from 'vue-router'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
+import useAppRoutes from '@/composables/useAppRoutes'
 import DashboardParentData from '@/components/DashboardParentData.vue'
 
-const router = useRouter()
 const { log, consoleLog } = useLogger()
+const { onCreateRoute } = useAppRoutes()
 const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
 
 const dashboardListOptions = parentTypes.map((type) => ({
@@ -28,7 +27,7 @@ const dashboardListSelection: Ref<Optional<DatabaseType>> = ref(null)
 const dashboardRecordRefs = {
   [DatabaseType.EXAMPLES]: ref([]),
   [DatabaseType.TESTS]: ref([]),
-} as { [key in DatabaseParentType]: Ref<any[]> }
+} as { [key in DatabaseParentType]: Ref<DashboardParent[]> }
 
 const subscription = liveDashboard().subscribe({
   next: async (records) => {
@@ -65,9 +64,9 @@ const subscription = liveDashboard().subscribe({
             [DatabaseField.NAME]: r[DatabaseField.NAME],
             [DatabaseField.IS_FAVORITED]: r[DatabaseField.IS_FAVORITED],
             previousText: previousChild?.[DatabaseField.TEXT],
-            previousTimestamp: previousChild?.[DatabaseField.CREATED_TIMESTAMP],
+            previousCreatedTimestamp: previousChild?.[DatabaseField.CREATED_TIMESTAMP],
             previousNumber: previousChild?.[DatabaseField.NUMBER],
-          }
+          } as DashboardParent
         })
     )
     // Group favorites at the top
@@ -100,9 +99,9 @@ const subscription = liveDashboard().subscribe({
             [DatabaseField.NAME]: r[DatabaseField.NAME],
             [DatabaseField.IS_FAVORITED]: r[DatabaseField.IS_FAVORITED],
             previousText: previousChild?.[DatabaseField.TEXT],
-            previousTimestamp: previousChild?.[DatabaseField.CREATED_TIMESTAMP],
+            previousCreatedTimestamp: previousChild?.[DatabaseField.CREATED_TIMESTAMP],
             previousNumber: previousChild?.[DatabaseField.NUMBER],
-          }
+          } as DashboardParent
         })
     )
     // Group favorites at the top
@@ -128,18 +127,6 @@ function getRecordsCountText() {
     return '1 record found'
   } else {
     return `${count} records found`
-  }
-}
-
-// TODO
-async function onCreate(databaseType: DatabaseType) {
-  try {
-    router.push({
-      name: RouteName.ACTION_CREATE,
-      params: { databaseTypeSlug: slugify(databaseType) },
-    })
-  } catch (error) {
-    log.error('Error accessing data type', error)
   }
 }
 </script>
@@ -171,7 +158,7 @@ async function onCreate(databaseType: DatabaseType) {
           :name="record[DatabaseField.NAME]"
           :isFavorite="record[DatabaseField.IS_FAVORITED]"
           :previousText="record.previousText"
-          :previousTimestamp="record.previousTimestamp"
+          :previousCreatedTimestamp="record.previousCreatedTimestamp"
           class="q-mb-md"
         />
       </div>
@@ -186,13 +173,13 @@ async function onCreate(databaseType: DatabaseType) {
           :name="record[DatabaseField.NAME]"
           :isFavorite="record[DatabaseField.IS_FAVORITED]"
           :previousText="record.previousText"
-          :previousTimestamp="record.previousTimestamp"
+          :previousCreatedTimestamp="record.previousCreatedTimestamp"
           class="q-mb-md"
         />
       </div>
     </div>
 
-    <!-- Bottom of page message and create button -->
+    <!-- Bottom of Dashboard message and create button -->
     <div class="row justify-center q-my-md">
       <div class="col-12 text-center">
         <QIcon name="menu_open" size="80px" color="grey" />
@@ -204,7 +191,7 @@ async function onCreate(databaseType: DatabaseType) {
         color="positive"
         :icon="Icon.CREATE"
         :label="`Create ${getLabelSingular(dashboardListSelection as DatabaseType)}`"
-        @click="onCreate(dashboardListSelection as DatabaseType)"
+        @click="onCreateRoute(dashboardListSelection as DatabaseType)"
       />
     </div>
   </ResponsivePage>
