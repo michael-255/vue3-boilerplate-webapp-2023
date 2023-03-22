@@ -150,9 +150,9 @@ export function getLabelSingular(table: DatabaseType): string {
     [DatabaseType.SETTINGS]: 'Setting',
     [DatabaseType.LOGS]: 'Log',
     [DatabaseType.EXAMPLES]: 'Example',
-    [DatabaseType.EXAMPLE_RESULTS]: 'Example Record',
+    [DatabaseType.EXAMPLE_RESULTS]: 'Example Result',
     [DatabaseType.TESTS]: 'Test',
-    [DatabaseType.TEST_RESULTS]: 'Test Record',
+    [DatabaseType.TEST_RESULTS]: 'Test Result',
   }[table]
 }
 

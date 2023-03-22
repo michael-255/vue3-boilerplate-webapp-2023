@@ -114,9 +114,9 @@ function getDashboardRecordsCountText() {
     dashboardRecordRefs?.[dashboardListSelection.value as DatabaseParentType]?.value?.length ?? 0
 
   if (count === 1) {
-    return '1 record found'
+    return '1 enabled record found'
   } else {
-    return `${count} records found`
+    return `${count} enabled records found`
   }
 }
 </script>

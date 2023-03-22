@@ -149,7 +149,7 @@ export function getToggleColumnProp(
 export function getParentIdColumnProp(): ColumnProps {
   return {
     name: DatabaseField.PARENT_ID,
-    label: 'Parent Id',
+    label: 'Parent Id*',
     align: 'left',
     sortable: true,
     required: false,

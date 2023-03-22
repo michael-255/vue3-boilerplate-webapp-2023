@@ -7,7 +7,7 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Inspect
 
-  - [ ] Get `Inspect` working with refactor
+  - [x] Get `Inspect` working with refactor
   - [ ] Get `Create` working with refactor
   - [ ] Merge (PR) refactor into `main` branch
 

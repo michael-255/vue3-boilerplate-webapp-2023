@@ -23,9 +23,9 @@ const { goToCharts, goToInspect, goToEdit, goToCreate, goBack, onDeleteRecord } 
 const { getSetting, liveDataType } = useDatabase()
 
 // TODO
-const routeTable = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
+const routeDatabaseType = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
 // TODO
-const columns: Ref<ColumnProps[]> = ref(getDatabaseTypeColumnProps(routeTable) ?? [])
+const columns: Ref<ColumnProps[]> = ref(getDatabaseTypeColumnProps(routeDatabaseType) ?? [])
 // TODO
 const columnOptions: Ref<ColumnProps[]> = ref(
   columns.value.filter(
@@ -38,7 +38,7 @@ const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 // TODO
-const subscription = liveDataType(routeTable).subscribe({
+const subscription = liveDataType(routeDatabaseType).subscribe({
   next: (records) => {
     rows.value = records
   },
@@ -54,9 +54,9 @@ onMounted(async () => {
 
     // This sets up what is currently visible on the data table
     if (showAllDataColumns) {
-      visibleColumns.value = getFields(routeTable) ?? [] // All columns
+      visibleColumns.value = getFields(routeDatabaseType) ?? [] // All columns
     } else {
-      visibleColumns.value = getVisibleColumns(routeTable) ?? [] // Default columns
+      visibleColumns.value = getVisibleColumns(routeDatabaseType) ?? [] // Default columns
     }
   } catch (error) {
     log.error('Failed to retrieve visible columns', error)
@@ -116,7 +116,7 @@ function getRecordsCountText() {
         <QTd auto-width>
           <!-- CHARTS -->
           <QBtn
-            v-if="getSupportedActions(routeTable).includes(DatabaseAction.CHARTS)"
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.CHARTS)"
             flat
             round
             dense
@@ -137,7 +137,7 @@ function getRecordsCountText() {
           />
           <!-- EDIT -->
           <QBtn
-            v-if="getSupportedActions(routeTable).includes(DatabaseAction.EDIT)"
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.EDIT)"
             flat
             round
             dense
@@ -148,7 +148,7 @@ function getRecordsCountText() {
           />
           <!-- DELETE -->
           <QBtn
-            v-if="getSupportedActions(routeTable).includes(DatabaseAction.DELETE)"
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.DELETE)"
             flat
             round
             dense
@@ -163,7 +163,7 @@ function getRecordsCountText() {
 
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">{{ routeTable || 'No Table Found' }}</div>
+        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType || 'No Table Found' }}</div>
         <QBtn
           round
           flat
@@ -188,11 +188,11 @@ function getRecordsCountText() {
             <template v-slot:before>
               <!-- CREATE -->
               <QBtn
-                v-if="getSupportedActions(routeTable).includes(DatabaseAction.CREATE)"
+                v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.CREATE)"
                 color="positive"
                 class="q-px-sm q-mr-xs"
                 :icon="Icon.ADD"
-                @click="goToCreate(routeTable)"
+                @click="goToCreate(routeDatabaseType)"
               />
               <!-- OPTIONS (Visible Columns) -->
               <QSelect

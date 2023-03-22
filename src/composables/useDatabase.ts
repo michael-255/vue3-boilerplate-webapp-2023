@@ -71,6 +71,11 @@ export default function useDatabase() {
     )
   }
 
+  // TODO - replace getSetting with this!
+  async function getRecord(type: DatabaseType, id: string | SettingId) {
+    return await db.get([type, id])
+  }
+
   // TODO
   async function getSetting(id: SettingId): Promise<any> {
     return await db.get([DatabaseType.SETTINGS, id])
@@ -211,6 +216,7 @@ export default function useDatabase() {
     getPreviousChildRecord,
     getSetting,
     setSetting,
+    getRecord,
     addLog,
     purgeExpiredLogs,
     getAllRecords,
