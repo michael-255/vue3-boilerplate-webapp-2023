@@ -105,6 +105,15 @@ export default function useDatabase() {
   }
 
   // TODO
+  async function getEnabledParentType(type: DatabaseParentType) {
+    return await db
+      .where(DatabaseField.TYPE)
+      .equals(type)
+      .filter((r) => r[DatabaseField.IS_ENABLED] === true)
+      .toArray()
+  }
+
+  // TODO
   async function addLog(
     severity: Severity,
     name: string,
@@ -208,6 +217,11 @@ export default function useDatabase() {
     return await db.update([type, originalId], updateProps)
   }
 
+  // TODO
+  async function createRecord(record: DatabaseRecord) {
+    return await db.add(record)
+  }
+
   return {
     initSettings,
     liveSettings,
@@ -217,6 +231,7 @@ export default function useDatabase() {
     getSetting,
     setSetting,
     getRecord,
+    getEnabledParentType,
     addLog,
     purgeExpiredLogs,
     getAllRecords,
@@ -226,5 +241,6 @@ export default function useDatabase() {
     deleteDatabase,
     deleteRecord,
     updateRecord,
+    createRecord,
   }
 }

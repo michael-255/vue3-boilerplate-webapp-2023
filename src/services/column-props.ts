@@ -107,10 +107,10 @@ export function getDetailsColumnProp(): ColumnProps {
   }
 }
 
-export function getNameColumnProp(customLabel?: string): ColumnProps {
+export function getNameColumnProp(label: 'Name' | 'Error'): ColumnProps {
   return {
     name: DatabaseField.NAME,
-    label: customLabel ? customLabel : 'Name',
+    label,
     align: 'left',
     sortable: true,
     required: false,
@@ -119,10 +119,10 @@ export function getNameColumnProp(customLabel?: string): ColumnProps {
   }
 }
 
-export function getTextColumnProp(customLabel?: string): ColumnProps {
+export function getTextColumnProp(label: 'Description' | 'Note'): ColumnProps {
   return {
     name: DatabaseField.TEXT,
-    label: customLabel ? customLabel : 'Text',
+    label,
     align: 'left',
     sortable: true,
     required: false,

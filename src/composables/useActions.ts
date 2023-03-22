@@ -3,6 +3,7 @@ import { RouteName } from '@/router/route-names'
 import { slugify } from '@/utils/common'
 import { useRouter } from 'vue-router'
 import { Icon } from '@/types/icons'
+import type { DatabaseRecord } from '@/types/models'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from './useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
@@ -14,7 +15,7 @@ export default function useActions() {
   const router = useRouter()
   const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { deleteRecord } = useDatabase()
+  const { createRecord, deleteRecord } = useDatabase()
 
   /**
    * Go to data table route. The type can also be 'orphaned' to show orphaned records.
@@ -122,6 +123,27 @@ export default function useActions() {
     }
   }
 
+  // TODO
+  async function onCreateRecord(record: DatabaseRecord) {
+    confirmDialog(
+      'Create Record',
+      `Create new record ${record.id} for ${record.type}?`,
+      Icon.CREATE,
+      'positive',
+      async () => {
+        try {
+          await createRecord(record)
+          log.info('Successfully created record', {
+            createdRecordType: record.type,
+            createdRecordId: record.id,
+          })
+        } catch (error) {
+          log.error('Create failed', error)
+        }
+      }
+    )
+  }
+
   /**
    * On confirmation, delete the matching record from the database.
    * @param type
@@ -151,6 +173,7 @@ export default function useActions() {
     goToEdit,
     goToCharts,
     goBack,
+    onCreateRecord,
     onDeleteRecord,
   }
 }

@@ -5,7 +5,7 @@ import { DatabaseType, DatabaseField, SettingId, type DatabaseParentType } from 
 import type { DashboardParent } from '@/types/frontend'
 import type { Optional } from '@/types/misc'
 import { parentTypes } from '@/constants/database-types'
-import { getLabelSingular } from '@/services/DatabaseUtils'
+import { getLabelSingular, getChildType } from '@/services/DatabaseUtils'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
@@ -157,7 +157,7 @@ function getDashboardRecordsCountText() {
             color="positive"
             label="Add Entry"
             :icon="Icon.NEW"
-            @click="goToCreate(DatabaseType.EXAMPLES, record[DatabaseField.ID])"
+            @click="goToCreate(DatabaseType.EXAMPLE_RESULTS, record[DatabaseField.ID])"
           />
         </DashboardParentCard>
       </div>
@@ -181,7 +181,7 @@ function getDashboardRecordsCountText() {
             color="positive"
             label="Add Entry"
             :icon="Icon.NEW"
-            @click="goToCreate(DatabaseType.TESTS, record[DatabaseField.ID])"
+            @click="goToCreate(DatabaseType.TEST_RESULTS, record[DatabaseField.ID])"
           />
         </DashboardParentCard>
       </div>

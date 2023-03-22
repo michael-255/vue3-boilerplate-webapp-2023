@@ -19,7 +19,7 @@ const { log } = useLogger()
 const { getRecord } = useDatabase()
 
 const routeDatabaseType = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
-const routeId = route?.params?.id as string
+const routeId = route?.params?.[DatabaseField.ID] as string
 const bannerTitle = `Inspect ${getLabelSingular(routeDatabaseType)}`
 
 const columnProps = getDatabaseTypeColumnProps(routeDatabaseType)
@@ -43,11 +43,11 @@ onMounted(async () => {
 
 <template>
   <ResponsivePage :banner-icon="Icon.INSPECT" :banner-title="bannerTitle">
-    <div v-for="(item, i) in columnProps" :key="i">
+    <div v-for="(item, i) in columnProps" :key="i" class="q-mb-md">
       <!-- Do NOT print the hiddenId field -->
       <div v-if="item.name !== 'hiddenId'">
         <!-- Id* - Forces full id print and removes "*" from label -->
-        <QCard v-if="item.name === DatabaseField.ID" class="q-mb-md">
+        <QCard v-if="item.name === DatabaseField.ID">
           <QCardSection>
             <div class="text-h6 q-mb-sm">Id</div>
             <div>{{ record?.[item.name as DatabaseField] }}</div>
@@ -55,7 +55,7 @@ onMounted(async () => {
         </QCard>
 
         <!-- Parent Id* - Forces full id print and removes "*" from label -->
-        <QCard v-else-if="item.name === DatabaseField.PARENT_ID" class="q-mb-md">
+        <QCard v-else-if="item.name === DatabaseField.PARENT_ID">
           <QCardSection>
             <div class="text-h6 q-mb-sm">Parent Id</div>
             <div>{{ record?.[item.name as DatabaseField] }}</div>
@@ -63,7 +63,7 @@ onMounted(async () => {
         </QCard>
 
         <!-- Formatted Fields -->
-        <QCard v-else-if="formattedFields.includes(item.name)" class="q-mb-md">
+        <QCard v-else-if="formattedFields.includes(item.name)">
           <QCardSection>
             <div class="text-h6 q-mb-sm">{{ item.label }}</div>
             <div>{{ item.format(record?.[item.name as DatabaseField]) }}</div>
@@ -71,7 +71,7 @@ onMounted(async () => {
         </QCard>
 
         <!-- All Other fields ignore the format function -->
-        <QCard v-else class="q-mb-md">
+        <QCard v-else>
           <QCardSection>
             <div class="text-h6 q-mb-sm">{{ item.label }}</div>
             <div>{{ record?.[item.name as DatabaseField] }}</div>

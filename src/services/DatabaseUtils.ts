@@ -199,7 +199,7 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
       getTypeColumnProp(), // required
       getHiddenIdColumnProp(), // required
       getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
-      getNameColumnProp(),
+      getNameColumnProp('Name'),
       getTextColumnProp('Description'),
       getToggleColumnProp(DatabaseField.IS_FAVORITED, 'Favorite'),
       getToggleColumnProp(DatabaseField.IS_ENABLED, 'Enabled'),
@@ -217,7 +217,7 @@ export function getDatabaseTypeColumnProps(type: DatabaseType): ColumnProps[] {
       getTypeColumnProp(), // required
       getHiddenIdColumnProp(), // required
       getTruncatedIdColumnProp(), // Full or Truncated should be used (not both)
-      getNameColumnProp(),
+      getNameColumnProp('Name'),
       getTextColumnProp('Description'),
       getToggleColumnProp(DatabaseField.IS_FAVORITED, 'Favorite'),
       getToggleColumnProp(DatabaseField.IS_ENABLED, 'Enabled'),
