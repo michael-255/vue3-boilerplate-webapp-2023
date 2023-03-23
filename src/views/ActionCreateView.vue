@@ -2,6 +2,7 @@
 import { Icon } from '@/types/icons'
 import { DatabaseField } from '@/types/database'
 import {
+  getFields,
   getDatabaseTypeColumnProps,
   getLabelSingular,
   getTypeFromSlug,
@@ -17,6 +18,7 @@ import ActionInputText from '@/components/ActionInputText.vue'
 import ActionInputParentId from '@/components/ActionInputParentId.vue'
 import ActionInputToggle from '@/components/ActionInputToggle.vue'
 import ActionInputNumber from '@/components/ActionInputNumber.vue'
+import type { DatabaseRecord } from '@/types/models'
 
 const route = useRoute()
 const { onCreateRecord } = useActions()
@@ -31,6 +33,17 @@ const columnProps = getDatabaseTypeColumnProps(routeDatabaseType)
 // TODO
 actionRecordStore.$reset()
 actionRecordStore.temp[DatabaseField.TYPE] = routeDatabaseType
+
+// TODO
+async function onCreate(record: DatabaseRecord) {
+  const fields = getFields(routeDatabaseType)
+  const realRecord = {} as DatabaseRecord
+  // removing null fields from store record
+  fields.forEach((field) => {
+    realRecord[field] = record[field]
+  })
+  await onCreateRecord(realRecord)
+}
 </script>
 
 <template>
@@ -67,7 +80,7 @@ actionRecordStore.temp[DatabaseField.TYPE] = routeDatabaseType
       label="Create"
       color="positive"
       :icon="Icon.SAVE"
-      @click="onCreateRecord({ ...actionRecordStore.temp })"
+      @click="onCreate({ ...actionRecordStore.temp })"
     />
   </ResponsivePage>
 </template>

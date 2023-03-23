@@ -16,7 +16,7 @@ if (props.label === 'Favorite') {
   actionRecordStore.temp[DatabaseField.IS_FAVORITED] = props.oldToggle ? props.oldToggle : false
   actionRecordStore.valid[DatabaseField.IS_FAVORITED] = true
 } else if (props.label === 'Enabled') {
-  actionRecordStore.temp[DatabaseField.IS_ENABLED] = props.oldToggle ? props.oldToggle : false
+  actionRecordStore.temp[DatabaseField.IS_ENABLED] = props.oldToggle ? props.oldToggle : true
   actionRecordStore.valid[DatabaseField.IS_ENABLED] = true
 }
 </script>
