@@ -131,11 +131,11 @@ export function getSupportedActions(table: DatabaseType): DatabaseAction[] {
   }[table]
 }
 
-export function getParentTable(recordTable: DatabaseChildType): DatabaseParentType {
+export function getParentType(childType: DatabaseChildType): DatabaseParentType {
   return {
     [DatabaseType.EXAMPLE_RESULTS]: DatabaseType.EXAMPLES,
     [DatabaseType.TEST_RESULTS]: DatabaseType.TESTS,
-  }[recordTable] as any
+  }[childType] as any
 }
 
 export function getChildType(parentType: DatabaseParentType): DatabaseChildType {
@@ -153,17 +153,6 @@ export function getLabelSingular(table: DatabaseType): string {
     [DatabaseType.EXAMPLE_RESULTS]: 'Example Result',
     [DatabaseType.TESTS]: 'Test',
     [DatabaseType.TEST_RESULTS]: 'Test Result',
-  }[table]
-}
-
-export function getTableIcon(table: DatabaseType): Icon {
-  return {
-    [DatabaseType.SETTINGS]: Icon.SETTINGS,
-    [DatabaseType.LOGS]: Icon.LOGS,
-    [DatabaseType.EXAMPLES]: Icon.EXAMPLES,
-    [DatabaseType.EXAMPLE_RESULTS]: Icon.RECORDS,
-    [DatabaseType.TESTS]: Icon.TESTS,
-    [DatabaseType.TEST_RESULTS]: Icon.RECORDS,
   }[table]
 }
 

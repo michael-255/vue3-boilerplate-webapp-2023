@@ -5,6 +5,15 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- Todos
+
+  - [ ] Build `useRouteParams` composable
+  - [ ] Use `QTableColumn` types instead of `ColumnProps` custom type
+  - [ ] `Setting Value` can't really be `any` (define it's types)
+  - [ ] Use new `databaseTypeProps`?
+  - [ ] Need id slugifying and stricter rules
+  - [ ] Use `LABEL` instead of `NAME`
+
 - Inspect
 
   - [x] Get `Inspect` working with refactor

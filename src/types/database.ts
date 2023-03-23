@@ -33,19 +33,31 @@ export type DatabaseChildType = DatabaseType.EXAMPLE_RESULTS | DatabaseType.TEST
  * Update database models and database constants when adding new fields.
  */
 export enum DatabaseField {
+  // All
   TYPE = 'type',
   ID = 'id',
-  CREATED_TIMESTAMP = 'createdTimestamp',
+  // Settings
   VALUE = 'value',
+  // Logs
+  CREATED_TIMESTAMP = 'createdTimestamp',
   SEVERITY = 'severity',
+  LABEL = 'label',
   DETAILS = 'details',
+  // Examples
   NAME = 'name',
-  TEXT = 'text',
+  DESCRIPTION = 'description',
   IS_FAVORITED = 'isFavorited',
   IS_ENABLED = 'isEnabled',
+  // Example Results
   PARENT_ID = 'parentId',
+  NOTE = 'note',
   NUMBER = 'number',
 }
+
+/**
+ * Setting values are restricted to a few primitive types.
+ */
+export type SettingValue = string | number | boolean
 
 /**
  * The only valid setting ids.

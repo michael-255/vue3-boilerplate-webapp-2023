@@ -74,7 +74,7 @@ onMounted(async () => {
         <QCard v-else>
           <QCardSection>
             <div class="text-h6 q-mb-sm">{{ item.label }}</div>
-            <div>{{ record?.[item.name as DatabaseField] }}</div>
+            <div>{{ record?.[item.name as DatabaseField] || '-' }}</div>
           </QCardSection>
         </QCard>
       </div>

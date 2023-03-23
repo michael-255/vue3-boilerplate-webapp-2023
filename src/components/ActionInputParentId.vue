@@ -2,7 +2,7 @@
 import { QSelect } from 'quasar'
 import { onMounted, ref, type Ref } from 'vue'
 import { truncateString } from '@/utils/common'
-import { getParentTable } from '@/services/DatabaseUtils'
+import { getParentType } from '@/services/DatabaseUtils'
 import { DatabaseField, type DatabaseChildType, type DatabaseType } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useLogger from '@/composables/useLogger'
@@ -26,7 +26,7 @@ const options: Ref<any[]> = ref([])
  */
 onMounted(async () => {
   try {
-    const parentTable = getParentTable(props.type as DatabaseChildType)
+    const parentTable = getParentType(props.type as DatabaseChildType)
 
     // Parent table must exist to continue
     if (!parentTable) {
