@@ -2,7 +2,7 @@
 import { QSelect, QBtn, QOptionGroup, uid, exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
 import { AppText, Limit, LogRetention, type Optional } from '@/types/misc'
-import { DatabaseType, SettingId } from '@/types/database'
+import { DatabaseField, DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/models'
 import useLogger from '@/composables/useLogger'
@@ -108,12 +108,12 @@ async function onDefaults(): Promise<void> {
         const createExamples = (count: number) => {
           for (let i = 0; i < count; i++) {
             records.push({
-              type: DatabaseType.EXAMPLES,
-              id: uid(),
-              name: `Example ${randomLetter()}`,
-              text: `Example Description ${i}`,
-              isFavorited: randomBoolean(),
-              isEnabled: randomBoolean(),
+              [DatabaseField.TYPE]: DatabaseType.EXAMPLES,
+              [DatabaseField.ID]: uid(),
+              [DatabaseField.NAME]: `Example ${randomLetter()}`,
+              [DatabaseField.DESCRIPTION]: `Example description ${i}`,
+              [DatabaseField.IS_FAVORITED]: randomBoolean(),
+              [DatabaseField.IS_ENABLED]: randomBoolean(),
             } as Example)
 
             initialTimestamp = addMinute(initialTimestamp)
@@ -123,12 +123,12 @@ async function onDefaults(): Promise<void> {
         const createExampleResults = (count: number, parent?: Example) => {
           for (let i = 0; i < count; i++) {
             records.push({
-              type: DatabaseType.EXAMPLE_RESULTS,
-              id: uid(),
-              createdTimestamp: initialTimestamp,
-              parentId: parent?.id || `orphaned-record-id-${i}`,
-              text: randomBoolean() ? `Previous note ${parent?.id}` : '',
-              number: randomInt(1, 100),
+              [DatabaseField.TYPE]: DatabaseType.EXAMPLE_RESULTS,
+              [DatabaseField.ID]: uid(),
+              [DatabaseField.CREATED_TIMESTAMP]: initialTimestamp,
+              [DatabaseField.PARENT_ID]: parent?.id || `orphaned-record-id-${i}`,
+              [DatabaseField.NOTE]: randomBoolean() ? `Previous note ${parent?.id}` : '',
+              [DatabaseField.NUMBER]: randomInt(1, 100),
             } as ExampleResult)
 
             initialTimestamp = addMinute(initialTimestamp)
@@ -143,12 +143,12 @@ async function onDefaults(): Promise<void> {
         createExampleResults(2)
 
         records.push({
-          type: DatabaseType.TESTS,
-          id: uid(),
-          name: 'Lonely Test',
-          text: 'Test Description',
-          isFavorited: false,
-          isEnabled: true,
+          [DatabaseField.TYPE]: DatabaseType.TESTS,
+          [DatabaseField.ID]: uid(),
+          [DatabaseField.NAME]: `Lonely Test ${randomLetter()}`,
+          [DatabaseField.DESCRIPTION]: 'Test description X',
+          [DatabaseField.IS_FAVORITED]: false,
+          [DatabaseField.IS_ENABLED]: true,
         } as Test)
 
         await bulkAddRecords(records)

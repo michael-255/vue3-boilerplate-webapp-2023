@@ -1,17 +1,17 @@
 import { Dark, uid } from 'quasar'
-import { liveQuery, type IndexableType, type Observable } from 'dexie'
+import { liveQuery, type IndexableType } from 'dexie'
 import {
   DatabaseField,
   DatabaseTable,
   DatabaseType,
   SettingId,
   Severity,
+  type DatabaseChildType,
   type DatabaseParentType,
 } from '@/types/database'
 import { LogRetention, type AppObject } from '@/types/misc'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import { getChildType } from '@/services/DatabaseUtils'
 
 export default function useDatabase() {
   // Only table used by the app for now is the "Records" table.
@@ -116,7 +116,7 @@ export default function useDatabase() {
   // TODO
   async function addLog(
     severity: Severity,
-    name: string,
+    label: string,
     details?: AppObject
   ): Promise<IndexableType> {
     const log: Log = {
@@ -124,7 +124,7 @@ export default function useDatabase() {
       [DatabaseField.ID]: uid(),
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.SEVERITY]: severity,
-      [DatabaseField.NAME]: name,
+      [DatabaseField.LABEL]: label,
       [DatabaseField.DETAILS]: details,
     }
 
@@ -195,10 +195,10 @@ export default function useDatabase() {
   }
 
   // TODO
-  async function getPreviousChildRecord(type: DatabaseParentType, id: string) {
+  async function getPreviousChildRecord(childType: DatabaseChildType, parentId: string) {
     return (
       await db
-        .where({ [DatabaseField.TYPE]: getChildType(type), [DatabaseField.PARENT_ID]: id })
+        .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
         .sortBy(DatabaseField.CREATED_TIMESTAMP)
     ).reverse()[0]
   }

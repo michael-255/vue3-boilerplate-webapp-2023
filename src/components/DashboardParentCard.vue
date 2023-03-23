@@ -15,7 +15,7 @@ defineProps<{
   name: string
   isFavorite: boolean
   // Will be undefined if no records have been recorded yet
-  previousText?: string
+  previousNote?: string
   previousCreatedTimestamp?: number
   previousNumber?: number
 }>()
@@ -78,12 +78,12 @@ async function onUnfavorite(type: DatabaseParentType, id: string, name: string) 
       <div class="absolute-top-right q-ma-xs">
         <!-- Note -->
         <QIcon
-          v-show="previousText"
+          v-show="previousNote"
           :name="Icon.NOTE"
           color="primary"
           size="md"
           class="cursor-pointer q-mr-xs"
-          @click="viewPreviousNote(previousText || '')"
+          @click="viewPreviousNote(previousNote || '')"
         />
 
         <!-- Favorite Star -->

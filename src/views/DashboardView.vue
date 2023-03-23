@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
 import { type Ref, ref, onUnmounted } from 'vue'
-import { DatabaseType, DatabaseField, SettingId, type DatabaseParentType } from '@/types/database'
+import {
+  DatabaseType,
+  DatabaseField,
+  SettingId,
+  type DatabaseParentType,
+  type DatabaseChildType,
+} from '@/types/database'
 import type { DashboardParent } from '@/types/frontend'
 import type { Optional } from '@/types/misc'
-import { parentTypes } from '@/constants/database-types'
-import { getLabelSingular, getChildType } from '@/services/DatabaseUtils'
+import { parentTypes, getChildType, getLabel } from '@/services/data-utils'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
@@ -49,7 +54,7 @@ const subscription = liveDashboard().subscribe({
         .filter((r) => r.type === DatabaseType.EXAMPLES && r[DatabaseField.IS_ENABLED] === true)
         .map(async (r) => {
           const previousChild = await getPreviousChildRecord(
-            r[DatabaseField.TYPE] as DatabaseParentType,
+            getChildType(r[DatabaseField.TYPE]) as DatabaseChildType,
             r[DatabaseField.ID]
           )
 
@@ -58,7 +63,7 @@ const subscription = liveDashboard().subscribe({
             [DatabaseField.ID]: r[DatabaseField.ID],
             [DatabaseField.NAME]: r[DatabaseField.NAME],
             [DatabaseField.IS_FAVORITED]: r[DatabaseField.IS_FAVORITED],
-            previousText: previousChild?.[DatabaseField.TEXT],
+            previousNote: previousChild?.[DatabaseField.NOTE],
             previousCreatedTimestamp: previousChild?.[DatabaseField.CREATED_TIMESTAMP],
             previousNumber: previousChild?.[DatabaseField.NUMBER],
           } as DashboardParent
@@ -79,7 +84,7 @@ const subscription = liveDashboard().subscribe({
         .filter((r) => r.type === DatabaseType.TESTS && r[DatabaseField.IS_ENABLED] === true)
         .map(async (r) => {
           const previousChild = await getPreviousChildRecord(
-            r[DatabaseField.TYPE] as DatabaseParentType,
+            getChildType(r[DatabaseField.TYPE]) as DatabaseChildType,
             r[DatabaseField.ID]
           )
 
@@ -88,7 +93,7 @@ const subscription = liveDashboard().subscribe({
             [DatabaseField.ID]: r[DatabaseField.ID],
             [DatabaseField.NAME]: r[DatabaseField.NAME],
             [DatabaseField.IS_FAVORITED]: r[DatabaseField.IS_FAVORITED],
-            previousText: previousChild?.[DatabaseField.TEXT],
+            previousNote: previousChild?.[DatabaseField.NOTE],
             previousCreatedTimestamp: previousChild?.[DatabaseField.CREATED_TIMESTAMP],
             previousNumber: previousChild?.[DatabaseField.NUMBER],
           } as DashboardParent
@@ -147,7 +152,7 @@ function getDashboardRecordsCountText() {
           :id="record[DatabaseField.ID]"
           :name="record[DatabaseField.NAME]"
           :isFavorite="record[DatabaseField.IS_FAVORITED]"
-          :previousText="record.previousText"
+          :previousNote="record.previousNote"
           :previousCreatedTimestamp="record.previousCreatedTimestamp"
           :previousNumber="record.previousNumber"
           class="q-mb-md"
@@ -171,7 +176,7 @@ function getDashboardRecordsCountText() {
           :id="record[DatabaseField.ID]"
           :name="record[DatabaseField.NAME]"
           :isFavorite="record[DatabaseField.IS_FAVORITED]"
-          :previousText="record.previousText"
+          :previousNote="record.previousNote"
           :previousCreatedTimestamp="record.previousCreatedTimestamp"
           :previousNumber="record.previousNumber"
           class="q-mb-md"
@@ -198,7 +203,7 @@ function getDashboardRecordsCountText() {
       <QBtn
         color="positive"
         :icon="Icon.CREATE"
-        :label="`Create ${getLabelSingular(dashboardListSelection as DatabaseType)}`"
+        :label="`Create ${getLabel(dashboardListSelection as DatabaseType, 'singular')}`"
         @click="goToCreate(dashboardListSelection as DatabaseType)"
       />
     </div>

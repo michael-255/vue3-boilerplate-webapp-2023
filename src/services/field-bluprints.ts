@@ -2,7 +2,7 @@ import { DatabaseField, DatabaseType, Severity, type SettingValue } from '@/type
 import type { AppObject } from '@/types/misc'
 import { getDisplayDate } from '@/utils/common'
 import { defineAsyncComponent } from 'vue'
-import type { FieldBlueprint } from './data-blueprints'
+import type { FieldBlueprint } from './data-utils'
 
 export function typeField(): FieldBlueprint {
   return {

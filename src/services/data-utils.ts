@@ -70,7 +70,8 @@ export type FieldBlueprint = {
   readonly component: Optional<any>
 }
 
-export const dataBlueprints: readonly DataBlueprint[] = [
+// TODO
+const dataBlueprints: readonly DataBlueprint[] = [
   /////////////////////////////////////////////////////////////////////////////
   {
     type: DatabaseType.SETTINGS,
@@ -248,3 +249,75 @@ export const dataBlueprints: readonly DataBlueprint[] = [
   },
   /////////////////////////////////////////////////////////////////////////////
 ]
+
+export const allTypes: readonly DatabaseType[] = Object.values(DatabaseType)
+
+export const internalTypes: readonly DatabaseType[] = [DatabaseType.SETTINGS, DatabaseType.LOGS]
+
+export const parentTypes: readonly DatabaseType[] = [DatabaseType.EXAMPLES, DatabaseType.TESTS]
+
+export const childTypes: readonly DatabaseType[] = [
+  DatabaseType.EXAMPLE_RESULTS,
+  DatabaseType.TEST_RESULTS,
+]
+
+export function getSlug(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.typeSlug ?? ''
+}
+
+export function getTypeFromSlug(databaseTypeSlug: string) {
+  return dataBlueprints.find((dbp) => dbp.typeSlug === databaseTypeSlug)?.type ?? null
+}
+
+export function getLabel(type: DatabaseType, style: 'singular' | 'plural') {
+  if (style === 'singular') {
+    return dataBlueprints.find((dbp) => dbp.type === type)?.singularLabel ?? ''
+  } else {
+    return dataBlueprints.find((dbp) => dbp.type === type)?.pluralLabel ?? ''
+  }
+}
+
+export function getIcon(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.icon ?? Icon.ERROR
+}
+
+export function getParentType(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.parentType ?? null
+}
+
+export function getChildType(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.childType ?? null
+}
+
+export function getSupportedActions(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.supportedActions ?? []
+}
+
+export function getChartBlueprints(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.chartBluprints ?? []
+}
+
+export function getFieldBlueprints(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.fieldBlueprints ?? []
+}
+
+export function getFields(type: DatabaseType) {
+  return (
+    dataBlueprints.find((dbp) => dbp.type === type)?.fieldBlueprints.map((fbp) => fbp.field) ?? []
+  )
+}
+
+export function getFieldComponents(type: DatabaseType) {
+  return (
+    dataBlueprints.find((dbp) => dbp.type === type)?.fieldBlueprints.map((fbp) => fbp.component) ??
+    []
+  )
+}
+
+export function getVisibleColumns(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.visibleColumns ?? []
+}
+
+export function getTableColumns(type: DatabaseType) {
+  return dataBlueprints.find((dbp) => dbp.type === type)?.tableColumns ?? []
+}

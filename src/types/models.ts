@@ -12,12 +12,14 @@ export interface DatabaseRecord {
   [DatabaseField.VALUE]?: any
   [DatabaseField.CREATED_TIMESTAMP]?: number
   [DatabaseField.SEVERITY]?: Severity
-  [DatabaseField.NAME]?: string
+  [DatabaseField.LABEL]?: string
   [DatabaseField.DETAILS]?: Optional<AppObject>
-  [DatabaseField.TEXT]?: Optional<string>
+  [DatabaseField.NAME]?: string
+  [DatabaseField.DESCRIPTION]?: Optional<string>
   [DatabaseField.IS_FAVORITED]?: boolean
   [DatabaseField.IS_ENABLED]?: boolean
   [DatabaseField.PARENT_ID]?: string
+  [DatabaseField.NOTE]?: Optional<string>
   [DatabaseField.NUMBER]?: number
 }
 
@@ -38,7 +40,7 @@ export type Log = Pick<
   | DatabaseField.ID
   | DatabaseField.CREATED_TIMESTAMP
   | DatabaseField.SEVERITY
-  | DatabaseField.NAME
+  | DatabaseField.LABEL
   | DatabaseField.DETAILS
 >
 
@@ -50,7 +52,7 @@ export type Example = Pick<
   | DatabaseField.TYPE
   | DatabaseField.ID
   | DatabaseField.NAME
-  | DatabaseField.TEXT
+  | DatabaseField.DESCRIPTION
   | DatabaseField.IS_FAVORITED
   | DatabaseField.IS_ENABLED
 >
@@ -64,7 +66,7 @@ export type ExampleResult = Pick<
   | DatabaseField.ID
   | DatabaseField.CREATED_TIMESTAMP
   | DatabaseField.PARENT_ID
-  | DatabaseField.TEXT
+  | DatabaseField.NOTE
   | DatabaseField.NUMBER
 >
 

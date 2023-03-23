@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
+import { Icon } from './types/icons'
 import type { Optional } from '@/types/misc'
 import useDatabase from '@/composables/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
-import { Icon } from './types/icons'
 
 const { initSettings, purgeExpiredLogs } = useDatabase()
 const { log, consoleDebug, consoleLog } = useLogger()
