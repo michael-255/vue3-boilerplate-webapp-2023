@@ -8,6 +8,7 @@ import {
   getTypeFromSlug,
 } from '@/services/DatabaseUtils'
 import { useRoute } from 'vue-router'
+import type { DatabaseRecord } from '@/types/models'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useActions from '@/composables/useActions'
 import useActionRecordStore from '@/stores/action-record'
@@ -18,7 +19,6 @@ import ActionInputText from '@/components/ActionInputText.vue'
 import ActionInputParentId from '@/components/ActionInputParentId.vue'
 import ActionInputToggle from '@/components/ActionInputToggle.vue'
 import ActionInputNumber from '@/components/ActionInputNumber.vue'
-import type { DatabaseRecord } from '@/types/models'
 
 const route = useRoute()
 const { onCreateRecord } = useActions()
@@ -30,7 +30,7 @@ const bannerTitle = `Create ${getLabelSingular(routeDatabaseType)}`
 
 const columnProps = getDatabaseTypeColumnProps(routeDatabaseType)
 
-// TODO
+// TODO - Must do this before Create and Edit actions
 actionRecordStore.$reset()
 actionRecordStore.temp[DatabaseField.TYPE] = routeDatabaseType
 
@@ -38,7 +38,7 @@ actionRecordStore.temp[DatabaseField.TYPE] = routeDatabaseType
 async function onCreate(record: DatabaseRecord) {
   const fields = getFields(routeDatabaseType)
   const realRecord = {} as DatabaseRecord
-  // removing null fields from store record
+  // removing null fields from store record before creation
   fields.forEach((field) => {
     realRecord[field] = record[field]
   })

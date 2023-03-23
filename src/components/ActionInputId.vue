@@ -1,21 +1,37 @@
 <script setup lang="ts">
 import { QInput, uid } from 'quasar'
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
+import { useRoute } from 'vue-router'
+import { getTypeFromSlug } from '@/services/DatabaseUtils'
+import type { Optional } from '@/types/misc'
+import type { DatabaseRecord } from '@/types/models'
 import useActionRecordStore from '@/stores/action-record'
+import useDatabase from '@/composables/useDatabase'
 
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  oldId?: string
 }>()
 
+const route = useRoute()
 const actionRecordStore = useActionRecordStore()
-const inputRef: Ref<any> = ref(null)
+const { getRecord } = useDatabase()
 
-// Default component state must be valid
-actionRecordStore.temp[DatabaseField.ID] = props.oldId ? props.oldId : uid()
-actionRecordStore.valid[DatabaseField.ID] = true
+const inputRef: Ref<any> = ref(null)
+const record: Ref<Optional<DatabaseRecord>> = ref(null)
+
+onMounted(async () => {
+  const routeDatabaseType = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
+  const routeId = route?.params?.[DatabaseField.ID] as string
+  record.value = await getRecord(routeDatabaseType, routeId)
+
+  // Default component state must be valid
+  actionRecordStore.temp[DatabaseField.ID] = record.value?.[DatabaseField.ID]
+    ? record.value[DatabaseField.ID]
+    : uid()
+  actionRecordStore.valid[DatabaseField.ID] = true
+})
 
 function idRule(id: string) {
   return id !== undefined && id !== null && id !== '' && /^.{1,50}$/.test(id)

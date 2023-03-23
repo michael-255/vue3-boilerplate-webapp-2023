@@ -15,7 +15,7 @@ export default function useActions() {
   const router = useRouter()
   const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { createRecord, deleteRecord } = useDatabase()
+  const { createRecord, updateRecord, deleteRecord } = useDatabase()
 
   /**
    * Go to data table route. The type can also be 'orphaned' to show orphaned records.
@@ -144,6 +144,27 @@ export default function useActions() {
     )
   }
 
+  // TODO
+  async function onUpdateRecord(type: DatabaseType, originalId: string, record: DatabaseRecord) {
+    confirmDialog(
+      'Update Record',
+      `Update record ${record.id} for ${record.type}?`,
+      Icon.EDIT,
+      'positive',
+      async () => {
+        try {
+          await updateRecord(type, originalId, record)
+          log.info('Successfully Updated record', {
+            updatedRecordType: record.type,
+            updatedRecordId: record.id,
+          })
+        } catch (error) {
+          log.error('Update failed', error)
+        }
+      }
+    )
+  }
+
   /**
    * On confirmation, delete the matching record from the database.
    * @param type
@@ -174,6 +195,7 @@ export default function useActions() {
     goToCharts,
     goBack,
     onCreateRecord,
+    onUpdateRecord,
     onDeleteRecord,
   }
 }
