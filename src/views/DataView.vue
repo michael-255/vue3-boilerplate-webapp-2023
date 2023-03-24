@@ -19,7 +19,7 @@ import useDatabase from '@/composables/useDatabase'
 const route = useRoute()
 const { log } = useLogger()
 const { goToCharts, goToInspect, goToEdit, goToCreate, goBack, onDeleteRecord } = useActions()
-const { getSetting, liveDataType } = useDatabase()
+const { getRecord, liveDataType } = useDatabase()
 
 // TODO
 const routeDatabaseType = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
@@ -46,7 +46,9 @@ const subscription = liveDataType(routeDatabaseType as DatabaseType).subscribe({
 // TODO
 onMounted(async () => {
   try {
-    const showAllDataColumns = (await getSetting(SettingId.SHOW_ALL_DATA_COLUMNS))?.value
+    const showAllDataColumns = (
+      await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_ALL_DATA_COLUMNS)
+    )?.value
 
     // This sets up what is currently visible on the data table
     if (showAllDataColumns) {

@@ -7,16 +7,15 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Todos
 
-  - [ ] Build `useRouteParams` composable
-  - [ ] Use `QTableColumn` types instead of `ColumnProps` custom type
-  - [ ] `Setting Value` can't really be `any` (define it's types)
-  - [ ] Use new `databaseTypeProps`?
-  - [ ] Need id slugifying and stricter rules
-  - [ ] Use `LABEL` instead of `NAME`
+  - [ ] Need id input auto slugifying and stricter rules so user isn't surprised
+  - [ ] Get `ActionInput*` components working and added to `data-utils.ts`
+  - [ ] Handle `routeParentId` when doing a child record `Create`
+  - [ ] Figure out how you want certain inputs to be disabled
+  - [ ] Make sure `Create` and `Edit` both work with whatever solution you come up with
 
 - Inspect
 
-  - [x] Get `Inspect` working with refactor
+  - [ ] Get `Inspect` working with refactor
   - [ ] Get `Create` working with refactor
   - [ ] Merge (PR) refactor into `main` branch
 

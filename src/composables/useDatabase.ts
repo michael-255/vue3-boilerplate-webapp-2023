@@ -8,6 +8,7 @@ import {
   Severity,
   type DatabaseChildType,
   type DatabaseParentType,
+  type SettingValue,
 } from '@/types/database'
 import { LogRetention, type AppObject } from '@/types/misc'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
@@ -20,16 +21,23 @@ export default function useDatabase() {
   // TODO
   async function initSettings(): Promise<void> {
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
-    const showIntroduction = (await getSetting(SettingId.SHOW_INTRODUCTION))?.value ?? true
-    const darkMode = (await getSetting(SettingId.DARK_MODE))?.value ?? true
-    const showAllDataColumns = (await getSetting(SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
-    const showConsoleLogs = (await getSetting(SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
-    const showDebugMessages = (await getSetting(SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
-    const showInfoMessages = (await getSetting(SettingId.SHOW_INFO_MESSAGES))?.value ?? false
+    const showIntroduction =
+      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_INTRODUCTION))?.value ?? true
+    const darkMode = (await getRecord(DatabaseType.SETTINGS, SettingId.DARK_MODE))?.value ?? true
+    const showAllDataColumns =
+      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
+    const showConsoleLogs =
+      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
+    const showDebugMessages =
+      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
+    const showInfoMessages =
+      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_INFO_MESSAGES))?.value ?? false
     const dashboardListSelection =
-      (await getSetting(SettingId.DASHBOARD_LIST_SELECTION))?.value ?? DatabaseType.EXAMPLES
+      (await getRecord(DatabaseType.SETTINGS, SettingId.DASHBOARD_LIST_SELECTION))?.value ??
+      DatabaseType.EXAMPLES
     const logRetentionTime =
-      (await getSetting(SettingId.LOG_RETENTION_TIME))?.value ?? LogRetention.THREE_MONTHS
+      (await getRecord(DatabaseType.SETTINGS, SettingId.LOG_RETENTION_TIME))?.value ??
+      LogRetention.THREE_MONTHS
 
     // Set Quasar dark mode
     Dark.set(!!darkMode) // Cast to boolean
@@ -71,19 +79,14 @@ export default function useDatabase() {
     )
   }
 
-  // TODO - replace getSetting with this!
+  // TODO
   async function getRecord(type: DatabaseType, id: string | SettingId) {
     return await db.get([type, id])
   }
 
   // TODO
-  async function getSetting(id: SettingId): Promise<any> {
-    return await db.get([DatabaseType.SETTINGS, id])
-  }
-
-  // TODO
-  async function setSetting(id: SettingId, value: any) {
-    const existingSetting = await getSetting(id)
+  async function setSetting(id: SettingId, value: SettingValue) {
+    const existingSetting = await getRecord(DatabaseType.SETTINGS, id)
 
     // Set Quasar dark mode if the key is for dark mode
     if (id === SettingId.DARK_MODE) {
@@ -133,7 +136,8 @@ export default function useDatabase() {
 
   // TODO
   async function purgeExpiredLogs(): Promise<number> {
-    const logRetentionTime = (await getSetting(SettingId.LOG_RETENTION_TIME))?.value
+    const logRetentionTime = (await getRecord(DatabaseType.SETTINGS, SettingId.LOG_RETENTION_TIME))
+      ?.value
 
     if (!logRetentionTime || logRetentionTime === LogRetention.FOREVER) {
       return 0 // No logs purged
@@ -150,7 +154,7 @@ export default function useDatabase() {
       }[logRetention]
     }
 
-    const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime)
+    const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime as LogRetention)
 
     // Get all logs
     const logs = (await db.where(DatabaseField.TYPE).equals(DatabaseType.LOGS).toArray()) as Log[]
@@ -228,7 +232,6 @@ export default function useDatabase() {
     liveDashboard,
     liveDataType,
     getPreviousChildRecord,
-    getSetting,
     setSetting,
     getRecord,
     getEnabledParentType,

@@ -1,5 +1,11 @@
 import type { AppObject } from '@/types/misc'
-import type { DatabaseField, DatabaseType, SettingId, Severity } from '@/types/database'
+import type {
+  DatabaseField,
+  DatabaseType,
+  SettingId,
+  SettingValue,
+  Severity,
+} from '@/types/database'
 import type { Optional } from '@/types/misc'
 
 /**
@@ -9,7 +15,7 @@ import type { Optional } from '@/types/misc'
 export interface DatabaseRecord {
   [DatabaseField.TYPE]: DatabaseType
   [DatabaseField.ID]: string | SettingId
-  [DatabaseField.VALUE]?: any
+  [DatabaseField.VALUE]?: SettingValue
   [DatabaseField.CREATED_TIMESTAMP]?: number
   [DatabaseField.SEVERITY]?: Severity
   [DatabaseField.LABEL]?: string

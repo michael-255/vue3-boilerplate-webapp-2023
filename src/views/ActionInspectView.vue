@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import { useRoute } from 'vue-router'
-import { DatabaseField, DatabaseType } from '@/types/database'
+import type { DatabaseType } from '@/types/database'
 import { onMounted, ref, type Ref } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
 import type { Optional } from '@/types/misc'
-import { getFieldBlueprints, getTypeFromSlug } from '@/services/data-utils'
+import { getFieldBlueprints } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
 import useDatabase from '@/composables/useDatabase'
+import useRouteParams from '@/composables/useRouteParams'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const route = useRoute()
+const { routeDatabaseType, routeId } = useRouteParams()
 const { log } = useLogger()
 const { getRecord } = useDatabase()
-
-const routeDatabaseType = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
-const routeId = route?.params?.[DatabaseField.ID] as string
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 const record: Ref<Optional<DatabaseRecord>> = ref(null)
