@@ -1,7 +1,4 @@
 import { AppText } from '@/types/misc'
-import { colors } from 'quasar'
-
-const { getPaletteColor } = colors
 
 /**
  * PrettyLogger adds some style to your console.
@@ -21,12 +18,14 @@ export class PrettyLogger {
     this.name = `%c${name}`
 
     const baseStyle = 'border-radius: 3px; padding: 2px 4px; color: white;'
+    // Tried using Quasar getPaletteColor() but it doesn't load them correctly.
+    // These color codes should be the same as those in ~/src/main.ts
     this.style = {
-      log: `${baseStyle} background-color: ${getPaletteColor('secondary')};`,
-      debug: `${baseStyle} background-color: ${getPaletteColor('accent')};`,
-      info: `${baseStyle} background-color: ${getPaletteColor('info')};`,
-      warn: `${baseStyle} background-color: ${getPaletteColor('warning')};`,
-      error: `${baseStyle} background-color: ${getPaletteColor('negative')};`,
+      log: `${baseStyle} background-color: #607d8b;`,
+      debug: `${baseStyle} background-color: #673ab7;`,
+      info: `${baseStyle} background-color: #0d47a1;`,
+      warn: `${baseStyle} background-color: #ff6f00;`,
+      error: `${baseStyle} background-color: #C10015;`,
     }
   }
 

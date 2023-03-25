@@ -36,7 +36,6 @@ app.use(Quasar, {
       dark: '#1d1d1d',
       'dark-page': '#121212',
     },
-    // TODO - Research... Maybe you can reduce your Notify and Dialog complexity...
     // notify: {...}, // default set of options for Notify Quasar plugin
     // loading: {...}, // default set of options for Loading Quasar plugin
     // loadingBar: { ... }, // settings for LoadingBar Quasar plugin
