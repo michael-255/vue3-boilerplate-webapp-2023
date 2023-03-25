@@ -4,6 +4,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
+import { slugify } from '@/utils/common'
 
 defineProps<{
   locked?: boolean
@@ -28,6 +29,9 @@ function generateId(): void {
 }
 
 function validateInput(): void {
+  actionRecordStore.actionRecord[DatabaseField.ID] = slugify(
+    actionRecordStore.actionRecord[DatabaseField.ID]
+  )
   actionRecordStore.valid[DatabaseField.ID] = !!inputRef?.value?.validate()
 }
 </script>
@@ -48,13 +52,14 @@ function validateInput(): void {
         v-model="actionRecordStore.actionRecord[DatabaseField.ID]"
         ref="inputRef"
         label="Id"
-        :rules="[(id: string) => idRule(id) || 'Id must be between 1 and 50 characters']"
+        :rules="[(id: string) => idRule(slugify(id)) || 'Id must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
         counter
         dense
         outlined
         color="primary"
+        hint="Auto formatted"
         @blur="validateInput()"
       >
         <template v-slot:after>

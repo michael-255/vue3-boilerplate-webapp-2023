@@ -5,17 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Todos
-
-  - [ ] Fix store `valid` issues
-  - [ ] Need id input auto slugifying and stricter rules so user isn't surprised
-
-- Inspect
-
-  - [ ] Get `Inspect` working with refactor
-  - [ ] Get `Create` working with refactor
-  - [ ] Merge (PR) refactor into `main` branch
-
 - Dashboard
 
   - [ ] `ActionCreate` component
