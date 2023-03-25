@@ -8,13 +8,13 @@ import { getParentType } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
 import useDatabase from '@/composables/useDatabase'
 import useActionRecordStore from '@/stores/action-record'
-import useRouteParams from '@/composables/useRouteParams'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 
 defineProps<{
   locked?: boolean
 }>()
 
-const { routeDatabaseType } = useRouteParams()
+const { routeDatabaseType } = useRoutingHelpers()
 const { log } = useLogger()
 const { getEnabledParentRecords } = useDatabase()
 const actionRecordStore = useActionRecordStore()

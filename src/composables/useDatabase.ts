@@ -22,21 +22,21 @@ export default function useDatabase() {
   async function initSettings(): Promise<void> {
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
     const showIntroduction =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_INTRODUCTION))?.value ?? true
-    const darkMode = (await getRecord(DatabaseType.SETTINGS, SettingId.DARK_MODE))?.value ?? true
+      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ?? true
+    const darkMode = (await getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ?? true
     const showAllDataColumns =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
+      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
     const showConsoleLogs =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
+      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
     const showDebugMessages =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
+      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
     const showInfoMessages =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_INFO_MESSAGES))?.value ?? false
+      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? false
     const dashboardListSelection =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.DASHBOARD_LIST_SELECTION))?.value ??
-      DatabaseType.EXAMPLES
+      (await getRecord(DatabaseType.SETTING, SettingId.DASHBOARD_LIST_SELECTION))?.value ??
+      DatabaseType.EXAMPLE
     const logRetentionTime =
-      (await getRecord(DatabaseType.SETTINGS, SettingId.LOG_RETENTION_TIME))?.value ??
+      (await getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
       LogRetention.THREE_MONTHS
 
     // Set Quasar dark mode
@@ -58,7 +58,7 @@ export default function useDatabase() {
   // TODO
   function liveSettings() {
     return liveQuery(() =>
-      db.where(DatabaseField.TYPE).equals(DatabaseType.SETTINGS).sortBy(DatabaseField.ID)
+      db.where(DatabaseField.TYPE).equals(DatabaseType.SETTING).sortBy(DatabaseField.ID)
     )
   }
 
@@ -67,7 +67,7 @@ export default function useDatabase() {
     return liveQuery(() =>
       db
         .where(DatabaseField.TYPE)
-        .anyOf(DatabaseType.SETTINGS, DatabaseType.EXAMPLES, DatabaseType.TESTS)
+        .anyOf(DatabaseType.SETTING, DatabaseType.EXAMPLE, DatabaseType.TEST)
         .sortBy(DatabaseField.NAME)
     )
   }
@@ -86,7 +86,7 @@ export default function useDatabase() {
 
   // TODO
   async function setSetting(id: SettingId, value: SettingValue) {
-    const existingSetting = await getRecord(DatabaseType.SETTINGS, id)
+    const existingSetting = await getRecord(DatabaseType.SETTING, id)
 
     // Set Quasar dark mode if the key is for dark mode
     if (id === SettingId.DARK_MODE) {
@@ -94,7 +94,7 @@ export default function useDatabase() {
     }
 
     const setting: Setting = {
-      [DatabaseField.TYPE]: DatabaseType.SETTINGS,
+      [DatabaseField.TYPE]: DatabaseType.SETTING,
       [DatabaseField.ID]: id,
       [DatabaseField.VALUE]: value,
     }
@@ -103,7 +103,7 @@ export default function useDatabase() {
     if (!existingSetting) {
       return await db.add(setting as DatabaseRecord)
     } else {
-      return await db.update([DatabaseType.SETTINGS, id], { value })
+      return await db.update([DatabaseType.SETTING, id], { value })
     }
   }
 
@@ -123,7 +123,7 @@ export default function useDatabase() {
     details?: AppObject
   ): Promise<IndexableType> {
     const log: Log = {
-      [DatabaseField.TYPE]: DatabaseType.LOGS,
+      [DatabaseField.TYPE]: DatabaseType.LOG,
       [DatabaseField.ID]: uid(),
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.SEVERITY]: severity,
@@ -136,7 +136,7 @@ export default function useDatabase() {
 
   // TODO
   async function purgeExpiredLogs(): Promise<number> {
-    const logRetentionTime = (await getRecord(DatabaseType.SETTINGS, SettingId.LOG_RETENTION_TIME))
+    const logRetentionTime = (await getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))
       ?.value
 
     if (!logRetentionTime || logRetentionTime === LogRetention.FOREVER) {
@@ -157,7 +157,7 @@ export default function useDatabase() {
     const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime as LogRetention)
 
     // Get all logs
-    const logs = (await db.where(DatabaseField.TYPE).equals(DatabaseType.LOGS).toArray()) as Log[]
+    const logs = (await db.where(DatabaseField.TYPE).equals(DatabaseType.LOG).toArray()) as Log[]
 
     const logsToDelete = logs.filter((log: Log) => {
       const logCreatedTimestamp = log[DatabaseField.CREATED_TIMESTAMP] ?? 0

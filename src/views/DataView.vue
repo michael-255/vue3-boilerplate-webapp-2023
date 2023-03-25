@@ -13,12 +13,14 @@ import {
   getSupportedActions,
 } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActions from '@/composables/useActions'
 import useDatabase from '@/composables/useDatabase'
 
 const route = useRoute()
 const { log } = useLogger()
-const { goToCharts, goToInspect, goToEdit, goToCreate, goBack, onDeleteRecord } = useActions()
+const { goToCharts, goToInspect, goToEdit, goToCreate, goBack } = useRoutingHelpers()
+const { onDeleteRecord } = useActions()
 const { getRecord, liveDataType } = useDatabase()
 
 // TODO
@@ -47,7 +49,7 @@ const subscription = liveDataType(routeDatabaseType as DatabaseType).subscribe({
 onMounted(async () => {
   try {
     const showAllDataColumns = (
-      await getRecord(DatabaseType.SETTINGS, SettingId.SHOW_ALL_DATA_COLUMNS)
+      await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
     )?.value
 
     // This sets up what is currently visible on the data table

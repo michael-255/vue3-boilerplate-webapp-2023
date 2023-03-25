@@ -12,23 +12,23 @@ export enum DatabaseTable {
  * Used to separate records using tables, but compound indices are better.
  */
 export enum DatabaseType {
-  SETTINGS = 'Settings',
-  LOGS = 'Logs',
-  EXAMPLES = 'Examples',
-  EXAMPLE_RESULTS = 'Example Results',
-  TESTS = 'Tests',
-  TEST_RESULTS = 'Test Results',
+  SETTING = 'Setting',
+  LOG = 'Log',
+  EXAMPLE = 'Example',
+  EXAMPLE_RESULT = 'Example Result',
+  TEST = 'Test',
+  TEST_RESULT = 'Test Result',
 }
 
 /**
  * Parent types in the database.
  */
-export type DatabaseParentType = DatabaseType.EXAMPLES | DatabaseType.TESTS
+export type DatabaseParentType = DatabaseType.EXAMPLE | DatabaseType.TEST
 
 /**
  * Child types to parent types in the database.
  */
-export type DatabaseChildType = DatabaseType.EXAMPLE_RESULTS | DatabaseType.TEST_RESULTS
+export type DatabaseChildType = DatabaseType.EXAMPLE_RESULT | DatabaseType.TEST_RESULT
 
 /**
  * All field names used by database records.

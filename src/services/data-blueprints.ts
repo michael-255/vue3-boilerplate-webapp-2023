@@ -63,8 +63,8 @@ export type DataBlueprint = {
 export const dataBlueprints: readonly DataBlueprint[] = [
   /////////////////////////////////////////////////////////////////////////////
   {
-    type: DatabaseType.SETTINGS,
-    typeSlug: slugify(DatabaseType.SETTINGS),
+    type: DatabaseType.SETTING,
+    typeSlug: slugify(DatabaseType.SETTING),
     singularLabel: 'Setting',
     pluralLabel: 'Settings',
     icon: Icon.SETTINGS,
@@ -78,8 +78,8 @@ export const dataBlueprints: readonly DataBlueprint[] = [
   },
   /////////////////////////////////////////////////////////////////////////////
   {
-    type: DatabaseType.LOGS,
-    typeSlug: slugify(DatabaseType.LOGS),
+    type: DatabaseType.LOG,
+    typeSlug: slugify(DatabaseType.LOG),
     singularLabel: 'Log',
     pluralLabel: 'Logs',
     icon: Icon.LOGS,
@@ -112,13 +112,13 @@ export const dataBlueprints: readonly DataBlueprint[] = [
   },
   /////////////////////////////////////////////////////////////////////////////
   {
-    type: DatabaseType.EXAMPLES,
-    typeSlug: slugify(DatabaseType.EXAMPLES),
+    type: DatabaseType.EXAMPLE,
+    typeSlug: slugify(DatabaseType.EXAMPLE),
     singularLabel: 'Example',
     pluralLabel: 'Examples',
     icon: Icon.EXAMPLES,
     parentType: null,
-    childType: DatabaseType.EXAMPLE_RESULTS,
+    childType: DatabaseType.EXAMPLE_RESULT,
     supportedActions: [
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
@@ -146,12 +146,12 @@ export const dataBlueprints: readonly DataBlueprint[] = [
   },
   /////////////////////////////////////////////////////////////////////////////
   {
-    type: DatabaseType.EXAMPLE_RESULTS,
-    typeSlug: slugify(DatabaseType.EXAMPLE_RESULTS),
+    type: DatabaseType.EXAMPLE_RESULT,
+    typeSlug: slugify(DatabaseType.EXAMPLE_RESULT),
     singularLabel: 'Example Result',
     pluralLabel: 'Example Results',
     icon: Icon.RECORDS,
-    parentType: DatabaseType.EXAMPLES,
+    parentType: DatabaseType.EXAMPLE,
     childType: null,
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
@@ -175,13 +175,13 @@ export const dataBlueprints: readonly DataBlueprint[] = [
   },
   /////////////////////////////////////////////////////////////////////////////
   {
-    type: DatabaseType.TESTS,
-    typeSlug: slugify(DatabaseType.TESTS),
+    type: DatabaseType.TEST,
+    typeSlug: slugify(DatabaseType.TEST),
     singularLabel: 'Test',
     pluralLabel: 'Tests',
     icon: Icon.TESTS,
     parentType: null,
-    childType: DatabaseType.TEST_RESULTS,
+    childType: DatabaseType.TEST_RESULT,
     supportedActions: [
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
@@ -209,12 +209,12 @@ export const dataBlueprints: readonly DataBlueprint[] = [
   },
   /////////////////////////////////////////////////////////////////////////////
   {
-    type: DatabaseType.TEST_RESULTS,
-    typeSlug: slugify(DatabaseType.TEST_RESULTS),
+    type: DatabaseType.TEST_RESULT,
+    typeSlug: slugify(DatabaseType.TEST_RESULT),
     singularLabel: 'Test Result',
     pluralLabel: 'Test Results',
     icon: Icon.RECORDS,
-    parentType: DatabaseType.TESTS,
+    parentType: DatabaseType.TEST,
     childType: null,
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],

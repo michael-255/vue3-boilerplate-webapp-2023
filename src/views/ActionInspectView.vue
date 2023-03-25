@@ -7,10 +7,10 @@ import type { Optional } from '@/types/misc'
 import { getFieldBlueprints } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
 import useDatabase from '@/composables/useDatabase'
-import useRouteParams from '@/composables/useRouteParams'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const { routeDatabaseType, routeId } = useRouteParams()
+const { routeDatabaseType, routeId } = useRoutingHelpers()
 const { log } = useLogger()
 const { getRecord } = useDatabase()
 

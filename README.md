@@ -7,12 +7,8 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Todos
 
-  - [ ] Change all `DatabaseTypes` to singular
+  - [ ] Fix store `valid` issues
   - [ ] Need id input auto slugifying and stricter rules so user isn't surprised
-  - [ ] Get `ActionInput*` components working and added to `data-utils.ts`
-  - [ ] Handle `routeParentId` when doing a child record `Create`
-  - [ ] Figure out how you want certain inputs to be disabled
-  - [ ] Make sure `Create` and `Edit` both work with whatever solution you come up with
 
 - Inspect
 

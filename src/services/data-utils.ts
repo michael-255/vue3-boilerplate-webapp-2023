@@ -2,11 +2,11 @@ import { dataBlueprints } from '@/services/data-blueprints'
 import { DatabaseType } from '@/types/database'
 import { Icon } from '@/types/icons'
 
-export const parentTypes: readonly DatabaseType[] = [DatabaseType.EXAMPLES, DatabaseType.TESTS]
+export const parentTypes: readonly DatabaseType[] = [DatabaseType.EXAMPLE, DatabaseType.TEST]
 
 export const childTypes: readonly DatabaseType[] = [
-  DatabaseType.EXAMPLE_RESULTS,
-  DatabaseType.TEST_RESULTS,
+  DatabaseType.EXAMPLE_RESULT,
+  DatabaseType.TEST_RESULT,
 ]
 
 export function getSlug(type: DatabaseType) {

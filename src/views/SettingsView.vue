@@ -10,12 +10,12 @@ import useNotifications from '@/composables/useNotifications'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import useActions from '@/composables/useActions'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
-const { goToData } = useActions()
+const { goToData } = useRoutingHelpers()
 const {
   liveSettings,
   initSettings,
@@ -108,7 +108,7 @@ async function onDefaults(): Promise<void> {
         const createExamples = (count: number) => {
           for (let i = 0; i < count; i++) {
             records.push({
-              [DatabaseField.TYPE]: DatabaseType.EXAMPLES,
+              [DatabaseField.TYPE]: DatabaseType.EXAMPLE,
               [DatabaseField.ID]: uid(),
               [DatabaseField.NAME]: `Example ${randomLetter()}`,
               [DatabaseField.DESCRIPTION]: `Example description ${i}`,
@@ -123,7 +123,7 @@ async function onDefaults(): Promise<void> {
         const createExampleResults = (count: number, parent?: Example) => {
           for (let i = 0; i < count; i++) {
             records.push({
-              [DatabaseField.TYPE]: DatabaseType.EXAMPLE_RESULTS,
+              [DatabaseField.TYPE]: DatabaseType.EXAMPLE_RESULT,
               [DatabaseField.ID]: uid(),
               [DatabaseField.CREATED_TIMESTAMP]: initialTimestamp,
               [DatabaseField.PARENT_ID]: parent?.id || `orphaned-record-id-${i}`,
@@ -143,7 +143,7 @@ async function onDefaults(): Promise<void> {
         createExampleResults(2)
 
         records.push({
-          [DatabaseField.TYPE]: DatabaseType.TESTS,
+          [DatabaseField.TYPE]: DatabaseType.TEST,
           [DatabaseField.ID]: uid(),
           [DatabaseField.NAME]: `Lonely Test ${randomLetter()}`,
           [DatabaseField.DESCRIPTION]: 'Test description X',

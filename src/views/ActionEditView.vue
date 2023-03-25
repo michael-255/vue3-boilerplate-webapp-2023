@@ -5,16 +5,14 @@ import type { DatabaseRecord } from '@/types/models'
 import { onMounted } from 'vue'
 import { getFieldBlueprints, getFields } from '@/services/data-utils'
 import useDatabase from '@/composables/useDatabase'
-import useActions from '@/composables/useActions'
-import useRouteParams from '@/composables/useRouteParams'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActionRecordStore from '@/stores/action-record'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const { routeDatabaseType, routeId } = useRouteParams()
+const { routeDatabaseType, routeId, goBack } = useRoutingHelpers()
 const { log } = useLogger()
-const { goBack } = useActions()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
 const actionRecordStore = useActionRecordStore()
 const { getRecord, updateRecord } = useDatabase()

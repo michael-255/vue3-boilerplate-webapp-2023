@@ -16,11 +16,11 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
-import useActions from '@/composables/useActions'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 
 const { log, consoleLog } = useLogger()
-const { goToCreate } = useActions()
+const { goToCreate } = useRoutingHelpers()
 const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
 
 const dashboardListOptions = parentTypes.map((type) => ({
@@ -31,8 +31,8 @@ const dashboardListOptions = parentTypes.map((type) => ({
 const showIntroduction: Ref<Optional<SettingValue>> = ref(null)
 const dashboardListSelection: Ref<Optional<SettingValue>> = ref(null)
 const dashboardRecordRefs = {
-  [DatabaseType.EXAMPLES]: ref([]),
-  [DatabaseType.TESTS]: ref([]),
+  [DatabaseType.EXAMPLE]: ref([]),
+  [DatabaseType.TEST]: ref([]),
 } as { [key in DatabaseParentType]: Ref<DashboardParent[]> }
 
 const subscription = liveDashboard().subscribe({
@@ -52,7 +52,7 @@ const subscription = liveDashboard().subscribe({
     // Sort them by name
     const dashboardExamples = await Promise.all(
       records
-        .filter((r) => r.type === DatabaseType.EXAMPLES && r[DatabaseField.IS_ENABLED] === true)
+        .filter((r) => r.type === DatabaseType.EXAMPLE && r[DatabaseField.IS_ENABLED] === true)
         .map(async (r) => {
           const previousChild = await getPreviousChildRecord(
             getChildType(r[DatabaseField.TYPE]) as DatabaseChildType,
@@ -75,14 +75,14 @@ const subscription = liveDashboard().subscribe({
     const exampleNonFavorites = dashboardExamples.filter(
       (r) => r[DatabaseField.IS_FAVORITED] === false
     )
-    dashboardRecordRefs[DatabaseType.EXAMPLES].value = [...exampleFavorites, ...exampleNonFavorites]
+    dashboardRecordRefs[DatabaseType.EXAMPLE].value = [...exampleFavorites, ...exampleNonFavorites]
 
     // Tests
     // Include only enabled tests
     // Sort them by name
     const dashboardTests = await Promise.all(
       records
-        .filter((r) => r.type === DatabaseType.TESTS && r[DatabaseField.IS_ENABLED] === true)
+        .filter((r) => r.type === DatabaseType.TEST && r[DatabaseField.IS_ENABLED] === true)
         .map(async (r) => {
           const previousChild = await getPreviousChildRecord(
             getChildType(r[DatabaseField.TYPE]) as DatabaseChildType,
@@ -103,7 +103,7 @@ const subscription = liveDashboard().subscribe({
     // Group favorites at the top
     const testFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
     const testNonFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === false)
-    dashboardRecordRefs[DatabaseType.TESTS].value = [...testFavorites, ...testNonFavorites]
+    dashboardRecordRefs[DatabaseType.TEST].value = [...testFavorites, ...testNonFavorites]
   },
   error: (error) => {
     log.error('Error loading live dashboard records', error)
@@ -146,8 +146,8 @@ function getDashboardRecordsCountText() {
     </QCard>
 
     <!-- Examples - Using v-show so the DOM doesn't get updated when switching selections -->
-    <div v-show="dashboardListSelection === DatabaseType.EXAMPLES">
-      <div v-for="(record, i) in dashboardRecordRefs[DatabaseType.EXAMPLES].value" :key="i">
+    <div v-show="dashboardListSelection === DatabaseType.EXAMPLE">
+      <div v-for="(record, i) in dashboardRecordRefs[DatabaseType.EXAMPLE].value" :key="i">
         <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
           :id="record[DatabaseField.ID]"
@@ -163,15 +163,15 @@ function getDashboardRecordsCountText() {
             color="positive"
             label="Add Entry"
             :icon="Icon.NEW"
-            @click="goToCreate(DatabaseType.EXAMPLE_RESULTS, record[DatabaseField.ID])"
+            @click="goToCreate(DatabaseType.EXAMPLE_RESULT, record[DatabaseField.ID])"
           />
         </DashboardParentCard>
       </div>
     </div>
 
     <!-- Tests - Using v-show so the DOM doesn't get updated when switching selections -->
-    <div v-show="dashboardListSelection === DatabaseType.TESTS">
-      <div v-for="(record, j) in dashboardRecordRefs[DatabaseType.TESTS].value" :key="j">
+    <div v-show="dashboardListSelection === DatabaseType.TEST">
+      <div v-for="(record, j) in dashboardRecordRefs[DatabaseType.TEST].value" :key="j">
         <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
           :id="record[DatabaseField.ID]"
@@ -187,7 +187,7 @@ function getDashboardRecordsCountText() {
             color="positive"
             label="Add Entry"
             :icon="Icon.NEW"
-            @click="goToCreate(DatabaseType.TEST_RESULTS, record[DatabaseField.ID])"
+            @click="goToCreate(DatabaseType.TEST_RESULT, record[DatabaseField.ID])"
           />
         </DashboardParentCard>
       </div>

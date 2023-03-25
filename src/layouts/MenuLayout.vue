@@ -17,11 +17,11 @@ import { slugify } from '@/utils/common'
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'
-import useActions from '@/composables/useActions'
-import useUIStore from '@/stores/ui'
 import { DatabaseType } from '@/types/database'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useUIStore from '@/stores/ui'
 
-const { goBack } = useActions()
+const { goBack } = useRoutingHelpers()
 const uiStore = useUIStore()
 const route = useRoute()
 </script>
@@ -70,7 +70,7 @@ const route = useRoute()
           v-ripple
           :to="{
             name: RouteName.DATA,
-            params: { databaseTypeSlug: slugify(DatabaseType.EXAMPLES) },
+            params: { databaseTypeSlug: slugify(DatabaseType.EXAMPLE) },
           }"
         >
           <QItemSection avatar>
@@ -82,7 +82,7 @@ const route = useRoute()
         <QItem
           clickable
           v-ripple
-          :to="{ name: RouteName.DATA, params: { databaseTypeSlug: slugify(DatabaseType.TESTS) } }"
+          :to="{ name: RouteName.DATA, params: { databaseTypeSlug: slugify(DatabaseType.TEST) } }"
         >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.TESTS" />

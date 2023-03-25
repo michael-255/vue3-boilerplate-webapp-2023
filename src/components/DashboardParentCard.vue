@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { QCard, QCardSection, QBtn } from 'quasar'
 import { useTimeAgo } from '@vueuse/core'
-import { DatabaseField, type DatabaseParentType } from '@/types/database'
+import { DatabaseField, DatabaseType, type DatabaseParentType } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { getDisplayDate } from '@/utils/common'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
-import useActions from '@/composables/useActions'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 
 defineProps<{
   type: DatabaseParentType
@@ -21,9 +21,9 @@ defineProps<{
 }>()
 
 const { log } = useLogger()
-const { goToInspect, goToEdit, goToCharts, onDeleteRecord } = useActions()
+const { goToInspect, goToEdit, goToCharts } = useRoutingHelpers()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
-const { updateRecord } = useDatabase()
+const { updateRecord, deleteRecord } = useDatabase()
 
 // TODO
 async function viewPreviousNote(note: string) {
@@ -64,6 +64,28 @@ async function onUnfavorite(type: DatabaseParentType, id: string, name: string) 
         })
       } catch (error) {
         log.error('Unfavorite update failed', error)
+      }
+    }
+  )
+}
+
+/**
+ * On confirmation, delete the matching record from the database.
+ * @param type
+ * @param id
+ */
+async function onDeleteRecord(type: DatabaseType, id: string) {
+  confirmDialog(
+    'Delete Record',
+    `Permanently delete record ${id} from ${type}?`,
+    Icon.DELETE,
+    'negative',
+    async () => {
+      try {
+        await deleteRecord(type, id)
+        log.info('Successfully deleted record', { deletedRecordType: type, deletedRecordId: id })
+      } catch (error) {
+        log.error('Delete failed', error)
       }
     }
   )
