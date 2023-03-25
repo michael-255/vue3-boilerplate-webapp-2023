@@ -3,6 +3,7 @@ import { Icon } from '@/types/icons'
 import { DatabaseField, DatabaseType } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
 import { getFieldBlueprints, getFields } from '@/services/data-utils'
+import { onMounted, onUnmounted } from 'vue'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActionRecordStore from '@/stores/action-record'
@@ -18,10 +19,14 @@ const actionRecordStore = useActionRecordStore()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 
-// TODO - Must do this before Create and Edit actions
-actionRecordStore.$reset()
-actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
-actionRecordStore.valid[DatabaseField.TYPE] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+  actionRecordStore.valid[DatabaseField.TYPE] = true
+})
+
+onUnmounted(() => {
+  actionRecordStore.$reset()
+})
 
 // TODO
 async function onCreateRecord() {
@@ -49,7 +54,6 @@ async function onCreateRecord() {
             createdRecordId: record[DatabaseField.ID],
           })
 
-          actionRecordStore.$reset()
           goBack()
         } catch (error) {
           log.error('Create failed', error)

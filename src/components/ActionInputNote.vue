@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { QInput } from 'quasar'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
@@ -12,11 +12,11 @@ defineProps<{
 const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
-// Default component state must be valid
-if (!actionRecordStore.actionRecord[DatabaseField.NOTE]) {
-  actionRecordStore.actionRecord[DatabaseField.NOTE] = ''
-}
-actionRecordStore.valid[DatabaseField.NOTE] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.NOTE] =
+    actionRecordStore.actionRecord[DatabaseField.NOTE] ?? ''
+  actionRecordStore.valid[DatabaseField.NOTE] = true
+})
 
 function noteRule(note: string) {
   return /^.{0,500}$/.test(note)

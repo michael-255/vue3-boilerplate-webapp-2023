@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { QInput } from 'quasar'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
@@ -12,11 +12,11 @@ defineProps<{
 const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
-// Default component state must be valid
-if (!actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]) {
-  actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] = ''
-}
-actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] =
+    actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] ?? ''
+  actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
+})
 
 function descriptionRule(description: string) {
   return /^.{0,500}$/.test(description)

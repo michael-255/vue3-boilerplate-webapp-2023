@@ -2,6 +2,7 @@
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
+import { onMounted } from 'vue'
 
 defineProps<{
   locked?: boolean
@@ -9,14 +10,11 @@ defineProps<{
 
 const actionRecordStore = useActionRecordStore()
 
-// Default component state must be valid
-if (
-  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] === undefined ||
-  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] === null
-) {
-  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] = true
-}
-actionRecordStore.valid[DatabaseField.IS_ENABLED] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] =
+    actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] ?? true
+  actionRecordStore.valid[DatabaseField.IS_ENABLED] = true
+})
 </script>
 
 <template>

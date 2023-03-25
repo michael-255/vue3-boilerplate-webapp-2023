@@ -2,7 +2,7 @@
 import { Icon } from '@/types/icons'
 import { DatabaseField, DatabaseType } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { getFieldBlueprints, getFields } from '@/services/data-utils'
 import useDatabase from '@/composables/useDatabase'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
@@ -19,9 +19,7 @@ const { getRecord, updateRecord } = useDatabase()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 
-// TODO - Must do this before Create and Edit actions
 onMounted(async () => {
-  actionRecordStore.$reset()
   actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
   actionRecordStore.valid[DatabaseField.TYPE] = true
 
@@ -32,6 +30,10 @@ onMounted(async () => {
       actionRecordStore.actionRecord[key as DatabaseField] = oldRecord[key as DatabaseField]
     })
   }
+})
+
+onUnmounted(() => {
+  actionRecordStore.$reset()
 })
 
 // TODO

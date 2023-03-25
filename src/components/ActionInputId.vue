@@ -1,25 +1,22 @@
 <script setup lang="ts">
 import { QInput, uid } from 'quasar'
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
-import useLogger from '@/composables/useLogger'
 
 defineProps<{
   locked?: boolean
 }>()
 
-const { consoleLog } = useLogger()
 const actionRecordStore = useActionRecordStore()
-
 const inputRef: Ref<any> = ref(null)
 
-// Default component state must be valid
-if (!actionRecordStore.actionRecord[DatabaseField.ID]) {
-  actionRecordStore.actionRecord[DatabaseField.ID] = uid()
-}
-actionRecordStore.valid[DatabaseField.ID] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.ID] =
+    actionRecordStore.actionRecord[DatabaseField.ID] ?? uid()
+  actionRecordStore.valid[DatabaseField.ID] = true
+})
 
 function idRule(id: string) {
   return id !== undefined && id !== null && id !== '' && /^.{1,50}$/.test(id)

@@ -2,6 +2,7 @@
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
+import { onMounted } from 'vue'
 
 defineProps<{
   locked?: boolean
@@ -9,14 +10,11 @@ defineProps<{
 
 const actionRecordStore = useActionRecordStore()
 
-// Default component state must be valid
-if (
-  actionRecordStore.actionRecord[DatabaseField.IS_FAVORITED] === undefined ||
-  actionRecordStore.actionRecord[DatabaseField.IS_FAVORITED] === null
-) {
-  actionRecordStore.actionRecord[DatabaseField.IS_FAVORITED] = false
-}
-actionRecordStore.valid[DatabaseField.IS_FAVORITED] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.IS_FAVORITED] =
+    actionRecordStore.actionRecord[DatabaseField.IS_FAVORITED] ?? false
+  actionRecordStore.valid[DatabaseField.IS_FAVORITED] = true
+})
 </script>
 
 <template>

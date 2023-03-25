@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QInput, QDate, QBtn, QTime, QPopupProxy, date } from 'quasar'
-import { type Ref, ref } from 'vue'
+import { onMounted, type Ref, ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
@@ -13,13 +13,14 @@ const inputRef: Ref<any> = ref(null)
 const displayedDate: Ref<string> = ref('')
 const dateTimePicker: Ref<string> = ref('')
 
-// Default component state must be valid
-if (actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP]) {
-  updateDates(actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP])
-} else {
-  updateDates()
-}
-actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
+onMounted(() => {
+  if (actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP]) {
+    updateDates(actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP])
+  } else {
+    updateDates()
+  }
+  actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
+})
 
 function updateDates(timestamp: number = new Date().getTime()): void {
   actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP] = timestamp
