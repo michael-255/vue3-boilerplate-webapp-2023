@@ -19,7 +19,7 @@ import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 
-const { log, consoleLog } = useLogger()
+const { log, consoleDebug } = useLogger()
 const { goToCreate } = useRoutingHelpers()
 const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
 
@@ -37,15 +37,11 @@ const dashboardRecordRefs = {
 
 const subscription = liveDashboard().subscribe({
   next: async (records) => {
-    consoleLog('records =', records)
-
     // Settings
     showIntroduction.value = records.find((s) => s.id === SettingId.SHOW_INTRODUCTION)?.value
     dashboardListSelection.value = records.find(
       (s) => s.id === SettingId.DASHBOARD_LIST_SELECTION
     )?.value
-
-    consoleLog('dashboardListSelection =', dashboardListSelection.value)
 
     // Examples
     // Include only enabled examples

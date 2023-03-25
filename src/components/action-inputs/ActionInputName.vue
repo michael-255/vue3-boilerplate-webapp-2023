@@ -13,17 +13,19 @@ const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] =
-    actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] ?? ''
-  actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
+  actionRecordStore.actionRecord[DatabaseField.NAME] =
+    actionRecordStore.actionRecord[DatabaseField.NAME] ?? 'Example'
+  actionRecordStore.valid[DatabaseField.NAME] = true
 })
 
-function descriptionRule(description: string) {
-  return /^.{0,500}$/.test(description)
+function nameRule(name: string) {
+  return name !== undefined && name !== null && name !== '' && /^.{1,50}$/.test(name)
 }
 
 function validateInput(): void {
-  actionRecordStore.valid[DatabaseField.DESCRIPTION] = !!inputRef?.value?.validate()
+  actionRecordStore.actionRecord[DatabaseField.NAME] =
+    actionRecordStore.actionRecord[DatabaseField.NAME].trim()
+  actionRecordStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -31,25 +33,22 @@ function validateInput(): void {
   <QCard>
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        Description
+        Name
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Description</div>
+      <div class="q-mb-md">TODO Name</div>
 
       <QInput
-        v-model="actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.NAME]"
         ref="inputRef"
-        label="Description"
-        :rules="[(description: string) => descriptionRule(description) || 'Description cannot exceed 500 characters']"
+        label="Name"
+        :rules="[(name: string) => nameRule(name.trim()) || 'Name must be between 1 and 50 characters']"
         :disable="locked"
-        :maxlength="500"
-        type="textarea"
-        autogrow
+        :maxlength="50"
         counter
         dense
         outlined
-        clearable
         color="primary"
         @blur="validateInput()"
       />

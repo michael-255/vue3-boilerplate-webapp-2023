@@ -5,23 +5,12 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
+- Todos
+
+  - [ ] Each chart component can have one or more charts for a specific `DatabaseField`
+
 - Dashboard
 
-  - [ ] `ActionCreate` component
-
-    - [ ] item can be passed to the components to populate the "oldItem" fields
-    - [ ] An id existing during a "create" then lock certain inputs
-    - [ ] You may have to do these components like you do "ActionInspect" (no need for
-          getTableComponents)
-
-  - [ ] Work on the `Create Action` (ActionInput\* from older app)
-
-    - [ ] Create route should use route id as the `parentId` for records (nothing with Parents)
-    - [ ] Lock fields when creating a record with a route `parentId` provided
-      - [ ] Lock `parentId` and `createdTimestamp` (others?)
-
-  - [ ] Work on the `Edit Action`
-  - [ ] Remove inputs from Dashboard items and have a `Create Record` button instead
   - [ ] Work on the `Charts Action` (Select for date range - enum)
 
 - Quasar

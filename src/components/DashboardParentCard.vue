@@ -185,7 +185,7 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
         </div>
 
         <!-- Previous Record Number -->
-        <div v-if="previousNumber">
+        <div v-if="previousNumber !== undefined && previousNumber !== null">
           <QIcon :name="Icon.EXAMPLES" />
           <span class="text-caption q-ml-xs">{{ previousNumber }}</span>
         </div>

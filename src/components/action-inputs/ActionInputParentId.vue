@@ -14,7 +14,7 @@ defineProps<{
   locked?: boolean
 }>()
 
-const { routeDatabaseType } = useRoutingHelpers()
+const { routeDatabaseType, routeParentId } = useRoutingHelpers()
 const { log } = useLogger()
 const { getEnabledParentRecords } = useDatabase()
 const actionRecordStore = useActionRecordStore()
@@ -42,14 +42,12 @@ onMounted(async () => {
       label: `${a.name} (${truncateString(a.id, 4, '*')})`, // Truncate id for readability
     }))
 
-    const existingParentId = actionRecordStore.actionRecord[DatabaseField.PARENT_ID]
-
     // Set the current option
     // Must do this first so it can be null if parent was deleted versus being the first option
-    if (existingParentId) {
+    if (routeParentId) {
       // An existing parent id means we have to try and match it too our options as a selection
       const matchedParent = options.value?.find(
-        (option) => option.value === existingParentId // Comparing the full ids
+        (option) => option.value === routeParentId // Comparing the full ids
       )?.value
 
       if (matchedParent) {

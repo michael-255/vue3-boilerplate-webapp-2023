@@ -13,17 +13,19 @@ const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.actionRecord[DatabaseField.NOTE] =
-    actionRecordStore.actionRecord[DatabaseField.NOTE] ?? ''
-  actionRecordStore.valid[DatabaseField.NOTE] = true
+  actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] =
+    actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] ?? ''
+  actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
 })
 
-function noteRule(note: string) {
-  return /^.{0,500}$/.test(note)
+function descriptionRule(description: string) {
+  return /^.{0,500}$/.test(description)
 }
 
 function validateInput(): void {
-  actionRecordStore.valid[DatabaseField.NOTE] = !!inputRef?.value?.validate()
+  actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] =
+    actionRecordStore.actionRecord[DatabaseField.DESCRIPTION].trim()
+  actionRecordStore.valid[DatabaseField.DESCRIPTION] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -31,17 +33,17 @@ function validateInput(): void {
   <QCard>
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        Note
+        Description
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Note</div>
+      <div class="q-mb-md">TODO Description</div>
 
       <QInput
-        v-model="actionRecordStore.actionRecord[DatabaseField.NOTE]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]"
         ref="inputRef"
-        label="Note"
-        :rules="[(note: string) => noteRule(note) || 'Note cannot exceed 500 characters']"
+        label="Description"
+        :rules="[(description: string) => descriptionRule(description.trim()) || 'Description cannot exceed 500 characters']"
         :disable="locked"
         :maxlength="500"
         type="textarea"

@@ -4,3 +4,9 @@ export type ChartBlueprint = {
 }
 
 // TODO
+export function numberChart(): ChartBlueprint {
+  return {
+    label: 'Numbers',
+    component: null,
+  }
+}

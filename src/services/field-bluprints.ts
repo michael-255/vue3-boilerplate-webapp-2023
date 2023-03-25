@@ -24,7 +24,7 @@ export function idField(): FieldBlueprint {
     field: DatabaseField.ID,
     label: 'Id',
     inspectFormat: (val: string) => `${val}`,
-    component: defineAsyncComponent(() => import('@/components/ActionInputId.vue')),
+    component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputId.vue')),
   }
 }
 
@@ -42,7 +42,9 @@ export function createdTimestampField(): FieldBlueprint {
     field: DatabaseField.CREATED_TIMESTAMP,
     label: 'Created Date',
     inspectFormat: (val: number) => getDisplayDate(val),
-    component: defineAsyncComponent(() => import('@/components/ActionInputCreatedTimestamp.vue')),
+    component: defineAsyncComponent(
+      () => import('@/components/action-inputs/ActionInputCreatedTimestamp.vue')
+    ),
   }
 }
 
@@ -78,7 +80,7 @@ export function nameField(): FieldBlueprint {
     field: DatabaseField.NAME,
     label: 'Name',
     inspectFormat: (val: string) => `${val}`,
-    component: defineAsyncComponent(() => import('@/components/ActionInputName.vue')),
+    component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputName.vue')),
   }
 }
 
@@ -87,7 +89,9 @@ export function descriptionField(): FieldBlueprint {
     field: DatabaseField.DESCRIPTION,
     label: 'Description',
     inspectFormat: (val: string) => `${val}`,
-    component: defineAsyncComponent(() => import('@/components/ActionInputDescription.vue')),
+    component: defineAsyncComponent(
+      () => import('@/components/action-inputs/ActionInputDescription.vue')
+    ),
   }
 }
 
@@ -96,7 +100,9 @@ export function favoritedField(): FieldBlueprint {
     field: DatabaseField.IS_FAVORITED,
     label: 'Favorited',
     inspectFormat: (val: boolean) => (val ? 'Yes' : 'No'),
-    component: defineAsyncComponent(() => import('@/components/ActionInputFavorited.vue')),
+    component: defineAsyncComponent(
+      () => import('@/components/action-inputs/ActionInputFavorited.vue')
+    ),
   }
 }
 
@@ -105,7 +111,9 @@ export function enabledField(): FieldBlueprint {
     field: DatabaseField.IS_ENABLED,
     label: 'Enabled',
     inspectFormat: (val: boolean) => (val ? 'Yes' : 'No'),
-    component: defineAsyncComponent(() => import('@/components/ActionInputEnabled.vue')),
+    component: defineAsyncComponent(
+      () => import('@/components/action-inputs/ActionInputEnabled.vue')
+    ),
   }
 }
 
@@ -114,7 +122,9 @@ export function parentIdField(): FieldBlueprint {
     field: DatabaseField.PARENT_ID,
     label: 'Parent Id',
     inspectFormat: (val: string) => `${val}`,
-    component: defineAsyncComponent(() => import('@/components/ActionInputParentId.vue')),
+    component: defineAsyncComponent(
+      () => import('@/components/action-inputs/ActionInputParentId.vue')
+    ),
   }
 }
 
@@ -123,7 +133,7 @@ export function noteField(): FieldBlueprint {
     field: DatabaseField.NOTE,
     label: 'Note',
     inspectFormat: (val: string) => `${val}`,
-    component: defineAsyncComponent(() => import('@/components/ActionInputNote.vue')),
+    component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputNote.vue')),
   }
 }
 
@@ -132,6 +142,8 @@ export function numberField(): FieldBlueprint {
     field: DatabaseField.NUMBER,
     label: 'Number',
     inspectFormat: (val: number) => `${val}`,
-    component: defineAsyncComponent(() => import('@/components/ActionInputNumber.vue')),
+    component: defineAsyncComponent(
+      () => import('@/components/action-inputs/ActionInputNumber.vue')
+    ),
   }
 }
