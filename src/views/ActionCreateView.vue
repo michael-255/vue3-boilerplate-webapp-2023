@@ -7,67 +7,98 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 import useActions from '@/composables/useActions'
 import useRouteParams from '@/composables/useRouteParams'
 import useActionRecordStore from '@/stores/action-record'
+import useLogger from '@/composables/useLogger'
+import useSimpleDialogs from '@/composables/useSimpleDialogs'
+import useDatabase from '@/composables/useDatabase'
 
 const { routeDatabaseType, routeParentId } = useRouteParams()
-const { onCreateRecord } = useActions()
+const { log } = useLogger()
+const { confirmDialog, dismissDialog } = useSimpleDialogs()
+const { goBack } = useActions()
+const { createRecord } = useDatabase()
 const actionRecordStore = useActionRecordStore()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 
 // TODO - Must do this before Create and Edit actions
 actionRecordStore.$reset()
-actionRecordStore.temp[DatabaseField.TYPE] = routeDatabaseType
+actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+actionRecordStore.valid[DatabaseField.TYPE] = true
 
 // TODO
-async function onCreate(record: DatabaseRecord) {
+async function onCreateRecord() {
   const fields = getFields(routeDatabaseType as DatabaseType)
-  const realRecord = {} as DatabaseRecord
-  // removing null fields from store record before creation
-  fields.forEach((field) => {
-    realRecord[field] = record[field]
-  })
-  await onCreateRecord(realRecord)
+
+  // Build record from store using only fields used by its type (ignoring others in store)
+  const record = fields.reduce(
+    (acc, field) => ({ ...acc, [field]: actionRecordStore.actionRecord[field] }),
+    {} as DatabaseRecord
+  )
+
+  // Inputs must be valid
+  if (actionRecordStore.areRecordFieldsValid(fields)) {
+    confirmDialog(
+      'Create Record',
+      `Create record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
+      Icon.CREATE,
+      'positive',
+      async () => {
+        try {
+          await createRecord(record)
+
+          log.info('Successfully created record', {
+            createdRecordType: record[DatabaseField.TYPE],
+            createdRecordId: record[DatabaseField.ID],
+          })
+
+          actionRecordStore.$reset()
+          goBack()
+        } catch (error) {
+          log.error('Create failed', error)
+        }
+      }
+    )
+  } else {
+    dismissDialog(
+      'Validation Error',
+      'Unable to create record. Ensure all inputs have valid entries.',
+      Icon.WARN,
+      'warning'
+    )
+  }
+}
+
+/**
+ * Determines which fields are locked when a routeParentId is present.
+ * Having a routeParentId means you are creating a child record for a parent record.
+ * @param field
+ */
+function lockFields(field: DatabaseField) {
+  const lockedFields = [DatabaseField.PARENT_ID, DatabaseField.CREATED_TIMESTAMP]
+
+  if (routeParentId && lockedFields.includes(field)) {
+    return true
+  } else {
+    return false
+  }
 }
 </script>
 
 <template>
   <ResponsivePage :banner-icon="Icon.CREATE" banner-title="Create">
     <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
-      <component :is="fieldBP.component" />
+      <!-- Record Type -->
+      <QCard v-if="fieldBP.field === DatabaseField.TYPE" class="q-mb-md">
+        <QCardSection>
+          <div class="text-h6 q-mb-sm">Type</div>
+          <div>{{ routeDatabaseType ?? '-' }}</div>
+        </QCardSection>
+      </QCard>
+
+      <!-- Dynamic Async Components -->
+      <component :is="fieldBP.component" :locked="lockFields(fieldBP.field)" />
     </div>
 
-    <!-- <div v-for="(item, i) in columnProps" :key="i" class="q-mb-md">
-      <div v-if="item.name !== 'hiddenId'">
-        <ActionInputId v-if="item.name === DatabaseField.ID" />
-        <ActionInputCreatedTimestamp
-          v-if="item.name === DatabaseField.CREATED_TIMESTAMP"
-          :locked="routeParentId ? true : false"
-        />
-        <ActionInputName v-if="item.name === DatabaseField.NAME" :label="item.label as any" />
-        <ActionInputParentId
-          v-if="item.name === DatabaseField.PARENT_ID"
-          :locked="routeParentId ? true : false"
-          :oldParentId="routeParentId"
-          :type="routeDatabaseType"
-        />
-        <ActionInputText v-if="item.name === DatabaseField.TEXT" :label="item.label as any" />
-        <ActionInputToggle
-          v-if="item.name === DatabaseField.IS_FAVORITED"
-          :label="item.label as any"
-        />
-        <ActionInputToggle
-          v-if="item.name === DatabaseField.IS_ENABLED"
-          :label="item.label as any"
-        />
-        <ActionInputNumber v-if="item.name === DatabaseField.NUMBER" />
-      </div>
-    </div> -->
-
-    <QBtn
-      label="Create"
-      color="positive"
-      :icon="Icon.SAVE"
-      @click="onCreate({ ...actionRecordStore.temp })"
-    />
+    <QBtn label="Create" color="positive" :icon="Icon.SAVE" @click="onCreateRecord()" />
   </ResponsivePage>
 </template>

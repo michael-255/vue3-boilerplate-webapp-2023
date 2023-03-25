@@ -7,6 +7,7 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Todos
 
+  - [ ] Change all `DatabaseTypes` to singular
   - [ ] Need id input auto slugifying and stricter rules so user isn't surprised
   - [ ] Get `ActionInput*` components working and added to `data-utils.ts`
   - [ ] Handle `routeParentId` when doing a child record `Create`

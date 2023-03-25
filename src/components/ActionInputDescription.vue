@@ -5,25 +5,25 @@ import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
 
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  oldText?: string
-  label: 'Description' | 'Note'
 }>()
 
 const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
 // Default component state must be valid
-actionRecordStore.temp[DatabaseField.TEXT] = props.oldText ? props.oldText : ''
-actionRecordStore.valid[DatabaseField.TEXT] = true
+if (!actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]) {
+  actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] = ''
+}
+actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
 
-function textRule(text: string) {
-  return text !== undefined && text !== null && /^.{0,500}$/.test(text)
+function descriptionRule(description: string) {
+  return /^.{0,500}$/.test(description)
 }
 
 function validateInput(): void {
-  actionRecordStore.valid[DatabaseField.TEXT] = !!inputRef?.value?.validate()
+  actionRecordStore.valid[DatabaseField.DESCRIPTION] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -31,18 +31,17 @@ function validateInput(): void {
   <QCard>
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        {{ label }}
+        Description
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div v-if="label === 'Description'" class="q-mb-md">TODO Description</div>
-      <div v-if="label === 'Note'" class="q-mb-md">TODO Note</div>
+      <div class="q-mb-md">TODO Description</div>
 
       <QInput
-        v-model="actionRecordStore.temp[DatabaseField.TEXT]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]"
         ref="inputRef"
-        :label="label"
-        :rules="[(description: string) => textRule(description) || `${label} cannot exceed 500 characters`]"
+        label="Description"
+        :rules="[(description: string) => descriptionRule(description) || 'Description cannot exceed 500 characters']"
         :disable="locked"
         :maxlength="500"
         type="textarea"

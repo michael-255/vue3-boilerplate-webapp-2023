@@ -2,80 +2,99 @@
 import { Icon } from '@/types/icons'
 import { DatabaseField, DatabaseType } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
-import { onMounted, type Ref, ref } from 'vue'
-import type { Optional } from '@/types/misc'
-import useLogger from '@/composables/useLogger'
+import { onMounted } from 'vue'
+import { getFieldBlueprints, getFields } from '@/services/data-utils'
 import useDatabase from '@/composables/useDatabase'
 import useActions from '@/composables/useActions'
 import useRouteParams from '@/composables/useRouteParams'
 import useActionRecordStore from '@/stores/action-record'
+import useSimpleDialogs from '@/composables/useSimpleDialogs'
+import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import { getFieldBlueprints, getFields } from '@/services/data-utils'
 
 const { routeDatabaseType, routeId } = useRouteParams()
 const { log } = useLogger()
-const { onUpdateRecord } = useActions()
+const { goBack } = useActions()
+const { confirmDialog, dismissDialog } = useSimpleDialogs()
 const actionRecordStore = useActionRecordStore()
-const { getRecord } = useDatabase()
+const { getRecord, updateRecord } = useDatabase()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 
 // TODO - Must do this before Create and Edit actions
-actionRecordStore.$reset()
-actionRecordStore.temp[DatabaseField.TYPE] = routeDatabaseType
-
-const oldRecord: Ref<Optional<DatabaseRecord>> = ref(null)
-
 onMounted(async () => {
-  // TODO
-  oldRecord.value = await getRecord(routeDatabaseType as DatabaseType, routeId)
+  actionRecordStore.$reset()
+  actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+  actionRecordStore.valid[DatabaseField.TYPE] = true
+
+  const oldRecord = await getRecord(routeDatabaseType as DatabaseType, routeId)
+
+  if (oldRecord) {
+    Object.keys(oldRecord).forEach((key) => {
+      actionRecordStore.actionRecord[key as DatabaseField] = oldRecord[key as DatabaseField]
+    })
+  }
 })
 
 // TODO
-async function onUpdate(type: DatabaseType, originalId: string, record: DatabaseRecord) {
+async function onUpdateRecord() {
   const fields = getFields(routeDatabaseType as DatabaseType)
-  const realRecord = {} as DatabaseRecord
-  // removing null fields from store record before creation
-  fields.forEach((field) => {
-    realRecord[field] = record[field]
-  })
-  await onUpdateRecord(type, originalId, realRecord)
+
+  // Build record from store using only fields used by its type (ignoring others in store)
+  const record = fields.reduce(
+    (acc, field) => ({ ...acc, [field]: actionRecordStore.actionRecord[field] }),
+    {} as DatabaseRecord
+  )
+
+  // Inputs must be valid to continue
+  if (actionRecordStore.areRecordFieldsValid(fields)) {
+    confirmDialog(
+      'Update Record',
+      `Update record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
+      Icon.EDIT,
+      'positive',
+      async () => {
+        try {
+          await updateRecord(routeDatabaseType as DatabaseType, routeId, record)
+
+          log.info('Successfully updated record', {
+            updatedRecordType: routeDatabaseType,
+            updatedRecordId: routeId,
+          })
+
+          actionRecordStore.$reset()
+          goBack()
+        } catch (error) {
+          log.error('Update failed', error)
+        }
+      }
+    )
+  } else {
+    dismissDialog(
+      'Validation Error',
+      'Unable to update record. Ensure all inputs have valid entries.',
+      Icon.WARN,
+      'warning'
+    )
+  }
 }
 </script>
 
 <template>
   <ResponsivePage :banner-icon="Icon.EDIT" banner-title="Edit">
     <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
+      <!-- Record Type -->
+      <QCard v-if="fieldBP.field === DatabaseField.TYPE" class="q-mb-md">
+        <QCardSection>
+          <div class="text-h6 q-mb-sm">Type</div>
+          <div>{{ routeDatabaseType ?? '-' }}</div>
+        </QCardSection>
+      </QCard>
+
+      <!-- Dynamic Async Components -->
       <component :is="fieldBP.component" />
     </div>
 
-    <!-- <div v-for="(item, i) in columnProps" :key="i" class="q-mb-md">
-      <div v-if="item.name !== 'hiddenId'">
-        <ActionInputId v-if="item.name === DatabaseField.ID" />
-        <ActionInputCreatedTimestamp v-if="item.name === DatabaseField.CREATED_TIMESTAMP" />
-        <ActionInputName v-if="item.name === DatabaseField.NAME" :label="item.label as any" />
-        <ActionInputParentId
-          v-if="item.name === DatabaseField.PARENT_ID"
-          :type="routeDatabaseType"
-        />
-        <ActionInputText v-if="item.name === DatabaseField.TEXT" :label="item.label as any" />
-        <ActionInputToggle
-          v-if="item.name === DatabaseField.IS_FAVORITED"
-          :label="item.label as any"
-        />
-        <ActionInputToggle
-          v-if="item.name === DatabaseField.IS_ENABLED"
-          :label="item.label as any"
-        />
-        <ActionInputNumber v-if="item.name === DatabaseField.NUMBER" />
-      </div>
-    </div> -->
-
-    <QBtn
-      label="Update"
-      color="positive"
-      :icon="Icon.SAVE"
-      @click="onUpdate(routeDatabaseType as DatabaseType, routeId, { ...actionRecordStore.temp })"
-    />
+    <QBtn label="Update" color="positive" :icon="Icon.SAVE" @click="onUpdateRecord()" />
   </ResponsivePage>
 </template>

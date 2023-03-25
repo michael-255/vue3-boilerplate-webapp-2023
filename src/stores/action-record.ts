@@ -6,11 +6,7 @@ const useActionRecordStore = defineStore({
   id: 'action-record',
 
   state: () => ({
-    old: Object.values(DatabaseField).reduce(
-      (acc, field) => ({ ...acc, [field]: null as any }),
-      {} as { [key in DatabaseField]: any }
-    ),
-    temp: Object.values(DatabaseField).reduce(
+    actionRecord: Object.values(DatabaseField).reduce(
       (acc, field) => ({ ...acc, [field]: null as any }),
       {} as { [key in DatabaseField]: any }
     ),
@@ -21,7 +17,7 @@ const useActionRecordStore = defineStore({
   }),
 
   getters: {
-    areItemFieldsValid:
+    areRecordFieldsValid:
       (state: any) =>
       (fields: DatabaseField[]): boolean => {
         return fields.every((field: DatabaseField) => state.valid[field] === true)

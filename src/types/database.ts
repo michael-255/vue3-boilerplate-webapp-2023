@@ -1,3 +1,5 @@
+import type { LogRetention } from './misc'
+
 /**
  * All database tables.
  */
@@ -57,7 +59,7 @@ export enum DatabaseField {
 /**
  * Setting values are restricted to a few primitive types.
  */
-export type SettingValue = string | number | boolean
+export type SettingValue = string | number | boolean | DatabaseType | LogRetention
 
 /**
  * The only valid setting ids.

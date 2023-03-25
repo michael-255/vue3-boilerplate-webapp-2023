@@ -1,0 +1,38 @@
+<script setup lang="ts">
+import { DatabaseField } from '@/types/database'
+import { Icon } from '@/types/icons'
+import useActionRecordStore from '@/stores/action-record'
+
+defineProps<{
+  locked?: boolean
+}>()
+
+const actionRecordStore = useActionRecordStore()
+
+// Default component state must be valid
+if (
+  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] === undefined ||
+  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] === null
+) {
+  actionRecordStore.actionRecord[DatabaseField.IS_ENABLED] = true
+}
+actionRecordStore.valid[DatabaseField.IS_ENABLED] = true
+</script>
+
+<template>
+  <QCard>
+    <QCardSection>
+      <div class="text-h6 q-mb-md">
+        Enabled
+        <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
+      </div>
+
+      <div class="q-mb-md">TODO Enabled</div>
+
+      <QToggle
+        :disable="locked"
+        v-model="actionRecordStore.actionRecord[DatabaseField.IS_ENABLED]"
+      />
+    </QCardSection>
+  </QCard>
+</template>

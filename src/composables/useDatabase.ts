@@ -108,7 +108,7 @@ export default function useDatabase() {
   }
 
   // TODO
-  async function getEnabledParentType(type: DatabaseParentType) {
+  async function getEnabledParentRecords(type: DatabaseParentType) {
     return await db
       .where(DatabaseField.TYPE)
       .equals(type)
@@ -234,7 +234,7 @@ export default function useDatabase() {
     getPreviousChildRecord,
     setSetting,
     getRecord,
-    getEnabledParentType,
+    getEnabledParentRecords,
     addLog,
     purgeExpiredLogs,
     getAllRecords,

@@ -7,6 +7,7 @@ import {
   SettingId,
   type DatabaseParentType,
   type DatabaseChildType,
+  type SettingValue,
 } from '@/types/database'
 import type { DashboardParent } from '@/types/frontend'
 import type { Optional } from '@/types/misc'
@@ -27,8 +28,8 @@ const dashboardListOptions = parentTypes.map((type) => ({
   value: type,
 }))
 
-const showIntroduction: Ref<Optional<boolean>> = ref(null)
-const dashboardListSelection: Ref<Optional<DatabaseType>> = ref(null)
+const showIntroduction: Ref<Optional<SettingValue>> = ref(null)
+const dashboardListSelection: Ref<Optional<SettingValue>> = ref(null)
 const dashboardRecordRefs = {
   [DatabaseType.EXAMPLES]: ref([]),
   [DatabaseType.TESTS]: ref([]),

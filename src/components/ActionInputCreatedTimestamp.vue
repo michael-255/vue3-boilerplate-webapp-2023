@@ -4,10 +4,8 @@ import { type Ref, ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
-
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  oldTimestamp?: number
 }>()
 
 const actionRecordStore = useActionRecordStore()
@@ -16,15 +14,15 @@ const displayedDate: Ref<string> = ref('')
 const dateTimePicker: Ref<string> = ref('')
 
 // Default component state must be valid
-if (props.oldTimestamp) {
-  updateDates(props.oldTimestamp)
+if (actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP]) {
+  updateDates(actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP])
 } else {
   updateDates()
 }
 actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
 
 function updateDates(timestamp: number = new Date().getTime()): void {
-  actionRecordStore.temp[DatabaseField.CREATED_TIMESTAMP] = timestamp
+  actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP] = timestamp
   actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
   displayedDate.value = date.formatDate(timestamp, 'ddd, YYYY MMM Do, h:mm A')
 }
