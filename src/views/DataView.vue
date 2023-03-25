@@ -163,7 +163,7 @@ function getRecordsCountText() {
 
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType || 'No Table Found' }}</div>
+        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType || 'No Data Found' }}</div>
         <QBtn
           round
           flat

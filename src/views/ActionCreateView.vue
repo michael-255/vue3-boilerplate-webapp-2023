@@ -11,7 +11,8 @@ import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 
-const { routeDatabaseType, routeParentId, goBack } = useRoutingHelpers()
+const { routeDatabaseType, routeParentId, isRouteDatabaseTypeValid, bannerTypeTitle, goBack } =
+  useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
 const { createRecord } = useDatabase()
@@ -20,8 +21,16 @@ const actionRecordStore = useActionRecordStore()
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 
 onMounted(() => {
-  actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
-  actionRecordStore.valid[DatabaseField.TYPE] = true
+  try {
+    actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+    actionRecordStore.valid[DatabaseField.TYPE] = true
+
+    if (!isRouteDatabaseTypeValid()) {
+      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
+    }
+  } catch (error) {
+    log.error('Error loading create view', error)
+  }
 })
 
 onUnmounted(() => {
@@ -87,20 +96,24 @@ function lockFields(field: DatabaseField) {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.CREATE" banner-title="Create">
-    <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
-      <!-- Record Type -->
-      <QCard v-if="fieldBP.field === DatabaseField.TYPE" class="q-mb-md">
+  <ResponsivePage :banner-icon="Icon.CREATE" :banner-title="bannerTypeTitle('Create')">
+    <!-- Error Render -->
+    <div v-if="fieldBlueprints.length === 0">
+      <QCard class="q-mb-md">
         <QCardSection>
-          <div class="text-h6 q-mb-sm">Type</div>
-          <div>{{ routeDatabaseType ?? '-' }}</div>
+          <div class="text-h6">No fields available for this record type</div>
         </QCardSection>
       </QCard>
-
-      <!-- Dynamic Async Components -->
-      <component :is="fieldBP.component" :locked="lockFields(fieldBP.field)" />
     </div>
 
-    <QBtn label="Create" color="positive" :icon="Icon.SAVE" @click="onCreateRecord()" />
+    <!-- Normal Page Render -->
+    <div v-else>
+      <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
+        <!-- Dynamic Async Components -->
+        <component :is="fieldBP.component" :locked="lockFields(fieldBP.field)" />
+      </div>
+
+      <QBtn label="Create" color="positive" :icon="Icon.SAVE" @click="onCreateRecord()" />
+    </div>
   </ResponsivePage>
 </template>

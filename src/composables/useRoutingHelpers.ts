@@ -1,4 +1,4 @@
-import { DatabaseField, type DatabaseType, type SettingId } from '@/types/database'
+import { DatabaseField, DatabaseType, type SettingId } from '@/types/database'
 import { RouteName } from '@/router/route-names'
 import { slugify } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
@@ -17,6 +17,25 @@ export default function useRoutingHelpers() {
   const routeDatabaseType = getTypeFromSlug(databaseTypeSlug as string)
   const routeId = route?.params?.[DatabaseField.ID] as string
   const routeParentId = route?.params?.[DatabaseField.PARENT_ID] as string
+
+  /**
+   * Returns true if the route databaseType is valid.
+   */
+  function isRouteDatabaseTypeValid() {
+    return Object.values(DatabaseType).includes(routeDatabaseType as DatabaseType)
+  }
+
+  /**
+   * Returns the banner with the database type appended to the end.
+   * @param title
+   */
+  function bannerTypeTitle(title: string) {
+    if (isRouteDatabaseTypeValid()) {
+      return `${title} ${routeDatabaseType}`
+    } else {
+      return 'Error'
+    }
+  }
 
   /**
    * Go to data table route. The type can also be 'orphaned' to show orphaned records.
@@ -128,6 +147,8 @@ export default function useRoutingHelpers() {
     routeDatabaseType,
     routeId,
     routeParentId,
+    isRouteDatabaseTypeValid,
+    bannerTypeTitle,
     goToData,
     goToInspect,
     goToCreate,

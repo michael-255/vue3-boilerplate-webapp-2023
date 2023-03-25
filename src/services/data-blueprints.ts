@@ -2,7 +2,7 @@ import { Icon } from '@/types/icons'
 import type { Optional } from '@/types/misc'
 import { slugify } from '@/utils/common'
 import type { QTableColumn } from 'quasar'
-import type { ChartBlueprint } from '@/services/chart-blueprints'
+import { numberChart, type ChartBlueprint } from '@/services/chart-blueprints'
 import {
   DatabaseAction,
   DatabaseField,
@@ -125,7 +125,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
       DatabaseAction.DELETE,
       DatabaseAction.CHARTS,
     ],
-    chartBluprints: [],
+    chartBluprints: [numberChart()],
     fieldBlueprints: [
       typeField(),
       idField(),
@@ -188,7 +188,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
       DatabaseAction.DELETE,
       DatabaseAction.CHARTS,
     ],
-    chartBluprints: [],
+    chartBluprints: [numberChart()],
     fieldBlueprints: [
       typeField(),
       idField(),

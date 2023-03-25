@@ -1,3 +1,5 @@
+import { defineAsyncComponent } from 'vue'
+
 export type ChartBlueprint = {
   readonly label: string
   readonly component: any
@@ -7,6 +9,6 @@ export type ChartBlueprint = {
 export function numberChart(): ChartBlueprint {
   return {
     label: 'Numbers',
-    component: null,
+    component: defineAsyncComponent(() => import('@/components/charts/ChartNumbers.vue')),
   }
 }

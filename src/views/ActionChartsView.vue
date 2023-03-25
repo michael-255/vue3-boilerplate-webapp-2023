@@ -1,37 +1,45 @@
 <script setup lang="ts">
-import { colors } from 'quasar'
 import { Icon } from '@/types/icons'
-import { Bar } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js'
+import type { DatabaseType } from '@/types/database'
+import { getChartBlueprints } from '@/services/data-utils'
+import { onMounted } from 'vue'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import useLogger from '@/composables/useLogger'
 
-const { getPaletteColor } = colors
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+const { routeDatabaseType, isRouteDatabaseTypeValid, bannerTypeTitle } = useRoutingHelpers()
+const { log } = useLogger()
 
-const chartData = {
-  labels: ['January', 'February', 'March'],
-  datasets: [{ backgroundColor: getPaletteColor('warning'), data: [40, 20, 12] }],
-}
-const chartOptions = {
-  responsive: true,
-}
+const chartBlueprints = getChartBlueprints(routeDatabaseType as DatabaseType)
+
+onMounted(() => {
+  try {
+    if (!isRouteDatabaseTypeValid()) {
+      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
+    }
+  } catch (error) {
+    log.error('Error loading charts view', error)
+  }
+})
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.CHARTS" banner-title="Charts">
-    <QCard class="q-mb-md">
-      <QCardSection>
-        <div class="text-h6 q-mb-md">Testing</div>
-        <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
-      </QCardSection>
-    </QCard>
+  <ResponsivePage :banner-icon="Icon.CHARTS" :banner-title="bannerTypeTitle('Charts')">
+    <!-- Error Render -->
+    <div v-if="chartBlueprints.length === 0">
+      <QCard class="q-mb-md">
+        <QCardSection>
+          <div class="text-h6">No charts available for this record type</div>
+        </QCardSection>
+      </QCard>
+    </div>
+
+    <!-- Normal Page Render -->
+    <div v-else>
+      <div v-for="(chartBP, i) in chartBlueprints" :key="i" class="q-mb-md">
+        <!-- Dynamic Async Components -->
+        <component :is="chartBP.component" />
+      </div>
+    </div>
   </ResponsivePage>
 </template>

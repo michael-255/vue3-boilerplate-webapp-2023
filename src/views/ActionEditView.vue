@@ -11,24 +11,35 @@ import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const { routeDatabaseType, routeId, goBack } = useRoutingHelpers()
+const { routeDatabaseType, routeId, isRouteDatabaseTypeValid, bannerTypeTitle, goBack } =
+  useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
-const actionRecordStore = useActionRecordStore()
 const { getRecord, updateRecord } = useDatabase()
+const actionRecordStore = useActionRecordStore()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
 
 onMounted(async () => {
-  actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
-  actionRecordStore.valid[DatabaseField.TYPE] = true
+  try {
+    actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+    actionRecordStore.valid[DatabaseField.TYPE] = true
 
-  const oldRecord = await getRecord(routeDatabaseType as DatabaseType, routeId)
+    if (!isRouteDatabaseTypeValid()) {
+      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
+    }
 
-  if (oldRecord) {
-    Object.keys(oldRecord).forEach((key) => {
-      actionRecordStore.actionRecord[key as DatabaseField] = oldRecord[key as DatabaseField]
-    })
+    if (routeId) {
+      const oldRecord = await getRecord(routeDatabaseType as DatabaseType, routeId)
+
+      if (oldRecord) {
+        Object.keys(oldRecord).forEach((key) => {
+          actionRecordStore.actionRecord[key as DatabaseField] = oldRecord[key as DatabaseField]
+        })
+      }
+    }
+  } catch (error) {
+    log.error('Error loading edit view', error)
   }
 })
 
@@ -81,20 +92,24 @@ async function onUpdateRecord() {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.EDIT" banner-title="Edit">
-    <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
-      <!-- Record Type -->
-      <QCard v-if="fieldBP.field === DatabaseField.TYPE" class="q-mb-md">
+  <ResponsivePage :banner-icon="Icon.EDIT" :banner-title="bannerTypeTitle('Edit')">
+    <!-- Error Render -->
+    <div v-if="fieldBlueprints.length === 0">
+      <QCard class="q-mb-md">
         <QCardSection>
-          <div class="text-h6 q-mb-sm">Type</div>
-          <div>{{ routeDatabaseType ?? '-' }}</div>
+          <div class="text-h6">No fields available for this record type</div>
         </QCardSection>
       </QCard>
-
-      <!-- Dynamic Async Components -->
-      <component :is="fieldBP.component" />
     </div>
 
-    <QBtn label="Update" color="positive" :icon="Icon.SAVE" @click="onUpdateRecord()" />
+    <!-- Normal Page Render -->
+    <div v-else>
+      <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
+        <!-- Dynamic Async Components -->
+        <component :is="fieldBP.component" />
+      </div>
+
+      <QBtn label="Update" color="positive" :icon="Icon.SAVE" @click="onUpdateRecord()" />
+    </div>
   </ResponsivePage>
 </template>
