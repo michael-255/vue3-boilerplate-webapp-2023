@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { RouteName } from '@/constants/globals'
+import { RouteName } from '@/router/route-names'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,22 +11,35 @@ const router = createRouter({
       component: () => import('../views/DashboardView.vue'),
     },
     {
-      path: '/data-table/:tableSlug', // Data table
+      path: '/data/:databaseTypeSlug',
       name: RouteName.DATA,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/DataTableView.vue'),
+      component: () => import('../views/DataView.vue'),
     },
     {
-      path: '/actions/:tableSlug/:actionSlug/:id?', // Data table actions (create, edit, inspect, etc.)
-      name: RouteName.ACTIONS,
+      path: '/inspect/:databaseTypeSlug/:id',
+      name: RouteName.ACTION_INSPECT,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ActionsView.vue'),
+      component: () => import('../views/ActionInspectView.vue'),
     },
     {
-      path: '/charts/:tableSlug/:id', // Charts for id on tables
-      name: RouteName.CHARTS,
+      // parentId is optional for creating child records with a specific parent id
+      path: '/create/:databaseTypeSlug/:parentId?',
+      name: RouteName.ACTION_CREATE,
       meta: { layout: 'MenuLayout' },
-      component: () => import('../views/ChartsView.vue'),
+      component: () => import('../views/ActionCreateView.vue'),
+    },
+    {
+      path: '/edit/:databaseTypeSlug/:id',
+      name: RouteName.ACTION_EDIT,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/ActionEditView.vue'),
+    },
+    {
+      path: '/charts/:databaseTypeSlug/:id',
+      name: RouteName.ACTION_CHARTS,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/ActionChartsView.vue'),
     },
     {
       path: '/settings',

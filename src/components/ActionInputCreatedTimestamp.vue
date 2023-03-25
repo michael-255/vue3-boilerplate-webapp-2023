@@ -1,30 +1,30 @@
 <script setup lang="ts">
 import { QInput, QDate, QBtn, QTime, QPopupProxy, date } from 'quasar'
-import { type Ref, ref } from 'vue'
-import { DatabaseField, Icon } from '@/constants/globals'
-import useItemsStore from '@/stores/items'
-
-const props = defineProps<{
+import { onMounted, type Ref, ref } from 'vue'
+import { DatabaseField } from '@/types/database'
+import { Icon } from '@/types/icons'
+import useActionRecordStore from '@/stores/action-record'
+defineProps<{
   locked?: boolean
-  oldTimestamp?: number
 }>()
 
-const itemsStore = useItemsStore()
+const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 const displayedDate: Ref<string> = ref('')
 const dateTimePicker: Ref<string> = ref('')
 
-// Default component state must be valid
-if (props.oldTimestamp) {
-  updateDates(props.oldTimestamp)
-} else {
-  updateDates()
-}
-itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = true
+onMounted(() => {
+  if (actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP]) {
+    updateDates(actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP])
+  } else {
+    updateDates()
+  }
+  actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
+})
 
 function updateDates(timestamp: number = new Date().getTime()): void {
-  itemsStore.newItem[DatabaseField.CREATED_TIMESTAMP] = timestamp
-  itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = true
+  actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP] = timestamp
+  actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
   displayedDate.value = date.formatDate(timestamp, 'ddd, YYYY MMM Do, h:mm A')
 }
 
@@ -38,7 +38,7 @@ function onPickerDateTime(): void {
 }
 
 function validateInput(): void {
-  itemsStore.validateItem[DatabaseField.CREATED_TIMESTAMP] = !!inputRef?.value?.validate()
+  actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -47,7 +47,7 @@ function validateInput(): void {
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Created Date
-        <QIcon v-if="locked" :name="Icon.LOCK" color="primary" class="q-pb-xs" />
+        <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
       <div class="q-mb-md">TODO Created Date</div>
@@ -55,7 +55,7 @@ function validateInput(): void {
       <QInput
         v-model="displayedDate"
         ref="inputRef"
-        label="Updated Date"
+        label="Created Date"
         dense
         outlined
         disable

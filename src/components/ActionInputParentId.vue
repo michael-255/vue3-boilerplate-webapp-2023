@@ -2,21 +2,22 @@
 import { QSelect } from 'quasar'
 import { onMounted, ref, type Ref } from 'vue'
 import { truncateString } from '@/utils/common'
-import { getParentTable } from '@/services/DatabaseUtils'
-import { DatabaseField, DatabaseTable, Icon, type RecordTable } from '@/constants/globals'
-import useDatabase from '@/use/useDatabase'
-import useLogger from '@/use/useLogger'
-import useItemsStore from '@/stores/items'
+import { DatabaseField, type DatabaseChildType } from '@/types/database'
+import { Icon } from '@/types/icons'
+import { getParentType } from '@/services/data-utils'
+import useLogger from '@/composables/useLogger'
+import useDatabase from '@/composables/useDatabase'
+import useActionRecordStore from '@/stores/action-record'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  table: DatabaseTable
-  oldParentId?: string
 }>()
 
+const { routeDatabaseType } = useRoutingHelpers()
 const { log } = useLogger()
-const { getSelectableParentTable } = useDatabase()
-const itemsStore = useItemsStore()
+const { getEnabledParentRecords } = useDatabase()
+const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 const options: Ref<any[]> = ref([])
 
@@ -25,39 +26,49 @@ const options: Ref<any[]> = ref([])
  */
 onMounted(async () => {
   try {
-    const parentTable = getParentTable(props.table as RecordTable)
+    const parentType = getParentType(routeDatabaseType as DatabaseChildType)
 
-    // Parent table must exist to continue
-    if (!parentTable) {
+    // Parent type must exist to continue
+    if (!parentType) {
       throw new Error('Missing parent table')
     }
 
-    const parentTableData = await getSelectableParentTable(parentTable)
+    // Gets all enabled parent records
+    const parentTypeRecords = await getEnabledParentRecords(parentType)
 
-    // Builds options with value and label
-    options.value = parentTableData.map((a: any) => ({
+    // Builds parent options with value as the id, and the label as the name and truncated id
+    options.value = parentTypeRecords.map((a: any) => ({
       value: a.id, // Item id is used as the value under the hood
       label: `${a.name} (${truncateString(a.id, 4, '*')})`, // Truncate id for readability
     }))
 
+    const existingParentId = actionRecordStore.actionRecord[DatabaseField.PARENT_ID]
+
     // Set the current option
     // Must do this first so it can be null if parent was deleted versus being the first option
-    if (props.oldParentId) {
-      const parent = options.value?.find((opt) => opt.value === props.oldParentId)?.value
+    if (existingParentId) {
+      // An existing parent id means we have to try and match it too our options as a selection
+      const matchedParent = options.value?.find(
+        (option) => option.value === existingParentId // Comparing the full ids
+      )?.value
 
-      if (parent) {
-        itemsStore.newItem[DatabaseField.PARENT_ID] = parent
-        itemsStore.validateItem[DatabaseField.PARENT_ID] = true
+      if (matchedParent) {
+        // Parent match found, so use that id
+        actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = matchedParent
+        actionRecordStore.valid[DatabaseField.PARENT_ID] = true
       } else {
-        itemsStore.newItem[DatabaseField.PARENT_ID] = null
-        itemsStore.validateItem[DatabaseField.PARENT_ID] = false
+        // Parent match NOT found, so set to null (parent is missing for some reason)
+        actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = null
+        actionRecordStore.valid[DatabaseField.PARENT_ID] = false
       }
     } else if (options.value?.length > 0) {
-      itemsStore.newItem[DatabaseField.PARENT_ID] = options.value[0].value
-      itemsStore.validateItem[DatabaseField.PARENT_ID] = true
+      // We know at least one option exists, so default to the first option
+      actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = options.value[0].value
+      actionRecordStore.valid[DatabaseField.PARENT_ID] = true
     } else {
-      itemsStore.newItem[DatabaseField.PARENT_ID] = null
-      itemsStore.validateItem[DatabaseField.PARENT_ID] = false
+      // No options exist, so set to null (this record cannot be completed until a parent is created)
+      actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = null
+      actionRecordStore.valid[DatabaseField.PARENT_ID] = false
     }
   } catch (error) {
     log.error('Error with Parent Id component', error)
@@ -69,7 +80,7 @@ function parentIdRule(id: string) {
 }
 
 function validateInput(): void {
-  itemsStore.validateItem[DatabaseField.PARENT_ID] = !!inputRef?.value?.validate()
+  actionRecordStore.valid[DatabaseField.PARENT_ID] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -78,13 +89,13 @@ function validateInput(): void {
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Parent
-        <QIcon v-if="locked" :name="Icon.LOCK" color="primary" class="q-pb-xs" />
+        <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
       <div class="q-mb-md">TODO Parent</div>
 
       <QSelect
-        v-model="itemsStore.newItem[DatabaseField.PARENT_ID]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.PARENT_ID]"
         ref="inputRef"
         label="Parent"
         :disable="locked"

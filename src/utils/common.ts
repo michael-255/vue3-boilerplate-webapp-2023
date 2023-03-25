@@ -1,5 +1,6 @@
+import { Milliseconds } from '@/types/misc'
+import { date } from 'quasar'
 import * as slug from 'slugify'
-import { Milliseconds } from '@/constants/globals'
 
 /**
  * Slugify a string so it can be used as a URL.
@@ -74,6 +75,15 @@ export function truncateString(
     }
   }
   return '-'
+}
+
+/**
+ * Converts milliseconds into a date string.
+ * @param milliseconds
+ * @returns Appropriate date string
+ */
+export function getDisplayDate(dateTime: Date | string | number | undefined) {
+  return date.formatDate(dateTime, 'ddd, YYYY MMM Do, h:mm A')
 }
 
 /**

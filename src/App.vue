@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
-import useDatabase from '@/use/useDatabase'
+import { Icon } from './types/icons'
+import type { Optional } from '@/types/misc'
+import useDatabase from '@/composables/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
-import useLogger from '@/use/useLogger'
+import useLogger from '@/composables/useLogger'
+import useNotifications from '@/composables/useNotifications'
 
-const { log, consoleDebug } = useLogger()
+const { initSettings, purgeExpiredLogs } = useDatabase()
+const { log, consoleDebug, consoleLog } = useLogger()
+const { notify } = useNotifications()
 const route = useRoute()
-const { initializeSettings, purgeExpiredLogs } = useDatabase()
 
 const layout: Ref<any> = ref(null)
 
 onMounted(async () => {
   try {
-    await initializeSettings()
+    await initSettings()
     consoleDebug('Settings initialized')
   } catch (error) {
-    log.error('Error initializing settings', error)
+    // If the settings are not initialized, the database may have had an error or not be open
+    consoleLog('Error initializing settings', error)
+    notify('Error initializing settings', Icon.ERROR, 'error')
   }
 
   try {
@@ -31,14 +37,13 @@ onMounted(async () => {
  * Watching route for the meta layout property to change. Sets the layout component.
  */
 watch(
-  () => route.meta?.layout as string | undefined,
+  () => route.meta?.layout as Optional<string>,
   async (metaLayout) => {
     try {
       // metaLayout must exist && the imported component
       const component = metaLayout && (await import(`./layouts/${metaLayout}.vue`))
       // markRaw to avoid reactivity on component definition
-      // default is the component
-      // Use the default layout if the component is missing
+      // Use the error layout if the component is missing
       layout.value = markRaw(component?.default || ErrorLayout)
     } catch (error) {
       layout.value = markRaw(ErrorLayout)

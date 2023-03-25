@@ -1,32 +1,38 @@
 <script setup lang="ts">
 import { QInput, uid } from 'quasar'
-import { ref, type Ref } from 'vue'
-import { DatabaseField, Icon } from '@/constants/globals'
-import useItemsStore from '@/stores/items'
+import { onMounted, ref, type Ref } from 'vue'
+import { DatabaseField } from '@/types/database'
+import { Icon } from '@/types/icons'
+import useActionRecordStore from '@/stores/action-record'
+import { slugify } from '@/utils/common'
 
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  oldId?: string
 }>()
 
-const itemsStore = useItemsStore()
+const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
-// Default component state must be valid
-itemsStore.newItem[DatabaseField.ID] = props.oldId ? props.oldId : uid()
-itemsStore.validateItem[DatabaseField.ID] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.ID] =
+    actionRecordStore.actionRecord[DatabaseField.ID] ?? uid()
+  actionRecordStore.valid[DatabaseField.ID] = true
+})
 
 function idRule(id: string) {
   return id !== undefined && id !== null && id !== '' && /^.{1,50}$/.test(id)
 }
 
 function generateId(): void {
-  itemsStore.newItem[DatabaseField.ID] = uid()
-  itemsStore.validateItem[DatabaseField.ID] = true
+  actionRecordStore.actionRecord[DatabaseField.ID] = uid()
+  actionRecordStore.valid[DatabaseField.ID] = true
 }
 
 function validateInput(): void {
-  itemsStore.validateItem[DatabaseField.ID] = !!inputRef?.value?.validate()
+  actionRecordStore.actionRecord[DatabaseField.ID] = slugify(
+    actionRecordStore.actionRecord[DatabaseField.ID]
+  )
+  actionRecordStore.valid[DatabaseField.ID] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -35,7 +41,7 @@ function validateInput(): void {
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Id
-        <QIcon v-if="locked" :name="Icon.LOCK" color="primary" class="q-pb-xs" />
+        <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
       <div class="q-mb-md">
@@ -43,16 +49,17 @@ function validateInput(): void {
       </div>
 
       <QInput
-        v-model="itemsStore.newItem[DatabaseField.ID]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.ID]"
         ref="inputRef"
         label="Id"
-        :rules="[(id: string) => idRule(id) || 'Id must be between 1 and 50 characters']"
+        :rules="[(id: string) => idRule(slugify(id)) || 'Id must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
         counter
         dense
         outlined
         color="primary"
+        hint="Auto formatted"
         @blur="validateInput()"
       >
         <template v-slot:after>

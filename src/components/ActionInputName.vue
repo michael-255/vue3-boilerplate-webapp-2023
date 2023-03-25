@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { QInput } from 'quasar'
-import useItemsStore from '@/stores/items'
-import { DatabaseField, Icon } from '@/constants/globals'
+import { DatabaseField } from '@/types/database'
+import { Icon } from '@/types/icons'
+import useActionRecordStore from '@/stores/action-record'
 
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  oldName?: string
 }>()
 
-const itemsStore = useItemsStore()
+const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
-itemsStore.newItem[DatabaseField.NAME] = props.oldName ? props.oldName : 'Example'
-itemsStore.validateItem[DatabaseField.NAME] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.NAME] =
+    actionRecordStore.actionRecord[DatabaseField.NAME] ?? 'Example'
+  actionRecordStore.valid[DatabaseField.NAME] = true
+})
 
 function nameRule(name: string) {
   return name !== undefined && name !== null && name !== '' && /^.{1,50}$/.test(name)
 }
 
 function validateInput(): void {
-  itemsStore.validateItem[DatabaseField.NAME] = !!inputRef?.value?.validate()
+  actionRecordStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -29,13 +32,13 @@ function validateInput(): void {
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Name
-        <QIcon v-if="locked" :name="Icon.LOCK" color="primary" class="q-pb-xs" />
+        <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
       <div class="q-mb-md">TODO Name</div>
 
       <QInput
-        v-model="itemsStore.newItem[DatabaseField.NAME]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
         :rules="[(name: string) => nameRule(name) || 'Name must be between 1 and 50 characters']"

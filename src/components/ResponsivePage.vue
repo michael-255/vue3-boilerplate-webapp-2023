@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Icon } from '@/constants/globals'
 import { QPage, QPageScroller, QBtn } from 'quasar'
+import { Icon } from '@/types/icons'
 
 defineProps<{
   bannerIcon?: Icon
@@ -22,6 +22,9 @@ defineProps<{
 
         <!-- Additional Components Slot -->
         <slot />
+
+        <!-- Extra space at page bottom so scroller doesn't cover content  -->
+        <div class="q-mb-xl" />
       </div>
     </div>
 

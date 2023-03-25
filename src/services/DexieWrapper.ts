@@ -1,26 +1,17 @@
 import Dexie, { type Table } from 'dexie'
-import { AppText, DatabaseField } from '@/constants/globals'
-import { DatabaseTable } from '@/constants/globals'
-import type { Log, Setting, Example, ExampleRecord, TestRecord, Test } from '@/models/models'
+import type { DatabaseRecord } from '@/types/models'
+import { DatabaseField } from '@/types/database'
+import { AppText } from '@/types/misc'
+import { DatabaseTable } from '@/types/database'
 
 export class DexieWrapper extends Dexie {
-  [DatabaseTable.SETTINGS]!: Table<Setting>;
-  [DatabaseTable.LOGS]!: Table<Log>;
-  [DatabaseTable.EXAMPLES]!: Table<Example>;
-  [DatabaseTable.EXAMPLE_RECORDS]!: Table<ExampleRecord>;
-  [DatabaseTable.TESTS]!: Table<Test>;
-  [DatabaseTable.TEST_RECORDS]!: Table<TestRecord>
+  [DatabaseTable.RECORDS]!: Table<DatabaseRecord>
 
   constructor(name: string) {
     super(name)
 
     this.version(1).stores({
-      [DatabaseTable.SETTINGS]: `&${DatabaseField.KEY}`,
-      [DatabaseTable.LOGS]: `++${DatabaseField.AUTO_ID}`,
-      [DatabaseTable.EXAMPLES]: `&${DatabaseField.ID}, ${DatabaseField.NAME}`,
-      [DatabaseTable.EXAMPLE_RECORDS]: `&${DatabaseField.ID}, ${DatabaseField.PARENT_ID}`,
-      [DatabaseTable.TESTS]: `&${DatabaseField.ID}, ${DatabaseField.NAME}`,
-      [DatabaseTable.TEST_RECORDS]: `&${DatabaseField.ID}, ${DatabaseField.PARENT_ID}`,
+      [DatabaseTable.RECORDS]: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
     })
   }
 }

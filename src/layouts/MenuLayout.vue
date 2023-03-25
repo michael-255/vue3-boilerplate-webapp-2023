@@ -12,13 +12,16 @@ import {
   QItemSection,
   QIcon,
 } from 'quasar'
-import { AppText, Icon, RouteName, DatabaseTable } from '@/constants/globals'
 import { RouterView, useRoute } from 'vue-router'
 import { slugify } from '@/utils/common'
-import useGoBack from '@/use/useGoBack'
+import { Icon } from '@/types/icons'
+import { AppText } from '@/types/misc'
+import { RouteName } from '@/router/route-names'
+import { DatabaseType } from '@/types/database'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useUIStore from '@/stores/ui'
 
-const { onGoBack } = useGoBack()
+const { goBack } = useRoutingHelpers()
 const uiStore = useUIStore()
 const route = useRoute()
 </script>
@@ -37,7 +40,7 @@ const route = useRoute()
           flat
           round
           :icon="Icon.BACK"
-          @click="onGoBack()"
+          @click="goBack()"
         />
       </QToolbar>
     </QHeader>
@@ -65,45 +68,26 @@ const route = useRoute()
         <QItem
           clickable
           v-ripple
-          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.EXAMPLES) } }"
+          :to="{
+            name: RouteName.DATA,
+            params: { databaseTypeSlug: slugify(DatabaseType.EXAMPLE) },
+          }"
         >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.EXAMPLES" />
           </QItemSection>
           <QItemSection>Examples</QItemSection>
-          <QItemSection side>
-            <QBtn
-              flat
-              class="q-px-sm"
-              :to="{
-                name: RouteName.DATA,
-                params: { tableSlug: slugify(DatabaseTable.EXAMPLE_RECORDS) },
-              }"
-              :icon="Icon.RECORDS"
-            />
-          </QItemSection>
         </QItem>
 
         <QItem
           clickable
           v-ripple
-          :to="{ name: RouteName.DATA, params: { tableSlug: slugify(DatabaseTable.TESTS) } }"
+          :to="{ name: RouteName.DATA, params: { databaseTypeSlug: slugify(DatabaseType.TEST) } }"
         >
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.TESTS" />
           </QItemSection>
           <QItemSection>Tests</QItemSection>
-          <QItemSection side>
-            <QBtn
-              flat
-              class="q-px-sm"
-              :to="{
-                name: RouteName.DATA,
-                params: { tableSlug: slugify(DatabaseTable.TEST_RECORDS) },
-              }"
-              :icon="Icon.RECORDS"
-            />
-          </QItemSection>
         </QItem>
 
         <QSeparator spaced="md" inset />

@@ -1,27 +1,29 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { QInput } from 'quasar'
-import { DatabaseField, Icon } from '@/constants/globals'
-import useItemsStore from '@/stores/items'
+import { DatabaseField } from '@/types/database'
+import { Icon } from '@/types/icons'
+import useActionRecordStore from '@/stores/action-record'
 
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  oldNote?: string
 }>()
 
-const itemsStore = useItemsStore()
+const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 
-// Default component state must be valid
-itemsStore.newItem[DatabaseField.NOTE] = props.oldNote ? props.oldNote : ''
-itemsStore.validateItem[DatabaseField.NOTE] = true
+onMounted(() => {
+  actionRecordStore.actionRecord[DatabaseField.NOTE] =
+    actionRecordStore.actionRecord[DatabaseField.NOTE] ?? ''
+  actionRecordStore.valid[DatabaseField.NOTE] = true
+})
 
 function noteRule(note: string) {
-  return note !== undefined && note !== null && /^.{0,500}$/.test(note)
+  return /^.{0,500}$/.test(note)
 }
 
 function validateInput(): void {
-  itemsStore.validateItem[DatabaseField.NOTE] = !!inputRef?.value?.validate()
+  actionRecordStore.valid[DatabaseField.NOTE] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -30,13 +32,13 @@ function validateInput(): void {
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Note
-        <QIcon v-if="locked" :name="Icon.LOCK" color="primary" class="q-pb-xs" />
+        <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
       <div class="q-mb-md">TODO Note</div>
 
       <QInput
-        v-model="itemsStore.newItem[DatabaseField.NOTE]"
+        v-model="actionRecordStore.actionRecord[DatabaseField.NOTE]"
         ref="inputRef"
         label="Note"
         :rules="[(note: string) => noteRule(note) || 'Note cannot exceed 500 characters']"

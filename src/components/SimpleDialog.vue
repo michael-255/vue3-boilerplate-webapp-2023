@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Icon } from '@/constants/globals'
 import { QDialog, QCard, QCardSection, QCardActions, QIcon, QBtn } from 'quasar'
 import { useDialogPluginComponent } from 'quasar'
+import type { Icon } from '@/types/icons'
 
 /**
  * Small dialogs used for confirming operations or providing information that can be dismissed.

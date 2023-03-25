@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { QLayout, QPageContainer, QHeader, QToolbar, QToolbarTitle } from 'quasar'
 import { RouterView } from 'vue-router'
-import { AppText } from '@/constants/globals'
+import { AppText } from '@/types/misc'
 </script>
 
 <template>
