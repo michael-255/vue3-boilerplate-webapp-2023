@@ -19,7 +19,17 @@ onMounted(() => {
 })
 
 function noteRule(note: string) {
-  return /^.{0,500}$/.test(note)
+  const noteRegex = /^.{0,500}$/ // 0-500 characters
+
+  const isNoteValid = (note: string) => {
+    return noteRegex.test(note)
+  }
+
+  if (note) {
+    return isNoteValid(note.trim())
+  } else {
+    return isNoteValid(note)
+  }
 }
 
 function validateInput(): void {
@@ -43,7 +53,7 @@ function validateInput(): void {
         v-model="actionRecordStore.actionRecord[DatabaseField.NOTE]"
         ref="inputRef"
         label="Note"
-        :rules="[(note: string) => noteRule(note.trim()) || 'Note cannot exceed 500 characters']"
+        :rules="[(note: string) => noteRule(note) || 'Note cannot exceed 500 characters']"
         :disable="locked"
         :maxlength="500"
         type="textarea"

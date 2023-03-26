@@ -19,7 +19,17 @@ onMounted(() => {
 })
 
 function nameRule(name: string) {
-  return name !== undefined && name !== null && name !== '' && /^.{1,50}$/.test(name)
+  const nameRegex = /^.{1,50}$/ // 1-50 characters
+
+  const isNameValid = (name: string) => {
+    return name !== undefined && name !== null && name !== '' && nameRegex.test(name)
+  }
+
+  if (name) {
+    return isNameValid(name.trim())
+  } else {
+    return isNameValid(name)
+  }
 }
 
 function validateInput(): void {
@@ -43,7 +53,7 @@ function validateInput(): void {
         v-model="actionRecordStore.actionRecord[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
-        :rules="[(name: string) => nameRule(name.trim()) || 'Name must be between 1 and 50 characters']"
+        :rules="[(name: string) => nameRule(name) || 'Name must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
         counter

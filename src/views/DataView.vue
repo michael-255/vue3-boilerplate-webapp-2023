@@ -3,11 +3,9 @@ import { QTable, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
 import { DatabaseAction, DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
 import type { DatabaseRecord } from '@/types/models'
 import {
   getTableColumns,
-  getTypeFromSlug,
   getFields,
   getVisibleColumns,
   getSupportedActions,
@@ -17,14 +15,19 @@ import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActions from '@/composables/useActions'
 import useDatabase from '@/composables/useDatabase'
 
-const route = useRoute()
 const { log } = useLogger()
-const { goToCharts, goToInspect, goToEdit, goToCreate, goBack } = useRoutingHelpers()
+const {
+  routeDatabaseType,
+  isRouteDatabaseTypeValid,
+  goToCharts,
+  goToInspect,
+  goToEdit,
+  goToCreate,
+  goBack,
+} = useRoutingHelpers()
 const { onDeleteRecord } = useActions()
 const { getRecord, liveDataType } = useDatabase()
 
-// TODO
-const routeDatabaseType = getTypeFromSlug(route?.params?.databaseTypeSlug as string)
 // TODO
 const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType as DatabaseType) ?? [])
 // TODO
@@ -48,6 +51,10 @@ const subscription = liveDataType(routeDatabaseType as DatabaseType).subscribe({
 // TODO
 onMounted(async () => {
   try {
+    if (!isRouteDatabaseTypeValid()) {
+      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
+    }
+
     const showAllDataColumns = (
       await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
     )?.value
@@ -59,7 +66,7 @@ onMounted(async () => {
       visibleColumns.value = getVisibleColumns(routeDatabaseType as DatabaseType) ?? [] // Default columns
     }
   } catch (error) {
-    log.error('Failed to retrieve visible columns', error)
+    log.error('Error loading data view', error)
   }
 })
 

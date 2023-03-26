@@ -3,8 +3,8 @@ import { QInput, uid } from 'quasar'
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import useActionRecordStore from '@/stores/action-record'
 import { slugify } from '@/utils/common'
+import useActionRecordStore from '@/stores/action-record'
 
 defineProps<{
   locked?: boolean
@@ -20,7 +20,17 @@ onMounted(() => {
 })
 
 function idRule(id: string) {
-  return id !== undefined && id !== null && id !== '' && /^.{1,50}$/.test(id)
+  const idRegex = /^.{1,50}$/ // 1-50 characters
+
+  const isIdValid = (id: string) => {
+    return id !== undefined && id !== null && id !== '' && idRegex.test(id)
+  }
+
+  if (id) {
+    return isIdValid(slugify(id))
+  } else {
+    return isIdValid(id)
+  }
 }
 
 function generateId(): void {
@@ -52,7 +62,7 @@ function validateInput(): void {
         v-model="actionRecordStore.actionRecord[DatabaseField.ID]"
         ref="inputRef"
         label="Id"
-        :rules="[(id: string) => idRule(slugify(id)) || 'Id must be between 1 and 50 characters']"
+        :rules="[(id: string) => idRule(id) || 'Id must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
         counter

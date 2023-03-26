@@ -19,7 +19,17 @@ onMounted(() => {
 })
 
 function descriptionRule(description: string) {
-  return /^.{0,500}$/.test(description)
+  const descriptionRegex = /^.{0,500}$/ // 0-500 characters
+
+  const isDescriptionValid = (description: string) => {
+    return descriptionRegex.test(description)
+  }
+
+  if (description) {
+    return isDescriptionValid(description.trim())
+  } else {
+    return isDescriptionValid(description)
+  }
 }
 
 function validateInput(): void {
@@ -43,7 +53,7 @@ function validateInput(): void {
         v-model="actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]"
         ref="inputRef"
         label="Description"
-        :rules="[(description: string) => descriptionRule(description.trim()) || 'Description cannot exceed 500 characters']"
+        :rules="[(description: string) => descriptionRule(description) || 'Description cannot exceed 500 characters']"
         :disable="locked"
         :maxlength="500"
         type="textarea"
