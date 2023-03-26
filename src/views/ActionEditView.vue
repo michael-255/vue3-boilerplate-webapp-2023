@@ -11,7 +11,7 @@ import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const { routeDatabaseType, routeId, isRouteDatabaseTypeValid, bannerTypeTitle, goBack } =
+const { routeDatabaseType, routeId, isRouteDatabaseTypeValid, bannerType, goBack } =
   useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
@@ -92,7 +92,7 @@ async function onUpdateRecord() {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.EDIT" :banner-title="bannerTypeTitle('Edit')">
+  <ResponsivePage :banner-icon="Icon.EDIT" :banner-title="`Edit ${bannerType()}`">
     <!-- Error Render -->
     <div v-if="fieldBlueprints.length === 0">
       <QCard class="q-mb-md">

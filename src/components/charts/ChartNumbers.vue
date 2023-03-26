@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { colors } from 'quasar'
-import { Bar } from 'vue-chartjs'
+import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   Title,
@@ -9,39 +9,40 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
 } from 'chart.js'
 
-type _GeneratedReport = {
-  title: string
-  firstRecordDate: string
-  lastRecordDate: string
-  chartLabels: string[]
-  chartDatasets: _ChartDataset[]
-}
+// Old way I did things:
+//
+// type _GeneratedReport = {
+//   title: string
+//   firstRecordDate: string
+//   lastRecordDate: string
+//   chartLabels: string[]
+//   chartDatasets: _ChartDataset[]
+// }
 
-type _ReportChart = {
-  firstRecordDate: string
-  lastRecordDate: string
-  chartData: _ChartData
-}
-
-type _ChartData = {
-  labels: string[]
-  datasets: _ChartDataset[]
-}
-
-type _ChartDataset = {
-  label: string
-  borderColor: string
-  data: (number | null)[]
+const randomNumber = () => {
+  return Math.floor(Math.random() * (10 - 1 + 1) + 1)
 }
 
 const { getPaletteColor } = colors
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement
+)
 
-const chartOptions = {
+// Chart Options
+const options = {
   responsive: true,
-  radius: 100, // for line charts?
+  radius: 3,
   plugins: {
     legend: {
       display: true,
@@ -51,18 +52,33 @@ const chartOptions = {
 
 const chartDataset1 = {
   label: 'Dataset 1',
-  backgroundColor: getPaletteColor('warning'),
-  data: [40, 20, 12, null, 1],
+  backgroundColor: getPaletteColor('negative'),
+  borderColor: getPaletteColor('negative'),
+  data: [
+    randomNumber() + 20,
+    randomNumber() + 25,
+    randomNumber() + 30,
+    randomNumber() + 35,
+    randomNumber() + 40,
+  ],
 }
 
 const chartDataset2 = {
   label: 'Dataset 2',
   backgroundColor: getPaletteColor('positive'),
-  data: [40, 20, 12, null, 1],
+  borderColor: getPaletteColor('positive'),
+  data: [
+    randomNumber() + 15,
+    randomNumber() + 20,
+    randomNumber() + 25,
+    randomNumber() + 30,
+    randomNumber() + 35,
+  ],
 }
 
-const chartProps = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+// Chart Data
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May'],
   datasets: [chartDataset1, chartDataset2],
 }
 </script>
@@ -71,7 +87,7 @@ const chartProps = {
   <QCard class="q-mb-md">
     <QCardSection>
       <div class="text-h6">Chart Title</div>
-      <Bar id="my-chart-id" :options="chartOptions" :data="chartProps" />
+      <Line :options="options" :data="data" />
     </QCardSection>
   </QCard>
 </template>

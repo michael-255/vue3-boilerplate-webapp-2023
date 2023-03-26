@@ -10,7 +10,7 @@ import useDatabase from '@/composables/useDatabase'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const { routeDatabaseType, routeId } = useRoutingHelpers()
+const { routeDatabaseType, routeId, isRouteDatabaseTypeValid, bannerType } = useRoutingHelpers()
 const { log } = useLogger()
 const { getRecord } = useDatabase()
 
@@ -19,15 +19,19 @@ const record: Ref<Optional<DatabaseRecord>> = ref(null)
 
 onMounted(async () => {
   try {
+    if (!isRouteDatabaseTypeValid()) {
+      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
+    }
+
     record.value = await getRecord(routeDatabaseType as DatabaseType, routeId)
   } catch (error) {
-    log.error('Error loading record', error)
+    log.error('Error loading inspect view', error)
   }
 })
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.INSPECT" banner-title="Inspect">
+  <ResponsivePage :banner-icon="Icon.INSPECT" :banner-title="`Inspect ${bannerType()}`">
     <QCard v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-sm">{{ fieldBP.label }}</div>

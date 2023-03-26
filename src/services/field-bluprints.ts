@@ -1,4 +1,4 @@
-import { DatabaseField, DatabaseType, Severity, type SettingValue } from '@/types/database'
+import { DatabaseField, Severity, type SettingValue } from '@/types/database'
 import type { AppObject, Optional } from '@/types/misc'
 import { getDisplayDate } from '@/utils/common'
 import { defineAsyncComponent } from 'vue'
@@ -8,15 +8,6 @@ export type FieldBlueprint = {
   readonly label: string
   readonly inspectFormat: (val: any) => string
   readonly component: Optional<any>
-}
-
-export function typeField(): FieldBlueprint {
-  return {
-    field: DatabaseField.TYPE,
-    label: 'Type',
-    inspectFormat: (val: DatabaseType) => `${val}`,
-    component: null,
-  }
 }
 
 export function idField(): FieldBlueprint {
@@ -33,7 +24,7 @@ export function valueField(): FieldBlueprint {
     field: DatabaseField.VALUE,
     label: 'Setting Value',
     inspectFormat: (val: SettingValue) => `${val}`,
-    component: null,
+    component: null, // Means no component will be loaded for this field
   }
 }
 

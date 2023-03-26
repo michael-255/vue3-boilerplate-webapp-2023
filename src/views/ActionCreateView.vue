@@ -11,7 +11,7 @@ import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 
-const { routeDatabaseType, routeParentId, isRouteDatabaseTypeValid, bannerTypeTitle, goBack } =
+const { routeDatabaseType, routeParentId, isRouteDatabaseTypeValid, bannerType, goBack } =
   useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
@@ -96,7 +96,7 @@ function lockFields(field: DatabaseField) {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.CREATE" :banner-title="bannerTypeTitle('Create')">
+  <ResponsivePage :banner-icon="Icon.CREATE" :banner-title="`Create ${bannerType()}`">
     <!-- Error Render -->
     <div v-if="fieldBlueprints.length === 0">
       <QCard class="q-mb-md">

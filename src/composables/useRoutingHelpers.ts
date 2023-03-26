@@ -29,9 +29,9 @@ export default function useRoutingHelpers() {
    * Returns the banner with the database type appended to the end.
    * @param title
    */
-  function bannerTypeTitle(title: string) {
+  function bannerType() {
     if (isRouteDatabaseTypeValid()) {
-      return `${title} ${routeDatabaseType}`
+      return `${routeDatabaseType}`
     } else {
       return 'Error'
     }
@@ -148,7 +148,7 @@ export default function useRoutingHelpers() {
     routeId,
     routeParentId,
     isRouteDatabaseTypeValid,
-    bannerTypeTitle,
+    bannerType,
     goToData,
     goToInspect,
     goToCreate,

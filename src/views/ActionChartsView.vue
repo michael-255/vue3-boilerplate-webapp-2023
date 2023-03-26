@@ -7,7 +7,7 @@ import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useLogger from '@/composables/useLogger'
 
-const { routeDatabaseType, isRouteDatabaseTypeValid, bannerTypeTitle } = useRoutingHelpers()
+const { routeDatabaseType, isRouteDatabaseTypeValid, bannerType } = useRoutingHelpers()
 const { log } = useLogger()
 
 const chartBlueprints = getChartBlueprints(routeDatabaseType as DatabaseType)
@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.CHARTS" :banner-title="bannerTypeTitle('Charts')">
+  <ResponsivePage :banner-icon="Icon.CHARTS" :banner-title="`${bannerType()} Charts`">
     <!-- Error Render -->
     <div v-if="chartBlueprints.length === 0">
       <QCard class="q-mb-md">
