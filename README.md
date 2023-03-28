@@ -5,13 +5,23 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Todos
+- Chart Todos
 
+  - [ ] Reference docs to help with Charts!
+    - <https://vue-chartjs.org/examples/>
+    - <https://www.chartjs.org/docs/latest/charts/line.html>
   - [ ] Each chart component can have one or more charts for a specific `DatabaseField`
+  - [ ] Chart time range selections
+    - [ ] Add `ChartTime` to enums
+    - [ ] Use a reasonable default per chart
+    - [ ] DON'T save chart time selection in Settings
+    - [ ] DON'T use one global chart time for all charts
+    - [ ] You may not use chart time for some types of charts, so don't tie everything to them
 
-- Dashboard
+- Orphaned Todos
 
-  - [ ] Work on the `Charts Action` (Select for date range - enum)
+  - [ ] Implement the `Orphaned` table view
+  - [ ] Implement `Unused` and `Orphaned` record deletion in `Settings`
 
 - Quasar
 
