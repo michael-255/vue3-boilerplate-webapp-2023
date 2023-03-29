@@ -43,3 +43,14 @@ export enum LogRetention {
   ONE_YEAR = '1 Year',
   FOREVER = 'Forever',
 }
+
+/**
+ * Chart graphing time options.
+ */
+export enum ChartTime {
+  ONE_MONTH = '1 Month',
+  THREE_MONTHS = '3 Months',
+  SIX_MONTHS = '6 Months',
+  ONE_YEAR = '1 Year',
+  ALL_TIME = 'All Time',
+}

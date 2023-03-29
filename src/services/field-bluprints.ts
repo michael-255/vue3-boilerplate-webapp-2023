@@ -10,6 +10,15 @@ export type FieldBlueprint = {
   readonly component: Optional<any>
 }
 
+export function typeField(): FieldBlueprint {
+  return {
+    field: DatabaseField.TYPE,
+    label: 'Type',
+    inspectFormat: (val: string) => `${val}`,
+    component: null,
+  }
+}
+
 export function idField(): FieldBlueprint {
   return {
     field: DatabaseField.ID,

@@ -74,10 +74,9 @@ const options = {
 }
 
 const chartDataset1 = {
-  label: 'Total',
+  label: '',
   backgroundColor: getPaletteColor('primary'),
   borderColor: getPaletteColor('primary'),
-  spanGaps: true,
   segment: {
     borderColor: (ctx: any) => down(ctx, getPaletteColor('negative')) || getPaletteColor('primary'),
   },
@@ -94,7 +93,7 @@ const data = {
 <template>
   <QCard class="q-mb-md">
     <QCardSection>
-      <div class="text-h6">Reps</div>
+      <div class="text-h6">Numbers</div>
       <Line :options="options" :data="data" />
     </QCardSection>
   </QCard>

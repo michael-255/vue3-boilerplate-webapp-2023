@@ -25,6 +25,7 @@ import {
   noteField,
   numberField,
   type FieldBlueprint,
+  typeField,
 } from '@/services/field-bluprints'
 import {
   createdTimestampColumn,
@@ -71,7 +72,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     childType: null,
     supportedActions: [],
     chartBluprints: [],
-    fieldBlueprints: [idField(), valueField()],
+    fieldBlueprints: [typeField(), idField(), valueField()],
     visibleColumns: [DatabaseField.ID, DatabaseField.VALUE],
     tableColumns: [...requiredHiddenColumns(), idColumn(), valueColumn()],
   },
@@ -87,6 +88,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     supportedActions: [DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
+      typeField(),
       idField(),
       createdTimestampField(),
       severityField(),
@@ -124,7 +126,14 @@ export const dataBlueprints: readonly DataBlueprint[] = [
       DatabaseAction.CHARTS,
     ],
     chartBluprints: [numberChart()],
-    fieldBlueprints: [idField(), nameField(), descriptionField(), favoritedField(), enabledField()],
+    fieldBlueprints: [
+      typeField(),
+      idField(),
+      nameField(),
+      descriptionField(),
+      favoritedField(),
+      enabledField(),
+    ],
     visibleColumns: [DatabaseField.ID, DatabaseField.NAME],
     tableColumns: [
       ...requiredHiddenColumns(),
@@ -147,6 +156,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
+      typeField(),
       idField(),
       createdTimestampField(),
       parentIdField(),
@@ -179,7 +189,14 @@ export const dataBlueprints: readonly DataBlueprint[] = [
       DatabaseAction.CHARTS,
     ],
     chartBluprints: [numberChart()],
-    fieldBlueprints: [idField(), nameField(), descriptionField(), favoritedField(), enabledField()],
+    fieldBlueprints: [
+      typeField(),
+      idField(),
+      nameField(),
+      descriptionField(),
+      favoritedField(),
+      enabledField(),
+    ],
     visibleColumns: [DatabaseField.ID, DatabaseField.NAME],
     tableColumns: [
       ...requiredHiddenColumns(),
@@ -202,6 +219,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
+      typeField(),
       idField(),
       createdTimestampField(),
       parentIdField(),

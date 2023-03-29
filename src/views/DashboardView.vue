@@ -157,7 +157,7 @@ function getDashboardRecordsCountText() {
           <QBtn
             outline
             color="positive"
-            label="Add Entry"
+            label="Add Record"
             :icon="Icon.NEW"
             @click="goToCreate(DatabaseType.EXAMPLE_RESULT, record[DatabaseField.ID])"
           />
@@ -181,7 +181,7 @@ function getDashboardRecordsCountText() {
           <QBtn
             outline
             color="positive"
-            label="Add Entry"
+            label="Add Record"
             :icon="Icon.NEW"
             @click="goToCreate(DatabaseType.TEST_RESULT, record[DatabaseField.ID])"
           />
