@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { colors } from 'quasar'
+import { colors, date } from 'quasar'
 import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -12,22 +12,13 @@ import {
   PointElement,
   LineElement,
 } from 'chart.js'
+import { onMounted, ref } from 'vue'
+import { DatabaseField, type DatabaseChildType, type DatabaseParentType } from '@/types/database'
+import { getChildType } from '@/services/data-utils'
+import useLogger from '@/composables/useLogger'
+import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useDatabase from '@/composables/useDatabase'
 
-// Old way I did things:
-//
-// type _GeneratedReport = {
-//   title: string
-//   firstRecordDate: string
-//   lastRecordDate: string
-//   chartLabels: string[]
-//   chartDatasets: _ChartDataset[]
-// }
-
-const randomNumber = (plus: number = 0) => {
-  return Math.floor(Math.random() * 10) - 2 + plus
-}
-
-const { getPaletteColor } = colors
 ChartJS.register(
   Title,
   Tooltip,
@@ -39,33 +30,18 @@ ChartJS.register(
   LineElement
 )
 
-const getDates = (startDate: Date, stopDate: Date) => {
-  const dateArray = []
-  let currentDate = startDate
-  while (currentDate <= stopDate) {
-    dateArray.push(new Date(currentDate))
-    currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
-  }
-  return dateArray
-}
+const { getPaletteColor } = colors
+const { log } = useLogger()
+const { routeDatabaseType, routeId } = useRoutingHelpers()
+const { getChildRecordsByParentId } = useDatabase()
 
-const getRandomNumbers = (length: number) => {
-  const arr = []
-  for (let i = 0; i < length; i++) {
-    arr.push(randomNumber(i))
-  }
-  return arr
-}
-
-const down = (ctx: any, value: any) => (ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined)
-
-// Chart Options
-const options = {
+const chartOptions = {
+  reactive: true,
   responsive: true,
-  radius: 3,
+  radius: 2,
   plugins: {
     legend: {
-      display: true,
+      display: false,
     },
   },
   interaction: {
@@ -73,28 +49,53 @@ const options = {
   },
 }
 
-const chartDataset1 = {
-  label: '',
-  backgroundColor: getPaletteColor('primary'),
-  borderColor: getPaletteColor('primary'),
-  segment: {
-    borderColor: (ctx: any) => down(ctx, getPaletteColor('negative')) || getPaletteColor('primary'),
-  },
-  data: getRandomNumbers(365),
-}
+const chartData: any = ref({
+  labels: [],
+  datasets: [],
+})
 
-// Chart Data
-const data = {
-  labels: getDates(new Date('2023/1/1'), new Date('2023/12/31')).map((d) => d.toDateString()),
-  datasets: [chartDataset1],
-}
+onMounted(async () => {
+  try {
+    const chartingRecords = await getChildRecordsByParentId(
+      getChildType(routeDatabaseType as DatabaseParentType) as DatabaseChildType,
+      routeId
+    )
+
+    const chartLabels = chartingRecords.map((record: any) =>
+      date.formatDate(record[DatabaseField.CREATED_TIMESTAMP], 'ddd YYYY MMM D h:mm a')
+    )
+
+    const chartDataItems = chartingRecords.map((record: any) => record[DatabaseField.NUMBER])
+
+    chartData.value = {
+      labels: chartLabels,
+      datasets: [
+        {
+          label: '', // Legend label
+          backgroundColor: getPaletteColor('primary'),
+          borderColor: getPaletteColor('primary'),
+          segment: {
+            borderColor: (ctx: any) =>
+              downwardTrend(ctx, getPaletteColor('accent')) || getPaletteColor('primary'),
+          },
+          data: chartDataItems,
+        },
+      ],
+    }
+  } catch (error) {
+    log.error('Error loading numbers chart', error)
+  }
+})
+
+const downwardTrend = (ctx: any, value: any) =>
+  ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined
 </script>
 
 <template>
   <QCard class="q-mb-md">
     <QCardSection>
       <div class="text-h6">Numbers</div>
-      <Line :options="options" :data="data" />
+      <Line :options="chartOptions" :data="chartData" />
     </QCardSection>
   </QCard>
 </template>

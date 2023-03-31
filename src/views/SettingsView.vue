@@ -97,9 +97,9 @@ async function onDefaults(): Promise<void> {
 
         let initialTimestamp = new Date().getTime() - 30 * 24 * 60 * 60 * 1000
 
-        const addMinute = (timestamp: number): number => {
+        const addDay = (timestamp: number): number => {
           const date = new Date(timestamp)
-          date.setMinutes(date.getMinutes() + 1)
+          date.setDate(date.getDate() + 1)
           return date.getTime()
         }
 
@@ -116,7 +116,7 @@ async function onDefaults(): Promise<void> {
               [DatabaseField.IS_ENABLED]: randomBoolean(),
             } as Example)
 
-            initialTimestamp = addMinute(initialTimestamp)
+            initialTimestamp = addDay(initialTimestamp)
           }
         }
 
@@ -128,16 +128,16 @@ async function onDefaults(): Promise<void> {
               [DatabaseField.CREATED_TIMESTAMP]: initialTimestamp,
               [DatabaseField.PARENT_ID]: parent?.id || `orphaned-record-id-${i}`,
               [DatabaseField.NOTE]: randomBoolean() ? `Previous note ${parent?.id}` : '',
-              [DatabaseField.NUMBER]: randomInt(1, 100),
+              [DatabaseField.NUMBER]: randomInt(1, 100) + i / 2,
             } as ExampleResult)
 
-            initialTimestamp = addMinute(initialTimestamp)
+            initialTimestamp = addDay(initialTimestamp)
           }
         }
 
         // Creating demo data
         createExamples(5)
-        records.map((example) => createExampleResults(2, example))
+        records.map((example) => createExampleResults(90, example))
         // Unused parents and orphaned results
         createExamples(2)
         createExampleResults(2)

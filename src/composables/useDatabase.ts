@@ -226,6 +226,16 @@ export default function useDatabase() {
     return await db.add(record)
   }
 
+  // TODO
+  async function getChildRecordsByParentId(
+    childType: DatabaseChildType,
+    parentId: string
+  ): Promise<DatabaseRecord[]> {
+    return await db
+      .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
+      .sortBy(DatabaseField.CREATED_TIMESTAMP)
+  }
+
   return {
     initSettings,
     liveSettings,
@@ -245,5 +255,6 @@ export default function useDatabase() {
     deleteRecord,
     updateRecord,
     createRecord,
+    getChildRecordsByParentId,
   }
 }
