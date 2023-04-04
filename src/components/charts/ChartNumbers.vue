@@ -12,12 +12,17 @@ import {
   PointElement,
   LineElement,
 } from 'chart.js'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import { DatabaseField, type DatabaseChildType, type DatabaseParentType } from '@/types/database'
 import { getChildType } from '@/services/data-utils'
+import type { ChartTime } from '@/types/misc'
+import type { DatabaseRecord } from '@/types/models'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useDatabase from '@/composables/useDatabase'
+import useUIStore from '@/stores/ui'
+
+const uiStore = useUIStore()
 
 ChartJS.register(
   Title,
@@ -34,6 +39,9 @@ const { getPaletteColor } = colors
 const { log } = useLogger()
 const { routeDatabaseType, routeId } = useRoutingHelpers()
 const { getChildRecordsByParentId } = useDatabase()
+
+const hasData: Ref<boolean> = ref(false)
+const recordCount: Ref<number> = ref(0)
 
 const chartOptions = {
   reactive: true,
@@ -55,47 +63,89 @@ const chartData: any = ref({
 })
 
 onMounted(async () => {
+  await recalculateChart()
+})
+
+const downwardTrend = (ctx: any, value: any) =>
+  ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined
+
+async function recalculateChart() {
   try {
     const chartingRecords = await getChildRecordsByParentId(
       getChildType(routeDatabaseType as DatabaseParentType) as DatabaseChildType,
       routeId
     )
 
-    const chartLabels = chartingRecords.map((record: any) =>
-      date.formatDate(record[DatabaseField.CREATED_TIMESTAMP], 'ddd YYYY MMM D h:mm a')
-    )
+    if (chartingRecords.length > 0) {
+      hasData.value = true
 
-    const chartDataItems = chartingRecords.map((record: any) => record[DatabaseField.NUMBER])
+      const chartMilliseconds = uiStore.getChartTimeMilliseconds
 
-    chartData.value = {
-      labels: chartLabels,
-      datasets: [
-        {
-          label: '', // Legend label
-          backgroundColor: getPaletteColor('primary'),
-          borderColor: getPaletteColor('primary'),
-          segment: {
-            borderColor: (ctx: any) =>
-              downwardTrend(ctx, getPaletteColor('accent')) || getPaletteColor('primary'),
+      let timeRestrictedRecords: DatabaseRecord[] = []
+
+      if (chartMilliseconds === -1) {
+        timeRestrictedRecords = chartingRecords
+      } else {
+        timeRestrictedRecords = chartingRecords.filter((record: any) => {
+          const timeDifference = new Date().getTime() - record[DatabaseField.CREATED_TIMESTAMP]
+          return timeDifference <= chartMilliseconds
+        })
+      }
+
+      recordCount.value = timeRestrictedRecords.length
+
+      const chartLabels = timeRestrictedRecords.map((record: any) =>
+        date.formatDate(record[DatabaseField.CREATED_TIMESTAMP], 'ddd YYYY MMM D h:mm a')
+      )
+
+      const chartDataItems = timeRestrictedRecords.map(
+        (record: any) => record[DatabaseField.NUMBER]
+      )
+
+      chartData.value = {
+        labels: chartLabels,
+        datasets: [
+          {
+            label: '', // Legend label
+            backgroundColor: getPaletteColor('primary'),
+            borderColor: getPaletteColor('primary'),
+            segment: {
+              borderColor: (ctx: any) =>
+                downwardTrend(ctx, getPaletteColor('accent')) || getPaletteColor('primary'),
+            },
+            data: chartDataItems,
           },
-          data: chartDataItems,
-        },
-      ],
+        ],
+      }
     }
   } catch (error) {
     log.error('Error loading numbers chart', error)
   }
-})
+}
 
-const downwardTrend = (ctx: any, value: any) =>
-  ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined
+/**
+ * Watching uiStore chart time for the property to change.
+ */
+watch(
+  () => uiStore.chartTime as ChartTime,
+  async () => {
+    try {
+      await recalculateChart()
+    } catch (error) {
+      log.error('Error with chart time watcher', error)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <QCard class="q-mb-md">
     <QCardSection>
       <div class="text-h6">Numbers</div>
-      <Line :options="chartOptions" :data="chartData" />
+      <div>Charted Records Count: {{ recordCount }}</div>
+      <Line v-if="hasData" :options="chartOptions" :data="chartData" />
+      <div v-else>No data found</div>
     </QCardSection>
   </QCard>
 </template>

@@ -6,6 +6,7 @@ import { onMounted } from 'vue'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useLogger from '@/composables/useLogger'
+import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
 
 const { routeDatabaseType, isRouteDatabaseTypeValid, bannerType } = useRoutingHelpers()
 const { log } = useLogger()
@@ -36,6 +37,8 @@ onMounted(() => {
 
     <!-- Normal Page Render -->
     <div v-else>
+      <ChartTimeInput class="q-mb-md" />
+
       <div v-for="(chartBP, i) in chartBlueprints" :key="i" class="q-mb-md">
         <!-- Dynamic Async Components -->
         <component :is="chartBP.component" />

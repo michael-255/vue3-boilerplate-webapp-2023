@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import { QSelect } from 'quasar'
+import { ref, type Ref } from 'vue'
+import { ChartTime } from '@/types/misc'
+import useUIStore from '@/stores/ui'
+
+const uiStore = useUIStore()
+
+const inputRef: Ref<any> = ref(null)
+const options: Ref<ChartTime[]> = ref(Object.values(ChartTime))
+
+function chartTimeRule(time: string) {
+  return time !== undefined && time !== null && time !== ''
+}
+</script>
+
+<template>
+  <QCard>
+    <QCardSection>
+      <div class="text-h6 q-mb-md">Chart Time</div>
+
+      <div class="q-mb-md">Select how far back you want the charts to display record data.</div>
+
+      <QSelect
+        v-model="uiStore.chartTime"
+        ref="inputRef"
+        label="Chart Time"
+        :options="options"
+        :rules="[(time: ChartTime) => chartTimeRule(time) || '* Required']"
+        emit-value
+        map-options
+        options-dense
+        dense
+        outlined
+        color="primary"
+        @blur="!!inputRef?.value?.validate()"
+      />
+    </QCardSection>
+  </QCard>
+</template>

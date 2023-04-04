@@ -95,7 +95,7 @@ async function onDefaults(): Promise<void> {
           return Math.floor(Math.random() * (max - min + 1) + min)
         }
 
-        let initialTimestamp = new Date().getTime() - 30 * 24 * 60 * 60 * 1000
+        let initialTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 365 * 2 // minus two year
 
         const addDay = (timestamp: number): number => {
           const date = new Date(timestamp)
@@ -113,7 +113,7 @@ async function onDefaults(): Promise<void> {
               [DatabaseField.NAME]: `Example ${randomLetter()}`,
               [DatabaseField.DESCRIPTION]: `Example description ${i}`,
               [DatabaseField.IS_FAVORITED]: randomBoolean(),
-              [DatabaseField.IS_ENABLED]: randomBoolean(),
+              [DatabaseField.IS_ENABLED]: true,
             } as Example)
 
             initialTimestamp = addDay(initialTimestamp)
@@ -136,8 +136,8 @@ async function onDefaults(): Promise<void> {
         }
 
         // Creating demo data
-        createExamples(5)
-        records.map((example) => createExampleResults(90, example))
+        createExamples(1)
+        records.map((example) => createExampleResults(725, example)) // about 2 years of records
         // Unused parents and orphaned results
         createExamples(2)
         createExampleResults(2)
