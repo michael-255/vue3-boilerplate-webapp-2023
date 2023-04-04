@@ -10,6 +10,10 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] Implement the `Orphaned` table view
   - [ ] Implement `Unused` and `Orphaned` record deletion in `Settings`
 
+- Empty App Behaviour?
+
+  - [ ] Add quick button to load default data to `Dashboard` (on all selections)
+
 - Quasar
 
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
