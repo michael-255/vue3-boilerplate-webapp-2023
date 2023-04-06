@@ -4,6 +4,7 @@
 export enum RouteName {
   DASHBOARD = 'Dashboard',
   DATA = 'Data',
+  ORPHANED_RECORDS = 'OrphanedRecords',
   ACTION_INSPECT = 'Inspect',
   ACTION_CREATE = 'Create',
   ACTION_EDIT = 'Edit',

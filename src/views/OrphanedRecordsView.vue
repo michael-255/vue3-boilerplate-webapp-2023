@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { QTable, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
-import { DatabaseAction, DatabaseType, SettingId } from '@/types/database'
+import { DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onMounted, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
-import {
-  getTableColumns,
-  getFields,
-  getVisibleColumns,
-  getSupportedActions,
-} from '@/services/data-utils'
+import { getTableColumns, getFields, getVisibleColumns } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActions from '@/composables/useActions'
@@ -66,7 +61,7 @@ onMounted(async () => {
       visibleColumns.value = getVisibleColumns(routeDatabaseType as DatabaseType) ?? [] // Default columns
     }
   } catch (error) {
-    log.error('Error loading data view', error)
+    log.error('Error loading orphaned records view', error)
   }
 })
 
@@ -120,51 +115,6 @@ function getRecordsCountText() {
         <QTd v-for="col in props.cols" :key="col.name" :props="props">
           {{ col.value }}
         </QTd>
-        <QTd auto-width>
-          <!-- CHARTS -->
-          <QBtn
-            v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.CHARTS)"
-            flat
-            round
-            dense
-            class="q-ml-xs"
-            color="accent"
-            :icon="Icon.CHARTS"
-            @click="goToCharts(props.cols[0].value, props.cols[1].value)"
-          />
-          <!-- INSPECT -->
-          <QBtn
-            flat
-            round
-            dense
-            class="q-ml-xs"
-            color="primary"
-            :icon="Icon.INSPECT"
-            @click="goToInspect(props.cols[0].value, props.cols[1].value)"
-          />
-          <!-- EDIT -->
-          <QBtn
-            v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.EDIT)"
-            flat
-            round
-            dense
-            class="q-ml-xs"
-            color="orange-9"
-            :icon="Icon.EDIT"
-            @click="goToEdit(props.cols[0].value, props.cols[1].value)"
-          />
-          <!-- DELETE -->
-          <QBtn
-            v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.DELETE)"
-            flat
-            round
-            dense
-            class="q-ml-xs"
-            color="negative"
-            @click="onDeleteRecord(props.cols[0].value, props.cols[1].value)"
-            :icon="Icon.DELETE"
-          />
-        </QTd>
       </QTr>
     </template>
 
@@ -192,36 +142,6 @@ function getRecordsCountText() {
             v-model="searchFilter"
             placeholder="Search"
           >
-            <template v-slot:before>
-              <!-- CREATE -->
-              <QBtn
-                v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.CREATE)"
-                color="positive"
-                class="q-px-sm q-mr-xs"
-                :icon="Icon.ADD"
-                @click="goToCreate(routeDatabaseType as DatabaseType)"
-              />
-              <!-- OPTIONS (Visible Columns) -->
-              <QSelect
-                v-model="visibleColumns"
-                :options="columnOptions"
-                :disable="!rows.length"
-                bg-color="primary"
-                standout
-                multiple
-                dense
-                options-dense
-                emit-value
-                map-options
-                option-value="name"
-                display-value=""
-              >
-                <template v-slot:prepend>
-                  <QIcon color="white" :name="Icon.OPTIONS" />
-                </template>
-              </QSelect>
-            </template>
-
             <template v-slot:append>
               <QIcon name="search" />
             </template>

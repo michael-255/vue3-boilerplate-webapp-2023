@@ -38,10 +38,21 @@ export default function useRoutingHelpers() {
   }
 
   /**
-   * Go to data table route. The type can also be 'orphaned' to show orphaned records.
+   * Go to orphaned records route.
+   */
+  async function goToOrphanedRecords() {
+    try {
+      router.push({ name: RouteName.ORPHANED_RECORDS })
+    } catch (error) {
+      log.error('Error accessing orphaned records route', error)
+    }
+  }
+
+  /**
+   * Go to data table route.
    * @param type
    */
-  async function goToData(type: DatabaseType | 'orphaned') {
+  async function goToData(type: DatabaseType) {
     try {
       router.push({
         name: RouteName.DATA,
@@ -149,6 +160,7 @@ export default function useRoutingHelpers() {
     routeParentId,
     isRouteDatabaseTypeValid,
     bannerType,
+    goToOrphanedRecords,
     goToData,
     goToInspect,
     goToCreate,

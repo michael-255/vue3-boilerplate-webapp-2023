@@ -15,7 +15,7 @@ import useRoutingHelpers from '@/composables/useRoutingHelpers'
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
-const { goToData } = useRoutingHelpers()
+const { goToData, goToOrphanedRecords } = useRoutingHelpers()
 const {
   liveSettings,
   initSettings,
@@ -512,6 +512,7 @@ async function onDeleteDatabase(): Promise<void> {
           dense
           label="Database Type"
           :options="accessOptions"
+          class="q-mb-md"
         >
           <template v-slot:before>
             <QBtn
@@ -522,6 +523,11 @@ async function onDeleteDatabase(): Promise<void> {
             />
           </template>
         </QSelect>
+
+        <!-- Access Orphaned Records -->
+        <div class="q-mb-md">Access the internal orphaned and unused records data.</div>
+
+        <QBtn label="Access Orphaned Records" color="primary" @click="goToOrphanedRecords()" />
       </QCardSection>
     </QCard>
 
