@@ -7,6 +7,7 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Orphaned Todos
 
+  - [ ] Implement `getUnusedPArentRecords` and `getOrphanedChildRecords` in `useDatabase`
   - [ ] Implement the `Orphaned` table view
   - [ ] Implement `Unused` and `Orphaned` record deletion in `Settings`
 

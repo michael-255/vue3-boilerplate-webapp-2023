@@ -81,16 +81,10 @@ async function recalculateChart() {
 
       const chartMilliseconds = uiStore.getChartTimeMilliseconds
 
-      let timeRestrictedRecords: DatabaseRecord[] = []
-
-      if (chartMilliseconds === -1) {
-        timeRestrictedRecords = chartingRecords
-      } else {
-        timeRestrictedRecords = chartingRecords.filter((record: any) => {
-          const timeDifference = new Date().getTime() - record[DatabaseField.CREATED_TIMESTAMP]
-          return timeDifference <= chartMilliseconds
-        })
-      }
+      const timeRestrictedRecords = chartingRecords.filter((record: any) => {
+        const timeDifference = new Date().getTime() - record[DatabaseField.CREATED_TIMESTAMP]
+        return timeDifference <= chartMilliseconds
+      })
 
       recordCount.value = timeRestrictedRecords.length
 

@@ -150,7 +150,7 @@ export default function useDatabase() {
         [LogRetention.THREE_MONTHS]: 90 * 24 * 60 * 60 * 1000,
         [LogRetention.SIX_MONTHS]: 180 * 24 * 60 * 60 * 1000,
         [LogRetention.ONE_YEAR]: 365 * 24 * 60 * 60 * 1000,
-        [LogRetention.FOREVER]: Infinity, // This should never happen
+        [LogRetention.FOREVER]: Number.MAX_SAFE_INTEGER, // This should never happen
       }[logRetention]
     }
 
@@ -234,6 +234,16 @@ export default function useDatabase() {
     return await db
       .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
       .sortBy(DatabaseField.CREATED_TIMESTAMP)
+  }
+
+  // TODO
+  async function getUnusedParentRecords() {
+    return [] // TODO
+  }
+
+  // TODO
+  async function getOrphanedChildRecords() {
+    return [] // TODO
   }
 
   return {

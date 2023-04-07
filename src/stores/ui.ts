@@ -16,7 +16,7 @@ const useUIStore = defineStore({
         [ChartTime.THREE_MONTHS]: 7_889_238_000,
         [ChartTime.SIX_MONTHS]: 15_778_476_000,
         [ChartTime.ONE_YEAR]: 31_556_952_000,
-        [ChartTime.ALL_TIME]: -1,
+        [ChartTime.ALL_TIME]: Number.MAX_SAFE_INTEGER,
       }[state.chartTime as ChartTime]
     },
   },
