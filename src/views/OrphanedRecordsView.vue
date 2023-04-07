@@ -1,65 +1,41 @@
 <script setup lang="ts">
 import { QTable, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
-import { DatabaseType, SettingId } from '@/types/database'
+import { DatabaseType } from '@/types/database'
 import { type Ref, ref, onMounted, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
-import { getTableColumns, getFields, getVisibleColumns } from '@/services/data-utils'
+import { idColumn, requiredHiddenColumns, typeColumn } from '@/services/table-columns'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActions from '@/composables/useActions'
 import useDatabase from '@/composables/useDatabase'
 
 const { log } = useLogger()
-const {
-  routeDatabaseType,
-  isRouteDatabaseTypeValid,
-  goToCharts,
-  goToInspect,
-  goToEdit,
-  goToCreate,
-  goBack,
-} = useRoutingHelpers()
+const { goBack } = useRoutingHelpers()
 const { onDeleteRecord } = useActions()
-const { getRecord, liveDataType } = useDatabase()
+const { liveDataType } = useDatabase()
 
 // TODO
-const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType as DatabaseType) ?? [])
-// TODO
-const columnOptions: Ref<QTableColumn[]> = ref(
-  columns.value.filter((col: QTableColumn) => !col.required)
-)
-const visibleColumns: Ref<string[]> = ref([])
+const columns: Ref<QTableColumn[]> = ref([...requiredHiddenColumns(), typeColumn(), idColumn()])
 const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 // TODO
-const subscription = liveDataType(routeDatabaseType as DatabaseType).subscribe({
+const subscription = liveDataType(DatabaseType.LOG).subscribe({
   next: (records) => {
     rows.value = records
+    // TODO - Get Unused and Orphaned records
+    // TODO - Only need to include the Type and Id
   },
   error: (error) => {
-    log.error('Error during data retrieval', error)
+    log.error('Error during orphaned records retrieval', error)
   },
 })
 
 // TODO
 onMounted(async () => {
   try {
-    if (!isRouteDatabaseTypeValid()) {
-      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
-    }
-
-    const showAllDataColumns = (
-      await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
-    )?.value
-
-    // This sets up what is currently visible on the data table
-    if (showAllDataColumns) {
-      visibleColumns.value = getFields(routeDatabaseType as DatabaseType) ?? [] // All columns
-    } else {
-      visibleColumns.value = getVisibleColumns(routeDatabaseType as DatabaseType) ?? [] // Default columns
-    }
+    //
   } catch (error) {
     log.error('Error loading orphaned records view', error)
   }
@@ -86,7 +62,6 @@ function getRecordsCountText() {
   <QTable
     :rows="rows"
     :columns="columns"
-    :visible-columns="visibleColumns"
     :rows-per-page-options="[0]"
     :filter="searchFilter"
     virtual-scroll
@@ -115,12 +90,24 @@ function getRecordsCountText() {
         <QTd v-for="col in props.cols" :key="col.name" :props="props">
           {{ col.value }}
         </QTd>
+        <QTd auto-width>
+          <!-- DELETE -->
+          <QBtn
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="negative"
+            @click="onDeleteRecord(props.cols[0].value, props.cols[1].value)"
+            :icon="Icon.DELETE"
+          />
+        </QTd>
       </QTr>
     </template>
 
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType || 'No Data Found' }}</div>
+        <div class="col-10 text-h6 ellipsis">Orphaned Records</div>
         <QBtn
           round
           flat
