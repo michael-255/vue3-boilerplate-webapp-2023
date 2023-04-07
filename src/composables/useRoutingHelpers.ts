@@ -38,17 +38,6 @@ export default function useRoutingHelpers() {
   }
 
   /**
-   * Go to orphaned records route.
-   */
-  async function goToOrphanedRecords() {
-    try {
-      router.push({ name: RouteName.ORPHANED_RECORDS })
-    } catch (error) {
-      log.error('Error accessing orphaned records route', error)
-    }
-  }
-
-  /**
    * Go to data table route.
    * @param type
    */
@@ -160,7 +149,6 @@ export default function useRoutingHelpers() {
     routeParentId,
     isRouteDatabaseTypeValid,
     bannerType,
-    goToOrphanedRecords,
     goToData,
     goToInspect,
     goToCreate,

@@ -41,7 +41,11 @@ onMounted(() => {
 
       <div v-for="(chartBP, i) in chartBlueprints" :key="i" class="q-mb-md">
         <!-- Dynamic Async Components -->
-        <component :is="chartBP.component" />
+        <component
+          :is="chartBP.component"
+          :label="chartBP.label"
+          :chartOptions="chartBP.chartOptions"
+        />
       </div>
     </div>
   </ResponsivePage>

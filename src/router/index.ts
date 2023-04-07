@@ -17,12 +17,6 @@ const router = createRouter({
       component: () => import('../views/DataView.vue'),
     },
     {
-      path: '/orphaned-records/',
-      name: RouteName.ORPHANED_RECORDS,
-      meta: { layout: 'MenuLayout' },
-      component: () => import('../views/OrphanedRecordsView.vue'),
-    },
-    {
       path: '/inspect/:databaseTypeSlug/:id',
       name: RouteName.ACTION_INSPECT,
       meta: { layout: 'MenuLayout' },

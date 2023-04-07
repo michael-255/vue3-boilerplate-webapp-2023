@@ -13,6 +13,7 @@ import {
 import { LogRetention, type AppObject } from '@/types/misc'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { dexieWrapper } from '@/services/DexieWrapper'
+import { getChildType } from '@/services/data-utils'
 
 export default function useDatabase() {
   // Only table used by the app for now is the "Records" table.
@@ -234,16 +235,6 @@ export default function useDatabase() {
     return await db
       .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
       .sortBy(DatabaseField.CREATED_TIMESTAMP)
-  }
-
-  // TODO
-  async function getUnusedParentRecords() {
-    return [] // TODO
-  }
-
-  // TODO
-  async function getOrphanedChildRecords() {
-    return [] // TODO
   }
 
   return {

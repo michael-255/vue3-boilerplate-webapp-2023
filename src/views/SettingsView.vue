@@ -15,7 +15,7 @@ import useRoutingHelpers from '@/composables/useRoutingHelpers'
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
-const { goToData, goToOrphanedRecords } = useRoutingHelpers()
+const { goToData } = useRoutingHelpers()
 const {
   liveSettings,
   initSettings,
@@ -300,52 +300,6 @@ async function onDeleteTableData(table: DatabaseType): Promise<void> {
 }
 
 /**
- * TODO
- */
-async function onDeleteUnusedData(): Promise<void> {
-  confirmDialog(
-    'Delete Unused Data',
-    `Permanetly delete all unused parent data from the database?`,
-    Icon.CLEAR,
-    'negative',
-    async (): Promise<void> => {
-      // try {
-      //   Object.values(DatabaseParentType).map(async (table) => {
-      //     const parentIds = await getUnusedParentIds(table)
-      //     await bulkDeleteItems(table, parentIds)
-      //   })
-      //   log.info('successfully deleted unused parents')
-      // } catch (error) {
-      //   log.error('Error deleting unused parent data', error)
-      // }
-    }
-  )
-}
-
-/**
- * TODO
- */
-async function onDeleteOrphanedData(): Promise<void> {
-  confirmDialog(
-    'Delete Orphaned Data',
-    `Permanetly delete all orphaned record data from the database?`,
-    Icon.CLEAR,
-    'negative',
-    async (): Promise<void> => {
-      // try {
-      //   Object.values(DatabaseChildType).map(async (table) => {
-      //     const recordIds = await getOrphanedRecordIds(table)
-      //     await bulkDeleteItems(table, recordIds)
-      //   })
-      //   log.info('successfully deleted orphaned records')
-      // } catch (error) {
-      //   log.error('Error deleting orphaned record data', error)
-      // }
-    }
-  )
-}
-
-/**
  * On confirmation, deletes all items from all tables.
  */
 async function onDeleteAllData(): Promise<void> {
@@ -523,11 +477,6 @@ async function onDeleteDatabase(): Promise<void> {
             />
           </template>
         </QSelect>
-
-        <!-- Access Orphaned Records -->
-        <div class="q-mb-md">Access the internal orphaned and unused records data.</div>
-
-        <QBtn label="Access Orphaned Records" color="primary" @click="goToOrphanedRecords()" />
       </QCardSection>
     </QCard>
 
@@ -626,30 +575,6 @@ async function onDeleteDatabase(): Promise<void> {
             />
           </template>
         </QSelect>
-
-        <!-- Delete Unused Parent Items -->
-        <div class="q-mb-md">
-          Delete all unused parent items that have no record items associated with them.
-        </div>
-
-        <QBtn
-          class="q-mb-md"
-          label="Delete Unused Items"
-          color="negative"
-          @click="onDeleteUnusedData()"
-        />
-
-        <!-- Delete Orphaned Record Items -->
-        <div class="q-mb-md">
-          Delete all orphaned record items that have no parent item associated with them.
-        </div>
-
-        <QBtn
-          class="q-mb-md"
-          label="Delete Orphaned Items"
-          color="negative"
-          @click="onDeleteOrphanedData()"
-        />
 
         <!-- Delete All Data -->
         <div class="q-mb-md">Permanently delete all data from the database.</div>

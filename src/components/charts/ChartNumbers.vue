@@ -15,12 +15,16 @@ import {
 import { onMounted, ref, watch, type Ref } from 'vue'
 import { DatabaseField, type DatabaseChildType, type DatabaseParentType } from '@/types/database'
 import { getChildType } from '@/services/data-utils'
-import type { ChartTime } from '@/types/misc'
-import type { DatabaseRecord } from '@/types/models'
+import type { AppObject, ChartTime } from '@/types/misc'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useDatabase from '@/composables/useDatabase'
 import useUIStore from '@/stores/ui'
+
+defineProps<{
+  label: string
+  chartOptions: AppObject
+}>()
 
 const uiStore = useUIStore()
 
@@ -42,20 +46,6 @@ const { getChildRecordsByParentId } = useDatabase()
 
 const hasData: Ref<boolean> = ref(false)
 const recordCount: Ref<number> = ref(0)
-
-const chartOptions = {
-  reactive: true,
-  responsive: true,
-  radius: 2,
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-}
 
 const chartData: any = ref({
   labels: [],
@@ -136,7 +126,7 @@ watch(
 <template>
   <QCard class="q-mb-md">
     <QCardSection>
-      <div class="text-h6">Numbers</div>
+      <div class="text-h6">{{ label }}</div>
       <div>Charted Records Count: {{ recordCount }}</div>
       <Line v-if="hasData" :options="chartOptions" :data="chartData" />
       <div v-else>No data found</div>

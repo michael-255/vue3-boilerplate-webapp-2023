@@ -5,15 +5,13 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Orphaned Todos
-
-  - [ ] Implement `getUnusedPArentRecords` and `getOrphanedChildRecords` in `useDatabase`
-  - [ ] Implement the `Orphaned` table view
-  - [ ] Implement `Unused` and `Orphaned` record deletion in `Settings`
-
-- Empty App Behaviour?
-
-  - [ ] Add quick button to load default data to `Dashboard` (on all selections)
+- Text/Copy build pass
+- Comments/Documentation build pass
+- Add quick buttons to load defaults to `Dashboard` sections whenm empty
+- Add `None` and `Noop` types so typing isn't as bad (use as defaults?)
+- Possible `useRules` composable for input rules and validators?
+- Orphaned Records table
+- App specific utils stored in services?
 
 - Quasar
 
@@ -21,11 +19,6 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
   - [ ] Use Quasar Loading plugin when waiting on data tables
   - [ ] Use Quasar Meta plugin to improve SEO
-
-- Charts
-
-  - [ ] Improve defaults generator with records of different dates so you can test charts
-  - [ ] How to handle two records of the same Parent on the same day in the chart graph
 
 - Possible Features & Updates
 
@@ -35,7 +28,7 @@ projects. Read through this README to have a better understanding of how this pr
 
 - Final Steps
 
-  - [ ] `Text/Copy Pass` Review app text for good flow and grammer
+  - [ ] Review app text and comments
   - [ ] `Add Tests`
         <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
 
