@@ -31,7 +31,7 @@ export default function useDatabase() {
     const showDebugMessages =
       (await getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
     const showInfoMessages =
-      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? false
+      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? true
     const logRetentionTime =
       (await getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
       LogRetention.THREE_MONTHS

@@ -14,7 +14,7 @@ export function getSlug(type: DatabaseType) {
 }
 
 export function getTypeFromSlug(databaseTypeSlug: string) {
-  return dataBlueprints.find((dbp) => dbp.typeSlug === databaseTypeSlug)?.type ?? null
+  return dataBlueprints.find((dbp) => dbp.typeSlug === databaseTypeSlug)?.type ?? null // DatabaseType.NONE
 }
 
 export function getLabel(type: DatabaseType, style: 'singular' | 'plural') {
@@ -30,11 +30,11 @@ export function getIcon(type: DatabaseType) {
 }
 
 export function getParentType(type: DatabaseType) {
-  return dataBlueprints.find((dbp) => dbp.type === type)?.parentType ?? null
+  return dataBlueprints.find((dbp) => dbp.type === type)?.parentType ?? null // DatabaseType.NONE
 }
 
 export function getChildType(type: DatabaseType) {
-  return dataBlueprints.find((dbp) => dbp.type === type)?.childType ?? null
+  return dataBlueprints.find((dbp) => dbp.type === type)?.childType ?? null // DatabaseType.NONE
 }
 
 export function getSupportedActions(type: DatabaseType) {

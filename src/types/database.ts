@@ -12,6 +12,7 @@ export enum DatabaseTable {
  * Used to separate records using tables, but compound indices are better.
  */
 export enum DatabaseType {
+  // NONE = 'None',
   LOG = 'Logs',
   SETTING = 'Settings',
   EXAMPLE = 'Examples',
@@ -71,7 +72,6 @@ export enum SettingId {
   SHOW_CONSOLE_LOGS = 'show-console-logs',
   SHOW_DEBUG_MESSAGES = 'show-debug-messages',
   SHOW_INFO_MESSAGES = 'show-info-messages',
-  DASHBOARD_LIST_SELECTION = 'dashboard-list-selection',
   LOG_RETENTION_TIME = 'log-retention-time',
 }
 

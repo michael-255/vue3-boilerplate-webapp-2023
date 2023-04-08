@@ -8,14 +8,14 @@ projects. Read through this README to have a better understanding of how this pr
 - [O] Generate menu layout items based on parent blueprints
 - [O] Remove all Quasar component imports since that is handled automatically by Quasar
 - [O] Use the `ui` store for the `Dashboard List Selection` instead of `Settings`
-- [ ] `Text/Copy/Comments/Documentation` cleanup pass (do as you code!)
-- [ ] Fix `Settings` type deletions in Settings page
+- [O] Fix `Settings` type deletions in Settings page
+- [ ] Add `DatabaseType.NONE` type so typing isn't as bad for DatabaseType
 - [ ] Consolidate multi-item component props into a single object with a TS Type
 - [ ] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
-- [ ] Add `None` and `Noop` types so typing isn't as bad (use as defaults?)
 - [ ] Could `Orphaned` be a type of record?
 - [ ] Possible `useRules` composable for input rules and validators?
 - [ ] Create an `ErrorCard` component for views
+- [ ] `Text/Copy/Comments/Documentation` cleanup pass (do as you code!)
 - [ ] Orphaned Records table
 - [ ] App specific utils stored in services?
 - [ ] Add more tags to the repository in GitHub based on packages used

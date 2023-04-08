@@ -68,8 +68,8 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     singularLabel: 'Setting',
     pluralLabel: 'Settings',
     icon: Icon.SETTINGS,
-    parentType: null,
-    childType: null,
+    parentType: null, // DatabaseType.NONE
+    childType: null, // DatabaseType.NONE
     supportedActions: [],
     chartBluprints: [],
     fieldBlueprints: [typeField(), idField(), valueField()],
@@ -83,8 +83,8 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     singularLabel: 'Log',
     pluralLabel: 'Logs',
     icon: Icon.LOGS,
-    parentType: null,
-    childType: null,
+    parentType: null, // DatabaseType.NONE
+    childType: null, // DatabaseType.NONE
     supportedActions: [DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
@@ -117,7 +117,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     singularLabel: 'Example',
     pluralLabel: 'Examples',
     icon: Icon.EXAMPLES,
-    parentType: null,
+    parentType: null, // DatabaseType.NONE
     childType: DatabaseType.EXAMPLE_RESULT,
     supportedActions: [
       DatabaseAction.CREATE,
@@ -152,7 +152,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     pluralLabel: 'Example Results',
     icon: Icon.RECORDS,
     parentType: DatabaseType.EXAMPLE,
-    childType: null,
+    childType: null, // DatabaseType.NONE
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
@@ -180,7 +180,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     singularLabel: 'Test',
     pluralLabel: 'Tests',
     icon: Icon.TESTS,
-    parentType: null,
+    parentType: null, // DatabaseType.NONE
     childType: DatabaseType.TEST_RESULT,
     supportedActions: [
       DatabaseAction.CREATE,
@@ -215,7 +215,7 @@ export const dataBlueprints: readonly DataBlueprint[] = [
     pluralLabel: 'Test Results',
     icon: Icon.RECORDS,
     parentType: DatabaseType.TEST,
-    childType: null,
+    childType: null, // DatabaseType.NONE
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
