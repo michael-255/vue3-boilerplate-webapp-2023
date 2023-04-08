@@ -1,6 +1,14 @@
 import { dataBlueprints } from '@/services/data-blueprints'
 import { DatabaseType } from '@/types/database'
-import { Icon } from '@/types/icons'
+
+export const allDatabaseTypes: readonly DatabaseType[] = [
+  DatabaseType.LOG,
+  DatabaseType.SETTING,
+  DatabaseType.EXAMPLE,
+  DatabaseType.EXAMPLE_RESULT,
+  DatabaseType.TEST,
+  DatabaseType.TEST_RESULT,
+]
 
 export const parentTypes: readonly DatabaseType[] = [DatabaseType.EXAMPLE, DatabaseType.TEST]
 
@@ -10,31 +18,31 @@ export const childTypes: readonly DatabaseType[] = [
 ]
 
 export function getSlug(type: DatabaseType) {
-  return dataBlueprints.find((dbp) => dbp.type === type)?.typeSlug ?? ''
+  return dataBlueprints.find((dbp) => dbp.type === type)?.typeSlug
 }
 
 export function getTypeFromSlug(databaseTypeSlug: string) {
-  return dataBlueprints.find((dbp) => dbp.typeSlug === databaseTypeSlug)?.type ?? null // DatabaseType.NONE
+  return dataBlueprints.find((dbp) => dbp.typeSlug === databaseTypeSlug)?.type
 }
 
 export function getLabel(type: DatabaseType, style: 'singular' | 'plural') {
   if (style === 'singular') {
-    return dataBlueprints.find((dbp) => dbp.type === type)?.singularLabel ?? ''
+    return dataBlueprints.find((dbp) => dbp.type === type)?.singularLabel
   } else {
-    return dataBlueprints.find((dbp) => dbp.type === type)?.pluralLabel ?? ''
+    return dataBlueprints.find((dbp) => dbp.type === type)?.pluralLabel
   }
 }
 
 export function getIcon(type: DatabaseType) {
-  return dataBlueprints.find((dbp) => dbp.type === type)?.icon ?? Icon.ERROR
+  return dataBlueprints.find((dbp) => dbp.type === type)?.icon
 }
 
 export function getParentType(type: DatabaseType) {
-  return dataBlueprints.find((dbp) => dbp.type === type)?.parentType ?? null // DatabaseType.NONE
+  return dataBlueprints.find((dbp) => dbp.type === type)?.parentType
 }
 
 export function getChildType(type: DatabaseType) {
-  return dataBlueprints.find((dbp) => dbp.type === type)?.childType ?? null // DatabaseType.NONE
+  return dataBlueprints.find((dbp) => dbp.type === type)?.childType
 }
 
 export function getSupportedActions(type: DatabaseType) {

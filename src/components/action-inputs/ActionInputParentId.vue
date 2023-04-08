@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue'
 import { truncateString } from '@/utils/common'
-import { DatabaseField, type DatabaseChildType } from '@/types/database'
+import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { getParentType } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
@@ -25,7 +25,7 @@ const options: Ref<any[]> = ref([])
  */
 onMounted(async () => {
   try {
-    const parentType = getParentType(routeDatabaseType as DatabaseChildType)
+    const parentType = getParentType(routeDatabaseType)
 
     // Parent type must exist to continue
     if (!parentType) {

@@ -4,6 +4,7 @@ import { slugify } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
 import { getTypeFromSlug } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
+import type { Optional } from '@/types/misc'
 
 /**
  * Composable with actions that relate to routing and navigation.
@@ -13,29 +14,22 @@ export default function useRoutingHelpers() {
   const router = useRouter()
   const { log } = useLogger()
 
-  const databaseTypeSlug = route?.params?.databaseTypeSlug ?? ''
-  const routeDatabaseType = getTypeFromSlug(databaseTypeSlug as string)
+  /**
+   * (Important) The "databaseTypeSlug" param is validated by the "beforeEnter" hook in router index.
+   */
+  const routeTypeSlug = route?.params?.databaseTypeSlug as string
+  /**
+   * Assumed valid since the "databaseTypeSlug" is validated by the "beforeEnter" hook in router index.
+   */
+  const routeDatabaseType = getTypeFromSlug(routeTypeSlug) as DatabaseType
+  /**
+   * (Important) The "id" param is validated by the "beforeEnter" hook in router index.
+   */
   const routeId = route?.params?.[DatabaseField.ID] as string
-  const routeParentId = route?.params?.[DatabaseField.PARENT_ID] as string
-
   /**
-   * Returns true if the route databaseType is valid.
+   * Optional "parentId" param for child record creates.
    */
-  function isRouteDatabaseTypeValid() {
-    return Object.values(DatabaseType).includes(routeDatabaseType as DatabaseType)
-  }
-
-  /**
-   * Returns the banner with the database type appended to the end.
-   * @param title
-   */
-  function bannerType() {
-    if (isRouteDatabaseTypeValid()) {
-      return `${routeDatabaseType}`
-    } else {
-      return 'Error'
-    }
-  }
+  const routeParentId = route?.params?.[DatabaseField.PARENT_ID] as Optional<string>
 
   /**
    * Go to data table route.
@@ -144,11 +138,10 @@ export default function useRoutingHelpers() {
   }
 
   return {
+    routeTypeSlug,
     routeDatabaseType,
     routeId,
     routeParentId,
-    isRouteDatabaseTypeValid,
-    bannerType,
     goToData,
     goToInspect,
     goToCreate,

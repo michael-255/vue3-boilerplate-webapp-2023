@@ -1,29 +1,24 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import type { DatabaseType } from '@/types/database'
 import { onMounted, ref, type Ref } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
 import type { Optional } from '@/types/misc'
-import { getFieldBlueprints } from '@/services/data-utils'
+import { getFieldBlueprints, getLabel } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
 import useDatabase from '@/composables/useDatabase'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const { routeDatabaseType, routeId, isRouteDatabaseTypeValid, bannerType } = useRoutingHelpers()
+const { routeDatabaseType, routeId } = useRoutingHelpers()
 const { log } = useLogger()
 const { getRecord } = useDatabase()
 
-const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
+const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 const record: Ref<Optional<DatabaseRecord>> = ref(null)
 
 onMounted(async () => {
   try {
-    if (!isRouteDatabaseTypeValid()) {
-      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
-    }
-
-    record.value = await getRecord(routeDatabaseType as DatabaseType, routeId)
+    record.value = await getRecord(routeDatabaseType, routeId)
   } catch (error) {
     log.error('Error loading inspect view', error)
   }
@@ -31,7 +26,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.INSPECT" :banner-title="`Inspect ${bannerType()}`">
+  <ResponsivePage
+    :banner-icon="Icon.INSPECT"
+    :banner-title="`Inspect ${getLabel(routeDatabaseType, 'singular')}`"
+  >
     <QCard v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
       <QCardSection>
         <div class="text-h6 q-mb-sm">{{ fieldBP.label }}</div>

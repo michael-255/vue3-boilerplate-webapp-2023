@@ -1,31 +1,19 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import type { DatabaseType } from '@/types/database'
-import { getChartBlueprints } from '@/services/data-utils'
-import { onMounted } from 'vue'
+import { getChartBlueprints, getLabel } from '@/services/data-utils'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import useLogger from '@/composables/useLogger'
 import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
 
-const { routeDatabaseType, isRouteDatabaseTypeValid, bannerType } = useRoutingHelpers()
-const { log } = useLogger()
-
-const chartBlueprints = getChartBlueprints(routeDatabaseType as DatabaseType)
-
-onMounted(() => {
-  try {
-    if (!isRouteDatabaseTypeValid()) {
-      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
-    }
-  } catch (error) {
-    log.error('Error loading charts view', error)
-  }
-})
+const { routeDatabaseType } = useRoutingHelpers()
+const chartBlueprints = getChartBlueprints(routeDatabaseType)
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.CHARTS" :banner-title="`${bannerType()} Charts`">
+  <ResponsivePage
+    :banner-icon="Icon.CHARTS"
+    :banner-title="`${getLabel(routeDatabaseType, 'singular')} Charts`"
+  >
     <!-- Error Render -->
     <div v-if="chartBlueprints.length === 0">
       <QCard class="q-mb-md">

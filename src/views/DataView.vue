@@ -16,20 +16,13 @@ import useActions from '@/composables/useActions'
 import useDatabase from '@/composables/useDatabase'
 
 const { log } = useLogger()
-const {
-  routeDatabaseType,
-  isRouteDatabaseTypeValid,
-  goToCharts,
-  goToInspect,
-  goToEdit,
-  goToCreate,
-  goBack,
-} = useRoutingHelpers()
+const { routeDatabaseType, goToCharts, goToInspect, goToEdit, goToCreate, goBack } =
+  useRoutingHelpers()
 const { onDeleteRecord } = useActions()
 const { getRecord, liveDataType } = useDatabase()
 
 // TODO
-const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType as DatabaseType) ?? [])
+const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType) ?? [])
 // TODO
 const columnOptions: Ref<QTableColumn[]> = ref(
   columns.value.filter((col: QTableColumn) => !col.required)
@@ -39,7 +32,7 @@ const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 // TODO
-const subscription = liveDataType(routeDatabaseType as DatabaseType).subscribe({
+const subscription = liveDataType(routeDatabaseType).subscribe({
   next: (records) => {
     rows.value = records
   },
@@ -51,19 +44,15 @@ const subscription = liveDataType(routeDatabaseType as DatabaseType).subscribe({
 // TODO
 onMounted(async () => {
   try {
-    if (!isRouteDatabaseTypeValid()) {
-      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
-    }
-
     const showAllDataColumns = (
       await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
     )?.value
 
     // This sets up what is currently visible on the data table
     if (showAllDataColumns) {
-      visibleColumns.value = getFields(routeDatabaseType as DatabaseType) ?? [] // All columns
+      visibleColumns.value = getFields(routeDatabaseType) ?? [] // All columns
     } else {
-      visibleColumns.value = getVisibleColumns(routeDatabaseType as DatabaseType) ?? [] // Default columns
+      visibleColumns.value = getVisibleColumns(routeDatabaseType) ?? [] // Default columns
     }
   } catch (error) {
     log.error('Error loading data view', error)
@@ -123,7 +112,7 @@ function getRecordsCountText() {
         <QTd auto-width>
           <!-- CHARTS -->
           <QBtn
-            v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.CHARTS)"
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.CHARTS)"
             flat
             round
             dense
@@ -144,7 +133,7 @@ function getRecordsCountText() {
           />
           <!-- EDIT -->
           <QBtn
-            v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.EDIT)"
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.EDIT)"
             flat
             round
             dense
@@ -155,7 +144,7 @@ function getRecordsCountText() {
           />
           <!-- DELETE -->
           <QBtn
-            v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.DELETE)"
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.DELETE)"
             flat
             round
             dense
@@ -195,11 +184,11 @@ function getRecordsCountText() {
             <template v-slot:before>
               <!-- CREATE -->
               <QBtn
-                v-if="getSupportedActions(routeDatabaseType as DatabaseType).includes(DatabaseAction.CREATE)"
+                v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.CREATE)"
                 color="positive"
                 class="q-px-sm q-mr-xs"
                 :icon="Icon.ADD"
-                @click="goToCreate(routeDatabaseType as DatabaseType)"
+                @click="goToCreate(routeDatabaseType)"
               />
               <!-- OPTIONS (Visible Columns) -->
               <QSelect

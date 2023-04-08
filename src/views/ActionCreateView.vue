@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import { DatabaseField, DatabaseType } from '@/types/database'
+import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
-import { getFieldBlueprints, getFields } from '@/services/data-utils'
+import { getFieldBlueprints, getFields, getLabel } from '@/services/data-utils'
 import { onMounted, onUnmounted } from 'vue'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
@@ -11,23 +11,18 @@ import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 
-const { routeDatabaseType, routeParentId, isRouteDatabaseTypeValid, bannerType, goBack } =
-  useRoutingHelpers()
+const { routeDatabaseType, routeParentId, goBack } = useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
 const { createRecord } = useDatabase()
 const actionRecordStore = useActionRecordStore()
 
-const fieldBlueprints = getFieldBlueprints(routeDatabaseType as DatabaseType)
+const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 
 onMounted(() => {
   try {
     actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
     actionRecordStore.valid[DatabaseField.TYPE] = true
-
-    if (!isRouteDatabaseTypeValid()) {
-      throw new Error(`Invalid route databaseType: ${routeDatabaseType}`)
-    }
   } catch (error) {
     log.error('Error loading create view', error)
   }
@@ -39,7 +34,7 @@ onUnmounted(() => {
 
 // TODO
 async function onCreateRecord() {
-  const fields = getFields(routeDatabaseType as DatabaseType)
+  const fields = getFields(routeDatabaseType)
 
   // Build record from store using only fields used by its type (ignoring others in store)
   const record = fields.reduce(
@@ -96,7 +91,10 @@ function lockFields(field: DatabaseField) {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.CREATE" :banner-title="`Create ${bannerType()}`">
+  <ResponsivePage
+    :banner-icon="Icon.CREATE"
+    :banner-title="`Create ${getLabel(routeDatabaseType, 'singular')}`"
+  >
     <!-- Error Render -->
     <div v-if="fieldBlueprints.length === 0">
       <QCard class="q-mb-md">

@@ -12,7 +12,6 @@ export enum DatabaseTable {
  * Used to separate records using tables, but compound indices are better.
  */
 export enum DatabaseType {
-  // NONE = 'None',
   LOG = 'Logs',
   SETTING = 'Settings',
   EXAMPLE = 'Examples',

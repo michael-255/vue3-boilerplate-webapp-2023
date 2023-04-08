@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { RouteName } from '@/router/route-names'
+import { allDatabaseTypes, getTypeFromSlug } from '@/services/data-utils'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,12 +16,29 @@ const router = createRouter({
       name: RouteName.DATA,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/DataView.vue'),
+      beforeEnter(to, from, next) {
+        if (isDatabaseTypeValid(to?.params?.databaseTypeSlug as string)) {
+          next()
+        } else {
+          next('/404')
+        }
+      },
     },
     {
       path: '/inspect/:databaseTypeSlug/:id',
       name: RouteName.ACTION_INSPECT,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionInspectView.vue'),
+      beforeEnter(to, from, next) {
+        if (
+          isDatabaseTypeValid(to?.params?.databaseTypeSlug as string) &&
+          isIdValid(to?.params?.id as string)
+        ) {
+          next()
+        } else {
+          next('/404')
+        }
+      },
     },
     {
       // parentId is optional for creating child records with a specific parent id
@@ -28,18 +46,45 @@ const router = createRouter({
       name: RouteName.ACTION_CREATE,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionCreateView.vue'),
+      beforeEnter(to, from, next) {
+        if (isDatabaseTypeValid(to?.params?.databaseTypeSlug as string)) {
+          next()
+        } else {
+          next('/404')
+        }
+      },
     },
     {
       path: '/edit/:databaseTypeSlug/:id',
       name: RouteName.ACTION_EDIT,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionEditView.vue'),
+      beforeEnter(to, from, next) {
+        if (
+          isDatabaseTypeValid(to?.params?.databaseTypeSlug as string) &&
+          isIdValid(to?.params?.id as string)
+        ) {
+          next()
+        } else {
+          next('/404')
+        }
+      },
     },
     {
       path: '/charts/:databaseTypeSlug/:id',
       name: RouteName.ACTION_CHARTS,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionChartsView.vue'),
+      beforeEnter(to, from, next) {
+        if (
+          isDatabaseTypeValid(to?.params?.databaseTypeSlug as string) &&
+          isIdValid(to?.params?.id as string)
+        ) {
+          next()
+        } else {
+          next('/404')
+        }
+      },
     },
     {
       path: '/settings',
@@ -73,5 +118,19 @@ const router = createRouter({
     },
   ],
 })
+
+function isDatabaseTypeValid(databaseTypeSlug: string) {
+  const typeSlug = getTypeFromSlug(databaseTypeSlug)
+
+  if (typeSlug) {
+    return allDatabaseTypes.includes(typeSlug)
+  } else {
+    return false
+  }
+}
+
+function isIdValid(id: string) {
+  return !!(id?.length > 0)
+}
 
 export default router

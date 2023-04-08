@@ -68,7 +68,7 @@ function downwardTrend(ctx: any, color: any) {
 async function recalculateChart() {
   try {
     const chartingRecords = await getChildRecordsByParentId(
-      getChildType(routeDatabaseType as DatabaseParentType) as DatabaseChildType,
+      getChildType(routeDatabaseType) as DatabaseChildType,
       routeId
     )
 

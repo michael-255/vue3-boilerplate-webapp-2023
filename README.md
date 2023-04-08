@@ -9,7 +9,8 @@ projects. Read through this README to have a better understanding of how this pr
 - [O] Remove all Quasar component imports since that is handled automatically by Quasar
 - [O] Use the `ui` store for the `Dashboard List Selection` instead of `Settings`
 - [O] Fix `Settings` type deletions in Settings page
-- [ ] Add `DatabaseType.NONE` type so typing isn't as bad for DatabaseType
+- [O] Validate route params in Vue Router using `beforeEnter`
+- [O] Test combining `onMounted` from composables for route stuff
 - [ ] Consolidate multi-item component props into a single object with a TS Type
 - [ ] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
 - [ ] Could `Orphaned` be a type of record?

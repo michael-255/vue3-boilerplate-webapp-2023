@@ -23,7 +23,7 @@ import useUIStore from '@/stores/ui'
 const uiStore = useUIStore()
 const { log } = useLogger()
 const { goToCreate } = useRoutingHelpers()
-const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
+const { liveDashboard, getPreviousChildRecord } = useDatabase()
 
 const dashboardListOptions = parentTypes.map((type) => ({
   label: type,
@@ -110,8 +110,7 @@ onUnmounted(() => {
 
 // TODO
 function getDashboardRecordsCountText() {
-  const count =
-    dashboardRecordRefs?.[uiStore.dashboardListSelection as DatabaseParentType]?.value?.length ?? 0
+  const count = dashboardRecordRefs?.[uiStore.dashboardListSelection]?.value?.length ?? 0
 
   if (count === 1) {
     return '1 enabled record found'
@@ -198,8 +197,8 @@ function getDashboardRecordsCountText() {
       <QBtn
         color="positive"
         :icon="Icon.CREATE"
-        :label="`Create ${getLabel(uiStore.dashboardListSelection as DatabaseType, 'singular')}`"
-        @click="goToCreate(uiStore.dashboardListSelection as DatabaseType)"
+        :label="`Create ${getLabel(uiStore.dashboardListSelection, 'singular')}`"
+        @click="goToCreate(uiStore.dashboardListSelection)"
       />
     </div>
   </ResponsivePage>
