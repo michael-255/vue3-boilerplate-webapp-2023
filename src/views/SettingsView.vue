@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { uid, exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
-import { AppText, Limit, LogRetention, type Optional } from '@/types/misc'
+import { AppText, Limit, LogRetention } from '@/types/misc'
 import { DatabaseField, DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/models'
@@ -11,7 +11,6 @@ import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
-import { getLabel } from '@/services/data-utils'
 
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
@@ -32,25 +31,15 @@ const logRetentionIndex: Ref<number> = ref(0)
 // Data Management
 const importFile: Ref<any> = ref(null)
 const exportModel: Ref<DatabaseType[]> = ref([])
-const exportOptions = Object.values(DatabaseType).map((table) => ({
-  value: table,
-  label: table,
+const exportOptions = Object.values(DatabaseType).map((type) => ({
+  value: type,
+  label: type,
 }))
-const accessModel: Ref<Optional<DatabaseType>> = ref(null)
-const accessOptions = ref(
-  Object.values(DatabaseType).map((type) => ({
-    value: type,
-    label: getLabel(type, 'plural'),
-  }))
-)
+const accessOptions = ref(Object.values(DatabaseType))
+const accessModel = ref(accessOptions.value[0])
 // Danger Zone
-const deleteModel: Ref<Optional<DatabaseType>> = ref(null)
-const deleteOptions = ref(
-  Object.values(DatabaseType).map((type) => ({
-    value: type,
-    label: getLabel(type, 'plural'),
-  }))
-)
+const deleteOptions = ref(Object.values(DatabaseType))
+const deleteModel = ref(deleteOptions.value[0])
 
 const subscription = liveSettings().subscribe({
   next: (records) => {
@@ -72,7 +61,7 @@ onUnmounted(() => {
 /**
  * Generates example logs that can be examined on the Logs table and the console.
  */
-function onTestLogger(): void {
+function onTestLogger() {
   log.debug('This is a Debug Log', { name: 'Debug' })
   log.info('This is an Info Log', { name: 'Info' })
   log.warn('This is a Warning Log', { name: 'Warning' })
@@ -82,13 +71,13 @@ function onTestLogger(): void {
 /**
  * Generate default demostration data for the app.
  */
-async function onDefaults(): Promise<void> {
+async function onDefaults() {
   confirmDialog(
     'Load Defaults',
     `Would you like the load defaults into the database?`,
     Icon.INFO,
     'info',
-    async (): Promise<void> => {
+    async () => {
       try {
         const randomLetter = (): string => {
           const alphabetLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
@@ -173,7 +162,7 @@ async function onDefaults(): Promise<void> {
  * Called when a file has been rejected by the input.
  * @param entries
  */
-function onRejectedFile(entries: any): void {
+function onRejectedFile(entries: any) {
   const fileName = entries[0]?.importFile?.name || undefined
   log.warn(`Cannot import "${fileName}"`, entries)
 }
@@ -181,13 +170,13 @@ function onRejectedFile(entries: any): void {
 /**
  * On confirmation, import your data from a JSON file.
  */
-function onImportFile(): void {
+function onImportFile() {
   confirmDialog(
     'Import Data',
     `Import file ${importFile?.value?.name} and attempt to load data from it?`,
     Icon.INFO,
     'info',
-    async (): Promise<void> => {
+    async () => {
       try {
         const parsedFileData = JSON.parse(await importFile.value.text())
 
@@ -223,7 +212,7 @@ function onImportFile(): void {
 /**
  * On confirmation, export your records as a JSON file.
  */
-function onExportRecords(types: DatabaseType[]): void {
+function onExportRecords(types: DatabaseType[]) {
   // Build export file name
   const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
   const date = new Date().toISOString().split('T')[0]
@@ -234,7 +223,7 @@ function onExportRecords(types: DatabaseType[]): void {
     `Export all of your data as the file ${filename}?`,
     Icon.INFO,
     'info',
-    async (): Promise<void> => {
+    async () => {
       try {
         // Get all data records from the database
         const records = await getAllRecords()
@@ -275,7 +264,7 @@ function onExportRecords(types: DatabaseType[]): void {
  * TODO
  * @param logRetentionIndex
  */
-async function onChangeLogRetention(logRetentionIndex: number): Promise<void> {
+async function onChangeLogRetention(logRetentionIndex: number) {
   try {
     const logRetentionTime = Object.values(LogRetention)[logRetentionIndex]
     await setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime)
@@ -287,21 +276,21 @@ async function onChangeLogRetention(logRetentionIndex: number): Promise<void> {
 
 /**
  * TODO
- * @param table
+ * @param type
  */
-async function onDeleteTableData(table: DatabaseType): Promise<void> {
+async function onDeleteDataType(type: DatabaseType) {
   confirmDialog(
-    `Delete ${table} Data`,
-    `Permanetly delete all ${table} data from the database?`,
+    `Delete ${type} Data`,
+    `Permanetly delete all ${type} data from the database?`,
     Icon.CLEAR,
     'negative',
-    async (): Promise<void> => {
+    async () => {
       try {
-        await clearRecordsByType(table)
+        await clearRecordsByType(type)
         await initSettings()
-        log.info(`${table} data successfully deleted`)
+        log.info(`${type} data successfully deleted`)
       } catch (error) {
-        log.error(`Error deleting ${table} data`, error)
+        log.error(`Error deleting ${type} data`, error)
       }
     }
   )
@@ -310,16 +299,16 @@ async function onDeleteTableData(table: DatabaseType): Promise<void> {
 /**
  * On confirmation, deletes all items from all tables.
  */
-async function onDeleteAllData(): Promise<void> {
+async function onDeleteAllData() {
   confirmDialog(
     'Delete All Data',
     'Permanetly delete all data from the database?',
     Icon.CLEAR,
     'negative',
-    async (): Promise<void> => {
+    async () => {
       try {
         await Promise.all(
-          Object.values(DatabaseType).map(async (table) => await clearRecordsByType(table))
+          Object.values(DatabaseType).map(async (type) => await clearRecordsByType(type))
         )
         await initSettings()
         log.info('All data successfully deleted')
@@ -481,7 +470,7 @@ async function onDeleteDatabase(): Promise<void> {
               :disable="!accessModel"
               label="Access Data"
               color="primary"
-              @click="goToData(accessModel as DatabaseType)"
+              @click="goToData(accessModel)"
             />
           </template>
         </QSelect>
@@ -579,7 +568,7 @@ async function onDeleteDatabase(): Promise<void> {
               :disable="!deleteModel"
               label="Delete Data"
               color="negative"
-              @click="onDeleteTableData(deleteModel as DatabaseType)"
+              @click="onDeleteDataType(deleteModel)"
             />
           </template>
         </QSelect>
