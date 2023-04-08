@@ -5,7 +5,11 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] `Text/Copy/Comments/Documentation` cleanup pass
+- [ ] `Text/Copy/Comments/Documentation` cleanup pass (do as you code!)
+- [o] Generate menu layout items based on parent blueprints
+- [ ] Remove all Quasar component imports since that is handled automatically by Quasar
+- [ ] Use the `ui` store for the `Dashboard List Selection` instead of `Settings`
+- [ ] Consolidate multi-item component props into a single object with a TS Type
 - [ ] Add quick buttons to load defaults to `Dashboard` sections whenm empty
 - [ ] Add `None` and `Noop` types so typing isn't as bad (use as defaults?)
 - [ ] Could `Orphaned` be a type of record?

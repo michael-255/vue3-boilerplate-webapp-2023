@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QRating } from 'quasar'
+import { QCard, QCardSection, QRating, QBtn } from 'quasar'
 import { type Ref, ref } from 'vue'
 import { SettingId } from '@/types/database'
 import { AppText } from '@/types/misc'
@@ -12,16 +12,11 @@ const uiStore = useUIStore()
 const { setSetting } = useDatabase()
 
 const exampleFavorite: Ref<number> = ref(0)
-// TODO
-// - Refine the introduction explanations by including more details
-// - Add a message when you click certain buttons versus routing the user to a new page
-// - Add a message when you click the star icon
-// - Add a message when you click the menu icon
 
 /**
  * Set the introduction setting value to false in settings to close the introduction card.
  */
-async function onCloseIntroduction(): Promise<void> {
+async function onCloseIntroduction() {
   await setSetting(SettingId.SHOW_INTRODUCTION, false)
 }
 </script>
@@ -31,15 +26,17 @@ async function onCloseIntroduction(): Promise<void> {
     <QCardSection>
       <div class="text-h6 q-mb-md">Introduction</div>
 
+      <!-- App Information -->
       <div class="q-mb-md">
         Welcome to {{ AppText.APP_NAME }}. This app provides a simple foundation to build your own
         web apps.
       </div>
 
+      <!-- Favorites information -->
       <div class="q-mb-md">
         You are currently on the Dashboard page. This page gives you quick access to the primary
         data you work with in the app. You can favorite items on the Dashboard by clicking the star
-        icon in the top right corner of the item like the example one below. This prioritizes the
+        icon in the top right corner of the item like the example star below. This prioritizes the
         item to the top of the list.
       </div>
 
@@ -53,33 +50,22 @@ async function onCloseIntroduction(): Promise<void> {
         class="q-mb-md"
       />
 
+      <!-- Menu Information -->
       <div class="q-mb-md">
         You can navigate through the app using the menu in the top left corner of the page. A quick
-        link is provided below. These pages include your data tables, Frequently Asked Questions
-        (FAQ), and the Settings page.
+        link is provided below. The menu gives you access to the primary data tables, Frequently
+        Asked Questions (FAQ), Settings, and more. More advanced operations for the app are
+        available on the Settings page.
       </div>
 
       <QBtn
-        round
         color="primary"
-        class="q-mb-md"
+        class="q-mb-md q-px-sm"
         :icon="Icon.MENU_STANDARD"
         @click="uiStore.drawer = !uiStore.drawer"
       />
 
-      <div class="q-mb-md">
-        The Settings page provides you access to features like importing and exporting your data,
-        logging, data table deletion, and more. A quick link is provided below.
-      </div>
-
-      <QBtn
-        class="q-mb-md"
-        color="primary"
-        label="Settings"
-        :to="{ name: RouteName.SETTINGS }"
-        :icon="Icon.SETTINGS"
-      />
-
+      <!-- Donation Information -->
       <div class="q-mb-md">
         Hope you find {{ AppText.APP_NAME }} useful. Please consider donating to help me continue to
         create and maintain apps like this. Thank you!
@@ -93,9 +79,10 @@ async function onCloseIntroduction(): Promise<void> {
         :icon="Icon.DONATE"
       />
 
+      <!-- Close Introduction Section -->
       <div class="q-mb-md">
         When you are ready, click the GOT IT button below to hide the Introduction. You can unhide
-        the Introduction in the Settings page if needed.
+        the Introduction in the app Settings if needed.
       </div>
 
       <QBtn

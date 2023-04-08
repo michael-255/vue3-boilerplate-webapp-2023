@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QBtn } from 'quasar'
+import { QCard, QCardSection, QBtn, QIcon, QBadge, QMenu, QList, QItem, QItemSection } from 'quasar'
 import { useTimeAgo } from '@vueuse/core'
 import { DatabaseField, DatabaseType, type DatabaseParentType } from '@/types/database'
 import { Icon } from '@/types/icons'
@@ -25,12 +25,20 @@ const { goToInspect, goToEdit, goToCharts } = useRoutingHelpers()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
 const { updateRecord, deleteRecord } = useDatabase()
 
-// TODO
+/**
+ * Opens a dialog that displays the previous record note.
+ * @param note
+ */
 async function viewPreviousNote(note: string) {
   dismissDialog('Previous Note', note, Icon.NOTE, 'info')
 }
 
-// TODO
+/**
+ * On confirmation, favorite the matching record in the database.
+ * @param type
+ * @param id
+ * @param name
+ */
 async function onFavorite(type: DatabaseParentType, id: string, name: string) {
   confirmDialog(
     'Favorite',
@@ -48,7 +56,12 @@ async function onFavorite(type: DatabaseParentType, id: string, name: string) {
   )
 }
 
-// TODO
+/**
+ * On confirmation, unfavorite the matching record in the database.
+ * @param type
+ * @param id
+ * @param name
+ */
 async function onUnfavorite(type: DatabaseParentType, id: string, name: string) {
   confirmDialog(
     'Unfavorite',
@@ -97,8 +110,9 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
     <QCardSection>
       <div class="text-h6 q-mb-md">{{ name }}</div>
 
+      <!-- Top right corner buttons on card -->
       <div class="absolute-top-right q-ma-xs">
-        <!-- Note -->
+        <!-- Note Icon -->
         <QIcon
           v-show="previousNote"
           :name="Icon.NOTE"
@@ -108,7 +122,7 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
           @click="viewPreviousNote(previousNote || '')"
         />
 
-        <!-- Favorite Star -->
+        <!-- Favorite Star Icon -->
         <QIcon
           v-show="isFavorite"
           :name="Icon.FAVORITE_ON"
@@ -191,7 +205,7 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
         </div>
       </div>
 
-      <!-- Additional Components Slot -->
+      <!-- Slot -->
       <div>
         <slot />
       </div>

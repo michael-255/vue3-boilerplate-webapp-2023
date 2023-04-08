@@ -56,8 +56,14 @@ onMounted(async () => {
   await recalculateChart()
 })
 
-const downwardTrend = (ctx: any, value: any) =>
-  ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined
+/**
+ * Returns the color for the chart line if the trend is downward.
+ * @param ctx
+ * @param value
+ */
+function downwardTrend(ctx: any, color: any) {
+  return ctx.p0.parsed.y > ctx.p1.parsed.y ? color : undefined
+}
 
 async function recalculateChart() {
   try {

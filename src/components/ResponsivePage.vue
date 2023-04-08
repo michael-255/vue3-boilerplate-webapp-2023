@@ -6,6 +6,8 @@ defineProps<{
   bannerIcon?: Icon
   bannerTitle?: string
 }>()
+
+// TODO - ErrorCard and/or NoDataCard with props?
 </script>
 
 <template>
@@ -20,7 +22,7 @@ defineProps<{
           </QCardSection>
         </QCard>
 
-        <!-- Additional Components Slot -->
+        <!-- Slot -->
         <slot />
 
         <!-- Extra space at page bottom so scroller doesn't cover content  -->

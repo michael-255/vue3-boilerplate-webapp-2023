@@ -1,23 +1,9 @@
 <script setup lang="ts">
-import {
-  QLayout,
-  QPageContainer,
-  QBtn,
-  QHeader,
-  QToolbar,
-  QToolbarTitle,
-  QDrawer,
-  QList,
-  QItem,
-  QItemSection,
-  QIcon,
-} from 'quasar'
 import { RouterView, useRoute } from 'vue-router'
-import { slugify } from '@/utils/common'
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'
-import { DatabaseType } from '@/types/database'
+import { parentTypes, getLabel, getIcon, getSlug } from '@/services/data-utils'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useUIStore from '@/stores/ui'
 
@@ -28,7 +14,7 @@ const route = useRoute()
 
 <template>
   <QLayout view="hHh LpR lff">
-    <!-- App Header -->
+    <!-- App Header Bar -->
     <QHeader elevated>
       <QToolbar>
         <QBtn flat round :icon="Icon.MENU_STANDARD" @click="uiStore.drawer = !uiStore.drawer" />
@@ -54,7 +40,7 @@ const route = useRoute()
       </div>
 
       <QList>
-        <!-- Section 1 -->
+        <!-- Dashboard Link -->
         <QItem clickable v-ripple :to="{ name: RouteName.DASHBOARD }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.DASHBOARD" />
@@ -64,35 +50,26 @@ const route = useRoute()
 
         <QSeparator spaced="md" inset />
 
-        <!-- Section 2 -->
+        <!-- Parent Data Links (uses DataBlueprint) -->
         <QItem
+          v-for="(parentType, i) in parentTypes"
+          :key="i"
           clickable
           v-ripple
           :to="{
             name: RouteName.DATA,
-            params: { databaseTypeSlug: slugify(DatabaseType.EXAMPLE) },
+            params: { databaseTypeSlug: getSlug(parentType) },
           }"
         >
           <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.EXAMPLES" />
+            <QIcon color="primary" :name="getIcon(parentType)" />
           </QItemSection>
-          <QItemSection>Examples</QItemSection>
-        </QItem>
-
-        <QItem
-          clickable
-          v-ripple
-          :to="{ name: RouteName.DATA, params: { databaseTypeSlug: slugify(DatabaseType.TEST) } }"
-        >
-          <QItemSection avatar>
-            <QIcon color="primary" :name="Icon.TESTS" />
-          </QItemSection>
-          <QItemSection>Tests</QItemSection>
+          <QItemSection>{{ getLabel(parentType, 'plural') }}</QItemSection>
         </QItem>
 
         <QSeparator spaced="md" inset />
 
-        <!-- Section 3 -->
+        <!-- Common App Links -->
         <QItem clickable v-ripple :to="{ name: RouteName.SETTINGS }">
           <QItemSection avatar>
             <QIcon color="primary" :name="Icon.SETTINGS" />
@@ -126,21 +103,10 @@ const route = useRoute()
     <!-- Router View -->
     <QPageContainer>
       <RouterView v-slot="{ Component, route }">
-        <transition name="fade" mode="out-in">
+        <transition name="global-fade" mode="out-in">
           <component :is="Component" :key="route.path" />
         </transition>
       </RouterView>
     </QPageContainer>
   </QLayout>
 </template>
-
-<style lang="css">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.15s;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
