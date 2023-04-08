@@ -7,8 +7,9 @@ projects. Read through this README to have a better understanding of how this pr
 
 - [O] Generate menu layout items based on parent blueprints
 - [O] Remove all Quasar component imports since that is handled automatically by Quasar
+- [O] Use the `ui` store for the `Dashboard List Selection` instead of `Settings`
 - [ ] `Text/Copy/Comments/Documentation` cleanup pass (do as you code!)
-- [ ] Use the `ui` store for the `Dashboard List Selection` instead of `Settings`
+- [ ] Fix `Settings` type deletions in Settings page
 - [ ] Consolidate multi-item component props into a single object with a TS Type
 - [ ] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
 - [ ] Add `None` and `Noop` types so typing isn't as bad (use as defaults?)

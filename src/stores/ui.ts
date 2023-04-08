@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { ChartTime } from '@/types/misc'
+import { parentTypes } from '@/services/data-utils'
 
 const useUIStore = defineStore({
   id: 'ui',
 
   state: () => ({
     drawer: false,
+    dashboardListSelection: parentTypes[0],
     chartTime: ChartTime.THREE_MONTHS,
   }),
 

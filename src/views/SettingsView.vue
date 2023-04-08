@@ -11,6 +11,7 @@ import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import { getLabel } from '@/services/data-utils'
 
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
@@ -24,9 +25,6 @@ const {
   getAllRecords,
   clearRecordsByType,
   deleteDatabase,
-  // getUnusedParentIds,
-  // getOrphanedRecordIds,
-  // bulkDeleteItems,
 } = useDatabase()
 
 const settings: Ref<any[]> = ref([])
@@ -39,10 +37,20 @@ const exportOptions = Object.values(DatabaseType).map((table) => ({
   label: table,
 }))
 const accessModel: Ref<Optional<DatabaseType>> = ref(null)
-const accessOptions: Ref<DatabaseType[]> = ref(Object.values(DatabaseType))
+const accessOptions = ref(
+  Object.values(DatabaseType).map((type) => ({
+    value: type,
+    label: getLabel(type, 'plural'),
+  }))
+)
 // Danger Zone
 const deleteModel: Ref<Optional<DatabaseType>> = ref(null)
-const deleteOptions: Ref<DatabaseType[]> = ref(Object.values(DatabaseType))
+const deleteOptions = ref(
+  Object.values(DatabaseType).map((type) => ({
+    value: type,
+    label: getLabel(type, 'plural'),
+  }))
+)
 
 const subscription = liveSettings().subscribe({
   next: (records) => {

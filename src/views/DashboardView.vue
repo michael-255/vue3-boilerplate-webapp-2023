@@ -18,8 +18,10 @@ import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
+import useUIStore from '@/stores/ui'
 
-const { log, consoleDebug } = useLogger()
+const uiStore = useUIStore()
+const { log } = useLogger()
 const { goToCreate } = useRoutingHelpers()
 const { setSetting, liveDashboard, getPreviousChildRecord } = useDatabase()
 
@@ -29,7 +31,6 @@ const dashboardListOptions = parentTypes.map((type) => ({
 }))
 
 const showIntroduction: Ref<Optional<SettingValue>> = ref(null)
-const dashboardListSelection: Ref<Optional<SettingValue>> = ref(null)
 const dashboardRecordRefs = {
   [DatabaseType.EXAMPLE]: ref([]),
   [DatabaseType.TEST]: ref([]),
@@ -39,9 +40,6 @@ const subscription = liveDashboard().subscribe({
   next: async (records) => {
     // Settings
     showIntroduction.value = records.find((s) => s.id === SettingId.SHOW_INTRODUCTION)?.value
-    dashboardListSelection.value = records.find(
-      (s) => s.id === SettingId.DASHBOARD_LIST_SELECTION
-    )?.value
 
     // Examples
     // Include only enabled examples
@@ -113,7 +111,7 @@ onUnmounted(() => {
 // TODO
 function getDashboardRecordsCountText() {
   const count =
-    dashboardRecordRefs?.[dashboardListSelection.value as DatabaseParentType]?.value?.length ?? 0
+    dashboardRecordRefs?.[uiStore.dashboardListSelection as DatabaseParentType]?.value?.length ?? 0
 
   if (count === 1) {
     return '1 enabled record found'
@@ -135,14 +133,14 @@ function getDashboardRecordsCountText() {
         <QOptionGroup
           color="primary"
           :options="dashboardListOptions"
-          :model-value="dashboardListSelection"
-          @update:model-value="setSetting(SettingId.DASHBOARD_LIST_SELECTION, $event)"
+          :model-value="uiStore.dashboardListSelection"
+          @update:model-value="uiStore.dashboardListSelection = $event"
         />
       </QCardSection>
     </QCard>
 
     <!-- Examples - Using v-show so the DOM doesn't get updated when switching selections -->
-    <div v-show="dashboardListSelection === DatabaseType.EXAMPLE">
+    <div v-show="uiStore.dashboardListSelection === DatabaseType.EXAMPLE">
       <div v-for="(record, i) in dashboardRecordRefs[DatabaseType.EXAMPLE].value" :key="i">
         <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
@@ -166,7 +164,7 @@ function getDashboardRecordsCountText() {
     </div>
 
     <!-- Tests - Using v-show so the DOM doesn't get updated when switching selections -->
-    <div v-show="dashboardListSelection === DatabaseType.TEST">
+    <div v-show="uiStore.dashboardListSelection === DatabaseType.TEST">
       <div v-for="(record, j) in dashboardRecordRefs[DatabaseType.TEST].value" :key="j">
         <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
@@ -200,8 +198,8 @@ function getDashboardRecordsCountText() {
       <QBtn
         color="positive"
         :icon="Icon.CREATE"
-        :label="`Create ${getLabel(dashboardListSelection as DatabaseType, 'singular')}`"
-        @click="goToCreate(dashboardListSelection as DatabaseType)"
+        :label="`Create ${getLabel(uiStore.dashboardListSelection as DatabaseType, 'singular')}`"
+        @click="goToCreate(uiStore.dashboardListSelection as DatabaseType)"
       />
     </div>
   </ResponsivePage>

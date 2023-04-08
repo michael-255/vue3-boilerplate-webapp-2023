@@ -13,7 +13,6 @@ import {
 import { LogRetention, type AppObject } from '@/types/misc'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { dexieWrapper } from '@/services/DexieWrapper'
-import { getChildType } from '@/services/data-utils'
 
 export default function useDatabase() {
   // Only table used by the app for now is the "Records" table.
@@ -33,9 +32,6 @@ export default function useDatabase() {
       (await getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
     const showInfoMessages =
       (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? false
-    const dashboardListSelection =
-      (await getRecord(DatabaseType.SETTING, SettingId.DASHBOARD_LIST_SELECTION))?.value ??
-      DatabaseType.EXAMPLE
     const logRetentionTime =
       (await getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
       LogRetention.THREE_MONTHS
@@ -51,7 +47,6 @@ export default function useDatabase() {
       setSetting(SettingId.SHOW_CONSOLE_LOGS, showConsoleLogs),
       setSetting(SettingId.SHOW_DEBUG_MESSAGES, showDebugMessages),
       setSetting(SettingId.SHOW_INFO_MESSAGES, showInfoMessages),
-      setSetting(SettingId.DASHBOARD_LIST_SELECTION, dashboardListSelection),
       setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime),
     ])
   }
