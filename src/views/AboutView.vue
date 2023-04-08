@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QBtn } from 'quasar'
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'

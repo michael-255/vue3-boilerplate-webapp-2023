@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue'
-import { QInput } from 'quasar'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'

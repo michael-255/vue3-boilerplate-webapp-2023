@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QRating, QBtn } from 'quasar'
 import { type Ref, ref } from 'vue'
 import { SettingId } from '@/types/database'
 import { AppText } from '@/types/misc'

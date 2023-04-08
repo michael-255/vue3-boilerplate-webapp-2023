@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QSelect, QBtn, QOptionGroup, uid, exportFile } from 'quasar'
+import { uid, exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
 import { AppText, Limit, LogRetention, type Optional } from '@/types/misc'
 import { DatabaseField, DatabaseType, SettingId } from '@/types/database'

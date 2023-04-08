@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QCard, QCardSection, QBtn, QIcon, QBadge, QMenu, QList, QItem, QItemSection } from 'quasar'
 import { useTimeAgo } from '@vueuse/core'
 import { DatabaseField, DatabaseType, type DatabaseParentType } from '@/types/database'
 import { Icon } from '@/types/icons'

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QDialog, QCard, QCardSection, QCardActions, QIcon, QBtn } from 'quasar'
 import { useDialogPluginComponent } from 'quasar'
 import type { Icon } from '@/types/icons'
 

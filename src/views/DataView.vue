@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QTable, type QTableColumn } from 'quasar'
+import type { QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
 import { DatabaseAction, DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onMounted, onUnmounted } from 'vue'

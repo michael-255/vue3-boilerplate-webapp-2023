@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QPage, QPageScroller, QBtn } from 'quasar'
 import { Icon } from '@/types/icons'
 
 defineProps<{

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QInput } from 'quasar'
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'

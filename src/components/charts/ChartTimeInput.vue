@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import { ref, type Ref } from 'vue'
 import { ChartTime } from '@/types/misc'
 import useUIStore from '@/stores/ui'

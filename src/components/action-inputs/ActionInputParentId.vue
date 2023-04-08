@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QSelect } from 'quasar'
 import { onMounted, ref, type Ref } from 'vue'
 import { truncateString } from '@/utils/common'
 import { DatabaseField, type DatabaseChildType } from '@/types/database'

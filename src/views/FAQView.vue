@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { QCard } from 'quasar'
 import { Icon } from '@/types/icons'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 </script>
