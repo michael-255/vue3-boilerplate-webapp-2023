@@ -5,30 +5,30 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- Text/Copy build pass
-- Comments/Documentation build pass
-- Add quick buttons to load defaults to `Dashboard` sections whenm empty
-- Add `None` and `Noop` types so typing isn't as bad (use as defaults?)
-- Possible `useRules` composable for input rules and validators?
-- Orphaned Records table
-- App specific utils stored in services?
+- [ ] `Text/Copy/Comments/Documentation` cleanup pass
+- [ ] Add quick buttons to load defaults to `Dashboard` sections whenm empty
+- [ ] Add `None` and `Noop` types so typing isn't as bad (use as defaults?)
+- [ ] Could `Orphaned` be a type of record?
+- [ ] Possible `useRules` composable for input rules and validators?
+- [ ] Create an `ErrorCard` component for views
+- [ ] Orphaned Records table
+- [ ] App specific utils stored in services?
+- [ ] Add more tags to the repository in GitHub based on packages used
 
 - Quasar
 
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
   - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
-  - [ ] Use Quasar Loading plugin when waiting on data tables
-  - [ ] Use Quasar Meta plugin to improve SEO
+  - [ ] Use Quasar Loading plugin when waiting on data tables?
+  - [ ] Use Quasar Meta plugin to improve SEO?
 
-- Possible Features & Updates
+- Possible Improvements
 
-  - [ ] Add more tags to the repository
-  - [ ] `useRules` Composable for input rules and validators
   - [ ] Script to quickly updates certain values across the app
+  - [ ] Replace uses of spread operator
 
 - Final Steps
 
-  - [ ] Review app text and comments
   - [ ] `Add Tests`
         <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
 
