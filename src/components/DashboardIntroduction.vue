@@ -5,10 +5,12 @@ import { AppText } from '@/types/misc'
 import { Icon } from '@/types/icons'
 import { RouteName } from '@/router/route-names'
 import useDatabase from '@/composables/useDatabase'
+import useDefaults from '@/composables/useDefaults'
 import useUIStore from '@/stores/ui'
 
 const uiStore = useUIStore()
 const { setSetting } = useDatabase()
+const { onDefaults } = useDefaults()
 
 const exampleFavorite: Ref<number> = ref(0)
 
@@ -63,6 +65,14 @@ async function onCloseIntroduction() {
         :icon="Icon.MENU_STANDARD"
         @click="uiStore.drawer = !uiStore.drawer"
       />
+
+      <!-- Defaults Information -->
+      <div class="q-mb-md">
+        You can load default demostration data into the database to get started with the app right
+        away by clicking the button below.
+      </div>
+
+      <QBtn color="primary" class="q-mb-md q-px-sm" :icon="Icon.ADD_NOTE" @click="onDefaults()" />
 
       <!-- Donation Information -->
       <div class="q-mb-md">

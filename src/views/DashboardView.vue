@@ -121,7 +121,7 @@ function getDashboardRecordsCountText() {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.DASHBOARD" banner-title="Dashboard">
+  <ResponsivePage :bannerIcon="Icon.DASHBOARD" bannerTitle="Dashboard">
     <DashboardIntroduction v-if="showIntroduction" class="q-mb-md" />
 
     <!-- Dashboard List Selection -->

@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { uid, exportFile } from 'quasar'
+import { exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
 import { AppText, Limit, LogRetention } from '@/types/misc'
-import { DatabaseField, DatabaseType, SettingId } from '@/types/database'
+import { DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
-import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/models'
+import type { DatabaseRecord } from '@/types/models'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useDatabase from '@/composables/useDatabase'
-import ResponsivePage from '@/components/ResponsivePage.vue'
+import useDefaults from '@/composables/useDefaults'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import ResponsivePage from '@/components/ResponsivePage.vue'
 
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
 const { goToData } = useRoutingHelpers()
+const { onDefaults } = useDefaults()
 const {
   liveSettings,
   initSettings,
@@ -66,96 +68,6 @@ function onTestLogger() {
   log.info('This is an Info Log', { name: 'Info' })
   log.warn('This is a Warning Log', { name: 'Warning' })
   log.error('This is an Error Log', { name: 'Error' })
-}
-
-/**
- * Generate default demostration data for the app.
- */
-async function onDefaults() {
-  confirmDialog(
-    'Load Defaults',
-    `Would you like the load defaults into the database?`,
-    Icon.INFO,
-    'info',
-    async () => {
-      try {
-        const randomLetter = (): string => {
-          const alphabetLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
-          return alphabetLetters[Math.floor(Math.random() * alphabetLetters.length)]
-        }
-
-        const randomBoolean = (): boolean => {
-          return Math.random() >= 0.5
-        }
-
-        const randomInt = (min: number, max: number): number => {
-          return Math.floor(Math.random() * (max - min + 1) + min)
-        }
-
-        let initialTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 365 * 2 // minus two year
-
-        const addDay = (timestamp: number): number => {
-          const date = new Date(timestamp)
-          date.setDate(date.getDate() + 1)
-          return date.getTime()
-        }
-
-        const records: DatabaseRecord[] = []
-
-        const createExamples = (count: number) => {
-          for (let i = 0; i < count; i++) {
-            records.push({
-              [DatabaseField.TYPE]: DatabaseType.EXAMPLE,
-              [DatabaseField.ID]: uid(),
-              [DatabaseField.NAME]: `Example ${randomLetter()}`,
-              [DatabaseField.DESCRIPTION]: `Example description ${i}`,
-              [DatabaseField.IS_FAVORITED]: randomBoolean(),
-              [DatabaseField.IS_ENABLED]: true,
-            } as Example)
-
-            initialTimestamp = addDay(initialTimestamp)
-          }
-        }
-
-        const createExampleResults = (count: number, parent?: Example) => {
-          for (let i = 0; i < count; i++) {
-            records.push({
-              [DatabaseField.TYPE]: DatabaseType.EXAMPLE_RESULT,
-              [DatabaseField.ID]: uid(),
-              [DatabaseField.CREATED_TIMESTAMP]: initialTimestamp,
-              [DatabaseField.PARENT_ID]: parent?.id || `orphaned-record-id-${i}`,
-              [DatabaseField.NOTE]: randomBoolean() ? `Previous note ${parent?.id}` : '',
-              [DatabaseField.NUMBER]: randomInt(1, 100) + i / 2,
-            } as ExampleResult)
-
-            initialTimestamp = addDay(initialTimestamp)
-          }
-        }
-
-        // Creating demo data
-        createExamples(1)
-        records.map((example) => createExampleResults(725, example)) // about 2 years of records
-        // Unused parents and orphaned results
-        createExamples(2)
-        createExampleResults(2)
-
-        records.push({
-          [DatabaseField.TYPE]: DatabaseType.TEST,
-          [DatabaseField.ID]: uid(),
-          [DatabaseField.NAME]: `Lonely Test ${randomLetter()}`,
-          [DatabaseField.DESCRIPTION]: 'Test description X',
-          [DatabaseField.IS_FAVORITED]: false,
-          [DatabaseField.IS_ENABLED]: true,
-        } as Test)
-
-        await bulkAddRecords(records)
-
-        log.info('Defaults loaded', { count: records.length })
-      } catch (error) {
-        log.error('Failed to load defaults', error)
-      }
-    }
-  )
 }
 
 /**
@@ -341,7 +253,7 @@ async function onDeleteDatabase(): Promise<void> {
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.SETTINGS" banner-title="Settings">
+  <ResponsivePage :bannerIcon="Icon.SETTINGS" bannerTitle="Settings">
     <!-- Options -->
     <QCard class="q-mb-md">
       <QCardSection>

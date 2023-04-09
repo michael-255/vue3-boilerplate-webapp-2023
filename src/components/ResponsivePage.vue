@@ -4,9 +4,9 @@ import { Icon } from '@/types/icons'
 defineProps<{
   bannerIcon?: Icon
   bannerTitle?: string
+  showPageError?: boolean
+  showPageNoData?: boolean
 }>()
-
-// TODO - ErrorCard and/or NoDataCard with props?
 </script>
 
 <template>
@@ -21,8 +21,36 @@ defineProps<{
           </QCardSection>
         </QCard>
 
+        <!-- Page Error -->
+        <!-- Use as a catch-all for errors at the View level -->
+        <QCard v-if="showPageError">
+          <QCardSection>
+            <div class="text-h6 q-mb-md">Something went wrong...</div>
+            <div>
+              The page was unable to load due to an error. Troubleshoot using the application Logs
+              if the problem persists.
+            </div>
+          </QCardSection>
+        </QCard>
+
+        <!-- Page No Data -->
+        <!-- Use as a catch-all for missing data at the View level -->
+        <div v-else-if="showPageNoData">
+          <QCard class="q-mb-md">
+            <QCardSection>
+              <div class="text-h6 q-mb-md">No data available...</div>
+              <div>
+                There doesn't appear to be any data to display. If this is an error, troubleshoot
+                using the application Logs if the problem persists.
+              </div>
+            </QCardSection>
+          </QCard>
+        </div>
+
         <!-- Slot -->
-        <slot />
+        <div v-else>
+          <slot />
+        </div>
 
         <!-- Extra space at page bottom so scroller doesn't cover content  -->
         <div class="q-mb-xl" />

@@ -11,11 +11,11 @@ projects. Read through this README to have a better understanding of how this pr
 - [O] Fix `Settings` type deletions in Settings page
 - [O] Validate route params in Vue Router using `beforeEnter`
 - [O] Test combining `onMounted` from composables for route stuff
+- [O] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
 - [ ] Consolidate multi-item component props into a single object with a TS Type
-- [ ] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
 - [ ] Could `Orphaned` be a type of record?
 - [ ] Possible `useRules` composable for input rules and validators?
-- [ ] Create an `ErrorCard` component for views
+- [ ] Create `ErrorCard/NoDataCard` wrapper component for internal view components
 - [ ] `Text/Copy/Comments/Documentation` cleanup pass (do as you code!)
 - [ ] Orphaned Records table
 - [ ] App specific utils stored in services?
