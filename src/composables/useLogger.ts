@@ -5,7 +5,7 @@ import useNotifications from '@/composables/useNotifications'
 import useDatabase from '@/composables/useDatabase'
 
 /**
- * Utilities for logging that include notifications and database entries.
+ * Composable with utilities for logging that include notifications and database entries.
  */
 export default function useLogger() {
   const { notify } = useNotifications()

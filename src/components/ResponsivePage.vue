@@ -47,7 +47,7 @@ defineProps<{
           </QCard>
         </div>
 
-        <!-- Slot -->
+        <!-- Slot for additional page content -->
         <div v-else>
           <slot />
         </div>

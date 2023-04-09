@@ -22,7 +22,7 @@ export default function useDefaults() {
       'info',
       async () => {
         try {
-          const randomGreekLetter = (): string => {
+          const randomGreekLetter = () => {
             const greekLetters = [
               'Alpha',
               'Beta',
@@ -52,17 +52,17 @@ export default function useDefaults() {
             return greekLetters[Math.floor(Math.random() * greekLetters.length)]
           }
 
-          const randomBoolean = (): boolean => {
+          const randomBoolean = () => {
             return Math.random() >= 0.5
           }
 
-          const randomInt = (min: number, max: number): number => {
+          const randomInt = (min: number, max: number) => {
             return Math.floor(Math.random() * (max - min + 1) + min)
           }
 
           let initialTimestamp = new Date().getTime() - 1000 * 60 * 60 * 24 * 365 * 2 // minus two year
 
-          const addDay = (timestamp: number): number => {
+          const addDay = (timestamp: number) => {
             const date = new Date(timestamp)
             date.setDate(date.getDate() + 1)
             return date.getTime()

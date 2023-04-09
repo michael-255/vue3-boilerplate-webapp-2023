@@ -7,7 +7,7 @@ import useLogger from '@/composables/useLogger'
 import type { Optional } from '@/types/misc'
 
 /**
- * Composable with actions that relate to routing and navigation.
+ * Composable with route param helpers and navigation functions.
  */
 export default function useRoutingHelpers() {
   const route = useRoute()

@@ -2,22 +2,22 @@
 import { useDialogPluginComponent } from 'quasar'
 import type { Icon } from '@/types/icons'
 
-/**
- * Small dialogs used for confirming operations or providing information that can be dismissed.
- *
- * @example
- * // You can hook into the methods below:
- * $q.dialog({...})
- *   .onOk(() => {
- *     console.log('OK')
- *   })
- *   .onCancel(() => {
- *     console.log('Cancel')
- *   })
- *   .onDismiss(() => {
- *     console.log('Called on OK or Cancel')
- *   })
- */
+/*
+Small dialogs used for confirming operations or providing information that can be dismissed.
+
+@example
+// You can hook into the methods below:
+$q.dialog({...})
+  .onOk(() => {
+    console.log('OK')
+  })
+  .onCancel(() => {
+    console.log('Cancel')
+  })
+  .onDismiss(() => {
+    console.log('Called on OK or Cancel')
+  })
+*/
 
 const props = defineProps<{
   type: 'Confirm' | 'Dismiss'

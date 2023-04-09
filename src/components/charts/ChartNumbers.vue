@@ -13,7 +13,7 @@ import {
   LineElement,
 } from 'chart.js'
 import { onMounted, ref, watch, type Ref } from 'vue'
-import { DatabaseField, type DatabaseChildType, type DatabaseParentType } from '@/types/database'
+import { DatabaseField, type DatabaseChildType } from '@/types/database'
 import { getChildType } from '@/services/data-utils'
 import type { AppObject, ChartTime } from '@/types/misc'
 import useLogger from '@/composables/useLogger'

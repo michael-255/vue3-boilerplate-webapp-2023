@@ -30,7 +30,6 @@ const {
 
 const settings: Ref<any[]> = ref([])
 const logRetentionIndex: Ref<number> = ref(0)
-// Data Management
 const importFile: Ref<any> = ref(null)
 const exportModel: Ref<DatabaseType[]> = ref([])
 const exportOptions = Object.values(DatabaseType).map((type) => ({
@@ -39,7 +38,6 @@ const exportOptions = Object.values(DatabaseType).map((type) => ({
 }))
 const accessOptions = ref(Object.values(DatabaseType))
 const accessModel = ref(accessOptions.value[0])
-// Danger Zone
 const deleteOptions = ref(Object.values(DatabaseType))
 const deleteModel = ref(deleteOptions.value[0])
 

@@ -69,10 +69,16 @@ async function onCloseIntroduction() {
       <!-- Defaults Information -->
       <div class="q-mb-md">
         You can load default demostration data into the database to get started with the app right
-        away by clicking the button below.
+        away by clicking the button below. This action can be repeated.
       </div>
 
-      <QBtn color="primary" class="q-mb-md q-px-sm" :icon="Icon.ADD_NOTE" @click="onDefaults()" />
+      <QBtn
+        color="primary"
+        class="q-mb-md"
+        label="Add Defaults"
+        :icon="Icon.ADD_NOTE"
+        @click="onDefaults()"
+      />
 
       <!-- Donation Information -->
       <div class="q-mb-md">

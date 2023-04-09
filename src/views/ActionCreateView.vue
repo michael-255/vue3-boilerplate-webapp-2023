@@ -14,7 +14,7 @@ import useDatabase from '@/composables/useDatabase'
 const { routeDatabaseType, routeParentId, goBack } = useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
-const { createRecord } = useDatabase()
+const { addRecord } = useDatabase()
 const actionRecordStore = useActionRecordStore()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
@@ -51,7 +51,7 @@ async function onCreateRecord() {
       'positive',
       async () => {
         try {
-          await createRecord(record)
+          await addRecord(record)
 
           log.info('Successfully created record', {
             createdRecordType: record[DatabaseField.TYPE],
