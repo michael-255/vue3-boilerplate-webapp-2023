@@ -76,7 +76,10 @@ function parentIdRule(id: string) {
   return id !== undefined && id !== null && id !== ''
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result.
+ */
+function validateInput() {
   actionRecordStore.valid[DatabaseField.PARENT_ID] = !!inputRef?.value?.validate()
 }
 </script>

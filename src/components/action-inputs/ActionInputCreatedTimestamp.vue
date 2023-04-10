@@ -4,6 +4,7 @@ import { onMounted, type Ref, ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
+
 defineProps<{
   locked?: boolean
 }>()
@@ -22,7 +23,11 @@ onMounted(() => {
   actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
 })
 
-function updateDates(timestamp: number = new Date().getTime()): void {
+/**
+ * Updates the displayed date model value and the action record store.
+ * @param timestamp
+ */
+function updateDates(timestamp: number = new Date().getTime()) {
   actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP] = timestamp
   actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
   displayedDate.value = date.formatDate(timestamp, 'ddd, YYYY MMM Do, h:mm A')
@@ -31,13 +36,16 @@ function updateDates(timestamp: number = new Date().getTime()): void {
 /**
  * If a picker time exists, sets display date and model ref to the picker time.
  */
-function onPickerDateTime(): void {
+function onPickerDateTime() {
   if (dateTimePicker.value) {
     updateDates(new Date(dateTimePicker.value).getTime())
   }
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result.
+ */
+function validateInput() {
   actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = !!inputRef?.value?.validate()
 }
 </script>

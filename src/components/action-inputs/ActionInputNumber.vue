@@ -3,6 +3,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
+
 defineProps<{
   locked?: boolean
 }>()
@@ -25,7 +26,10 @@ function exampleNumberRule(num: number): boolean {
   )
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result.
+ */
+function validateInput() {
   actionRecordStore.valid[DatabaseField.NUMBER] = !!inputRef?.value?.validate()
 }
 </script>

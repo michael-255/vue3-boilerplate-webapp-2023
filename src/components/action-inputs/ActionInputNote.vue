@@ -31,7 +31,10 @@ function noteRule(note: string) {
   }
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result. Trims the input.
+ */
+function validateInput() {
   actionRecordStore.actionRecord[DatabaseField.NOTE] =
     actionRecordStore.actionRecord[DatabaseField.NOTE].trim()
   actionRecordStore.valid[DatabaseField.NOTE] = !!inputRef?.value?.validate()

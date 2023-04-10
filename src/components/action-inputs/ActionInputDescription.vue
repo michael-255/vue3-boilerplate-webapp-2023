@@ -31,7 +31,10 @@ function descriptionRule(description: string) {
   }
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result. Trims the input.
+ */
+function validateInput() {
   actionRecordStore.actionRecord[DatabaseField.DESCRIPTION] =
     actionRecordStore.actionRecord[DatabaseField.DESCRIPTION].trim()
   actionRecordStore.valid[DatabaseField.DESCRIPTION] = !!inputRef?.value?.validate()

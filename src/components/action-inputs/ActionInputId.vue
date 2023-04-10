@@ -33,12 +33,15 @@ function idRule(id: string) {
   }
 }
 
-function generateId(): void {
+function generateId() {
   actionRecordStore.actionRecord[DatabaseField.ID] = uid()
   actionRecordStore.valid[DatabaseField.ID] = true
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result. Slugifies the input.
+ */
+function validateInput() {
   actionRecordStore.actionRecord[DatabaseField.ID] = slugify(
     actionRecordStore.actionRecord[DatabaseField.ID]
   )

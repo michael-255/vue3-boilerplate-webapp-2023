@@ -31,7 +31,10 @@ function nameRule(name: string) {
   }
 }
 
-function validateInput(): void {
+/**
+ * Runs the input validation and sets the store valid property to the result. Trims the input.
+ */
+function validateInput() {
   actionRecordStore.actionRecord[DatabaseField.NAME] =
     actionRecordStore.actionRecord[DatabaseField.NAME].trim()
   actionRecordStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
