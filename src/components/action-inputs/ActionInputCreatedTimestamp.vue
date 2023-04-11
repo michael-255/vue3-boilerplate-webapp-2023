@@ -58,7 +58,10 @@ function validateInput() {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Created Date</div>
+      <div class="q-mb-md">
+        Exact date and time the record was created. Use the buttons on the right to select a
+        customized date and time, or auto select it.
+      </div>
 
       <QInput
         v-model="displayedDate"

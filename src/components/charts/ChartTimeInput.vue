@@ -8,6 +8,10 @@ const uiStore = useUIStore()
 const inputRef: Ref<any> = ref(null)
 const options: Ref<ChartTime[]> = ref(Object.values(ChartTime))
 
+/**
+ * Input rule test for the chart time.
+ * @param time
+ */
 function chartTimeRule(time: string) {
   return time !== undefined && time !== null && time !== ''
 }

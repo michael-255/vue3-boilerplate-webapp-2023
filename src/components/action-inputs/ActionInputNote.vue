@@ -17,6 +17,10 @@ onMounted(() => {
   actionRecordStore.valid[DatabaseField.NOTE] = true
 })
 
+/**
+ * Input rule test for the note.
+ * @param note
+ */
 function noteRule(note: string) {
   const noteRegex = /^.{0,500}$/ // 0-500 characters
 
@@ -49,7 +53,9 @@ function validateInput() {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Note</div>
+      <div class="q-mb-md">
+        Large text area for the child record note. Previous notes can be viewed on the Dashboard.
+      </div>
 
       <QInput
         v-model="actionRecordStore.actionRecord[DatabaseField.NOTE]"

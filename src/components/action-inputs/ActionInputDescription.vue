@@ -17,6 +17,10 @@ onMounted(() => {
   actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
 })
 
+/**
+ * Input rule test for the description.
+ * @param description
+ */
 function descriptionRule(description: string) {
   const descriptionRegex = /^.{0,500}$/ // 0-500 characters
 
@@ -49,7 +53,7 @@ function validateInput() {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Description</div>
+      <div class="q-mb-md">Large text area for the parent record description.</div>
 
       <QInput
         v-model="actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]"

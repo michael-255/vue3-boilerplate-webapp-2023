@@ -12,15 +12,17 @@ projects. Read through this README to have a better understanding of how this pr
 - [O] Validate route params in Vue Router using `beforeEnter`
 - [O] Test combining `onMounted` from composables for route stuff
 - [O] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
+- [ ] `Text/Copy/Comments/Documentation` cleanup pass (should do as you make new code also)
 - [ ] Consolidate multi-item component props into a single object with a TS Type whe n it makes
       sense
 - [ ] Could `Orphaned` be a type of record?
 - [ ] Possible `useRules` composable for input rules and validators?
 - [ ] Create `ErrorCard/NoDataCard` wrapper component for internal view components
-- [ ] `Text/Copy/Comments/Documentation` cleanup pass (do as you code!)
 - [ ] Orphaned Records table
 - [ ] App specific utils stored in services?
 - [ ] Add more tags to the repository in GitHub based on packages used
+- [ ] Use a profilier to see if there are any performance hot spots with the app
+- [ ] Performance improvements? Replace spread operators, pull functions out of functions, etc.
 
 - Quasar
 

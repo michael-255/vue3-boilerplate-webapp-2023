@@ -72,6 +72,10 @@ onMounted(async () => {
   }
 })
 
+/**
+ * Input rule test for the parent id.
+ * @param id
+ */
 function parentIdRule(id: string) {
   return id !== undefined && id !== null && id !== ''
 }
@@ -92,7 +96,10 @@ function validateInput() {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Parent</div>
+      <div class="q-mb-md">
+        The parent record that this child record is linked with. Select one from the list. Part of
+        the parent record id is shown to the right of each selection.
+      </div>
 
       <QSelect
         v-model="actionRecordStore.actionRecord[DatabaseField.PARENT_ID]"

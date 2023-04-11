@@ -25,7 +25,9 @@ onMounted(() => {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Enabled</div>
+      <div class="q-mb-md">
+        Toggle the record as enabled or not. Only enabled records will appear on the Dashboard.
+      </div>
 
       <QToggle
         :disable="locked"

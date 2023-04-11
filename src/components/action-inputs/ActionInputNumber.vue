@@ -17,6 +17,10 @@ onMounted(() => {
   actionRecordStore.valid[DatabaseField.NUMBER] = true
 })
 
+/**
+ * Input rule test for the number.
+ * @param num
+ */
 function exampleNumberRule(num: number): boolean {
   return (
     typeof num === 'number' &&
@@ -42,7 +46,7 @@ function validateInput() {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Number</div>
+      <div class="q-mb-md">Number stored on this child record is viewable in charts.</div>
 
       <!-- Note: v-model.number for number types -->
       <QInput

@@ -25,7 +25,10 @@ onMounted(() => {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Favorited</div>
+      <div class="q-mb-md">
+        Toggle the record as favorited or not. Favorited records are given priority on the
+        Dashboard.
+      </div>
 
       <QToggle
         :disable="locked"

@@ -19,6 +19,10 @@ onMounted(() => {
   actionRecordStore.valid[DatabaseField.ID] = true
 })
 
+/**
+ * Input rule test for the id.
+ * @param id
+ */
 function idRule(id: string) {
   const idRegex = /^.{1,50}$/ // 1-50 characters
 
@@ -33,6 +37,9 @@ function idRule(id: string) {
   }
 }
 
+/**
+ * Generates a random id for the store and sets it as valid.
+ */
 function generateId() {
   actionRecordStore.actionRecord[DatabaseField.ID] = uid()
   actionRecordStore.valid[DatabaseField.ID] = true
@@ -58,7 +65,7 @@ function validateInput() {
       </div>
 
       <div class="q-mb-md">
-        Provide a unique Id for the item, or generate a random one with the button on the right.
+        Unique id for the record. Generate a random id with the button on the right.
       </div>
 
       <QInput

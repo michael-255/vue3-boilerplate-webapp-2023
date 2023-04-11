@@ -17,6 +17,10 @@ onMounted(() => {
   actionRecordStore.valid[DatabaseField.NAME] = true
 })
 
+/**
+ * Input rule test for the name.
+ * @param name
+ */
 function nameRule(name: string) {
   const nameRegex = /^.{1,50}$/ // 1-50 characters
 
@@ -49,7 +53,7 @@ function validateInput() {
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
-      <div class="q-mb-md">TODO Name</div>
+      <div class="q-mb-md">The record name. Dashboard records are partial sorted by name.</div>
 
       <QInput
         v-model="actionRecordStore.actionRecord[DatabaseField.NAME]"
