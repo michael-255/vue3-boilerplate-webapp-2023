@@ -78,10 +78,10 @@ export enum SettingId {
  * Log severity levels.
  */
 export enum Severity {
-  DEBUG = 'Debug',
-  INFO = 'Info',
-  WARN = 'Warning',
-  ERROR = 'Error',
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
 }
 
 /**

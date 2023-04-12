@@ -13,7 +13,7 @@ import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
-const { log, consoleDebug } = useLogger()
+const { log } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
 const { goToData } = useRoutingHelpers()
@@ -81,7 +81,7 @@ function onImportFile() {
       try {
         const parsedFileData = JSON.parse(await importFile.value.text())
 
-        consoleDebug('parsedFileData =', parsedFileData)
+        log.silentDebug('parsedFileData =', parsedFileData)
 
         const { appName, records } = parsedFileData
 
@@ -96,7 +96,7 @@ function onImportFile() {
           types.includes(record.type)
         )
 
-        consoleDebug('importedData =', importedData)
+        log.silentDebug('importedData =', importedData)
 
         await DB.bulkAddRecords(importedData)
 
@@ -141,7 +141,7 @@ function onExportRecords(types: DatabaseType[]) {
           records: exportRecords,
         }
 
-        consoleDebug('exportData =', exportData)
+        log.silentDebug('exportData =', exportData)
 
         // Attempt to download the export records as a JSON file
         const fileStatus = exportFile(filename, JSON.stringify(exportData), {

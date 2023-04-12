@@ -8,7 +8,7 @@ import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import DB from '@/services/LocalDatabase'
 
-const { log, consoleDebug, consoleLog } = useLogger()
+const { log } = useLogger()
 const { notify } = useNotifications()
 const route = useRoute()
 
@@ -17,18 +17,17 @@ const layout: Ref<any> = ref(null)
 onMounted(async () => {
   try {
     await DB.initSettings()
-    // await initSettings()
-    consoleDebug('Settings initialized')
+    log.silentDebug('Settings initialized')
   } catch (error) {
     // If the settings are not initialized, the database may have had an error or not be open
-    consoleLog('Error initializing settings', error)
+    // Must use basic print log since it doesn't require the DB or notify'
+    log.print('Error initializing settings', error)
     notify('Error initializing settings', Icon.ERROR, 'error')
   }
 
   try {
     const logsPurged = await DB.purgeExpiredLogs()
-    // const logsPurged = await purgeExpiredLogs()
-    consoleDebug('Expired logs purged', { logsPurged })
+    log.silentDebug('Expired logs purged', { logsPurged })
   } catch (error) {
     log.error('Error purging expired logs', error)
   }

@@ -1,7 +1,7 @@
 import { Icon } from '@/types/icons'
 import { DatabaseType, SettingId, Severity } from '@/types/database'
-import { logger } from '@/services/PrettyLogger'
 import useNotifications from '@/composables/useNotifications'
+import Logger from '@/services/Logger'
 import DB from '@/services/LocalDatabase'
 
 /**
@@ -11,22 +11,35 @@ export default function useLogger() {
   const { notify } = useNotifications()
 
   /**
-   * Log object with common logger functions.
-   * - debug
-   * - info
-   * - warn
-   * - error
+   * Log object with functions attached.
    */
   const log = {
     /**
-     * DEBUG
-     * - Suppressable console logs
-     * - Never saved in DB
-     * - Suppressable notifications
+     * Print always outputs to the console. Ignores DB settings. Does NOT save DB logs during call.
+     * @param message
+     * @param args
+     */
+    print: (message: any, ...args: any) => {
+      Logger.print(message, ...args)
+    },
+    /**
+     * Debug silently with no notify popup. Does NOT save DB logs during call.
+     * @param message
+     * @param args
+     */
+    silentDebug: async (name: string, details?: any) => {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+        Logger.debug(`[${Severity.DEBUG}]`, name, details)
+      }
+    },
+    /**
+     * Debug with suppressable console logs and notifications. Does NOT save DB logs during call.
+     * @param name
+     * @param details
      */
     debug: async (name: string, details?: any) => {
       if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
-        logger.debug(`[${Severity.DEBUG}]`, name, details)
+        Logger.debug(`[${Severity.DEBUG}]`, name, details)
       }
 
       if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value) {
@@ -34,15 +47,15 @@ export default function useLogger() {
       }
     },
     /**
-     * INFO
-     * - Suppressable console logs
-     * - Suppressable notifications
+     * Info with suppressable console logs and notifications.
+     * @param name
+     * @param details
      */
     info: async (name: string, details?: any) => {
       const severity = Severity.INFO
 
       if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
-        logger.info(`[${severity}]`, name, details)
+        Logger.info(`[${severity}]`, name, details)
       }
 
       await DB.addLog(severity, name, details)
@@ -52,15 +65,15 @@ export default function useLogger() {
       }
     },
     /**
-     * WARN
-     * - Suppressable console logs
-     * - Cannot suppress notifications
+     * Warn with suppressable console logs and notifications.
+     * @param name
+     * @param details
      */
     warn: async (name: string, details?: any) => {
       const severity = Severity.WARN
 
       if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
-        logger.warn(`[${severity}]`, name, details)
+        Logger.warn(`[${severity}]`, name, details)
       }
 
       await DB.addLog(severity, name, details)
@@ -68,46 +81,36 @@ export default function useLogger() {
       notify(name, Icon.WARN, 'warning')
     },
     /**
-     * ERROR
-     * - Suppressable console logs
-     * - Cannot suppress notifications
+     * Error with suppressable console logs and notifications.
+     * @param name
+     * @param details
      */
     error: async (name: string, details?: any) => {
       const severity = Severity.ERROR
 
       if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
-        logger.error(`[${severity}]`, name, details)
+        Logger.error(`[${severity}]`, name, details)
       }
 
       await DB.addLog(severity, name, details)
 
       notify(name, Icon.ERROR, 'negative')
     },
+    /**
+     * Track start time with a key label. Usefull for tracking application performance.
+     * @param key
+     */
+    timeStart: (key: string) => {
+      Logger.timeStart(key)
+    },
+    /**
+     * Track end time with a key label. Usefull for tracking application performance.
+     * @param key
+     */
+    timeEnd: (key: string) => {
+      Logger.timeEnd(key)
+    },
   }
 
-  /**
-   * Simple console log for testing.
-   * @param message
-   * @param args
-   */
-  function consoleLog(message: any, ...args: any) {
-    logger.log(message, ...args)
-  }
-
-  /**
-   * Simple console debug that only displays if consoling logging is on.
-   * @param message
-   * @param args
-   */
-  async function consoleDebug(message: any, ...args: any) {
-    if (await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS)) {
-      logger.debug(message, ...args)
-    }
-  }
-
-  return {
-    log,
-    consoleLog,
-    consoleDebug,
-  }
+  return { log }
 }
