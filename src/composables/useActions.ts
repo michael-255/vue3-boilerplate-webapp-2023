@@ -1,7 +1,7 @@
 import type { DatabaseType } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useLogger from '@/composables/useLogger'
-import useDialogs from '@composables/useDialogs'
+import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
 /**
