@@ -88,6 +88,7 @@ export function getDisplayDate(dateTime: Date | string | number | undefined) {
 
 /**
  * Converts milliseconds into a time duration string.
+ * @todo Might be able to do this with Quasar data utils.
  * @param milliseconds
  * @returns Example: 1d 14h 6m 33s
  */
