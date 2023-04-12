@@ -1,7 +1,7 @@
 import type { DatabaseType } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useLogger from '@/composables/useLogger'
-import useSimpleDialogs from './useSimpleDialogs'
+import useDialogs from '@composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
 /**
@@ -9,7 +9,7 @@ import DB from '@/services/LocalDatabase'
  */
 export default function useActions() {
   const { log } = useLogger()
-  const { confirmDialog } = useSimpleDialogs()
+  const { confirmDialog } = useDialogs()
 
   /**
    * On confirmation, delete the matching record from the database.

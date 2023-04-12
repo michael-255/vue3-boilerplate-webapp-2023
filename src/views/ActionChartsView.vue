@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import { getChartBlueprints, getLabel } from '@/services/data-utils'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import { getChartBlueprints, getLabel } from '@/services/Blueprints'
+import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
 
-const { routeDatabaseType } = useRoutingHelpers()
+const { routeDatabaseType } = useRoutables()
 const chartBlueprints = getChartBlueprints(routeDatabaseType)
 </script>
 

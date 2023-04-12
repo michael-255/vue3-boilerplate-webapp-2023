@@ -22,27 +22,12 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] What is the difference between `services`, `composables`, `helpers`, and `utils` (if any)?
 
     - [ ] utils don't have to be functions that can be shared between any application
-    - [ ] `Blueprints.ts` in `services` that will use files from `~/services/blueprints`
-
-  - Rename `useSimpleDialogs` to `useDialogs`
-  - Rename `useRoutingHelpers` to `useRoutables`
-
-  - `LocalDatabase.ts`
-  - `Blueprints.ts`
-  - `Logger.ts` (decouple notify from Logger)
 
 - Performance & Memory Improvements
 
   - [ ] Use a profiler to see if there are any performance hot spots within app
   - [ ] Replace spread operators
   - [ ] Pull functions out of functions
-  - [ ] Move `useDatabase` composable to `services` (new branch for this refactor)
-    - [ ] Merge with `DexieWrapper` and rename to `LocalDatabase`
-  - [ ] Move `useLogger` composable to `services` (new branch for this refactor)
-    - [ ] Merge with `PrettyLogger` and rename to `Logger`
-    - [ ] Remove `useNotifications` composable, then have `notify` provided by the caller
-          (dependency injection)
-  - [ ] Possible that most of your `composables` could be moved to `services`?
 
 - Quasar
 

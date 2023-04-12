@@ -7,16 +7,16 @@ import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
-import useSimpleDialogs from '@/composables/useSimpleDialogs'
+import useDialogs from '@/composables/useDialogs'
 import useDefaults from '@/composables/useDefaults'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
 const { log } = useLogger()
 const { notify } = useNotifications()
-const { confirmDialog } = useSimpleDialogs()
-const { goToData } = useRoutingHelpers()
+const { confirmDialog } = useDialogs()
+const { goToData } = useRoutables()
 const { onDefaults } = useDefaults()
 
 const settings: Ref<any[]> = ref([])

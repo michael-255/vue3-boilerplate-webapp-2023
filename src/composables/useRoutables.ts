@@ -2,14 +2,14 @@ import { DatabaseField, DatabaseType, type SettingId } from '@/types/database'
 import { RouteName } from '@/router/route-names'
 import { slugify } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
-import { getTypeFromSlug } from '@/services/data-utils'
+import { getTypeFromSlug } from '@/services/Blueprints'
 import useLogger from '@/composables/useLogger'
 import type { Optional } from '@/types/misc'
 
 /**
  * Composable with route param helpers and navigation functions.
  */
-export default function useRoutingHelpers() {
+export default function useRoutables() {
   const route = useRoute()
   const router = useRouter()
   const { log } = useLogger()

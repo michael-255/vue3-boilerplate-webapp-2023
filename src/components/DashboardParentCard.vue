@@ -4,8 +4,8 @@ import { DatabaseField, DatabaseType, type DatabaseParentType } from '@/types/da
 import { Icon } from '@/types/icons'
 import { getDisplayDate } from '@/utils/common'
 import useLogger from '@/composables/useLogger'
-import useSimpleDialogs from '@/composables/useSimpleDialogs'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useDialogs from '@/composables/useDialogs'
+import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
 
 defineProps<{
@@ -20,8 +20,8 @@ defineProps<{
 }>()
 
 const { log } = useLogger()
-const { goToInspect, goToEdit, goToCharts } = useRoutingHelpers()
-const { confirmDialog, dismissDialog } = useSimpleDialogs()
+const { goToInspect, goToEdit, goToCharts } = useRoutables()
+const { confirmDialog, dismissDialog } = useDialogs()
 
 /**
  * Opens a dialog that displays the previous record note.

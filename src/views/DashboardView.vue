@@ -11,20 +11,20 @@ import {
 } from '@/types/database'
 import type { DashboardParent } from '@/types/frontend'
 import type { Optional } from '@/types/misc'
-import { parentTypes, getChildType, getLabel } from '@/services/data-utils'
+import { parentDatabaseTypes, getChildType, getLabel } from '@/services/Blueprints'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useLogger from '@/composables/useLogger'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useRoutables from '@/composables/useRoutables'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
 const uiStore = useUIStore()
 const { log } = useLogger()
-const { goToCreate } = useRoutingHelpers()
+const { goToCreate } = useRoutables()
 
-const dashboardListOptions = parentTypes.map((type) => ({
+const dashboardListOptions = parentDatabaseTypes.map((type) => ({
   label: type,
   value: type,
 }))

@@ -3,17 +3,17 @@ import { onMounted, ref, type Ref } from 'vue'
 import { truncateString } from '@/utils/common'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import { getParentType } from '@/services/data-utils'
+import { getParentType } from '@/services/Blueprints'
 import useLogger from '@/composables/useLogger'
 import useActionRecordStore from '@/stores/action-record'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
 
 defineProps<{
   locked?: boolean
 }>()
 
-const { routeDatabaseType, routeParentId } = useRoutingHelpers()
+const { routeDatabaseType, routeParentId } = useRoutables()
 const { log } = useLogger()
 const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)

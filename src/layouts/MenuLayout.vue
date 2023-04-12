@@ -3,11 +3,11 @@ import { RouterView, useRoute } from 'vue-router'
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'
-import { parentTypes, getLabel, getIcon, getSlug } from '@/services/data-utils'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import { parentDatabaseTypes, getLabel, getIcon, getSlug } from '@/services/Blueprints'
+import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 
-const { goBack } = useRoutingHelpers()
+const { goBack } = useRoutables()
 const uiStore = useUIStore()
 const route = useRoute()
 </script>
@@ -52,7 +52,7 @@ const route = useRoute()
 
         <!-- Parent Data Links (uses DataBlueprint) -->
         <QItem
-          v-for="(parentType, i) in parentTypes"
+          v-for="(parentType, i) in parentDatabaseTypes"
           :key="i"
           clickable
           v-ripple

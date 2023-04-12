@@ -1,4 +1,4 @@
-import type { LogRetention } from './misc'
+import type { LogRetention } from '@/types/misc'
 
 /**
  * All database tables.

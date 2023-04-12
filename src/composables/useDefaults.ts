@@ -3,12 +3,12 @@ import { Icon } from '@/types/icons'
 import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/models'
 import { uid } from 'quasar'
 import useLogger from '@/composables/useLogger'
-import useSimpleDialogs from './useSimpleDialogs'
+import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
 export default function useDefaults() {
   const { log } = useLogger()
-  const { confirmDialog } = useSimpleDialogs()
+  const { confirmDialog } = useDialogs()
 
   /**
    * Generate default demostration data for the app.

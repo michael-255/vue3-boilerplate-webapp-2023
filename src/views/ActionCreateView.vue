@@ -2,18 +2,18 @@
 import { Icon } from '@/types/icons'
 import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
-import { getFieldBlueprints, getFields, getLabel } from '@/services/data-utils'
+import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
 import { onMounted, onUnmounted } from 'vue'
 import ResponsivePage from '@/components/ResponsivePage.vue'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useRoutables from '@/composables/useRoutables'
 import useActionRecordStore from '@/stores/action-record'
 import useLogger from '@/composables/useLogger'
-import useSimpleDialogs from '@/composables/useSimpleDialogs'
+import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
-const { routeDatabaseType, routeParentId, goBack } = useRoutingHelpers()
+const { routeDatabaseType, routeParentId, goBack } = useRoutables()
 const { log } = useLogger()
-const { confirmDialog, dismissDialog } = useSimpleDialogs()
+const { confirmDialog, dismissDialog } = useDialogs()
 const actionRecordStore = useActionRecordStore()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)

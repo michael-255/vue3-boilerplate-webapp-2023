@@ -2,7 +2,7 @@ import { Icon } from '@/types/icons'
 import type { Optional } from '@/types/misc'
 import { slugify } from '@/utils/common'
 import type { QTableColumn } from 'quasar'
-import { numberChart, type ChartBlueprint } from '@/services/chart-blueprints'
+import { numberChart, type ChartBlueprint } from '@/services/blueprints/chart-blueprints'
 import {
   DatabaseAction,
   DatabaseField,
@@ -26,7 +26,7 @@ import {
   numberField,
   type FieldBlueprint,
   typeField,
-} from '@/services/field-bluprints'
+} from '@/services/blueprints/field-bluprints'
 import {
   createdTimestampColumn,
   descriptionColumn,
@@ -43,7 +43,7 @@ import {
   requiredHiddenColumns,
   severityColumn,
   valueColumn,
-} from '@/services/table-columns'
+} from '@/services/blueprints/table-columns'
 
 /*
 TODO
@@ -51,7 +51,7 @@ TODO
 - Document every function in this file.
 */
 
-export type DataBlueprint = {
+export type CoreBlueprint = {
   readonly type: DatabaseType
   readonly typeSlug: string
   readonly singularLabel: string
@@ -66,7 +66,7 @@ export type DataBlueprint = {
   readonly tableColumns: QTableColumn[]
 }
 
-export const dataBlueprints: readonly DataBlueprint[] = [
+export const coreBlueprint: readonly CoreBlueprint[] = [
   /////////////////////////////////////////////////////////////////////////////
   {
     type: DatabaseType.SETTING,

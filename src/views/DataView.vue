@@ -9,15 +9,14 @@ import {
   getFields,
   getVisibleColumns,
   getSupportedActions,
-} from '@/services/data-utils'
+} from '@/services/Blueprints'
 import useLogger from '@/composables/useLogger'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useRoutables from '@/composables/useRoutables'
 import useActions from '@/composables/useActions'
 import DB from '@/services/LocalDatabase'
 
 const { log } = useLogger()
-const { routeDatabaseType, goToCharts, goToInspect, goToEdit, goToCreate, goBack } =
-  useRoutingHelpers()
+const { routeDatabaseType, goToCharts, goToInspect, goToEdit, goToCreate, goBack } = useRoutables()
 const { onDeleteRecord } = useActions()
 
 const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType) ?? [])

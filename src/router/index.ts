@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { RouteName } from '@/router/route-names'
-import { allDatabaseTypes, getTypeFromSlug } from '@/services/data-utils'
+import { allDatabaseTypes, getTypeFromSlug } from '@/services/Blueprints'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

@@ -14,10 +14,10 @@ import {
 } from 'chart.js'
 import { onMounted, ref, watch, type Ref } from 'vue'
 import { DatabaseField, type DatabaseChildType } from '@/types/database'
-import { getChildType } from '@/services/data-utils'
+import { getChildType } from '@/services/Blueprints'
 import type { AppObject, ChartTime } from '@/types/misc'
 import useLogger from '@/composables/useLogger'
-import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
@@ -40,7 +40,7 @@ ChartJS.register(
 const uiStore = useUIStore()
 const { getPaletteColor } = colors
 const { log } = useLogger()
-const { routeDatabaseType, routeId } = useRoutingHelpers()
+const { routeDatabaseType, routeId } = useRoutables()
 
 const hasData: Ref<boolean> = ref(false)
 const recordCount: Ref<number> = ref(0)
