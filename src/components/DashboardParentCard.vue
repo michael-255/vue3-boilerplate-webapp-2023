@@ -5,8 +5,8 @@ import { Icon } from '@/types/icons'
 import { getDisplayDate } from '@/utils/common'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
-import useDatabase from '@/composables/useDatabase'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import DB from '@/services/LocalDatabase'
 
 defineProps<{
   type: DatabaseParentType
@@ -22,7 +22,6 @@ defineProps<{
 const { log } = useLogger()
 const { goToInspect, goToEdit, goToCharts } = useRoutingHelpers()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
-const { updateRecord, deleteRecord } = useDatabase()
 
 /**
  * Opens a dialog that displays the previous record note.
@@ -46,7 +45,7 @@ async function onFavorite(type: DatabaseParentType, id: string, name: string) {
     'info',
     async () => {
       try {
-        await updateRecord(type, id, { [DatabaseField.IS_FAVORITED]: true })
+        await DB.updateRecord(type, id, { [DatabaseField.IS_FAVORITED]: true })
         log.info(`${name} favorited`, { favoritedRecordType: type, favoritedRecordId: id })
       } catch (error) {
         log.error('Favorite update failed', error)
@@ -69,7 +68,7 @@ async function onUnfavorite(type: DatabaseParentType, id: string, name: string) 
     'info',
     async () => {
       try {
-        await updateRecord(type, id, { [DatabaseField.IS_FAVORITED]: false })
+        await DB.updateRecord(type, id, { [DatabaseField.IS_FAVORITED]: false })
         log.info(`${name} unfavorited`, {
           unfavoritedRecordType: type,
           unfavoritedRecordId: id,
@@ -94,7 +93,7 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
     'negative',
     async () => {
       try {
-        await deleteRecord(type, id)
+        await DB.deleteRecord(type, id)
         log.info('Successfully deleted record', { deletedRecordType: type, deletedRecordId: id })
       } catch (error) {
         log.error('Delete failed', error)

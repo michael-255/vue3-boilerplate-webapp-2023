@@ -1,50 +1,57 @@
+import Dexie, { liveQuery, type IndexableType, type Table } from 'dexie'
+import type { DatabaseRecord, Log, Setting } from '@/types/models'
+import { AppText, LogRetention, Milliseconds, type AppObject } from '@/types/misc'
+import { DatabaseTable } from '@/types/database'
 import { Dark, uid } from 'quasar'
-import { liveQuery, type IndexableType } from 'dexie'
 import {
   DatabaseField,
-  DatabaseTable,
   DatabaseType,
   SettingId,
   Severity,
-  type DatabaseChildType,
   type DatabaseParentType,
+  type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
-import { LogRetention, type AppObject, Milliseconds } from '@/types/misc'
-import type { DatabaseRecord, Log, Setting } from '@/types/models'
-import { dexieWrapper } from '@/services/DexieWrapper'
 
 /**
- * Composable for interacting with the Dexie database.
+ * A Dexie wrapper class that acts as a local database.
  */
-export default function useDatabase() {
+class LocalDatabase extends Dexie {
+  [DatabaseTable.RECORDS]!: Table<DatabaseRecord>
+
+  constructor(name: string) {
+    super(name)
+
+    this.version(1).stores({
+      [DatabaseTable.RECORDS]: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
+    })
+  }
+
   /////////////////////////////////////////////////////////////////////////////
   //                                                                         //
   // MISCELLANEOUS                                                           //
   //                                                                         //
   /////////////////////////////////////////////////////////////////////////////
 
-  // Only "Records" table is used by the app for now.
-  const db = dexieWrapper[DatabaseTable.RECORDS]
-
   /**
    * Initializes all settings with existing or default values.
    */
-  async function initSettings() {
+  async initSettings() {
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
     const showIntroduction =
-      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ?? true
-    const darkMode = (await getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ?? true
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ?? true
+    const darkMode =
+      (await this.getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ?? true
     const showAllDataColumns =
-      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
     const showConsoleLogs =
-      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
     const showDebugMessages =
-      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
     const showInfoMessages =
-      (await getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? true
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? true
     const logRetentionTime =
-      (await getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
+      (await this.getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
       LogRetention.THREE_MONTHS
 
     // Set Quasar dark mode
@@ -52,13 +59,13 @@ export default function useDatabase() {
 
     // Set all settings before continuing
     await Promise.all([
-      setSetting(SettingId.SHOW_INTRODUCTION, showIntroduction),
-      setSetting(SettingId.DARK_MODE, darkMode),
-      setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, showAllDataColumns),
-      setSetting(SettingId.SHOW_CONSOLE_LOGS, showConsoleLogs),
-      setSetting(SettingId.SHOW_DEBUG_MESSAGES, showDebugMessages),
-      setSetting(SettingId.SHOW_INFO_MESSAGES, showInfoMessages),
-      setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime),
+      this.setSetting(SettingId.SHOW_INTRODUCTION, showIntroduction),
+      this.setSetting(SettingId.DARK_MODE, darkMode),
+      this.setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, showAllDataColumns),
+      this.setSetting(SettingId.SHOW_CONSOLE_LOGS, showConsoleLogs),
+      this.setSetting(SettingId.SHOW_DEBUG_MESSAGES, showDebugMessages),
+      this.setSetting(SettingId.SHOW_INFO_MESSAGES, showInfoMessages),
+      this.setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime),
     ])
   }
 
@@ -71,18 +78,21 @@ export default function useDatabase() {
   /**
    * Observable of the Settings database type.
    */
-  function liveSettings() {
+  liveSettings() {
     return liveQuery(() =>
-      db.where(DatabaseField.TYPE).equals(DatabaseType.SETTING).sortBy(DatabaseField.ID)
+      this[DatabaseTable.RECORDS]
+        .where(DatabaseField.TYPE)
+        .equals(DatabaseType.SETTING)
+        .sortBy(DatabaseField.ID)
     )
   }
 
   /**
    * Observable of the Settings, Examples, and Tests database types sorted by name (when present).
    */
-  function liveDashboard() {
+  liveDashboard() {
     return liveQuery(() =>
-      db
+      this[DatabaseTable.RECORDS]
         .where(DatabaseField.TYPE)
         .anyOf(DatabaseType.SETTING, DatabaseType.EXAMPLE, DatabaseType.TEST)
         .sortBy(DatabaseField.NAME)
@@ -93,9 +103,12 @@ export default function useDatabase() {
    * Observable of the provided database type sorted by the created timestamp.
    * @param type
    */
-  function liveDataType(type: DatabaseType) {
+  liveDataType(type: DatabaseType) {
     return liveQuery(() =>
-      db.where(DatabaseField.TYPE).equals(type).sortBy(DatabaseField.CREATED_TIMESTAMP)
+      this[DatabaseTable.RECORDS]
+        .where(DatabaseField.TYPE)
+        .equals(type)
+        .sortBy(DatabaseField.CREATED_TIMESTAMP)
     )
   }
 
@@ -111,11 +124,7 @@ export default function useDatabase() {
    * @param label
    * @param details
    */
-  async function addLog(
-    severity: Severity,
-    label: string,
-    details?: AppObject
-  ): Promise<IndexableType> {
+  async addLog(severity: Severity, label: string, details?: AppObject): Promise<IndexableType> {
     const log: Log = {
       [DatabaseField.TYPE]: DatabaseType.LOG,
       [DatabaseField.ID]: uid(),
@@ -125,23 +134,23 @@ export default function useDatabase() {
       [DatabaseField.DETAILS]: details,
     }
 
-    return await db.add(log as DatabaseRecord)
+    return await this[DatabaseTable.RECORDS].add(log as DatabaseRecord)
   }
 
   /**
    * Create a new record.
    * @param record
    */
-  async function addRecord(record: DatabaseRecord) {
-    return await db.add(record)
+  async addRecord(record: DatabaseRecord) {
+    return await this[DatabaseTable.RECORDS].add(record)
   }
 
   /**
    * Bulk add records to the database. The new record ids will be returned.
    * @param records
    */
-  async function bulkAddRecords(records: DatabaseRecord[]) {
-    return await db.bulkAdd(records, { allKeys: true }) // allKeys returns the new record ids
+  async bulkAddRecords(records: DatabaseRecord[]) {
+    return await this[DatabaseTable.RECORDS].bulkAdd(records, { allKeys: true }) // allKeys returns the new record ids
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -153,16 +162,16 @@ export default function useDatabase() {
   /**
    * Gets ALL records from the database.
    */
-  async function getAllRecords() {
-    return await db.toArray()
+  async getAllRecords() {
+    return await this[DatabaseTable.RECORDS].toArray()
   }
 
   /**
    * Get all records by database type.
    * @param type
    */
-  async function getRecordsByType(type: DatabaseType) {
-    return await db.where(DatabaseField.TYPE).equals(type).toArray()
+  async getRecordsByType(type: DatabaseType) {
+    return await this[DatabaseTable.RECORDS].where(DatabaseField.TYPE).equals(type).toArray()
   }
 
   /**
@@ -170,16 +179,16 @@ export default function useDatabase() {
    * @param type
    * @param id
    */
-  async function getRecord(type: DatabaseType, id: string | SettingId) {
-    return await db.get([type, id])
+  async getRecord(type: DatabaseType, id: string | SettingId) {
+    return await this[DatabaseTable.RECORDS].get([type, id])
   }
 
   /**
    * Get all enabled records by database parent type.
    * @param parentType
    */
-  async function getEnabledParentRecords(parentType: DatabaseParentType) {
-    return await db
+  async getEnabledParentRecords(parentType: DatabaseParentType) {
+    return await this[DatabaseTable.RECORDS]
       .where(DatabaseField.TYPE)
       .equals(parentType)
       .filter((r) => r[DatabaseField.IS_ENABLED] === true)
@@ -191,9 +200,9 @@ export default function useDatabase() {
    * @param childType
    * @param parentId
    */
-  async function getPreviousChildRecord(childType: DatabaseChildType, parentId: string) {
+  async getPreviousChildRecord(childType: DatabaseChildType, parentId: string) {
     return (
-      await db
+      await this[DatabaseTable.RECORDS]
         .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
         .sortBy(DatabaseField.CREATED_TIMESTAMP)
     ).reverse()[0]
@@ -204,11 +213,11 @@ export default function useDatabase() {
    * @param childType
    * @param parentId
    */
-  async function getChildRecordsByParentId(
+  async getChildRecordsByParentId(
     childType: DatabaseChildType,
     parentId: string
   ): Promise<DatabaseRecord[]> {
-    return await db
+    return await this[DatabaseTable.RECORDS]
       .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
       .sortBy(DatabaseField.CREATED_TIMESTAMP)
   }
@@ -224,8 +233,8 @@ export default function useDatabase() {
    * @param id
    * @param value
    */
-  async function setSetting(id: SettingId, value: SettingValue) {
-    const existingSetting = await getRecord(DatabaseType.SETTING, id)
+  async setSetting(id: SettingId, value: SettingValue) {
+    const existingSetting = await this.getRecord(DatabaseType.SETTING, id)
 
     // Set Quasar dark mode if the key is for dark mode
     if (id === SettingId.DARK_MODE) {
@@ -240,9 +249,9 @@ export default function useDatabase() {
 
     // Add or Update depending on if the Setting already exists
     if (!existingSetting) {
-      return await db.add(setting as DatabaseRecord)
+      return await this[DatabaseTable.RECORDS].add(setting as DatabaseRecord)
     } else {
-      return await db.update([DatabaseType.SETTING, id], { value })
+      return await this[DatabaseTable.RECORDS].update([DatabaseType.SETTING, id], { value })
     }
   }
 
@@ -252,12 +261,12 @@ export default function useDatabase() {
    * @param originalId
    * @param updateProps
    */
-  async function updateRecord(
+  async updateRecord(
     type: DatabaseType,
     originalId: string | SettingId,
     updateProps: Partial<DatabaseRecord>
   ) {
-    return await db.update([type, originalId], updateProps)
+    return await this[DatabaseTable.RECORDS].update([type, originalId], updateProps)
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -269,9 +278,10 @@ export default function useDatabase() {
   /**
    * Deletes all logs that are older than the log retention time setting.
    */
-  async function purgeExpiredLogs(): Promise<number> {
-    const logRetentionTime = (await getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))
-      ?.value
+  async purgeExpiredLogs() {
+    const logRetentionTime = (
+      await this.getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME)
+    )?.value
 
     if (!logRetentionTime || logRetentionTime === LogRetention.FOREVER) {
       return 0 // No logs purged
@@ -291,7 +301,10 @@ export default function useDatabase() {
     const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime as LogRetention)
 
     // Get all logs
-    const logs = (await db.where(DatabaseField.TYPE).equals(DatabaseType.LOG).toArray()) as Log[]
+    const logs = (await this[DatabaseTable.RECORDS]
+      .where(DatabaseField.TYPE)
+      .equals(DatabaseType.LOG)
+      .toArray()) as Log[]
 
     const logsToDelete = logs.filter((log: Log) => {
       const logCreatedTimestamp = log[DatabaseField.CREATED_TIMESTAMP] ?? 0
@@ -300,7 +313,9 @@ export default function useDatabase() {
     })
 
     // Delete all logs that are older than the retention time
-    await db.bulkDelete(logsToDelete.map((log: Log) => log[DatabaseField.ID]))
+    await this[DatabaseTable.RECORDS].bulkDelete(
+      logsToDelete.map((log: Log) => log[DatabaseField.ID])
+    )
 
     // Return the number of logs deleted
     return logsToDelete.length
@@ -311,44 +326,29 @@ export default function useDatabase() {
    * @param type
    * @param id
    */
-  async function deleteRecord(type: DatabaseType, id: string | SettingId) {
-    return await db.delete([type, id])
+  async deleteRecord(type: DatabaseType, id: string | SettingId) {
+    return await this[DatabaseTable.RECORDS].delete([type, id])
   }
 
   /**
    * Delete all records by database type.
    * @param type
    */
-  async function clearRecordsByType(type: DatabaseType) {
-    await db.where(DatabaseField.TYPE).equals(type).delete()
+  async clearRecordsByType(type: DatabaseType) {
+    await this[DatabaseTable.RECORDS].where(DatabaseField.TYPE).equals(type).delete()
   }
 
   /**
    * Delete the entire database. This will require an app reload.
    */
-  async function deleteDatabase() {
-    return await dexieWrapper.delete()
-  }
-
-  return {
-    initSettings,
-    liveSettings,
-    liveDashboard,
-    liveDataType,
-    getPreviousChildRecord,
-    setSetting,
-    getRecord,
-    getEnabledParentRecords,
-    addLog,
-    purgeExpiredLogs,
-    getAllRecords,
-    getRecordsByType,
-    bulkAddRecords,
-    clearRecordsByType,
-    deleteDatabase,
-    deleteRecord,
-    updateRecord,
-    addRecord,
-    getChildRecordsByParentId,
+  async deleteDatabase() {
+    return await this.delete()
   }
 }
+
+/**
+ * Preconfigured LocalDatabase instance.
+ */
+const DB = new LocalDatabase(AppText.APP_NAME)
+
+export default DB

@@ -4,12 +4,11 @@ import { SettingId } from '@/types/database'
 import { AppText } from '@/types/misc'
 import { Icon } from '@/types/icons'
 import { RouteName } from '@/router/route-names'
-import useDatabase from '@/composables/useDatabase'
 import useDefaults from '@/composables/useDefaults'
 import useUIStore from '@/stores/ui'
+import DB from '@/services/LocalDatabase'
 
 const uiStore = useUIStore()
-const { setSetting } = useDatabase()
 const { onDefaults } = useDefaults()
 
 const exampleFavorite: Ref<number> = ref(0)
@@ -18,7 +17,8 @@ const exampleFavorite: Ref<number> = ref(0)
  * Set the introduction setting value to false in settings to close the introduction card.
  */
 async function onCloseIntroduction() {
-  await setSetting(SettingId.SHOW_INTRODUCTION, false)
+  await DB.setSetting(SettingId.SHOW_INTRODUCTION, false)
+  // await setSetting(SettingId.SHOW_INTRODUCTION, false)
 }
 </script>
 

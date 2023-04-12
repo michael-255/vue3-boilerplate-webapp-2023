@@ -3,12 +3,11 @@ import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
 import { Icon } from './types/icons'
 import type { Optional } from '@/types/misc'
-import useDatabase from '@/composables/useDatabase'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
+import DB from '@/services/LocalDatabase'
 
-const { initSettings, purgeExpiredLogs } = useDatabase()
 const { log, consoleDebug, consoleLog } = useLogger()
 const { notify } = useNotifications()
 const route = useRoute()
@@ -17,7 +16,8 @@ const layout: Ref<any> = ref(null)
 
 onMounted(async () => {
   try {
-    await initSettings()
+    await DB.initSettings()
+    // await initSettings()
     consoleDebug('Settings initialized')
   } catch (error) {
     // If the settings are not initialized, the database may have had an error or not be open
@@ -26,7 +26,8 @@ onMounted(async () => {
   }
 
   try {
-    const logsPurged = await purgeExpiredLogs()
+    const logsPurged = await DB.purgeExpiredLogs()
+    // const logsPurged = await purgeExpiredLogs()
     consoleDebug('Expired logs purged', { logsPurged })
   } catch (error) {
     log.error('Error purging expired logs', error)

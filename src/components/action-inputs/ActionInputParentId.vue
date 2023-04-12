@@ -5,9 +5,9 @@ import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { getParentType } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
-import useDatabase from '@/composables/useDatabase'
 import useActionRecordStore from '@/stores/action-record'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
+import DB from '@/services/LocalDatabase'
 
 defineProps<{
   locked?: boolean
@@ -15,7 +15,6 @@ defineProps<{
 
 const { routeDatabaseType, routeParentId } = useRoutingHelpers()
 const { log } = useLogger()
-const { getEnabledParentRecords } = useDatabase()
 const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 const options: Ref<any[]> = ref([])
@@ -33,7 +32,7 @@ onMounted(async () => {
     }
 
     // Gets all enabled parent records
-    const parentTypeRecords = await getEnabledParentRecords(parentType)
+    const parentTypeRecords = await DB.getEnabledParentRecords(parentType)
 
     // Builds parent options with value as the id, and the label as the name and truncated id
     options.value = parentTypeRecords.map((a: any) => ({

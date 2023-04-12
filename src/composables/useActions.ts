@@ -2,7 +2,7 @@ import type { DatabaseType } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from './useSimpleDialogs'
-import useDatabase from '@/composables/useDatabase'
+import DB from '@/services/LocalDatabase'
 
 /**
  * Composable with actions that relate to CRUD operations.
@@ -10,7 +10,6 @@ import useDatabase from '@/composables/useDatabase'
 export default function useActions() {
   const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { deleteRecord } = useDatabase()
 
   /**
    * On confirmation, delete the matching record from the database.
@@ -25,7 +24,7 @@ export default function useActions() {
       'negative',
       async () => {
         try {
-          await deleteRecord(type, id)
+          await DB.deleteRecord(type, id)
           log.info('Successfully deleted record', { deletedRecordType: type, deletedRecordId: id })
         } catch (error) {
           log.error('Delete failed', error)

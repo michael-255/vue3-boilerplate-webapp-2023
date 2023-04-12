@@ -14,16 +14,15 @@ import type { Optional } from '@/types/misc'
 import { parentTypes, getChildType, getLabel } from '@/services/data-utils'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
-import useDatabase from '@/composables/useDatabase'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
+import DB from '@/services/LocalDatabase'
 
 const uiStore = useUIStore()
 const { log } = useLogger()
 const { goToCreate } = useRoutingHelpers()
-const { liveDashboard, getPreviousChildRecord } = useDatabase()
 
 const dashboardListOptions = parentTypes.map((type) => ({
   label: type,
@@ -36,7 +35,7 @@ const dashboardRecordRefs = {
   [DatabaseType.TEST]: ref([]),
 } as { [key in DatabaseParentType]: Ref<DashboardParent[]> }
 
-const subscription = liveDashboard().subscribe({
+const subscription = DB.liveDashboard().subscribe({
   next: async (records) => {
     // Settings
     showIntroduction.value = records.find((s) => s.id === SettingId.SHOW_INTRODUCTION)?.value
@@ -48,7 +47,7 @@ const subscription = liveDashboard().subscribe({
       records
         .filter((r) => r.type === DatabaseType.EXAMPLE && r[DatabaseField.IS_ENABLED] === true)
         .map(async (r) => {
-          const previousChild = await getPreviousChildRecord(
+          const previousChild = await DB.getPreviousChildRecord(
             getChildType(r[DatabaseField.TYPE]) as DatabaseChildType,
             r[DatabaseField.ID]
           )
@@ -78,7 +77,7 @@ const subscription = liveDashboard().subscribe({
       records
         .filter((r) => r.type === DatabaseType.TEST && r[DatabaseField.IS_ENABLED] === true)
         .map(async (r) => {
-          const previousChild = await getPreviousChildRecord(
+          const previousChild = await DB.getPreviousChildRecord(
             getChildType(r[DatabaseField.TYPE]) as DatabaseChildType,
             r[DatabaseField.ID]
           )

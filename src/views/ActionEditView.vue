@@ -4,17 +4,16 @@ import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
 import { onMounted, onUnmounted } from 'vue'
 import { getFieldBlueprints, getFields, getLabel } from '@/services/data-utils'
-import useDatabase from '@/composables/useDatabase'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActionRecordStore from '@/stores/action-record'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
 import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import DB from '@/services/LocalDatabase'
 
 const { routeDatabaseType, routeId, goBack } = useRoutingHelpers()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useSimpleDialogs()
-const { getRecord, updateRecord } = useDatabase()
 const actionRecordStore = useActionRecordStore()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
@@ -25,7 +24,7 @@ onMounted(async () => {
     actionRecordStore.valid[DatabaseField.TYPE] = true
 
     if (routeId) {
-      const oldRecord = await getRecord(routeDatabaseType, routeId)
+      const oldRecord = await DB.getRecord(routeDatabaseType, routeId)
 
       if (oldRecord) {
         Object.keys(oldRecord).forEach((key) => {
@@ -61,7 +60,7 @@ async function onUpdateRecord() {
       'positive',
       async () => {
         try {
-          await updateRecord(routeDatabaseType, routeId, record)
+          await DB.updateRecord(routeDatabaseType, routeId, record)
 
           log.info('Successfully updated record', {
             updatedRecordType: routeDatabaseType,

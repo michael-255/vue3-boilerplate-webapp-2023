@@ -18,8 +18,8 @@ import { getChildType } from '@/services/data-utils'
 import type { AppObject, ChartTime } from '@/types/misc'
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
-import useDatabase from '@/composables/useDatabase'
 import useUIStore from '@/stores/ui'
+import DB from '@/services/LocalDatabase'
 
 defineProps<{
   label: string
@@ -41,7 +41,6 @@ const uiStore = useUIStore()
 const { getPaletteColor } = colors
 const { log } = useLogger()
 const { routeDatabaseType, routeId } = useRoutingHelpers()
-const { getChildRecordsByParentId } = useDatabase()
 
 const hasData: Ref<boolean> = ref(false)
 const recordCount: Ref<number> = ref(0)
@@ -72,7 +71,7 @@ function downwardTrend(ctx: any, color: any) {
  */
 async function recalculateChart() {
   try {
-    const chartingRecords = await getChildRecordsByParentId(
+    const chartingRecords = await DB.getChildRecordsByParentId(
       getChildType(routeDatabaseType) as DatabaseChildType,
       routeId
     )

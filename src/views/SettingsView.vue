@@ -8,25 +8,16 @@ import type { DatabaseRecord } from '@/types/models'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import useSimpleDialogs from '@/composables/useSimpleDialogs'
-import useDatabase from '@/composables/useDatabase'
 import useDefaults from '@/composables/useDefaults'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import DB from '@/services/LocalDatabase'
 
 const { log, consoleDebug } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useSimpleDialogs()
 const { goToData } = useRoutingHelpers()
 const { onDefaults } = useDefaults()
-const {
-  liveSettings,
-  initSettings,
-  setSetting,
-  bulkAddRecords,
-  getAllRecords,
-  clearRecordsByType,
-  deleteDatabase,
-} = useDatabase()
 
 const settings: Ref<any[]> = ref([])
 const logRetentionIndex: Ref<number> = ref(0)
@@ -41,7 +32,7 @@ const accessModel = ref(accessOptions.value[0])
 const deleteOptions = ref(Object.values(DatabaseType))
 const deleteModel = ref(deleteOptions.value[0])
 
-const subscription = liveSettings().subscribe({
+const subscription = DB.liveSettings().subscribe({
   next: (records) => {
     settings.value = records
 
@@ -107,7 +98,7 @@ function onImportFile() {
 
         consoleDebug('importedData =', importedData)
 
-        await bulkAddRecords(importedData)
+        await DB.bulkAddRecords(importedData)
 
         importFile.value = null // Clear input
 
@@ -136,7 +127,7 @@ function onExportRecords(types: DatabaseType[]) {
     async () => {
       try {
         // Get all data records from the database
-        const records = await getAllRecords()
+        const records = await DB.getAllRecords()
 
         // Include record in export if it is one of the selected types
         const exportRecords = records.filter((record) => types.includes(record.type))
@@ -177,7 +168,7 @@ function onExportRecords(types: DatabaseType[]) {
 async function onChangeLogRetention(logRetentionIndex: number) {
   try {
     const logRetentionTime = Object.values(LogRetention)[logRetentionIndex]
-    await setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime)
+    await DB.setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime)
     log.info('Updated log retention time', { time: logRetentionTime, index: logRetentionIndex })
   } catch (error) {
     log.error('Log retention update failed', error)
@@ -196,8 +187,8 @@ async function onDeleteDataType(type: DatabaseType) {
     'negative',
     async () => {
       try {
-        await clearRecordsByType(type)
-        await initSettings()
+        await DB.clearRecordsByType(type)
+        await DB.initSettings()
         log.info(`${type} data successfully deleted`)
       } catch (error) {
         log.error(`Error deleting ${type} data`, error)
@@ -218,9 +209,9 @@ async function onDeleteAllData() {
     async () => {
       try {
         await Promise.all(
-          Object.values(DatabaseType).map(async (type) => await clearRecordsByType(type))
+          Object.values(DatabaseType).map(async (type) => await DB.clearRecordsByType(type))
         )
-        await initSettings()
+        await DB.initSettings()
         log.info('All data successfully deleted')
       } catch (error) {
         log.error('Error deleting all data', error)
@@ -240,7 +231,7 @@ async function onDeleteDatabase(): Promise<void> {
     'negative',
     async (): Promise<void> => {
       try {
-        await deleteDatabase()
+        await DB.deleteDatabase()
         notify('Reload the website now', Icon.WARN, 'warning')
       } catch (error) {
         log.error('Database deletion failed', error)
@@ -266,7 +257,7 @@ async function onDeleteDatabase(): Promise<void> {
           class="q-mb-md"
           label="Show Introduction"
           :model-value="settings.find((s) => s.id === SettingId.SHOW_INTRODUCTION)?.value"
-          @update:model-value="setSetting(SettingId.SHOW_INTRODUCTION, $event)"
+          @update:model-value="DB.setSetting(SettingId.SHOW_INTRODUCTION, $event)"
         />
 
         <div class="q-mb-md">
@@ -277,7 +268,7 @@ async function onDeleteDatabase(): Promise<void> {
           class="q-mb-md"
           label="Dark Mode"
           :model-value="settings.find((s) => s.id === SettingId.DARK_MODE)?.value"
-          @update:model-value="setSetting(SettingId.DARK_MODE, $event)"
+          @update:model-value="DB.setSetting(SettingId.DARK_MODE, $event)"
         />
 
         <div class="q-mb-md">
@@ -288,7 +279,7 @@ async function onDeleteDatabase(): Promise<void> {
         <QToggle
           label="Show All Data Columns"
           :model-value="settings.find((s) => s.id === SettingId.SHOW_ALL_DATA_COLUMNS)?.value"
-          @update:model-value="setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, $event)"
+          @update:model-value="DB.setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, $event)"
         />
       </QCardSection>
     </QCard>
@@ -401,7 +392,7 @@ async function onDeleteDatabase(): Promise<void> {
           class="q-mb-md"
           label="Show Console Logs"
           :model-value="settings.find((s) => s.id === SettingId.SHOW_CONSOLE_LOGS)?.value"
-          @update:model-value="setSetting(SettingId.SHOW_CONSOLE_LOGS, $event)"
+          @update:model-value="DB.setSetting(SettingId.SHOW_CONSOLE_LOGS, $event)"
         />
 
         <div class="q-mb-md">Show Debug Messages will display debug level notification alerts.</div>
@@ -410,7 +401,7 @@ async function onDeleteDatabase(): Promise<void> {
           class="q-mb-md"
           label="Show Debug Messages"
           :model-value="settings.find((s) => s.id === SettingId.SHOW_DEBUG_MESSAGES)?.value"
-          @update:model-value="setSetting(SettingId.SHOW_DEBUG_MESSAGES, $event)"
+          @update:model-value="DB.setSetting(SettingId.SHOW_DEBUG_MESSAGES, $event)"
         />
 
         <div class="q-mb-md">Show Info Messages will display info level notification alerts.</div>
@@ -419,7 +410,7 @@ async function onDeleteDatabase(): Promise<void> {
           class="q-mb-md"
           label="Show Info Messages"
           :model-value="settings.find((s) => s.id === SettingId.SHOW_INFO_MESSAGES)?.value"
-          @update:model-value="setSetting(SettingId.SHOW_INFO_MESSAGES, $event)"
+          @update:model-value="DB.setSetting(SettingId.SHOW_INFO_MESSAGES, $event)"
         />
 
         <!-- Test Logger -->

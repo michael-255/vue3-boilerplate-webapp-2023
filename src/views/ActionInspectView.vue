@@ -5,20 +5,19 @@ import type { DatabaseRecord } from '@/types/models'
 import type { Optional } from '@/types/misc'
 import { getFieldBlueprints, getLabel } from '@/services/data-utils'
 import useLogger from '@/composables/useLogger'
-import useDatabase from '@/composables/useDatabase'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+import DB from '@/services/LocalDatabase'
 
 const { routeDatabaseType, routeId } = useRoutingHelpers()
 const { log } = useLogger()
-const { getRecord } = useDatabase()
 
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 const record: Ref<Optional<DatabaseRecord>> = ref(null)
 
 onMounted(async () => {
   try {
-    record.value = await getRecord(routeDatabaseType, routeId)
+    record.value = await DB.getRecord(routeDatabaseType, routeId)
   } catch (error) {
     log.error('Error loading inspect view', error)
   }

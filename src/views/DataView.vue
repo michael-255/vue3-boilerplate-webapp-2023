@@ -13,17 +13,14 @@ import {
 import useLogger from '@/composables/useLogger'
 import useRoutingHelpers from '@/composables/useRoutingHelpers'
 import useActions from '@/composables/useActions'
-import useDatabase from '@/composables/useDatabase'
+import DB from '@/services/LocalDatabase'
 
 const { log } = useLogger()
 const { routeDatabaseType, goToCharts, goToInspect, goToEdit, goToCreate, goBack } =
   useRoutingHelpers()
 const { onDeleteRecord } = useActions()
-const { getRecord, liveDataType } = useDatabase()
 
-// TODO
 const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType) ?? [])
-// TODO
 const columnOptions: Ref<QTableColumn[]> = ref(
   columns.value.filter((col: QTableColumn) => !col.required)
 )
@@ -32,7 +29,7 @@ const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 // TODO
-const subscription = liveDataType(routeDatabaseType).subscribe({
+const subscription = DB.liveDataType(routeDatabaseType).subscribe({
   next: (records) => {
     rows.value = records
   },
@@ -45,7 +42,7 @@ const subscription = liveDataType(routeDatabaseType).subscribe({
 onMounted(async () => {
   try {
     const showAllDataColumns = (
-      await getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
+      await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
     )?.value
 
     // This sets up what is currently visible on the data table
@@ -59,7 +56,6 @@ onMounted(async () => {
   }
 })
 
-// TODO
 onUnmounted(() => {
   subscription.unsubscribe()
 })

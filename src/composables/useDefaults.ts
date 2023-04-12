@@ -4,12 +4,11 @@ import type { DatabaseRecord, Example, ExampleResult, Test } from '@/types/model
 import { uid } from 'quasar'
 import useLogger from '@/composables/useLogger'
 import useSimpleDialogs from './useSimpleDialogs'
-import useDatabase from '@/composables/useDatabase'
+import DB from '@/services/LocalDatabase'
 
 export default function useDefaults() {
   const { log } = useLogger()
   const { confirmDialog } = useSimpleDialogs()
-  const { bulkAddRecords } = useDatabase()
 
   /**
    * Generate default demostration data for the app.
@@ -116,7 +115,7 @@ export default function useDefaults() {
             [DatabaseField.IS_ENABLED]: true,
           } as Test)
 
-          await bulkAddRecords(records)
+          await DB.bulkAddRecords(records)
 
           log.info('Defaults loaded', { count: records.length })
         } catch (error) {

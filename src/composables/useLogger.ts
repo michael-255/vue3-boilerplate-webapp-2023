@@ -2,14 +2,13 @@ import { Icon } from '@/types/icons'
 import { DatabaseType, SettingId, Severity } from '@/types/database'
 import { logger } from '@/services/PrettyLogger'
 import useNotifications from '@/composables/useNotifications'
-import useDatabase from '@/composables/useDatabase'
+import DB from '@/services/LocalDatabase'
 
 /**
  * Composable with utilities for logging that include notifications and database entries.
  */
 export default function useLogger() {
   const { notify } = useNotifications()
-  const { getRecord, addLog } = useDatabase()
 
   /**
    * Log object with common logger functions.
@@ -26,11 +25,11 @@ export default function useLogger() {
      * - Suppressable notifications
      */
     debug: async (name: string, details?: any) => {
-      if ((await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.debug(`[${Severity.DEBUG}]`, name, details)
       }
 
-      if ((await getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value) {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value) {
         notify(name, Icon.DEBUG, 'accent')
       }
     },
@@ -42,13 +41,13 @@ export default function useLogger() {
     info: async (name: string, details?: any) => {
       const severity = Severity.INFO
 
-      if ((await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.info(`[${severity}]`, name, details)
       }
 
-      await addLog(severity, name, details)
+      await DB.addLog(severity, name, details)
 
-      if ((await getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value) {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value) {
         notify(name, Icon.INFO, 'info')
       }
     },
@@ -60,11 +59,11 @@ export default function useLogger() {
     warn: async (name: string, details?: any) => {
       const severity = Severity.WARN
 
-      if ((await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.warn(`[${severity}]`, name, details)
       }
 
-      await addLog(severity, name, details)
+      await DB.addLog(severity, name, details)
 
       notify(name, Icon.WARN, 'warning')
     },
@@ -76,11 +75,11 @@ export default function useLogger() {
     error: async (name: string, details?: any) => {
       const severity = Severity.ERROR
 
-      if ((await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
         logger.error(`[${severity}]`, name, details)
       }
 
-      await addLog(severity, name, details)
+      await DB.addLog(severity, name, details)
 
       notify(name, Icon.ERROR, 'negative')
     },
@@ -101,7 +100,7 @@ export default function useLogger() {
    * @param args
    */
   async function consoleDebug(message: any, ...args: any) {
-    if (await getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS)) {
+    if (await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS)) {
       logger.debug(message, ...args)
     }
   }
