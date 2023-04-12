@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
 
+// Props & Emits
 defineProps<{
   bannerIcon?: Icon
   bannerTitle?: string

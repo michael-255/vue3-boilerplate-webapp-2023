@@ -9,13 +9,17 @@ import useActionRecordStore from '@/stores/action-record'
 import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
 
+// Props & Emits
 defineProps<{
   locked?: boolean
 }>()
 
+// Composables & Stores
 const { routeDatabaseType, routeParentId } = useRoutables()
 const { log } = useLogger()
 const actionRecordStore = useActionRecordStore()
+
+// Data
 const inputRef: Ref<any> = ref(null)
 const options: Ref<any[]> = ref([])
 

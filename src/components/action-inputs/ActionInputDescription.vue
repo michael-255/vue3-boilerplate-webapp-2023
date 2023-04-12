@@ -4,11 +4,15 @@ import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
 
+// Props & Emits
 defineProps<{
   locked?: boolean
 }>()
 
+// Composables & Stores
 const actionRecordStore = useActionRecordStore()
+
+// Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {

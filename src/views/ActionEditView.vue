@@ -11,11 +11,13 @@ import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
+// Composables & Stores
 const { routeDatabaseType, routeId, goBack } = useRoutables()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useDialogs()
 const actionRecordStore = useActionRecordStore()
 
+// Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 
 onMounted(async () => {

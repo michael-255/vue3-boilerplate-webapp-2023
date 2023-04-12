@@ -8,6 +8,7 @@ import useDialogs from '@/composables/useDialogs'
 import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
 
+// Props & Emits
 defineProps<{
   type: DatabaseParentType
   id: string
@@ -19,6 +20,7 @@ defineProps<{
   previousNumber?: number
 }>()
 
+// Composables & Stores
 const { log } = useLogger()
 const { goToInspect, goToEdit, goToCharts } = useRoutables()
 const { confirmDialog, dismissDialog } = useDialogs()

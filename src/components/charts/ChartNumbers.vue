@@ -21,11 +21,6 @@ import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
-defineProps<{
-  label: string
-  chartOptions: AppObject
-}>()
-
 ChartJS.register(
   Title,
   Tooltip,
@@ -37,14 +32,21 @@ ChartJS.register(
   LineElement
 )
 
+// Props & Emits
+defineProps<{
+  label: string
+  chartOptions: AppObject
+}>()
+
+// Composables & Stores
 const uiStore = useUIStore()
 const { getPaletteColor } = colors
 const { log } = useLogger()
 const { routeDatabaseType, routeId } = useRoutables()
 
+// Data
 const hasData: Ref<boolean> = ref(false)
 const recordCount: Ref<number> = ref(0)
-
 const chartData: Ref<{
   labels: any[]
   datasets: any[]

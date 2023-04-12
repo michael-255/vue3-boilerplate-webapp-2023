@@ -20,15 +20,16 @@ import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
+// Composables & Stores
 const uiStore = useUIStore()
 const { log } = useLogger()
 const { goToCreate } = useRoutables()
 
+// Data
 const dashboardListOptions = parentDatabaseTypes.map((type) => ({
   label: type,
   value: type,
 }))
-
 const showIntroduction: Ref<Optional<SettingValue>> = ref(null)
 const dashboardRecordRefs = {
   [DatabaseType.EXAMPLE]: ref([]),

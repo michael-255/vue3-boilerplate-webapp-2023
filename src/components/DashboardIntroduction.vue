@@ -8,9 +8,11 @@ import useDefaults from '@/composables/useDefaults'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
+// Composables & Stores
 const uiStore = useUIStore()
 const { onDefaults } = useDefaults()
 
+// Data
 const exampleFavorite: Ref<number> = ref(0)
 
 /**

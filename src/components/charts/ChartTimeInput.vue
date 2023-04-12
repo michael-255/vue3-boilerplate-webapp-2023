@@ -3,8 +3,10 @@ import { ref, type Ref } from 'vue'
 import { ChartTime } from '@/types/misc'
 import useUIStore from '@/stores/ui'
 
+// Composables & Stores
 const uiStore = useUIStore()
 
+// Data
 const inputRef: Ref<any> = ref(null)
 const options: Ref<ChartTime[]> = ref(Object.values(ChartTime))
 

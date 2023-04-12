@@ -8,10 +8,12 @@ import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import DB from '@/services/LocalDatabase'
 
+// Composables & Stores
 const { log } = useLogger()
 const { notify } = useNotifications()
 const route = useRoute()
 
+// Data
 const layout: Ref<any> = ref(null)
 
 onMounted(async () => {

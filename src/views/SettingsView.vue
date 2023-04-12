@@ -13,12 +13,24 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
+/**
+ * The format of the JSON file from an export.
+ */
+export type ExportData = {
+  appName: AppText.APP_NAME
+  exportedTimestamp: number
+  recordsCount: number
+  records: DatabaseRecord[]
+}
+
+// Composables & Stores
 const { log } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useDialogs()
 const { goToData } = useRoutables()
 const { onDefaults } = useDefaults()
 
+// Data
 const settings: Ref<any[]> = ref([])
 const logRetentionIndex: Ref<number> = ref(0)
 const importFile: Ref<any> = ref(null)
@@ -50,7 +62,7 @@ onUnmounted(() => {
 })
 
 /**
- * Generates example logs that can be examined on the Logs table and the console.
+ * Generates example logs that can be examined in the database and console.
  */
 function onTestLogger() {
   log.debug('This is a Debug Log', { name: 'Debug' })
@@ -69,7 +81,7 @@ function onRejectedFile(entries: any) {
 }
 
 /**
- * On confirmation, import your data from a JSON file.
+ * On confirmation, imports your data from a JSON file.
  */
 function onImportFile() {
   confirmDialog(
@@ -111,7 +123,7 @@ function onImportFile() {
 }
 
 /**
- * On confirmation, export your records as a JSON file.
+ * On confirmation, exports your records as a JSON file.
  */
 function onExportRecords(types: DatabaseType[]) {
   // Build export file name
@@ -133,13 +145,12 @@ function onExportRecords(types: DatabaseType[]) {
         const exportRecords = records.filter((record) => types.includes(record.type))
 
         // Build export file meta data
-        // TODO - this should be a type
         const exportData = {
           appName: AppText.APP_NAME,
           exportedTimestamp: new Date().getTime(),
-          exportedRecordsCount: exportRecords.length,
+          recordsCount: exportRecords.length,
           records: exportRecords,
-        }
+        } as ExportData
 
         log.silentDebug('exportData =', exportData)
 
@@ -162,7 +173,7 @@ function onExportRecords(types: DatabaseType[]) {
 }
 
 /**
- * TODO
+ * Updates the log retention time in the database.
  * @param logRetentionIndex
  */
 async function onChangeLogRetention(logRetentionIndex: number) {
@@ -176,7 +187,7 @@ async function onChangeLogRetention(logRetentionIndex: number) {
 }
 
 /**
- * TODO
+ * On confirmation, deletes all records of a specified type.
  * @param type
  */
 async function onDeleteDataType(type: DatabaseType) {
@@ -198,7 +209,7 @@ async function onDeleteDataType(type: DatabaseType) {
 }
 
 /**
- * On confirmation, deletes all items from all tables.
+ * On confirmation, deletes all records of any type from the database. Re-initializes the settings.
  */
 async function onDeleteAllData() {
   confirmDialog(
@@ -223,7 +234,7 @@ async function onDeleteAllData() {
 /**
  * On confirmation, completely deletes the database and all of its data (must reload the app after).
  */
-async function onDeleteDatabase(): Promise<void> {
+async function onDeleteDatabase() {
   confirmDialog(
     'Delete Database',
     'Delete the underlining database? All data will be lost. You must reload the website after this action to reinitialize the database.',

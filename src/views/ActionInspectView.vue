@@ -9,9 +9,11 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
+// Composables & Stores
 const { routeDatabaseType, routeId } = useRoutables()
 const { log } = useLogger()
 
+// Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 const record: Ref<Optional<DatabaseRecord>> = ref(null)
 

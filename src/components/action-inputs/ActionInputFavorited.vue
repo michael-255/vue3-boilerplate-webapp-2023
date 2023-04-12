@@ -4,10 +4,12 @@ import { Icon } from '@/types/icons'
 import useActionRecordStore from '@/stores/action-record'
 import { onMounted } from 'vue'
 
+// Props & Emits
 defineProps<{
   locked?: boolean
 }>()
 
+// Composables & Stores
 const actionRecordStore = useActionRecordStore()
 
 onMounted(() => {

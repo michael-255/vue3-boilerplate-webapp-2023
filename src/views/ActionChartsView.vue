@@ -5,7 +5,10 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
 
+// Composables & Stores
 const { routeDatabaseType } = useRoutables()
+
+// Data
 const chartBlueprints = getChartBlueprints(routeDatabaseType)
 </script>
 

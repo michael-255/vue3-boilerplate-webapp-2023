@@ -15,10 +15,12 @@ import useRoutables from '@/composables/useRoutables'
 import useActions from '@/composables/useActions'
 import DB from '@/services/LocalDatabase'
 
+// Composables & Stores
 const { log } = useLogger()
 const { routeDatabaseType, goToCharts, goToInspect, goToEdit, goToCreate, goBack } = useRoutables()
 const { onDeleteRecord } = useActions()
 
+// Data
 const columns: Ref<QTableColumn[]> = ref(getTableColumns(routeDatabaseType) ?? [])
 const columnOptions: Ref<QTableColumn[]> = ref(
   columns.value.filter((col: QTableColumn) => !col.required)

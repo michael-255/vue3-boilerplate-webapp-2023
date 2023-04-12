@@ -13,7 +13,6 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(Quasar, {
-  // import Quasar plugins and add here
   plugins: {
     Dialog, // doesn't appear to support default settings
     Notify,
@@ -23,7 +22,7 @@ app.use(Quasar, {
     /**
      * Defined app colors.
      * @see https://quasar.dev/style/color-palette
-     * @see https://quasar.dev/quasar-utils/color-utils#helper-getpalettecolor
+     * @see https://quasar.dev/quasar-utils/color-utils
      */
     brand: {
       primary: '#1976d2', // indigo (Primary Brand Color)
