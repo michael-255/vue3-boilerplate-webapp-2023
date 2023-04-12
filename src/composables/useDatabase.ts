@@ -10,7 +10,7 @@ import {
   type DatabaseParentType,
   type SettingValue,
 } from '@/types/database'
-import { LogRetention, type AppObject } from '@/types/misc'
+import { LogRetention, type AppObject, Milliseconds } from '@/types/misc'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { dexieWrapper } from '@/services/DexieWrapper'
 
@@ -266,7 +266,6 @@ export default function useDatabase() {
   //                                                                         //
   /////////////////////////////////////////////////////////////////////////////
 
-  // TODO - Improve function readablity and comments
   /**
    * Deletes all logs that are older than the log retention time setting.
    */
@@ -280,12 +279,12 @@ export default function useDatabase() {
 
     const getLogRetentionMilliseconds = (logRetention: LogRetention): number => {
       return {
-        [LogRetention.ONE_WEEK]: 7 * 24 * 60 * 60 * 1000,
-        [LogRetention.ONE_MONTH]: 30 * 24 * 60 * 60 * 1000,
-        [LogRetention.THREE_MONTHS]: 90 * 24 * 60 * 60 * 1000,
-        [LogRetention.SIX_MONTHS]: 180 * 24 * 60 * 60 * 1000,
-        [LogRetention.ONE_YEAR]: 365 * 24 * 60 * 60 * 1000,
-        [LogRetention.FOREVER]: Number.MAX_SAFE_INTEGER, // This should never happen
+        [LogRetention.ONE_WEEK]: Milliseconds.PER_WEEK,
+        [LogRetention.ONE_MONTH]: Milliseconds.PER_MONTH,
+        [LogRetention.THREE_MONTHS]: Milliseconds.PER_THREE_MONTHS,
+        [LogRetention.SIX_MONTHS]: Milliseconds.PER_SIX_MONTHS,
+        [LogRetention.ONE_YEAR]: Milliseconds.PER_YEAR,
+        [LogRetention.FOREVER]: Milliseconds.FOREVER, // This should never happen
       }[logRetention]
     }
 

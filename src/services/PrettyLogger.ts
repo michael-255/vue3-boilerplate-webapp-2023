@@ -1,5 +1,7 @@
 import { AppText } from '@/types/misc'
 
+// TODO - Try using Quasar's getPaletteColor() to get the colors from the theme out here first...
+
 /**
  * PrettyLogger adds some style to your console.
  * @param name Logger name appearing in the console

@@ -3,6 +3,12 @@ import type { AppObject, Optional } from '@/types/misc'
 import { getDisplayDate } from '@/utils/common'
 import { defineAsyncComponent } from 'vue'
 
+/*
+TODO
+- You need to expain what the field blueprints are for.
+- Document every function in this file.
+*/
+
 export type FieldBlueprint = {
   readonly field: DatabaseField
   readonly label: string

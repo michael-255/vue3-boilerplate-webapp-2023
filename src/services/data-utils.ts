@@ -1,6 +1,12 @@
 import { dataBlueprints } from '@/services/data-blueprints'
 import { DatabaseType } from '@/types/database'
 
+/*
+TODO
+- You need to expain what the data utils are for.
+- Document every function in this file.
+*/
+
 export const allDatabaseTypes: readonly DatabaseType[] = [
   DatabaseType.LOG,
   DatabaseType.SETTING,

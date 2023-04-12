@@ -45,6 +45,12 @@ import {
   valueColumn,
 } from '@/services/table-columns'
 
+/*
+TODO
+- You need to expain what the data blueprints are for.
+- Document every function in this file.
+*/
+
 export type DataBlueprint = {
   readonly type: DatabaseType
   readonly typeSlug: string

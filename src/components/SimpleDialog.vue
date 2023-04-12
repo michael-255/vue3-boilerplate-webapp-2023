@@ -9,10 +9,10 @@ Small dialogs used for confirming operations or providing information that can b
 // You can hook into the methods below:
 $q.dialog({...})
   .onOk(() => {
-    console.log('OK')
+    console.log('Called on OK')
   })
   .onCancel(() => {
-    console.log('Cancel')
+    console.log('Called on Cancel')
   })
   .onDismiss(() => {
     console.log('Called on OK or Cancel')

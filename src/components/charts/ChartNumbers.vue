@@ -26,8 +26,6 @@ defineProps<{
   chartOptions: AppObject
 }>()
 
-const uiStore = useUIStore()
-
 ChartJS.register(
   Title,
   Tooltip,
@@ -39,6 +37,7 @@ ChartJS.register(
   LineElement
 )
 
+const uiStore = useUIStore()
 const { getPaletteColor } = colors
 const { log } = useLogger()
 const { routeDatabaseType, routeId } = useRoutingHelpers()
@@ -47,7 +46,10 @@ const { getChildRecordsByParentId } = useDatabase()
 const hasData: Ref<boolean> = ref(false)
 const recordCount: Ref<number> = ref(0)
 
-const chartData: any = ref({
+const chartData: Ref<{
+  labels: any[]
+  datasets: any[]
+}> = ref({
   labels: [],
   datasets: [],
 })
@@ -65,6 +67,9 @@ function downwardTrend(ctx: any, color: any) {
   return ctx.p0.parsed.y > ctx.p1.parsed.y ? color : undefined
 }
 
+/**
+ * Rebuilds the chart data.
+ */
 async function recalculateChart() {
   try {
     const chartingRecords = await getChildRecordsByParentId(

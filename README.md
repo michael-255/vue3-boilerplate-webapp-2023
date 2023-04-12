@@ -5,24 +5,44 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [O] Generate menu layout items based on parent blueprints
-- [O] Remove all Quasar component imports since that is handled automatically by Quasar
-- [O] Use the `ui` store for the `Dashboard List Selection` instead of `Settings`
-- [O] Fix `Settings` type deletions in Settings page
-- [O] Validate route params in Vue Router using `beforeEnter`
-- [O] Test combining `onMounted` from composables for route stuff
-- [O] Add quick buttons to load defaults to `Dashboard` sections when the list is empty
-- [ ] `Text/Copy/Comments/Documentation` cleanup pass (should do as you make new code also)
-- [ ] Consolidate multi-item component props into a single object with a TS Type whe n it makes
-      sense
-- [ ] Could `Orphaned` be a type of record?
-- [ ] Possible `useRules` composable for input rules and validators?
-- [ ] Create `ErrorCard/NoDataCard` wrapper component for internal view components
-- [ ] Orphaned Records table
-- [ ] App specific utils stored in services?
-- [ ] Add more tags to the repository in GitHub based on packages used
-- [ ] Use a profilier to see if there are any performance hot spots with the app
-- [ ] Performance improvements? Replace spread operators, pull functions out of functions, etc.
+- General Tasks
+
+  - [ ] `Text/Copy/Comments/Documentation` cleanup pass (should do as you make new code also)
+  - [ ] Consolidate multi-item component props into a single object with a TS Type whe n it makes
+        sense
+  - [ ] Could `Orphaned` be a type of record?
+  - [ ] Possible `useRules` composable for input rules and validators?
+  - [ ] Create `ErrorCard/NoDataCard` wrapper component for internal view components
+  - [ ] Orphaned Records table
+  - [ ] App specific utils stored in services?
+  - [ ] Add more tags to the repository in GitHub based on packages used
+
+- File Organization
+
+  - [ ] What is the difference between `services`, `composables`, `helpers`, and `utils` (if any)?
+
+    - [ ] utils don't have to be functions that can be shared between any application
+    - [ ] `Blueprints.ts` in `services` that will use files from `~/services/blueprints`
+
+  - Rename `useSimpleDialogs` to `useDialogs`
+  - Rename `useRoutingHelpers` to `useRoutables`
+
+  - `LocalDatabase.ts`
+  - `Blueprints.ts`
+  - `Logger.ts` (decouple notify from Logger)
+
+- Performance & Memory Improvements
+
+  - [ ] Use a profiler to see if there are any performance hot spots within app
+  - [ ] Replace spread operators
+  - [ ] Pull functions out of functions
+  - [ ] Move `useDatabase` composable to `services` (new branch for this refactor)
+    - [ ] Merge with `DexieWrapper` and rename to `LocalDatabase`
+  - [ ] Move `useLogger` composable to `services` (new branch for this refactor)
+    - [ ] Merge with `PrettyLogger` and rename to `Logger`
+    - [ ] Remove `useNotifications` composable, then have `notify` provided by the caller
+          (dependency injection)
+  - [ ] Possible that most of your `composables` could be moved to `services`?
 
 - Quasar
 

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ChartTime } from '@/types/misc'
+import { ChartTime, Milliseconds } from '@/types/misc'
 import { parentTypes } from '@/services/data-utils'
 import type { DatabaseParentType } from '@/types/database'
 
@@ -15,11 +15,11 @@ const useUIStore = defineStore({
   getters: {
     getChartTimeMilliseconds: (state: any) => {
       return {
-        [ChartTime.ONE_MONTH]: 2_629_746_000,
-        [ChartTime.THREE_MONTHS]: 7_889_238_000,
-        [ChartTime.SIX_MONTHS]: 15_778_476_000,
-        [ChartTime.ONE_YEAR]: 31_556_952_000,
-        [ChartTime.ALL_TIME]: Number.MAX_SAFE_INTEGER,
+        [ChartTime.ONE_MONTH]: Milliseconds.PER_MONTH,
+        [ChartTime.THREE_MONTHS]: Milliseconds.PER_THREE_MONTHS,
+        [ChartTime.SIX_MONTHS]: Milliseconds.PER_SIX_MONTHS,
+        [ChartTime.ONE_YEAR]: Milliseconds.PER_YEAR,
+        [ChartTime.ALL_TIME]: Milliseconds.FOREVER,
       }[state.chartTime as ChartTime]
     },
   },

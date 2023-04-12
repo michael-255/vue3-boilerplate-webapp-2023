@@ -1,13 +1,18 @@
 import type { AppObject } from '@/types/misc'
 import { defineAsyncComponent } from 'vue'
 
+/*
+TODO
+- You need to expain what the chart blueprints are for.
+- Document every function in this file.
+*/
+
 export type ChartBlueprint = {
   readonly label: string
   readonly chartOptions: AppObject
   readonly component: any
 }
 
-// TODO
 export function numberChart(): ChartBlueprint {
   return {
     label: 'Numbers',

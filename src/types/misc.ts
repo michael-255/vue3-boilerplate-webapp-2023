@@ -26,6 +26,12 @@ export enum Limit {
  * Milliseconds per time value.
  */
 export enum Milliseconds {
+  FOREVER = Number.MAX_SAFE_INTEGER,
+  PER_YEAR = 31_536_000_000,
+  PER_SIX_MONTHS = 15_552_000_000,
+  PER_THREE_MONTHS = 7_776_000_000,
+  PER_MONTH = 2_592_000_000,
+  PER_WEEK = 604_800_000,
   PER_DAY = 86_400_000,
   PER_HOUR = 3_600_000,
   PER_MINUTE = 60_000,

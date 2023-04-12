@@ -4,7 +4,12 @@ import { truncateString } from '@/utils/common'
 import { getDisplayDate } from '@/utils/common'
 import type { QTableColumn } from 'quasar'
 
-// TODO
+/*
+TODO
+- You need to expain what the table columns are for.
+- Document every function in this file.
+*/
+
 /**
  * Used for data table row operations and don't need to be seen by the user.
  * This allows the user to hide columns and save horizontal screen space.
