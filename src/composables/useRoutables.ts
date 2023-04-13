@@ -3,8 +3,8 @@ import { RouteName } from '@/router/route-names'
 import { slugify } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
 import { getTypeFromSlug } from '@/services/Blueprints'
-import useLogger from '@/composables/useLogger'
 import type { Optional } from '@/types/misc'
+import useLogger from '@/composables/useLogger'
 
 /**
  * Composable with route param helpers and navigation functions.

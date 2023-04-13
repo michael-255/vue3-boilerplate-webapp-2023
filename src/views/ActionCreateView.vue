@@ -40,10 +40,10 @@ async function onCreateRecord() {
   const fields = getFields(routeDatabaseType)
 
   // Build record from store using only fields used by its type (ignoring others in store)
-  const record = fields.reduce(
-    (acc, field) => ({ ...acc, [field]: actionRecordStore.actionRecord[field] }),
-    {} as DatabaseRecord
-  )
+  const record = fields.reduce((acc, field) => {
+    acc[field] = actionRecordStore.actionRecord[field] as DatabaseRecord[typeof field]
+    return acc
+  }, {} as any) as DatabaseRecord
 
   // Inputs must be valid
   if (actionRecordStore.areRecordFieldsValid(fields)) {

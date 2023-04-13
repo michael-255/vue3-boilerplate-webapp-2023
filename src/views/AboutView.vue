@@ -11,8 +11,8 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
       <QCardSection>
         <div class="q-mb-md">
           {{ AppText.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
-          This project was built to be the foundation for many web apps. It is publicly available
-          using the MIT License.
+          This project was built to be the foundation for many web applications. It is publicly
+          available using the MIT License.
         </div>
 
         <div class="q-mb-md">

@@ -10,8 +10,7 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
       <QCardSection>
         <div class="q-mb-md">
           Hope you enjoyed using {{ AppText.APP_NAME }}. I try to create and maintain projects that
-          people find useful. Please consider donating to help me cover maintence and hosting costs.
-          Thank you!
+          people find useful. Please consider donating to help me out. Thank you!
         </div>
 
         <div class="q-mb-md">

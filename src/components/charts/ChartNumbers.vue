@@ -20,7 +20,6 @@ import useLogger from '@/composables/useLogger'
 import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
-import { Icon } from '@/types/icons'
 
 ChartJS.register(
   Title,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import useActionRecordStore from '@/stores/action-record'
 import { onMounted } from 'vue'
+import useActionRecordStore from '@/stores/action-record'
 
 // Props & Emits
 defineProps<{

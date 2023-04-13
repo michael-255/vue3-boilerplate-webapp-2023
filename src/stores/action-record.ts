@@ -9,17 +9,17 @@ const useActionRecordStore = defineStore({
     /**
      * Used as the WIP record for creates and updates.
      */
-    actionRecord: Object.values(DatabaseField).reduce(
-      (acc, field) => ({ ...acc, [field]: null as any }),
-      {} as { [key in DatabaseField]: any }
-    ),
+    actionRecord: Object.values(DatabaseField).reduce((acc, field) => {
+      acc[field] = null as any
+      return acc
+    }, {} as { [key in DatabaseField]: any }),
     /**
      * Used to track the validity of the actionRecord fields.
      */
-    valid: Object.values(DatabaseField).reduce(
-      (acc, field) => ({ ...acc, [field]: null as Optional<boolean> }),
-      {} as { [key in DatabaseField]: Optional<boolean> }
-    ),
+    valid: Object.values(DatabaseField).reduce((acc, field) => {
+      acc[field] = null as Optional<boolean>
+      return acc
+    }, {} as { [key in DatabaseField]: Optional<boolean> }),
   }),
 
   getters: {

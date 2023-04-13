@@ -7,11 +7,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 - General Tasks
 
-  - [ ] Replace spread operators where able
-  - [ ] Pull functions out of functions
-  - [ ] Do a copy pass on the `FAQ` page (this page needs more details)
-  - [ ] Do a copy pass on the `About` page
-  - [ ] Do a copy pass on the `Donate` page
   - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
   - [ ] Consider moving all types to files in the `types` directory
   - [ ] `Orphaned` records table (not a new type, but uses a new view)
@@ -23,7 +18,7 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
   - [ ] Use Quasar Loading plugin when waiting on data tables?
   - [ ] Use Quasar Meta plugin to improve SEO?
-  - [ ] Script to quickly updates certain values across the app
+  - [ ] Script to quickly updates certain values across the app?
 
 - Final Steps
 
