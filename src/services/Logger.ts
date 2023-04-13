@@ -1,3 +1,5 @@
+import { AppName } from '@/types/misc'
+
 /**
  * Logger adds some style to your console.
  * @param name Logger name appearing in the console
@@ -61,6 +63,6 @@ class ApplicationLogger {
 /**
  * Preconfigured ApplicationLogger instance.
  */
-const Logger = new ApplicationLogger(import.meta.env.VITE_APP_NAME)
+const Logger = new ApplicationLogger(AppName)
 
 export default Logger

@@ -62,7 +62,6 @@ export enum SettingId {
   DARK_MODE = 'dark-mode',
   SHOW_ALL_DATA_COLUMNS = 'show-all-data-columns',
   SHOW_CONSOLE_LOGS = 'show-console-logs',
-  SHOW_DEBUG_MESSAGES = 'show-debug-messages',
   SHOW_INFO_MESSAGES = 'show-info-messages',
   LOG_RETENTION_TIME = 'log-retention-time',
 }

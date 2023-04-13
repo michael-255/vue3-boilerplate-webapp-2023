@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const appName = import.meta.env.VITE_APP_NAME
-
 useMeta({
-  title: `${appName} - 404`,
+  title: `${AppName} - 404`,
   meta: {
     description: { name: 'description', content: '404 Page' },
   },

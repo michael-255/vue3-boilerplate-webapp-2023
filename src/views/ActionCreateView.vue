@@ -4,6 +4,7 @@ import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
 import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
 import { onMounted, onUnmounted } from 'vue'
+import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutables from '@/composables/useRoutables'
@@ -12,10 +13,8 @@ import useLogger from '@/composables/useLogger'
 import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
-const appName = import.meta.env.VITE_APP_NAME
-
 useMeta({
-  title: `${appName} - Create Record`,
+  title: `${AppName} - Create Record`,
   meta: {
     description: { name: 'description', content: 'Create Record Page' },
   },

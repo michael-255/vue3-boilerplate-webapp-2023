@@ -3,11 +3,10 @@ import { type Ref, ref } from 'vue'
 import { SettingId } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { RouteName } from '@/router/route-names'
+import { AppName } from '@/types/misc'
 import useDefaults from '@/composables/useDefaults'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
-
-const appName = import.meta.env.VITE_APP_NAME
 
 // Composables & Stores
 const uiStore = useUIStore()
@@ -31,7 +30,7 @@ async function onCloseIntroduction() {
 
       <!-- App Information -->
       <div class="q-mb-md">
-        Welcome to {{ appName }}. This app provides a simple foundation to build your own web apps.
+        Welcome to {{ AppName }}. This app provides a simple foundation to build your own web apps.
       </div>
 
       <!-- Favorites information -->
@@ -83,7 +82,7 @@ async function onCloseIntroduction() {
 
       <!-- Donation Information -->
       <div class="q-mb-md">
-        Hope you find {{ appName }} useful. Please consider donating to help me continue to create
+        Hope you find {{ AppName }} useful. Please consider donating to help me continue to create
         and maintain apps like this. Thank you!
       </div>
 

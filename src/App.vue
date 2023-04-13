@@ -9,8 +9,6 @@ import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import DB from '@/services/LocalDatabase'
 
-const baseURL = import.meta.env.BASE_URL
-
 /**
  * Sets up the core meta tags and links for the app. These are for things like the favicons and manifest.
  * Do NOT overwrite these specific properties in another useMeta().
@@ -28,24 +26,24 @@ useMeta({
   link: {
     manifest: {
       rel: 'manifest',
-      href: `${baseURL}manifest.json`,
+      href: `${import.meta.env.BASE_URL}manifest.json`,
     },
     appleTouchIcon: {
       rel: 'apple-touch-icon',
       sizes: '180x180',
-      href: `${baseURL}apple-touch-icon.png`,
+      href: `${import.meta.env.BASE_URL}apple-touch-icon.png`,
     },
     favicon32: {
       rel: 'icon',
       type: 'image/png',
       sizes: '32x32',
-      href: `${baseURL}favicon-32x32.png`,
+      href: `${import.meta.env.BASE_URL}favicon-32x32.png`,
     },
     favicon16: {
       rel: 'icon',
       type: 'image/png',
       sizes: '16x16',
-      href: `${baseURL}favicon-16x16.png`,
+      href: `${import.meta.env.BASE_URL}favicon-16x16.png`,
     },
   },
 

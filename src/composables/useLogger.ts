@@ -23,26 +23,25 @@ export default function useLogger() {
       Logger.print(message, ...args)
     },
     /**
-     * Debug silently with no notify popup. Does NOT save DB logs during call.
+     * Debug without a notify popup. Does NOT save DB logs during call.
+     * Only works in DEV mode.
      * @param message
      * @param args
      */
     silentDebug: async (name: string, details?: any) => {
-      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+      if (import.meta.env.DEV) {
         Logger.debug(`[${Severity.DEBUG}]`, name, details)
       }
     },
     /**
      * Debug with suppressable console logs and notifications. Does NOT save DB logs during call.
+     * Only works in DEV mode.
      * @param name
      * @param details
      */
     debug: async (name: string, details?: any) => {
-      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value) {
+      if (import.meta.env.DEV) {
         Logger.debug(`[${Severity.DEBUG}]`, name, details)
-      }
-
-      if ((await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value) {
         notify(name, Icon.DEBUG, 'accent')
       }
     },
@@ -98,17 +97,24 @@ export default function useLogger() {
     },
     /**
      * Track start time with a key label. Usefull for tracking application performance.
+     * Only works in DEV mode.
      * @param key
      */
     timeStart: (key: string) => {
-      Logger.timeStart(key)
+      if (import.meta.env.DEV) {
+        Logger.timeStart(key)
+      }
     },
     /**
      * Track end time with a key label. Usefull for tracking application performance.
+     * Only works in DEV mode.
      * @param key
      */
     timeEnd: (key: string) => {
-      Logger.timeEnd(key)
+      if (import.meta.env.DEV) {
+        Logger.timeEnd(key)
+        // TODO - Saving performance data to DB
+      }
     },
   }
 

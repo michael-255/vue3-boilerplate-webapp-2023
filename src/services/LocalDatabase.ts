@@ -1,6 +1,6 @@
 import Dexie, { liveQuery, type Table } from 'dexie'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
-import { LogRetention, Milliseconds, type AppObject } from '@/types/misc'
+import { LogRetention, Milliseconds, type AppObject, AppName } from '@/types/misc'
 import { Dark, uid } from 'quasar'
 import {
   DatabaseField,
@@ -45,8 +45,6 @@ class LocalDatabase extends Dexie {
       (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
     const showConsoleLogs =
       (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
-    const showDebugMessages =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_DEBUG_MESSAGES))?.value ?? false
     const showInfoMessages =
       (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? true
     const logRetentionTime =
@@ -62,7 +60,6 @@ class LocalDatabase extends Dexie {
       this.setSetting(SettingId.DARK_MODE, darkMode),
       this.setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, showAllDataColumns),
       this.setSetting(SettingId.SHOW_CONSOLE_LOGS, showConsoleLogs),
-      this.setSetting(SettingId.SHOW_DEBUG_MESSAGES, showDebugMessages),
       this.setSetting(SettingId.SHOW_INFO_MESSAGES, showInfoMessages),
       this.setSetting(SettingId.LOG_RETENTION_TIME, logRetentionTime),
     ])
@@ -336,6 +333,6 @@ class LocalDatabase extends Dexie {
 /**
  * Preconfigured LocalDatabase instance.
  */
-const DB = new LocalDatabase(import.meta.env.VITE_APP_NAME)
+const DB = new LocalDatabase(AppName)
 
 export default DB

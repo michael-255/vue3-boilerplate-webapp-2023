@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
-import { Limit, LogRetention, type ExportData } from '@/types/misc'
+import { Limit, LogRetention, type ExportData, AppName } from '@/types/misc'
 import { DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
@@ -14,10 +14,8 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
-const appName = import.meta.env.VITE_APP_NAME
-
 useMeta({
-  title: `${appName} - Settings`,
+  title: `${AppName} - Settings`,
   meta: {
     description: { name: 'description', content: 'Settings Page' },
   },
@@ -98,7 +96,7 @@ function onImportFile() {
         const { appName, records } = parsedFileData
 
         // Do NOT allow importing data from another app
-        if (parsedFileData?.appName !== appName) {
+        if (appName !== AppName) {
           throw new Error(`Cannot import data from this app: ${appName} `)
         }
 
@@ -127,7 +125,7 @@ function onImportFile() {
  */
 function onExportRecords(types: DatabaseType[]) {
   // Build export file name
-  const appNameSlug = appName.toLowerCase().split(' ').join('-')
+  const appNameSlug = AppName.toLowerCase().split(' ').join('-')
   const date = new Date().toISOString().split('T')[0]
   const filename = `export-${appNameSlug}-${date}.json`
 
@@ -146,7 +144,7 @@ function onExportRecords(types: DatabaseType[]) {
 
         // Build export file meta data
         const exportData = {
-          appName: appName,
+          appName: AppName,
           exportedTimestamp: new Date().getTime(),
           recordsCount: exportRecords.length,
           records: exportRecords,
@@ -406,15 +404,6 @@ async function onDeleteDatabase() {
           label="Show Console Logs"
           :model-value="settings.find((s) => s.id === SettingId.SHOW_CONSOLE_LOGS)?.value"
           @update:model-value="DB.setSetting(SettingId.SHOW_CONSOLE_LOGS, $event)"
-        />
-
-        <div class="q-mb-md">Show Debug Messages will display debug level notifications.</div>
-
-        <QToggle
-          class="q-mb-md"
-          label="Show Debug Messages"
-          :model-value="settings.find((s) => s.id === SettingId.SHOW_DEBUG_MESSAGES)?.value"
-          @update:model-value="DB.setSetting(SettingId.SHOW_DEBUG_MESSAGES, $event)"
         />
 
         <div class="q-mb-md">Show Info Messages will display info level notifications.</div>

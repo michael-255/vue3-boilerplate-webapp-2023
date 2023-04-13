@@ -3,10 +3,9 @@ import { RouterView, useRoute } from 'vue-router'
 import { Icon } from '@/types/icons'
 import { RouteName } from '@/router/route-names'
 import { parentDatabaseTypes, getLabel, getIcon, getSlug } from '@/services/Blueprints'
+import { AppName } from '@/types/misc'
 import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
-
-const appName = import.meta.env.VITE_APP_NAME
 
 // Composables & Stores
 const { goBack } = useRoutables()
@@ -21,7 +20,7 @@ const route = useRoute()
       <QToolbar>
         <QBtn flat round :icon="Icon.MENU_STANDARD" @click="uiStore.drawer = !uiStore.drawer" />
 
-        <QToolbarTitle>{{ appName }}</QToolbarTitle>
+        <QToolbarTitle>{{ AppName }}</QToolbarTitle>
 
         <QBtn
           v-if="route.name !== RouteName.DASHBOARD"

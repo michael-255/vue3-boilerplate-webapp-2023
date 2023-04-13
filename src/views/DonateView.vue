@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
+import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-const appName = import.meta.env.VITE_APP_NAME
-
 useMeta({
-  title: `${appName} - Donate`,
+  title: `${AppName} - Donate`,
   meta: {
     description: { name: 'description', content: 'Donate Page' },
   },
@@ -18,7 +17,7 @@ useMeta({
     <QCard>
       <QCardSection>
         <div class="q-mb-md">
-          Hope you enjoyed using {{ appName }}. I try to create and maintain projects that people
+          Hope you enjoyed using {{ AppName }}. I try to create and maintain projects that people
           find useful. Please consider donating to help me out. Thank you!
         </div>
 

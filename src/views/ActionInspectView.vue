@@ -2,7 +2,7 @@
 import { Icon } from '@/types/icons'
 import { onMounted, ref, type Ref } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
-import type { Optional } from '@/types/misc'
+import { type Optional, AppName } from '@/types/misc'
 import { getFieldBlueprints, getLabel } from '@/services/Blueprints'
 import { useMeta } from 'quasar'
 import useLogger from '@/composables/useLogger'
@@ -10,10 +10,8 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
-const appName = import.meta.env.VITE_APP_NAME
-
 useMeta({
-  title: `${appName} - Inspect Record`,
+  title: `${AppName} - Inspect Record`,
   meta: {
     description: { name: 'description', content: 'Inspect Record Page' },
   },

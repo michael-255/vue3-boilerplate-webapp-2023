@@ -10,6 +10,11 @@ import type { DatabaseRecord } from '@/types/models'
 import type { QTableColumn } from 'quasar'
 
 /**
+ * Application name used throughout the project.
+ */
+export const AppName = 'Web App Template'
+
+/**
  * Type that allows for a value to be null or undefined.
  */
 export type Optional<T> = T | null | undefined
