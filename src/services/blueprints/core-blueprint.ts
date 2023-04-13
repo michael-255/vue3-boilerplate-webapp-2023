@@ -28,6 +28,8 @@ import {
   typeField,
 } from '@/services/blueprints/field-bluprints'
 import {
+  requiredTypeColumn,
+  requiredIdColumn,
   createdTimestampColumn,
   descriptionColumn,
   detailsColumn,
@@ -40,17 +42,18 @@ import {
   numberColumn,
   parentIdColumn,
   partialIdColumn,
-  requiredHiddenColumns,
   severityColumn,
   valueColumn,
 } from '@/services/blueprints/table-columns'
 
 /*
-TODO
-- You need to expain what the data blueprints are for.
-- Document every function in this file.
+This file contains the core blueprints for all database types.
+Do NOT mutate these objects as they are used by multiple components.
 */
 
+/**
+ * A core blueprint defines the properties of a database type and how the app can use them.
+ */
 export type CoreBlueprint = {
   readonly type: DatabaseType
   readonly typeSlug: string
@@ -66,8 +69,13 @@ export type CoreBlueprint = {
   readonly tableColumns: QTableColumn[]
 }
 
+/**
+ * Core blueprints for all database types.
+ */
 export const coreBlueprint: readonly CoreBlueprint[] = [
-  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Settings Blueprint
+   */
   {
     type: DatabaseType.SETTING,
     typeSlug: slugify(DatabaseType.SETTING),
@@ -78,11 +86,13 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     childType: null,
     supportedActions: [],
     chartBluprints: [],
-    fieldBlueprints: [typeField(), idField(), valueField()],
+    fieldBlueprints: [typeField, idField, valueField],
     visibleColumns: [DatabaseField.ID, DatabaseField.VALUE],
-    tableColumns: [...requiredHiddenColumns(), idColumn(), valueColumn()],
+    tableColumns: [requiredTypeColumn, requiredIdColumn, idColumn, valueColumn],
   },
-  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Logs Blueprint
+   */
   {
     type: DatabaseType.LOG,
     typeSlug: slugify(DatabaseType.LOG),
@@ -94,12 +104,12 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     supportedActions: [DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
-      typeField(),
-      idField(),
-      createdTimestampField(),
-      severityField(),
-      labelField(),
-      detailsField(),
+      typeField,
+      idField,
+      createdTimestampField,
+      severityField,
+      labelField,
+      detailsField,
     ],
     visibleColumns: [
       DatabaseField.ID,
@@ -108,15 +118,18 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
       DatabaseField.LABEL,
     ],
     tableColumns: [
-      ...requiredHiddenColumns(),
-      partialIdColumn(),
-      createdTimestampColumn(),
-      severityColumn(),
-      labelColumn(),
-      detailsColumn(),
+      requiredTypeColumn,
+      requiredIdColumn,
+      partialIdColumn,
+      createdTimestampColumn,
+      severityColumn,
+      labelColumn,
+      detailsColumn,
     ],
   },
-  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Example Blueprint
+   */
   {
     type: DatabaseType.EXAMPLE,
     typeSlug: slugify(DatabaseType.EXAMPLE),
@@ -131,26 +144,29 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
       DatabaseAction.DELETE,
       DatabaseAction.CHARTS,
     ],
-    chartBluprints: [numberChart()],
+    chartBluprints: [numberChart],
     fieldBlueprints: [
-      typeField(),
-      idField(),
-      nameField(),
-      descriptionField(),
-      favoritedField(),
-      enabledField(),
+      typeField,
+      idField,
+      nameField,
+      descriptionField,
+      favoritedField,
+      enabledField,
     ],
     visibleColumns: [DatabaseField.ID, DatabaseField.NAME],
     tableColumns: [
-      ...requiredHiddenColumns(),
-      partialIdColumn(),
-      nameColumn(),
-      descriptionColumn(),
-      favoritedColumn(),
-      enabledColumn(),
+      requiredTypeColumn,
+      requiredIdColumn,
+      partialIdColumn,
+      nameColumn,
+      descriptionColumn,
+      favoritedColumn,
+      enabledColumn,
     ],
   },
-  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Example Results Blueprint
+   */
   {
     type: DatabaseType.EXAMPLE_RESULT,
     typeSlug: slugify(DatabaseType.EXAMPLE_RESULT),
@@ -162,24 +178,27 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
-      typeField(),
-      idField(),
-      createdTimestampField(),
-      parentIdField(),
-      noteField(),
-      numberField(),
+      typeField,
+      idField,
+      createdTimestampField,
+      parentIdField,
+      noteField,
+      numberField,
     ],
     visibleColumns: [DatabaseField.ID, DatabaseField.CREATED_TIMESTAMP, DatabaseField.PARENT_ID],
     tableColumns: [
-      ...requiredHiddenColumns(),
-      partialIdColumn(),
-      createdTimestampColumn(),
-      parentIdColumn(),
-      noteColumn(),
-      numberColumn(),
+      requiredTypeColumn,
+      requiredIdColumn,
+      partialIdColumn,
+      createdTimestampColumn,
+      parentIdColumn,
+      noteColumn,
+      numberColumn,
     ],
   },
-  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Test Blueprint
+   */
   {
     type: DatabaseType.TEST,
     typeSlug: slugify(DatabaseType.TEST),
@@ -194,26 +213,29 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
       DatabaseAction.DELETE,
       DatabaseAction.CHARTS,
     ],
-    chartBluprints: [numberChart()],
+    chartBluprints: [numberChart],
     fieldBlueprints: [
-      typeField(),
-      idField(),
-      nameField(),
-      descriptionField(),
-      favoritedField(),
-      enabledField(),
+      typeField,
+      idField,
+      nameField,
+      descriptionField,
+      favoritedField,
+      enabledField,
     ],
     visibleColumns: [DatabaseField.ID, DatabaseField.NAME],
     tableColumns: [
-      ...requiredHiddenColumns(),
-      partialIdColumn(),
-      nameColumn(),
-      descriptionColumn(),
-      favoritedColumn(),
-      enabledColumn(),
+      requiredTypeColumn,
+      requiredIdColumn,
+      partialIdColumn,
+      nameColumn,
+      descriptionColumn,
+      favoritedColumn,
+      enabledColumn,
     ],
   },
-  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Test Results Blueprint
+   */
   {
     type: DatabaseType.TEST_RESULT,
     typeSlug: slugify(DatabaseType.TEST_RESULT),
@@ -225,22 +247,22 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
-      typeField(),
-      idField(),
-      createdTimestampField(),
-      parentIdField(),
-      noteField(),
-      numberField(),
+      typeField,
+      idField,
+      createdTimestampField,
+      parentIdField,
+      noteField,
+      numberField,
     ],
     visibleColumns: [DatabaseField.ID, DatabaseField.CREATED_TIMESTAMP, DatabaseField.PARENT_ID],
     tableColumns: [
-      ...requiredHiddenColumns(),
-      partialIdColumn(),
-      createdTimestampColumn(),
-      parentIdColumn(),
-      noteColumn(),
-      numberColumn(),
+      requiredTypeColumn,
+      requiredIdColumn,
+      partialIdColumn,
+      createdTimestampColumn,
+      parentIdColumn,
+      noteColumn,
+      numberColumn,
     ],
   },
-  /////////////////////////////////////////////////////////////////////////////
 ]

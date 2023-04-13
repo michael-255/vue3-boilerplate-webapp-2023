@@ -5,7 +5,7 @@ export default function useNotifications() {
   const $q = useQuasar()
 
   /**
-   * Customizable Quasar notification.
+   * Notification (alert).
    * @param message
    * @param icon
    * @param color

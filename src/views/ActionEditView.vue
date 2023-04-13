@@ -43,7 +43,9 @@ onUnmounted(() => {
   actionRecordStore.$reset()
 })
 
-// TODO
+/**
+ * Confirmation edits the existing record in the database. Validation dialog appears if any field inputs are invalid.
+ */
 async function onUpdateRecord() {
   const fields = getFields(routeDatabaseType)
 
@@ -70,7 +72,7 @@ async function onUpdateRecord() {
           })
 
           actionRecordStore.$reset()
-          goBack()
+          goBack() // Return to previous page
         } catch (error) {
           log.error('Update failed', error)
         }

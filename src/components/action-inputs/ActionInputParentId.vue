@@ -71,7 +71,7 @@ onMounted(async () => {
       actionRecordStore.valid[DatabaseField.PARENT_ID] = false
     }
   } catch (error) {
-    log.error('Error with Parent Id component', error)
+    log.error('Error with parent id input', error)
   }
 })
 

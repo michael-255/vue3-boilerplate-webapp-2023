@@ -124,7 +124,7 @@ class LocalDatabase extends Dexie {
    * @param label
    * @param details
    */
-  async addLog(severity: Severity, label: string, details?: AppObject): Promise<IndexableType> {
+  async addLog(severity: Severity, label: string, details?: AppObject) {
     const log: Log = {
       [DatabaseField.TYPE]: DatabaseType.LOG,
       [DatabaseField.ID]: uid(),
@@ -213,10 +213,7 @@ class LocalDatabase extends Dexie {
    * @param childType
    * @param parentId
    */
-  async getChildRecordsByParentId(
-    childType: DatabaseChildType,
-    parentId: string
-  ): Promise<DatabaseRecord[]> {
+  async getChildRecordsByParentId(childType: DatabaseChildType, parentId: string) {
     return await this[DatabaseTable.RECORDS]
       .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
       .sortBy(DatabaseField.CREATED_TIMESTAMP)

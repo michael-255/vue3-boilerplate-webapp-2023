@@ -14,7 +14,7 @@ import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
 /**
- * The format of the JSON file from an export.
+ * Format of the JSON file from an export.
  */
 export type ExportData = {
   appName: AppText.APP_NAME
@@ -240,7 +240,7 @@ async function onDeleteDatabase() {
     'Delete the underlining database? All data will be lost. You must reload the website after this action to reinitialize the database.',
     Icon.CLEAR,
     'negative',
-    async (): Promise<void> => {
+    async () => {
       try {
         await DB.deleteDatabase()
         notify('Reload the website now', Icon.WARN, 'warning')
@@ -261,7 +261,7 @@ async function onDeleteDatabase() {
 
         <!-- Toggles -->
         <div class="q-mb-md">
-          Introduction provides instructions on the Home page on how to use the app.
+          Introduction provides helpful instructions on basic app usage on the Dashboard page.
         </div>
 
         <QToggle
@@ -283,7 +283,7 @@ async function onDeleteDatabase() {
         />
 
         <div class="q-mb-md">
-          Show all columns while on the data table page or only show the default columns. You can
+          Show all columns while viewing on the data page or only show the default columns. You can
           change the individual columns while on the page.
         </div>
 
@@ -301,7 +301,9 @@ async function onDeleteDatabase() {
         <div class="text-h6 q-mb-md">Defaults</div>
 
         <!-- Examples -->
-        <div class="q-mb-md">Load default Examples into the database.</div>
+        <div class="q-mb-md">
+          Load default demostration records into the database. This action can be repeated.
+        </div>
 
         <QBtn label="Load Examples" color="primary" @click="onDefaults()" />
       </QCardSection>
@@ -345,7 +347,7 @@ async function onDeleteDatabase() {
 
         <!-- Export -->
         <div class="q-mb-md">
-          Export the selected data tables as a JSON file. Do this on a regularly basis so you have a
+          Export the selected data types as a JSON file. Do this on a regularly basis so you have a
           backup of your data.
         </div>
 
@@ -366,7 +368,7 @@ async function onDeleteDatabase() {
 
         <!-- Access Internal Tables -->
         <div class="q-mb-md">
-          Access the internal {{ AppText.APP_NAME }} data tables if you need to troubleshoot issues.
+          Access any app data types to view the records or troubleshoot issues.
         </div>
 
         <QSelect
@@ -396,7 +398,7 @@ async function onDeleteDatabase() {
 
         <!-- Toggles -->
         <div class="q-mb-md">
-          Show Console Logs will display all log messages in the developer console.
+          Show Console Logs will display all log messages in the browser console.
         </div>
 
         <QToggle
@@ -406,7 +408,7 @@ async function onDeleteDatabase() {
           @update:model-value="DB.setSetting(SettingId.SHOW_CONSOLE_LOGS, $event)"
         />
 
-        <div class="q-mb-md">Show Debug Messages will display debug level notification alerts.</div>
+        <div class="q-mb-md">Show Debug Messages will display debug level notifications.</div>
 
         <QToggle
           class="q-mb-md"
@@ -415,7 +417,7 @@ async function onDeleteDatabase() {
           @update:model-value="DB.setSetting(SettingId.SHOW_DEBUG_MESSAGES, $event)"
         />
 
-        <div class="q-mb-md">Show Info Messages will display info level notification alerts.</div>
+        <div class="q-mb-md">Show Info Messages will display info level notifications.</div>
 
         <QToggle
           class="q-mb-md"
@@ -465,7 +467,7 @@ async function onDeleteDatabase() {
         </div>
 
         <!-- Delete Table Data -->
-        <div class="q-mb-md">Select a table and permanently delete all of its data.</div>
+        <div class="q-mb-md">Select a data type and permanently delete all of its records.</div>
 
         <QSelect
           v-model="deleteModel"
@@ -486,7 +488,7 @@ async function onDeleteDatabase() {
         </QSelect>
 
         <!-- Delete All Data -->
-        <div class="q-mb-md">Permanently delete all data from the database.</div>
+        <div class="q-mb-md">Permanently delete all data records from the database.</div>
 
         <QBtn class="q-mb-md" label="Delete All Data" color="negative" @click="onDeleteAllData()" />
 

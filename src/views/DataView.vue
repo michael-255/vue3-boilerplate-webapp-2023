@@ -29,7 +29,6 @@ const visibleColumns: Ref<string[]> = ref([])
 const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
-// TODO
 const subscription = DB.liveDataType(routeDatabaseType).subscribe({
   next: (records) => {
     rows.value = records
@@ -39,14 +38,14 @@ const subscription = DB.liveDataType(routeDatabaseType).subscribe({
   },
 })
 
-// TODO
 onMounted(async () => {
   try {
+    // Get the setting for showing all columns
     const showAllDataColumns = (
       await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
     )?.value
 
-    // This sets up what is currently visible on the data table
+    // This sets up what is currently visible on the QTable
     if (showAllDataColumns) {
       visibleColumns.value = getFields(routeDatabaseType) ?? [] // All columns
     } else {
@@ -61,7 +60,9 @@ onUnmounted(() => {
   subscription.unsubscribe()
 })
 
-// TODO
+/**
+ * Returns display text with the number of records for the current database type.
+ */
 function getRecordsCountText() {
   const count = rows?.value?.length ?? 0
 

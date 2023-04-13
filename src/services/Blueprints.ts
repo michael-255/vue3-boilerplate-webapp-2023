@@ -2,11 +2,12 @@ import { DatabaseType } from '@/types/database'
 import { coreBlueprint } from '@/services/blueprints/core-blueprint'
 
 /*
-TODO
-- You need to expain what the data utils are for.
-- Document every function in this file.
+These functions are used to access the core blueprints for all database types.
 */
 
+/**
+ * All database types.
+ */
 export const allDatabaseTypes: readonly DatabaseType[] = [
   DatabaseType.LOG,
   DatabaseType.SETTING,
@@ -16,26 +17,51 @@ export const allDatabaseTypes: readonly DatabaseType[] = [
   DatabaseType.TEST_RESULT,
 ]
 
-export const coreDatabaseTypes: readonly DatabaseType[] = [DatabaseType.LOG, DatabaseType.SETTING]
+/**
+ * Only internal database types.
+ */
+export const internalDatabaseTypes: readonly DatabaseType[] = [
+  DatabaseType.LOG,
+  DatabaseType.SETTING,
+]
 
+/**
+ * Only parent database types.
+ */
 export const parentDatabaseTypes: readonly DatabaseType[] = [
   DatabaseType.EXAMPLE,
   DatabaseType.TEST,
 ]
 
+/**
+ * Only child database types.
+ */
 export const childDatabaseTypes: readonly DatabaseType[] = [
   DatabaseType.EXAMPLE_RESULT,
   DatabaseType.TEST_RESULT,
 ]
 
+/**
+ * Gets the slug for a database type.
+ * @param type
+ */
 export function getSlug(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.typeSlug
 }
 
+/**
+ * Gets the database type from a slug.
+ * @param databaseTypeSlug
+ */
 export function getTypeFromSlug(databaseTypeSlug: string) {
   return coreBlueprint.find((cbp) => cbp.typeSlug === databaseTypeSlug)?.type
 }
 
+/**
+ * Gets the singular or plural label for a database type.
+ * @param type
+ * @param style
+ */
 export function getLabel(type: DatabaseType, style: 'singular' | 'plural') {
   if (style === 'singular') {
     return coreBlueprint.find((cbp) => cbp.type === type)?.singularLabel
@@ -44,36 +70,68 @@ export function getLabel(type: DatabaseType, style: 'singular' | 'plural') {
   }
 }
 
+/**
+ * Gets the icon for a database type.
+ * @param type
+ */
 export function getIcon(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.icon
 }
 
+/**
+ * Gets the parent type (if any) for a database type.
+ * @param type
+ */
 export function getParentType(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.parentType
 }
 
+/**
+ * Gets the child type (if any) for a database type.
+ * @param type
+ */
 export function getChildType(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.childType
 }
 
+/**
+ * Gets the supported actions (CRUD) for a database type.
+ * @param type
+ */
 export function getSupportedActions(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.supportedActions ?? []
 }
 
+/**
+ * Gets the chart blueprints for a database type.
+ * @param type
+ */
 export function getChartBlueprints(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.chartBluprints ?? []
 }
 
+/**
+ * Gets the field blueprints for a database type.
+ * @param type
+ */
 export function getFieldBlueprints(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.fieldBlueprints ?? []
 }
 
+/**
+ * Gets the fields used by a database type.
+ * @param type
+ */
 export function getFields(type: DatabaseType) {
   return (
     coreBlueprint.find((cbp) => cbp.type === type)?.fieldBlueprints.map((fbp) => fbp.field) ?? []
   )
 }
 
+/**
+ * Gets the field components used by a database type.
+ * @param type
+ */
 export function getFieldComponents(type: DatabaseType) {
   return (
     coreBlueprint.find((cbp) => cbp.type === type)?.fieldBlueprints.map((fbp) => fbp.component) ??
@@ -81,10 +139,18 @@ export function getFieldComponents(type: DatabaseType) {
   )
 }
 
+/**
+ * Gets the visible columns used by QTable for a database type.
+ * @param type
+ */
 export function getVisibleColumns(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.visibleColumns ?? []
 }
 
+/**
+ * Gets the table columns used by QTable for a database type.
+ * @param type
+ */
 export function getTableColumns(type: DatabaseType) {
   return coreBlueprint.find((cbp) => cbp.type === type)?.tableColumns ?? []
 }

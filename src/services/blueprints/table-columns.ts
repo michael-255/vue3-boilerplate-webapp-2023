@@ -5,218 +5,233 @@ import { getDisplayDate } from '@/utils/common'
 import type { QTableColumn } from 'quasar'
 
 /*
-TODO
-- You need to expain what the table columns are for.
-- Document every function in this file.
+This file contains table column objects used by the Data view for the QTable component.
+Do NOT mutate these objects as they are used by multiple components.
 */
 
 /**
- * Used for data table row operations and don't need to be seen by the user.
- * This allows the user to hide columns and save horizontal screen space.
+ * Hidden Type column (required).
+ * Used for data table row operations. User doesn't need to see this which saves horizontal space on the Data view.
+ * (Must be at position 0 for Data Table props.cols[0])
  */
-export function requiredHiddenColumns(): QTableColumn[] {
-  return [
-    // Must be at position 0 for Data Table props.cols[0]
-    {
-      name: 'hiddenType',
-      label: '',
-      align: 'left',
-      sortable: false,
-      required: true,
-      field: (row: any) => row[DatabaseField.TYPE],
-      format: (val: DatabaseType) => `${val}`,
-      style: 'display: none',
-    },
-    // Must be at position 1 for Data Table props.cols[1]
-    {
-      name: 'hiddenId',
-      label: '',
-      align: 'left',
-      sortable: false,
-      required: true,
-      field: (row: any) => row[DatabaseField.ID],
-      format: (val: string) => `${val}`,
-      style: 'display: none',
-    },
-  ]
+export const requiredTypeColumn: QTableColumn = {
+  name: 'hiddenType',
+  label: '',
+  align: 'left',
+  sortable: false,
+  required: true,
+  field: (row: any) => row[DatabaseField.TYPE],
+  format: (val: DatabaseType) => `${val}`,
+  style: 'display: none',
 }
 
-export function typeColumn(): QTableColumn {
-  return {
-    name: DatabaseField.TYPE,
-    label: 'Type',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.TYPE],
-    format: (val: DatabaseType) => `${val}`,
-  }
+/**
+ * Hidden Id column (required).
+ * Used for data table row operations. User doesn't need to see this which saves horizontal space on the Data view.
+ * (Must be at position 1 for Data Table props.cols[1])
+ */
+export const requiredIdColumn: QTableColumn = {
+  name: 'hiddenId',
+  label: '',
+  align: 'left',
+  sortable: false,
+  required: true,
+  field: (row: any) => row[DatabaseField.ID],
+  format: (val: string) => `${val}`,
+  style: 'display: none',
 }
 
-export function partialIdColumn(): QTableColumn {
-  return {
-    name: DatabaseField.ID,
-    label: 'Id*',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.ID],
-    format: (val: string) => truncateString(val, 8, '*'),
-  }
+/**
+ * Type column used by all records.
+ */
+export const typeColumn: QTableColumn = {
+  name: DatabaseField.TYPE,
+  label: 'Type',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.TYPE],
+  format: (val: DatabaseType) => `${val}`,
 }
 
-export function idColumn(): QTableColumn {
-  return {
-    name: DatabaseField.ID,
-    label: 'Id',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.ID],
-    format: (val: string) => `${val}`,
-  }
+/**
+ * Partial Id column used by all records. Truncated to provide more horizontal space on the Data view.
+ */
+export const partialIdColumn: QTableColumn = {
+  name: DatabaseField.ID,
+  label: 'Id*',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.ID],
+  format: (val: string) => truncateString(val, 8, '*'),
 }
 
-export function createdTimestampColumn(): QTableColumn {
-  return {
-    name: DatabaseField.CREATED_TIMESTAMP,
-    label: 'Created Date',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.CREATED_TIMESTAMP],
-    format: (val: number) => getDisplayDate(val),
-  }
+/**
+ * Full Id column used by Settings since setting ids are short readable slugs.
+ */
+export const idColumn: QTableColumn = {
+  name: DatabaseField.ID,
+  label: 'Id',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.ID],
+  format: (val: string) => `${val}`,
 }
 
-export function valueColumn(): QTableColumn {
-  return {
-    name: DatabaseField.VALUE,
-    label: 'Setting Value',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.VALUE],
-    format: (val: any) => truncateString(JSON.stringify(val), 30, '...'),
-  }
+/**
+ * Created Date column used by Logs and child records.
+ */
+export const createdTimestampColumn: QTableColumn = {
+  name: DatabaseField.CREATED_TIMESTAMP,
+  label: 'Created Date',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.CREATED_TIMESTAMP],
+  format: (val: number) => getDisplayDate(val),
 }
 
-export function severityColumn(): QTableColumn {
-  return {
-    name: DatabaseField.SEVERITY,
-    label: 'Severity',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.SEVERITY],
-    format: (val: Severity) => `${val}`,
-  }
+/**
+ * Setting Value column used by Settings.
+ */
+export const valueColumn: QTableColumn = {
+  name: DatabaseField.VALUE,
+  label: 'Setting Value',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.VALUE],
+  format: (val: any) => truncateString(JSON.stringify(val), 30, '...'),
 }
 
-export function detailsColumn(): QTableColumn {
-  return {
-    name: DatabaseField.DETAILS,
-    label: 'Details',
-    align: 'left',
-    sortable: false,
-    required: false,
-    field: (row: any) => row[DatabaseField.DETAILS],
-    format: (val: AppObject) => truncateString(JSON.stringify(val), 30, '...'),
-  }
+/**
+ * Severity column used by Logs.
+ */
+export const severityColumn: QTableColumn = {
+  name: DatabaseField.SEVERITY,
+  label: 'Severity',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.SEVERITY],
+  format: (val: Severity) => `${val}`,
 }
 
-export function labelColumn(): QTableColumn {
-  return {
-    name: DatabaseField.LABEL,
-    label: 'Label',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.LABEL],
-    format: (val: string) => truncateString(val, 30, '...'),
-  }
+/**
+ * Details column used by Logs.
+ */
+export const detailsColumn: QTableColumn = {
+  name: DatabaseField.DETAILS,
+  label: 'Details',
+  align: 'left',
+  sortable: false,
+  required: false,
+  field: (row: any) => row[DatabaseField.DETAILS],
+  format: (val: AppObject) => truncateString(JSON.stringify(val), 30, '...'),
 }
 
-export function nameColumn(): QTableColumn {
-  return {
-    name: DatabaseField.NAME,
-    label: 'Name',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.NAME],
-    format: (val: string) => truncateString(val, 30, '...'),
-  }
+/**
+ * Label column used by Logs.
+ */
+export const labelColumn: QTableColumn = {
+  name: DatabaseField.LABEL,
+  label: 'Label',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.LABEL],
+  format: (val: string) => truncateString(val, 30, '...'),
 }
 
-export function descriptionColumn(): QTableColumn {
-  return {
-    name: DatabaseField.DESCRIPTION,
-    label: 'Description',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.DESCRIPTION],
-    format: (val: string) => truncateString(val, 30, '...'),
-  }
+/**
+ * Name column used by parent records.
+ */
+export const nameColumn: QTableColumn = {
+  name: DatabaseField.NAME,
+  label: 'Name',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.NAME],
+  format: (val: string) => truncateString(val, 30, '...'),
 }
 
-export function favoritedColumn(): QTableColumn {
-  return {
-    name: DatabaseField.IS_FAVORITED,
-    label: 'Favorited',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.IS_FAVORITED],
-    format: (val: boolean) => (val ? 'Yes' : 'No'),
-  }
+/**
+ * Description column used by parent records.
+ */
+export const descriptionColumn: QTableColumn = {
+  name: DatabaseField.DESCRIPTION,
+  label: 'Description',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.DESCRIPTION],
+  format: (val: string) => truncateString(val, 30, '...'),
 }
 
-export function enabledColumn(): QTableColumn {
-  return {
-    name: DatabaseField.IS_ENABLED,
-    label: 'Enabled',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.IS_ENABLED],
-    format: (val: boolean) => (val ? 'Yes' : 'No'),
-  }
+/**
+ * Favorite column used by parent records.
+ */
+export const favoritedColumn: QTableColumn = {
+  name: DatabaseField.IS_FAVORITED,
+  label: 'Favorited',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.IS_FAVORITED],
+  format: (val: boolean) => (val ? 'Yes' : 'No'),
 }
 
-export function parentIdColumn(): QTableColumn {
-  return {
-    name: DatabaseField.PARENT_ID,
-    label: 'Parent Id*',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.PARENT_ID],
-    format: (val: string) => truncateString(val, 8, '*'),
-  }
+/**
+ * Enabled column used by parent records.
+ */
+export const enabledColumn: QTableColumn = {
+  name: DatabaseField.IS_ENABLED,
+  label: 'Enabled',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.IS_ENABLED],
+  format: (val: boolean) => (val ? 'Yes' : 'No'),
 }
 
-export function noteColumn(): QTableColumn {
-  return {
-    name: DatabaseField.NOTE,
-    label: 'Note',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.NOTE],
-    format: (val: string) => truncateString(val, 30, '...'),
-  }
+/**
+ * Parent Id column used by child records.
+ */
+export const parentIdColumn: QTableColumn = {
+  name: DatabaseField.PARENT_ID,
+  label: 'Parent Id*',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.PARENT_ID],
+  format: (val: string) => truncateString(val, 8, '*'),
 }
 
-export function numberColumn(): QTableColumn {
-  return {
-    name: DatabaseField.NUMBER,
-    label: 'Number',
-    align: 'left',
-    sortable: true,
-    required: false,
-    field: (row: any) => row[DatabaseField.NUMBER],
-    format: (val: number) => `${val}`,
-  }
+/**
+ * Note column used by child records.
+ */
+export const noteColumn: QTableColumn = {
+  name: DatabaseField.NOTE,
+  label: 'Note',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.NOTE],
+  format: (val: string) => truncateString(val, 30, '...'),
+}
+
+/**
+ * Number column used by child records.
+ */
+export const numberColumn: QTableColumn = {
+  name: DatabaseField.NUMBER,
+  label: 'Number',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.NUMBER],
+  format: (val: number) => `${val}`,
 }

@@ -9,7 +9,6 @@ import {
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
-import type { DashboardParent } from '@/types/frontend'
 import type { Optional } from '@/types/misc'
 import { parentDatabaseTypes, getChildType, getLabel } from '@/services/Blueprints'
 import ResponsivePage from '@/components/ResponsivePage.vue'
@@ -19,6 +18,19 @@ import useRoutables from '@/composables/useRoutables'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
+
+/**
+ * Used to display data from parent types on the dashboard.
+ */
+export type DashboardParent = {
+  [DatabaseField.TYPE]: DatabaseParentType
+  [DatabaseField.ID]: string
+  [DatabaseField.NAME]: string
+  [DatabaseField.IS_FAVORITED]: boolean
+  previousNote?: string
+  previousCreatedTimestamp?: number
+  previousNumber?: number
+}
 
 // Composables & Stores
 const uiStore = useUIStore()
@@ -108,7 +120,9 @@ onUnmounted(() => {
   subscription.unsubscribe()
 })
 
-// TODO
+/**
+ * Returns display text with the number of enabled records for the current Dashboard selection.
+ */
 function getDashboardRecordsCountText() {
   const count = dashboardRecordRefs?.[uiStore.dashboardListSelection]?.value?.length ?? 0
 

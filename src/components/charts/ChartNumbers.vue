@@ -20,6 +20,7 @@ import useLogger from '@/composables/useLogger'
 import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
+import { Icon } from '@/types/icons'
 
 ChartJS.register(
   Title,
@@ -45,7 +46,6 @@ const { log } = useLogger()
 const { routeDatabaseType, routeId } = useRoutables()
 
 // Data
-const hasData: Ref<boolean> = ref(false)
 const recordCount: Ref<number> = ref(0)
 const chartData: Ref<{
   labels: any[]
@@ -73,16 +73,17 @@ function downwardTrend(ctx: any, color: any) {
  */
 async function recalculateChart() {
   try {
+    // Get all records for the current route type and id
     const chartingRecords = await DB.getChildRecordsByParentId(
       getChildType(routeDatabaseType) as DatabaseChildType,
       routeId
     )
 
+    // Continue if there are records
     if (chartingRecords.length > 0) {
-      hasData.value = true
-
       const chartMilliseconds = uiStore.getChartTimeMilliseconds
 
+      // Filter records to only include those within the chart time
       const timeRestrictedRecords = chartingRecords.filter((record: any) => {
         const timeDifference = new Date().getTime() - record[DatabaseField.CREATED_TIMESTAMP]
         return timeDifference <= chartMilliseconds
@@ -90,14 +91,17 @@ async function recalculateChart() {
 
       recordCount.value = timeRestrictedRecords.length
 
+      // Create chart label dates from the created timestamps
       const chartLabels = timeRestrictedRecords.map((record: any) =>
         date.formatDate(record[DatabaseField.CREATED_TIMESTAMP], 'ddd YYYY MMM D h:mm a')
       )
 
+      // Create chart data from the number fields
       const chartDataItems = timeRestrictedRecords.map(
         (record: any) => record[DatabaseField.NUMBER]
       )
 
+      // Set chart data with the labels and data
       chartData.value = {
         labels: chartLabels,
         datasets: [
@@ -139,9 +143,22 @@ watch(
   <QCard class="q-mb-md">
     <QCardSection>
       <div class="text-h6">{{ label }}</div>
-      <div>Charted Records Count: {{ recordCount }}</div>
-      <Line v-if="hasData" :options="chartOptions" :data="chartData" />
-      <div v-else>No data found</div>
+
+      <div>Displays all numbers recorded over time.</div>
+
+      <!-- Chart -->
+      <Line v-if="recordCount && recordCount > 0" :options="chartOptions" :data="chartData" />
+
+      <!-- Record Count -->
+      <QBadge v-if="recordCount && recordCount === 1" rounded color="secondary" class="q-py-none">
+        <span class="text-caption">{{ recordCount }} record in time frame</span>
+      </QBadge>
+      <QBadge v-if="recordCount && recordCount > 1" rounded color="secondary" class="q-py-none">
+        <span class="text-caption">{{ recordCount }} records in time frame</span>
+      </QBadge>
+
+      <!-- No Data -->
+      <div v-else>No records found</div>
     </QCardSection>
   </QCard>
 </template>

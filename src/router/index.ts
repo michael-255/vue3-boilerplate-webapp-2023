@@ -119,6 +119,10 @@ const router = createRouter({
   ],
 })
 
+/**
+ * Checks if the database type slug refers to a valid database type.
+ * @param databaseTypeSlug
+ */
 function isDatabaseTypeValid(databaseTypeSlug: string) {
   const typeSlug = getTypeFromSlug(databaseTypeSlug)
 
@@ -129,6 +133,10 @@ function isDatabaseTypeValid(databaseTypeSlug: string) {
   }
 }
 
+/**
+ * Checks if the id exists with at least a length of 1.
+ * @param id
+ */
 function isIdValid(id: string) {
   return !!(id?.length > 0)
 }

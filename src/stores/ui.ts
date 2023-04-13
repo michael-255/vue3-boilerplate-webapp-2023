@@ -7,12 +7,24 @@ const useUIStore = defineStore({
   id: 'ui',
 
   state: () => ({
+    /**
+     * Side nav drawer state.
+     */
     drawer: false,
+    /**
+     * Currently selected dashboard list.
+     */
     dashboardListSelection: parentDatabaseTypes[0] as DatabaseParentType,
+    /**
+     * Currently selected chart time used for graphing.
+     */
     chartTime: ChartTime.THREE_MONTHS,
   }),
 
   getters: {
+    /**
+     * Returns the milliseconds for the current chart time value.
+     */
     getChartTimeMilliseconds: (state: any) => {
       return {
         [ChartTime.ONE_MONTH]: Milliseconds.PER_MONTH,

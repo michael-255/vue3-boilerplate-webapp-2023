@@ -7,6 +7,7 @@ import { parentDatabaseTypes, getLabel, getIcon, getSlug } from '@/services/Blue
 import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 
+// Composables & Stores
 const { goBack } = useRoutables()
 const uiStore = useUIStore()
 const route = useRoute()

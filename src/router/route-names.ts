@@ -1,5 +1,5 @@
 /**
- * Route names used by Vue router.
+ * Application route names used by Vue router.
  */
 export enum RouteName {
   DASHBOARD = 'Dashboard',

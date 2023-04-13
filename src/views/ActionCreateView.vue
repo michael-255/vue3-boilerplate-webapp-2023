@@ -33,7 +33,9 @@ onUnmounted(() => {
   actionRecordStore.$reset()
 })
 
-// TODO
+/**
+ * Confirmation creates a new record in the database. Validation dialog appears if any field inputs are invalid.
+ */
 async function onCreateRecord() {
   const fields = getFields(routeDatabaseType)
 
@@ -59,7 +61,7 @@ async function onCreateRecord() {
             createdRecordId: record[DatabaseField.ID],
           })
 
-          goBack()
+          goBack() // Return to previous page
         } catch (error) {
           log.error('Create failed', error)
         }

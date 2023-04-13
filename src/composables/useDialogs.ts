@@ -2,11 +2,14 @@ import { useQuasar } from 'quasar'
 import { Icon } from '@/types/icons'
 import SimpleDialog from '@/components/SimpleDialog.vue'
 
+/**
+ * Composable with convenient simple dialogs.
+ */
 export default function useDialogs() {
   const $q = useQuasar()
 
   /**
-   * Customizable Quasar dialog (confirm).
+   * Confirmation dialog.
    * @param title
    * @param message
    * @param onOkFunc Non-returning function
@@ -36,7 +39,7 @@ export default function useDialogs() {
   }
 
   /**
-   * Customizable Quasar dialog (dismiss).
+   * Dismiss dialog.
    * @param title
    * @param message
    * @param icon

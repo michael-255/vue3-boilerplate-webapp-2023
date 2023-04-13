@@ -6,12 +6,15 @@ import useLogger from '@/composables/useLogger'
 import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
+/**
+ * Composable with functions for generating default data for the app.
+ */
 export default function useDefaults() {
   const { log } = useLogger()
   const { confirmDialog } = useDialogs()
 
   /**
-   * Generate default demostration data for the app.
+   * Generate default demostration data for the template app.
    */
   async function onDefaults() {
     confirmDialog(
