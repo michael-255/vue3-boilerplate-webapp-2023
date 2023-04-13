@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
-import { AppText, Limit, LogRetention } from '@/types/misc'
+import { AppText, Limit, LogRetention, type ExportData } from '@/types/misc'
 import { DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
@@ -12,16 +12,6 @@ import useDefaults from '@/composables/useDefaults'
 import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
-
-/**
- * Format of the JSON file from an export.
- */
-export type ExportData = {
-  appName: AppText.APP_NAME
-  exportedTimestamp: number
-  recordsCount: number
-  records: DatabaseRecord[]
-}
 
 // Composables & Stores
 const { log } = useLogger()

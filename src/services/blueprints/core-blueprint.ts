@@ -1,15 +1,8 @@
 import { Icon } from '@/types/icons'
-import type { Optional } from '@/types/misc'
+import type { CoreBlueprint } from '@/types/misc'
 import { slugify } from '@/utils/common'
-import type { QTableColumn } from 'quasar'
-import { numberChart, type ChartBlueprint } from '@/services/blueprints/chart-blueprints'
-import {
-  DatabaseAction,
-  DatabaseField,
-  DatabaseType,
-  type DatabaseParentType,
-  type DatabaseChildType,
-} from '@/types/database'
+import { numberChart } from '@/services/blueprints/chart-blueprints'
+import { DatabaseAction, DatabaseField, DatabaseType } from '@/types/database'
 import {
   idField,
   valueField,
@@ -24,7 +17,6 @@ import {
   parentIdField,
   noteField,
   numberField,
-  type FieldBlueprint,
   typeField,
 } from '@/services/blueprints/field-bluprints'
 import {
@@ -50,24 +42,6 @@ import {
 This file contains the core blueprints for all database types.
 Do NOT mutate these objects as they are used by multiple components.
 */
-
-/**
- * A core blueprint defines the properties of a database type and how the app can use them.
- */
-export type CoreBlueprint = {
-  readonly type: DatabaseType
-  readonly typeSlug: string
-  readonly singularLabel: string
-  readonly pluralLabel: string
-  readonly icon: Icon
-  readonly parentType: Optional<DatabaseParentType>
-  readonly childType: Optional<DatabaseChildType>
-  readonly supportedActions: DatabaseAction[]
-  readonly chartBluprints: ChartBlueprint[]
-  readonly fieldBlueprints: FieldBlueprint[]
-  readonly visibleColumns: DatabaseField[]
-  readonly tableColumns: QTableColumn[]
-}
 
 /**
  * Core blueprints for all database types.

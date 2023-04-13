@@ -1,5 +1,5 @@
 import { DatabaseField, Severity, type SettingValue } from '@/types/database'
-import type { AppObject } from '@/types/misc'
+import type { AppObject, FieldBlueprint } from '@/types/misc'
 import { getDisplayDate } from '@/utils/common'
 import { defineAsyncComponent } from 'vue'
 
@@ -7,17 +7,6 @@ import { defineAsyncComponent } from 'vue'
 This file contains field property objects used by many components that interact with database records.
 Do NOT mutate these objects as they are used by multiple components.
 */
-
-/**
- * Field properties commonly used together by app components.
- * Any field with no component doesn't support rendering for operations like create and update.
- */
-export type FieldBlueprint = {
-  readonly field: DatabaseField
-  readonly label: string
-  readonly inspectFormat: (val: any) => string
-  readonly component?: any // Vue component used when rendering (if any)
-}
 
 /**
  * Type field used by all records.

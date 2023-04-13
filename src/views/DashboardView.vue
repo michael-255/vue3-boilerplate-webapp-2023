@@ -9,7 +9,7 @@ import {
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
-import type { Optional } from '@/types/misc'
+import type { DashboardParent, Optional } from '@/types/misc'
 import { parentDatabaseTypes, getChildType, getLabel } from '@/services/Blueprints'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
@@ -18,19 +18,6 @@ import useRoutables from '@/composables/useRoutables'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
-
-/**
- * Used to display data from parent types on the dashboard.
- */
-export type DashboardParent = {
-  [DatabaseField.TYPE]: DatabaseParentType
-  [DatabaseField.ID]: string
-  [DatabaseField.NAME]: string
-  [DatabaseField.IS_FAVORITED]: boolean
-  previousNote?: string
-  previousCreatedTimestamp?: number
-  previousNumber?: number
-}
 
 // Composables & Stores
 const uiStore = useUIStore()

@@ -1,3 +1,14 @@
+import type {
+  DatabaseAction,
+  DatabaseChildType,
+  DatabaseField,
+  DatabaseParentType,
+  DatabaseType,
+} from '@/types/database'
+import type { Icon } from '@/types/icons'
+import type { DatabaseRecord } from '@/types/models'
+import type { QTableColumn } from 'quasar'
+
 /**
  * Type that allows for a value to be null or undefined.
  */
@@ -59,4 +70,65 @@ export enum ChartTime {
   SIX_MONTHS = '6 Months',
   ONE_YEAR = '1 Year',
   ALL_TIME = 'All Time',
+}
+
+/**
+ * Format of the JSON file from an export.
+ */
+export type ExportData = {
+  appName: AppText.APP_NAME
+  exportedTimestamp: number
+  recordsCount: number
+  records: DatabaseRecord[]
+}
+
+/**
+ * Used to display data from parent types on the dashboard.
+ */
+export type DashboardParent = {
+  [DatabaseField.TYPE]: DatabaseParentType
+  [DatabaseField.ID]: string
+  [DatabaseField.NAME]: string
+  [DatabaseField.IS_FAVORITED]: boolean
+  previousNote?: string
+  previousCreatedTimestamp?: number
+  previousNumber?: number
+}
+
+/**
+ * A core blueprint defines the properties of a database type and how the app can use them.
+ */
+export type CoreBlueprint = {
+  readonly type: DatabaseType
+  readonly typeSlug: string
+  readonly singularLabel: string
+  readonly pluralLabel: string
+  readonly icon: Icon
+  readonly parentType: Optional<DatabaseParentType>
+  readonly childType: Optional<DatabaseChildType>
+  readonly supportedActions: DatabaseAction[]
+  readonly chartBluprints: ChartBlueprint[]
+  readonly fieldBlueprints: FieldBlueprint[]
+  readonly visibleColumns: DatabaseField[]
+  readonly tableColumns: QTableColumn[]
+}
+
+/**
+ * Field properties commonly used together by app components.
+ * Any field with no component doesn't support rendering for operations like create and update.
+ */
+export type FieldBlueprint = {
+  readonly field: DatabaseField
+  readonly label: string
+  readonly inspectFormat: (val: any) => string
+  readonly component?: any // Vue component used when rendering (if any)
+}
+
+/**
+ * Chart properties required for chart components.
+ */
+export type ChartBlueprint = {
+  readonly label: string
+  readonly chartOptions: AppObject
+  readonly component: any // Vue component used when rendering
 }

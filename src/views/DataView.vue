@@ -157,12 +157,14 @@ function getRecordsCountText() {
 
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
-        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType || 'No Data Found' }}</div>
+        <!-- Tabel Title -->
+        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType }}</div>
+        <!-- Go Back Button -->
         <QBtn
           round
           flat
           class="absolute-top-right q-mr-sm q-mt-sm"
-          :icon="Icon.CLOSE"
+          :icon="Icon.BACK"
           @click="goBack()"
         />
       </div>

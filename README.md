@@ -8,9 +8,8 @@ projects. Read through this README to have a better understanding of how this pr
 - General Tasks
 
   - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
-  - [ ] Consider moving all types to files in the `types` directory
   - [ ] `Orphaned` records table (not a new type, but uses a new view)
-  - [ ] Build chart and logic for `timeStart` and `timeEnd` functions (performance tracking)
+  - [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
 
 - Possible Improvements
 
