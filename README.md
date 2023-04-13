@@ -8,6 +8,7 @@ projects. Read through this README to have a better understanding of how this pr
 - [ ] Type up better page descriptions for useMeta on all views
 - [ ] Type up better documentation for blueprints
 - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
+- [ ] Create `useCharts` composable and `PreparedChart` type
 - [ ] `Record Curing` page for `Unused`, `Orphaned`, and `Partial` records
 - [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
 - [ ] Quasar Icon Genie CLI to generate a more complete icon list
