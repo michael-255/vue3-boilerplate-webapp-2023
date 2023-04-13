@@ -23,7 +23,7 @@ export default defineConfig({
    * This should be your GitHub repo name. You can find it on the GitHub URL.
    * @example
    * https://github.com/my-username/my-app-repo
-   * /my-app-repo/
+   * my-app-repo
    */
-  base: '/vue3-web-app-template-2023/',
+  base: 'vue3-web-app-template-2023',
 })

@@ -2,7 +2,15 @@
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'
+import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+
+useMeta({
+  title: `${AppText.APP_NAME} - About`,
+  meta: {
+    description: { name: 'description', content: 'About Page' },
+  },
+})
 </script>
 
 <template>

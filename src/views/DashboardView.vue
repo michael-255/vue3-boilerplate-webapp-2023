@@ -9,8 +9,9 @@ import {
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
-import type { DashboardParent, Optional } from '@/types/misc'
+import { AppText, type DashboardParent, type Optional } from '@/types/misc'
 import { parentDatabaseTypes, getChildType, getLabel } from '@/services/Blueprints'
+import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useLogger from '@/composables/useLogger'
@@ -18,6 +19,13 @@ import useRoutables from '@/composables/useRoutables'
 import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
+
+useMeta({
+  title: `${AppText.APP_NAME} - Dashboard`,
+  meta: {
+    description: { name: 'description', content: 'Dashboard Page' },
+  },
+})
 
 // Composables & Stores
 const uiStore = useUIStore()

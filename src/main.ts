@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { Dialog, Notify, Quasar } from 'quasar'
+import { Meta, Dialog, Notify, Quasar } from 'quasar'
 import router from '@/router'
 import App from '@/App.vue'
 import '@quasar/extras/roboto-font/roboto-font.css'
@@ -14,6 +14,7 @@ app.use(createPinia())
 app.use(router)
 app.use(Quasar, {
   plugins: {
+    Meta,
     Dialog, // Uses a custom component (SimpleDialog.vue).
     Notify,
   },

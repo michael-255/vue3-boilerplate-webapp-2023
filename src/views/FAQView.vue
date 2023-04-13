@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
 import { AppText } from '@/types/misc'
+import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
+
+useMeta({
+  title: `${AppText.APP_NAME} - FAQ`,
+  meta: {
+    description: { name: 'description', content: 'FAQ Page' },
+  },
+})
 </script>
 
 <template>

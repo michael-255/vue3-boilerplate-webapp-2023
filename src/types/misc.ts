@@ -23,7 +23,7 @@ export type AppObject = { [x: string]: any }
  * Generic strings that are reused throughout the app.
  */
 export enum AppText {
-  APP_NAME = 'Vue 3 Web App Template',
+  APP_NAME = 'Web App Template',
 }
 
 /**

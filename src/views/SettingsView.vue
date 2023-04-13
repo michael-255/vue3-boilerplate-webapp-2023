@@ -5,6 +5,7 @@ import { AppText, Limit, LogRetention, type ExportData } from '@/types/misc'
 import { DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
+import { useMeta } from 'quasar'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import useDialogs from '@/composables/useDialogs'
@@ -12,6 +13,13 @@ import useDefaults from '@/composables/useDefaults'
 import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
+
+useMeta({
+  title: `${AppText.APP_NAME} - Settings`,
+  meta: {
+    description: { name: 'description', content: 'Settings Page' },
+  },
+})
 
 // Composables & Stores
 const { log } = useLogger()

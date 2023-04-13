@@ -3,10 +3,51 @@ import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
 import { Icon } from '@/types/icons'
 import type { Optional } from '@/types/misc'
+import { useMeta } from 'quasar'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/composables/useLogger'
 import useNotifications from '@/composables/useNotifications'
 import DB from '@/services/LocalDatabase'
+
+useMeta({
+  meta: {
+    charset: { charset: 'UTF-8' },
+    viewport: {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0',
+    },
+    themeColor: { name: 'theme-color', content: '#1976D2' }, // Brand color
+  },
+
+  link: {
+    manifest: {
+      rel: 'manifest',
+      href: `${import.meta.env.BASE_URL}/manifest.json`,
+    },
+    appleTouchIcon: {
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      href: `${import.meta.env.BASE_URL}/apple-touch-icon.png`,
+    },
+    favicon32: {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      href: `${import.meta.env.BASE_URL}/favicon-32x32.png`,
+    },
+    favicon16: {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '16x16',
+      href: `${import.meta.env.BASE_URL}/favicon-16x16.png`,
+    },
+  },
+
+  noscript: {
+    default:
+      'Your browser does not support JavaScript or has it disabled. This website requires JavaScript to function properly. Please consider upgrading your browser or enabling JavaScript to use this site.',
+  },
+})
 
 // Composables & Stores
 const { log } = useLogger()

@@ -4,12 +4,21 @@ import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
 import { onMounted, onUnmounted } from 'vue'
 import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
+import { AppText } from '@/types/misc'
+import { useMeta } from 'quasar'
 import useRoutables from '@/composables/useRoutables'
 import useActionRecordStore from '@/stores/action-record'
 import useDialogs from '@/composables/useDialogs'
 import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
+
+useMeta({
+  title: `${AppText.APP_NAME} - Edit Record`,
+  meta: {
+    description: { name: 'description', content: 'Edit Record Page' },
+  },
+})
 
 // Composables & Stores
 const { routeDatabaseType, routeId, goBack } = useRoutables()

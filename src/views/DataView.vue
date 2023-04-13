@@ -10,10 +10,19 @@ import {
   getVisibleColumns,
   getSupportedActions,
 } from '@/services/Blueprints'
+import { AppText } from '@/types/misc'
+import { useMeta } from 'quasar'
 import useLogger from '@/composables/useLogger'
 import useRoutables from '@/composables/useRoutables'
 import useActions from '@/composables/useActions'
 import DB from '@/services/LocalDatabase'
+
+useMeta({
+  title: `${AppText.APP_NAME} - Data`,
+  meta: {
+    description: { name: 'description', content: 'Data Page' },
+  },
+})
 
 // Composables & Stores
 const { log } = useLogger()

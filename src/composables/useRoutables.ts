@@ -18,14 +18,17 @@ export default function useRoutables() {
    * (Important) The "databaseTypeSlug" param is validated by the "beforeEnter" hook in router index.
    */
   const routeTypeSlug = route?.params?.databaseTypeSlug as string
+
   /**
    * Assumed valid since the "databaseTypeSlug" is validated by the "beforeEnter" hook in router index.
    */
   const routeDatabaseType = getTypeFromSlug(routeTypeSlug) as DatabaseType
+
   /**
    * (Important) The "id" param is validated by the "beforeEnter" hook in router index.
    */
   const routeId = route?.params?.[DatabaseField.ID] as string
+
   /**
    * Optional "parentId" param for child record creates.
    */

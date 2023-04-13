@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
 import { getChartBlueprints, getLabel } from '@/services/Blueprints'
+import { AppText } from '@/types/misc'
+import { useMeta } from 'quasar'
 import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
+
+useMeta({
+  title: `${AppText.APP_NAME} - Charts`,
+  meta: {
+    description: { name: 'description', content: 'Charts Page' },
+  },
+})
 
 // Composables & Stores
 const { routeDatabaseType } = useRoutables()

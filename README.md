@@ -7,12 +7,13 @@ projects. Read through this README to have a better understanding of how this pr
 
 - General Tasks
 
+  - [ ] Type up better page descriptions for useMeta on all views
   - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
   - [ ] `Orphaned` records table (not a new type, but uses a new view)
   - [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
-  - [ ] Use Quasar Meta plugin to improve SEO (most likely for main views only)
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
-  - [ ] Script to quickly updates certain values across the app (maybe)?
+  - [ ] Script that quickly updates certain values across the app (maybe)?
+    - [ ] May not be as useful since I implemented useMeta from Quasar
 
 - Final Steps
 
