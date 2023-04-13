@@ -14,13 +14,13 @@ app.use(createPinia())
 app.use(router)
 app.use(Quasar, {
   plugins: {
-    Dialog, // doesn't appear to support default settings
+    Dialog, // Uses a custom component (SimpleDialog.vue).
     Notify,
   },
   config: {
     dark: true,
     /**
-     * Defined app colors.
+     * Defined app brand colors.
      * @see https://quasar.dev/style/color-palette
      * @see https://quasar.dev/quasar-utils/color-utils
      */
@@ -35,7 +35,21 @@ app.use(Quasar, {
       dark: '#1d1d1d',
       'dark-page': '#121212',
     },
-    // notify: {...}, // default set of options for Notify Quasar plugin
+    /**
+     * Default notification settings.
+     */
+    notify: {
+      textColor: 'white',
+      position: 'top',
+      multiLine: false,
+      timeout: 4000,
+      actions: [
+        {
+          label: 'Dismiss',
+          color: 'white',
+        },
+      ],
+    },
     // loading: {...}, // default set of options for Loading Quasar plugin
     // loadingBar: { ... }, // settings for LoadingBar Quasar plugin
     // // ..and many more (check Installation card on each Quasar component/directive/plugin)

@@ -5,28 +5,16 @@ export default function useNotifications() {
   const $q = useQuasar()
 
   /**
-   * Notification (alert).
+   * Notification (alert). Most settings defined in "~/src/main.ts" as part of the Quasar config.
    * @param message
    * @param icon
    * @param color
    */
   function notify(message: string, icon: Icon = Icon.INFO, color: string = 'info') {
-    const textColor = 'white'
-
     $q.notify({
       message,
       icon,
       color,
-      textColor,
-      position: 'top',
-      multiLine: false,
-      timeout: 4000,
-      actions: [
-        {
-          label: 'Dismiss',
-          color: textColor,
-        },
-      ],
     })
   }
 

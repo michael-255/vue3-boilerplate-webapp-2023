@@ -10,14 +10,9 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
   - [ ] `Orphaned` records table (not a new type, but uses a new view)
   - [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
-
-- Possible Improvements
-
+  - [ ] Use Quasar Meta plugin to improve SEO (most likely for main views only)
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
-  - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
-  - [ ] Use Quasar Loading plugin when waiting on data tables?
-  - [ ] Use Quasar Meta plugin to improve SEO?
-  - [ ] Script to quickly updates certain values across the app?
+  - [ ] Script to quickly updates certain values across the app (maybe)?
 
 - Final Steps
 
