@@ -25,5 +25,5 @@ export default defineConfig({
    * https://github.com/my-username/my-app-repo
    * my-app-repo
    */
-  base: 'vue3-web-app-template-2023',
+  base: '/vue3-web-app-template-2023/',
 })

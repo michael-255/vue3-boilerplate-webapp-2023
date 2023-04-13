@@ -5,20 +5,17 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- General Tasks
+- [ ] Type up better page descriptions for useMeta on all views
+- [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
+- [ ] `Orphaned` records table (not a new type, but uses a new view)
+- [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
+- [ ] Quasar Icon Genie CLI to generate a more complete icon list
+- [ ] Script that quickly updates certain values across the app (maybe)?
 
-  - [ ] Type up better page descriptions for useMeta on all views
-  - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
-  - [ ] `Orphaned` records table (not a new type, but uses a new view)
-  - [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
-  - [ ] Quasar Icon Genie CLI to generate a more complete icon list
-  - [ ] Script that quickly updates certain values across the app (maybe)?
-    - [ ] May not be as useful since I implemented useMeta from Quasar
+  - [ ] May not be as useful since I implemented useMeta from Quasar
 
-- Final Steps
-
-  - [ ] `Add Tests`
-        <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
+- [ ] `Add Tests`
+      <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
 
 ## Post Cloning Steps (Remove after completion)
 

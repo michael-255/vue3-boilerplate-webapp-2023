@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { AppText } from '@/types/misc'
+
+const appName = import.meta.env.VITE_APP_NAME
 </script>
 
 <template>
   <QLayout view="hHh LpR lff">
     <QHeader elevated>
       <QToolbar>
-        <QToolbarTitle>{{ AppText.APP_NAME }}</QToolbarTitle>
+        <QToolbarTitle>{{ appName }}</QToolbarTitle>
       </QToolbar>
     </QHeader>
 

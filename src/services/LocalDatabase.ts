@@ -1,6 +1,6 @@
 import Dexie, { liveQuery, type Table } from 'dexie'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
-import { AppText, LogRetention, Milliseconds, type AppObject } from '@/types/misc'
+import { LogRetention, Milliseconds, type AppObject } from '@/types/misc'
 import { Dark, uid } from 'quasar'
 import {
   DatabaseField,
@@ -336,6 +336,6 @@ class LocalDatabase extends Dexie {
 /**
  * Preconfigured LocalDatabase instance.
  */
-const DB = new LocalDatabase(AppText.APP_NAME)
+const DB = new LocalDatabase(import.meta.env.VITE_APP_NAME)
 
 export default DB

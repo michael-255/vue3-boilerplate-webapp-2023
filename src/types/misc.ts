@@ -20,13 +20,6 @@ export type Optional<T> = T | null | undefined
 export type AppObject = { [x: string]: any }
 
 /**
- * Generic strings that are reused throughout the app.
- */
-export enum AppText {
-  APP_NAME = 'Web App Template',
-}
-
-/**
  * Limits for various rules and inputs.
  */
 export enum Limit {
@@ -76,7 +69,7 @@ export enum ChartTime {
  * Format of the JSON file from an export.
  */
 export type ExportData = {
-  appName: AppText.APP_NAME
+  appName: string
   exportedTimestamp: number
   recordsCount: number
   records: DatabaseRecord[]

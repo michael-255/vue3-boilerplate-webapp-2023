@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
 import { getChartBlueprints, getLabel } from '@/services/Blueprints'
-import { AppText } from '@/types/misc'
 import { useMeta } from 'quasar'
 import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
 
+const appName = import.meta.env.VITE_APP_NAME
+
 useMeta({
-  title: `${AppText.APP_NAME} - Charts`,
+  title: `${appName} - Charts`,
   meta: {
     description: { name: 'description', content: 'Charts Page' },
   },

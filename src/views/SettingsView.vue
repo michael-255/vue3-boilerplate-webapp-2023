@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { exportFile } from 'quasar'
 import { Icon } from '@/types/icons'
-import { AppText, Limit, LogRetention, type ExportData } from '@/types/misc'
+import { Limit, LogRetention, type ExportData } from '@/types/misc'
 import { DatabaseType, SettingId } from '@/types/database'
 import { type Ref, ref, onUnmounted } from 'vue'
 import type { DatabaseRecord } from '@/types/models'
@@ -14,8 +14,10 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
+const appName = import.meta.env.VITE_APP_NAME
+
 useMeta({
-  title: `${AppText.APP_NAME} - Settings`,
+  title: `${appName} - Settings`,
   meta: {
     description: { name: 'description', content: 'Settings Page' },
   },
@@ -96,7 +98,7 @@ function onImportFile() {
         const { appName, records } = parsedFileData
 
         // Do NOT allow importing data from another app
-        if (parsedFileData?.appName !== AppText.APP_NAME) {
+        if (parsedFileData?.appName !== appName) {
           throw new Error(`Cannot import data from this app: ${appName} `)
         }
 
@@ -125,9 +127,9 @@ function onImportFile() {
  */
 function onExportRecords(types: DatabaseType[]) {
   // Build export file name
-  const appName = AppText.APP_NAME.toLowerCase().split(' ').join('-')
+  const appNameSlug = appName.toLowerCase().split(' ').join('-')
   const date = new Date().toISOString().split('T')[0]
-  const filename = `export-${appName}-${date}.json`
+  const filename = `export-${appNameSlug}-${date}.json`
 
   confirmDialog(
     'Export Data',
@@ -144,7 +146,7 @@ function onExportRecords(types: DatabaseType[]) {
 
         // Build export file meta data
         const exportData = {
-          appName: AppText.APP_NAME,
+          appName: appName,
           exportedTimestamp: new Date().getTime(),
           recordsCount: exportRecords.length,
           records: exportRecords,

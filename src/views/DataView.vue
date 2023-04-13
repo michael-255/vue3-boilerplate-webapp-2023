@@ -10,15 +10,16 @@ import {
   getVisibleColumns,
   getSupportedActions,
 } from '@/services/Blueprints'
-import { AppText } from '@/types/misc'
 import { useMeta } from 'quasar'
 import useLogger from '@/composables/useLogger'
 import useRoutables from '@/composables/useRoutables'
 import useActions from '@/composables/useActions'
 import DB from '@/services/LocalDatabase'
 
+const appName = import.meta.env.VITE_APP_NAME
+
 useMeta({
-  title: `${AppText.APP_NAME} - Data`,
+  title: `${appName} - Data`,
   meta: {
     description: { name: 'description', content: 'Data Page' },
   },

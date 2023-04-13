@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import { AppText } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
+const appName = import.meta.env.VITE_APP_NAME
+
 useMeta({
-  title: `${AppText.APP_NAME} - FAQ`,
+  title: `${appName} - FAQ`,
   meta: {
     description: { name: 'description', content: 'FAQ Page' },
   },
@@ -19,8 +20,8 @@ useMeta({
         <QCard>
           <QCardSection>
             <div class="q-mb-md">
-              This application is called {{ AppText.APP_NAME }}. It is a web template application
-              that demostrates the features built into it.
+              This application is called {{ appName }}. It is a web template application that
+              demostrates the features built into it.
             </div>
 
             <div class="q-mb-md">

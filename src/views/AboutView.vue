@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { Icon } from '@/types/icons'
-import { AppText } from '@/types/misc'
 import { RouteName } from '@/router/route-names'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
+const appName = import.meta.env.VITE_APP_NAME
+
 useMeta({
-  title: `${AppText.APP_NAME} - About`,
+  title: `${appName} - About`,
   meta: {
     description: { name: 'description', content: 'About Page' },
   },
@@ -18,9 +19,9 @@ useMeta({
     <QCard>
       <QCardSection>
         <div class="q-mb-md">
-          {{ AppText.APP_NAME }} is a Vue 3 Typescript project created by michael-255 on GitHub.
-          This project was built to be the foundation for many web applications. It is publicly
-          available using the MIT License.
+          {{ appName }} is a Vue 3 Typescript project created by michael-255 on GitHub. This project
+          was built to be the foundation for many web applications. It is publicly available using
+          the MIT License.
         </div>
 
         <div class="q-mb-md">

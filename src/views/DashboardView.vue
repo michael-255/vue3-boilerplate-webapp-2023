@@ -9,7 +9,7 @@ import {
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
-import { AppText, type DashboardParent, type Optional } from '@/types/misc'
+import type { DashboardParent, Optional } from '@/types/misc'
 import { parentDatabaseTypes, getChildType, getLabel } from '@/services/Blueprints'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
@@ -20,8 +20,10 @@ import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
+const appName = import.meta.env.VITE_APP_NAME
+
 useMeta({
-  title: `${AppText.APP_NAME} - Dashboard`,
+  title: `${appName} - Dashboard`,
   meta: {
     description: { name: 'description', content: 'Dashboard Page' },
   },
