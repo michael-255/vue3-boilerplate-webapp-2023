@@ -7,31 +7,23 @@ projects. Read through this README to have a better understanding of how this pr
 
 - General Tasks
 
+  - [ ] Replace spread operators where able
+  - [ ] Pull functions out of functions
   - [ ] Do a copy pass on the `FAQ` page (this page needs more details)
   - [ ] Do a copy pass on the `About` page
   - [ ] Do a copy pass on the `Donate` page
   - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
-  - [ ] Could `Orphaned` be a type of record?
-  - [ ] `Orphaned` Records table
   - [ ] Consider moving all types to files in the `types` directory
+  - [ ] `Orphaned` records table (not a new type, but uses a new view)
+  - [ ] Build chart and logic for `timeStart` and `timeEnd` functions (performance tracking)
 
-- Performance & Memory Improvements
-
-  - [ ] Use a profiler to see if there are any performance hot spots within app
-  - [ ] Replace spread operators
-  - [ ] Pull functions out of functions
-
-- Quasar
+- Possible Improvements
 
   - [ ] Quasar Icon Genie CLI to generate a more complete icon list
   - [ ] See if you can make use of the Quasar configs for dialogs and notifys (`main.ts`)
   - [ ] Use Quasar Loading plugin when waiting on data tables?
   - [ ] Use Quasar Meta plugin to improve SEO?
-
-- Possible Improvements
-
   - [ ] Script to quickly updates certain values across the app
-  - [ ] Replace uses of spread operator
 
 - Final Steps
 
