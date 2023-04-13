@@ -10,14 +10,10 @@ projects. Read through this README to have a better understanding of how this pr
   - [ ] Do a copy pass on the `FAQ` page (this page needs more details)
   - [ ] Do a copy pass on the `About` page
   - [ ] Do a copy pass on the `Donate` page
-  - [ ] Setup a KoFi account for donations
-
-    - [ ] Use that link in the template app
-    - [ ] Use that link in your GitHub readme?
-
+  - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
   - [ ] Could `Orphaned` be a type of record?
-  - [ ] Orphaned Records table
-  - [ ] Add more tags to the repository in GitHub based on packages used
+  - [ ] `Orphaned` Records table
+  - [ ] Consider moving all types to files in the `types` directory
 
 - Performance & Memory Improvements
 

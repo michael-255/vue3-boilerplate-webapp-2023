@@ -1,7 +1,6 @@
-import Dexie, { liveQuery, type IndexableType, type Table } from 'dexie'
+import Dexie, { liveQuery, type Table } from 'dexie'
 import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { AppText, LogRetention, Milliseconds, type AppObject } from '@/types/misc'
-import { DatabaseTable } from '@/types/database'
 import { Dark, uid } from 'quasar'
 import {
   DatabaseField,
@@ -17,13 +16,13 @@ import {
  * A Dexie wrapper class that acts as a local database.
  */
 class LocalDatabase extends Dexie {
-  [DatabaseTable.RECORDS]!: Table<DatabaseRecord>
+  Records!: Table<DatabaseRecord>
 
   constructor(name: string) {
     super(name)
 
     this.version(1).stores({
-      [DatabaseTable.RECORDS]: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
+      Records: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
     })
   }
 
@@ -80,10 +79,7 @@ class LocalDatabase extends Dexie {
    */
   liveSettings() {
     return liveQuery(() =>
-      this[DatabaseTable.RECORDS]
-        .where(DatabaseField.TYPE)
-        .equals(DatabaseType.SETTING)
-        .sortBy(DatabaseField.ID)
+      this.Records.where(DatabaseField.TYPE).equals(DatabaseType.SETTING).sortBy(DatabaseField.ID)
     )
   }
 
@@ -92,8 +88,7 @@ class LocalDatabase extends Dexie {
    */
   liveDashboard() {
     return liveQuery(() =>
-      this[DatabaseTable.RECORDS]
-        .where(DatabaseField.TYPE)
+      this.Records.where(DatabaseField.TYPE)
         .anyOf(DatabaseType.SETTING, DatabaseType.EXAMPLE, DatabaseType.TEST)
         .sortBy(DatabaseField.NAME)
     )
@@ -105,10 +100,7 @@ class LocalDatabase extends Dexie {
    */
   liveDataType(type: DatabaseType) {
     return liveQuery(() =>
-      this[DatabaseTable.RECORDS]
-        .where(DatabaseField.TYPE)
-        .equals(type)
-        .sortBy(DatabaseField.CREATED_TIMESTAMP)
+      this.Records.where(DatabaseField.TYPE).equals(type).sortBy(DatabaseField.CREATED_TIMESTAMP)
     )
   }
 
@@ -134,7 +126,7 @@ class LocalDatabase extends Dexie {
       [DatabaseField.DETAILS]: details,
     }
 
-    return await this[DatabaseTable.RECORDS].add(log as DatabaseRecord)
+    return await this.Records.add(log as DatabaseRecord)
   }
 
   /**
@@ -142,7 +134,7 @@ class LocalDatabase extends Dexie {
    * @param record
    */
   async addRecord(record: DatabaseRecord) {
-    return await this[DatabaseTable.RECORDS].add(record)
+    return await this.Records.add(record)
   }
 
   /**
@@ -150,7 +142,7 @@ class LocalDatabase extends Dexie {
    * @param records
    */
   async bulkAddRecords(records: DatabaseRecord[]) {
-    return await this[DatabaseTable.RECORDS].bulkAdd(records, { allKeys: true }) // allKeys returns the new record ids
+    return await this.Records.bulkAdd(records, { allKeys: true }) // allKeys returns the new record ids
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -163,7 +155,7 @@ class LocalDatabase extends Dexie {
    * Gets ALL records from the database.
    */
   async getAllRecords() {
-    return await this[DatabaseTable.RECORDS].toArray()
+    return await this.Records.toArray()
   }
 
   /**
@@ -171,7 +163,7 @@ class LocalDatabase extends Dexie {
    * @param type
    */
   async getRecordsByType(type: DatabaseType) {
-    return await this[DatabaseTable.RECORDS].where(DatabaseField.TYPE).equals(type).toArray()
+    return await this.Records.where(DatabaseField.TYPE).equals(type).toArray()
   }
 
   /**
@@ -180,7 +172,7 @@ class LocalDatabase extends Dexie {
    * @param id
    */
   async getRecord(type: DatabaseType, id: string | SettingId) {
-    return await this[DatabaseTable.RECORDS].get([type, id])
+    return await this.Records.get([type, id])
   }
 
   /**
@@ -188,8 +180,7 @@ class LocalDatabase extends Dexie {
    * @param parentType
    */
   async getEnabledParentRecords(parentType: DatabaseParentType) {
-    return await this[DatabaseTable.RECORDS]
-      .where(DatabaseField.TYPE)
+    return await this.Records.where(DatabaseField.TYPE)
       .equals(parentType)
       .filter((r) => r[DatabaseField.IS_ENABLED] === true)
       .toArray()
@@ -202,9 +193,10 @@ class LocalDatabase extends Dexie {
    */
   async getPreviousChildRecord(childType: DatabaseChildType, parentId: string) {
     return (
-      await this[DatabaseTable.RECORDS]
-        .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
-        .sortBy(DatabaseField.CREATED_TIMESTAMP)
+      await this.Records.where({
+        [DatabaseField.TYPE]: childType,
+        [DatabaseField.PARENT_ID]: parentId,
+      }).sortBy(DatabaseField.CREATED_TIMESTAMP)
     ).reverse()[0]
   }
 
@@ -214,9 +206,10 @@ class LocalDatabase extends Dexie {
    * @param parentId
    */
   async getChildRecordsByParentId(childType: DatabaseChildType, parentId: string) {
-    return await this[DatabaseTable.RECORDS]
-      .where({ [DatabaseField.TYPE]: childType, [DatabaseField.PARENT_ID]: parentId })
-      .sortBy(DatabaseField.CREATED_TIMESTAMP)
+    return await this.Records.where({
+      [DatabaseField.TYPE]: childType,
+      [DatabaseField.PARENT_ID]: parentId,
+    }).sortBy(DatabaseField.CREATED_TIMESTAMP)
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -246,9 +239,9 @@ class LocalDatabase extends Dexie {
 
     // Add or Update depending on if the Setting already exists
     if (!existingSetting) {
-      return await this[DatabaseTable.RECORDS].add(setting as DatabaseRecord)
+      return await this.Records.add(setting as DatabaseRecord)
     } else {
-      return await this[DatabaseTable.RECORDS].update([DatabaseType.SETTING, id], { value })
+      return await this.Records.update([DatabaseType.SETTING, id], { value })
     }
   }
 
@@ -263,7 +256,7 @@ class LocalDatabase extends Dexie {
     originalId: string | SettingId,
     updateProps: Partial<DatabaseRecord>
   ) {
-    return await this[DatabaseTable.RECORDS].update([type, originalId], updateProps)
+    return await this.Records.update([type, originalId], updateProps)
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -298,8 +291,7 @@ class LocalDatabase extends Dexie {
     const logRetentionMilliseconds = getLogRetentionMilliseconds(logRetentionTime as LogRetention)
 
     // Get all logs
-    const logs = (await this[DatabaseTable.RECORDS]
-      .where(DatabaseField.TYPE)
+    const logs = (await this.Records.where(DatabaseField.TYPE)
       .equals(DatabaseType.LOG)
       .toArray()) as Log[]
 
@@ -310,9 +302,7 @@ class LocalDatabase extends Dexie {
     })
 
     // Delete all logs that are older than the retention time
-    await this[DatabaseTable.RECORDS].bulkDelete(
-      logsToDelete.map((log: Log) => log[DatabaseField.ID])
-    )
+    await this.Records.bulkDelete(logsToDelete.map((log: Log) => log[DatabaseField.ID]))
 
     // Return the number of logs deleted
     return logsToDelete.length
@@ -324,7 +314,7 @@ class LocalDatabase extends Dexie {
    * @param id
    */
   async deleteRecord(type: DatabaseType, id: string | SettingId) {
-    return await this[DatabaseTable.RECORDS].delete([type, id])
+    return await this.Records.delete([type, id])
   }
 
   /**
@@ -332,7 +322,7 @@ class LocalDatabase extends Dexie {
    * @param type
    */
   async clearRecordsByType(type: DatabaseType) {
-    await this[DatabaseTable.RECORDS].where(DatabaseField.TYPE).equals(type).delete()
+    await this.Records.where(DatabaseField.TYPE).equals(type).delete()
   }
 
   /**

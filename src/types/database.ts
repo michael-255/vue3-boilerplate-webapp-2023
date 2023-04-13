@@ -1,15 +1,8 @@
 import type { LogRetention } from '@/types/misc'
 
 /**
- * All database tables.
- */
-export enum DatabaseTable {
-  RECORDS = 'Records',
-}
-
-/**
  * All database types that separate the different types of records.
- * Used to separate records using tables, but compound indices are better.
+ * Using compound indices instead of splitting records by table.
  */
 export enum DatabaseType {
   LOG = 'Logs',
