@@ -11,6 +11,7 @@ import {
 import { type DashboardParent, type Optional, AppName } from '@/types/misc'
 import { getParentCategoryTypes, getChildType, getLabel } from '@/services/Blueprints'
 import { useMeta } from 'quasar'
+import { getRecordsCountDisplay } from '@/utils/common'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
 import useLogger from '@/composables/useLogger'
@@ -105,19 +106,6 @@ const subscription = DB.liveDashboard().subscribe({
 onUnmounted(() => {
   subscription.unsubscribe()
 })
-
-/**
- * Returns display text with the number of enabled records for the current Dashboard selection.
- */
-function getDashboardRecordsCountText() {
-  const count = dashboardParentRefs?.[uiStore.dashboardListIndex]?.value?.length ?? 0
-
-  if (count === 1) {
-    return '1 enabled record found'
-  } else {
-    return `${count} enabled records found`
-  }
-}
 </script>
 
 <template>
@@ -192,7 +180,10 @@ function getDashboardRecordsCountText() {
         <QIcon name="menu_open" size="80px" color="grey" />
       </div>
 
-      <div class="col-12 text-grey text-center q-mb-md">{{ getDashboardRecordsCountText() }}</div>
+      <div class="col-12 text-grey text-center q-mb-md">
+        {{ getRecordsCountDisplay(dashboardParentRefs?.[uiStore.dashboardListIndex]?.value) }}
+        (enabled only)
+      </div>
 
       <QBtn
         color="positive"

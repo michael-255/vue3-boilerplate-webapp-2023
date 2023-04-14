@@ -24,14 +24,14 @@ export function getTypeFromSlug(databaseTypeSlug: string) {
 }
 
 /**
- * Gets all database types except Dev category ones if in PROD mode.
+ * Gets all database types.
  */
 export function getAllCategoryTypes() {
   return Object.values(DatabaseType) ?? []
 }
 
 /**
- * Gets all database types with the Internal category.
+ * Gets all Internal category database types.
  */
 export function getInternalCategoryTypes() {
   return (
@@ -42,7 +42,20 @@ export function getInternalCategoryTypes() {
 }
 
 /**
- * Gets all database types with the Parent category.
+ * Gets all Parent and Child category database types. I consider these the User types.
+ */
+export function getUserCategoryTypes() {
+  return (
+    coreBlueprint
+      .filter(
+        (cbp) => cbp.category === DatabaseCategory.PARENT || cbp.category === DatabaseCategory.CHILD
+      )
+      .map((cbp) => cbp.type) ?? []
+  )
+}
+
+/**
+ * Gets all Parent category database types.
  */
 export function getParentCategoryTypes(): DatabaseParentType[] {
   return (
@@ -53,7 +66,7 @@ export function getParentCategoryTypes(): DatabaseParentType[] {
 }
 
 /**
- * Gets all database types with the Child category.
+ * Gets all Child category database types.
  */
 export function getChildCategoryTypes(): DatabaseChildType[] {
   return (

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { type Ref, ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, ref, onUnmounted } from 'vue'
 import { AppName } from '@/types/misc'
 import { useMeta, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
-import useLogger from '@/composables/useLogger'
-import useActions from '@/composables/useActions'
-import useRoutables from '@/composables/useRoutables'
-import { getFields, getVisibleColumns } from '@/services/Blueprints'
 import type { DatabaseRecord } from '@/types/models'
-import DB from '@/services/LocalDatabase'
-import { DatabaseType, SettingId } from '@/types/database'
+import { DatabaseField } from '@/types/database'
 import { requiredTypeColumn } from '@/services/blueprints/table-columns'
 import { requiredIdColumn } from '@/services/blueprints/table-columns'
 import { typeColumn } from '@/services/blueprints/table-columns'
 import { partialIdColumn } from '@/services/blueprints/table-columns'
+import { getRecordsCountDisplay } from '@/utils/common'
+import useLogger from '@/composables/useLogger'
+import useActions from '@/composables/useActions'
+import useRoutables from '@/composables/useRoutables'
+import DB from '@/services/LocalDatabase'
 
 useMeta({ title: `${AppName} - Record Curing` })
 
@@ -22,7 +22,11 @@ const { log } = useLogger()
 const { goToInspect, goToEdit, goBack } = useRoutables()
 const { onDeleteRecord } = useActions()
 
-const routeDatabaseType = DatabaseType.LOG
+enum RecordIssue {
+  UNUSED = 'Unused', // Parent record with no child records
+  ORPHANED = 'Orphaned', // Child record with no parent record
+  PARTIAL = 'Partial', // Parent or child record with missing required data
+}
 
 // Data
 const columns: Ref<QTableColumn[]> = ref([
@@ -30,66 +34,39 @@ const columns: Ref<QTableColumn[]> = ref([
   requiredIdColumn,
   typeColumn,
   partialIdColumn,
+  // Custom record issue cloumn for Record Curing page only
   {
-    name: 'issue',
-    label: 'Issue',
+    name: 'recordIssue',
+    label: 'Record Issue',
     align: 'left',
     sortable: true,
     required: false,
-    field: (row: any) => row.issue,
-    format: (val: string) => `${val}`, // TODO
+    field: (row: any) => row.recordIssue,
+    format: (val: RecordIssue) => `${val}`,
   } as QTableColumn,
 ])
 const columnOptions: Ref<QTableColumn[]> = ref(
   columns.value.filter((col: QTableColumn) => !col.required)
 )
-const visibleColumns: Ref<string[]> = ref([])
+const visibleColumns: Ref<string[]> = ref([DatabaseField.TYPE, DatabaseField.ID, 'recordIssue'])
 const rows: Ref<DatabaseRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
-const subscription = DB.liveDataType(routeDatabaseType).subscribe({
+const subscription = DB.liveRecordCuring().subscribe({
   next: (records) => {
     rows.value = records
+    // TODO: Need to collect the records with issues only (might have to do each manaully in here)
+    // - Parent: Unused or Missing Required Data (all parent types)
+    // - Child: Orphaned or Missing Required Data (all child types)
   },
   error: (error) => {
     log.error('Error during data retrieval', error)
   },
 })
 
-onMounted(async () => {
-  try {
-    // Get the setting for showing all columns
-    const showAllDataColumns = (
-      await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
-    )?.value
-
-    // This sets up what is currently visible on the QTable
-    if (showAllDataColumns) {
-      visibleColumns.value = getFields(routeDatabaseType) ?? [] // All columns
-    } else {
-      visibleColumns.value = getVisibleColumns(routeDatabaseType) ?? [] // Default columns
-    }
-  } catch (error) {
-    log.error('Error loading data view', error)
-  }
-})
-
 onUnmounted(() => {
   subscription.unsubscribe()
 })
-
-/**
- * Returns display text with the number of records for the current database type.
- */
-function getRecordsCountText() {
-  const count = rows?.value?.length ?? 0
-
-  if (count === 1) {
-    return '1 record found'
-  } else {
-    return `${count} records found`
-  }
-}
 </script>
 
 <template>
@@ -163,7 +140,7 @@ function getRecordsCountText() {
     <template v-slot:top>
       <div class="row justify-start full-width q-mb-md">
         <!-- Tabel Title -->
-        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType }}</div>
+        <div class="col-10 text-h6 ellipsis">Record Curing</div>
         <!-- Go Back Button -->
         <QBtn
           round
@@ -216,6 +193,6 @@ function getRecordsCountText() {
       </div>
     </template>
 
-    <template v-slot:bottom>{{ getRecordsCountText() }}</template>
+    <template v-slot:bottom>{{ getRecordsCountDisplay(rows) }}</template>
   </QTable>
 </template>

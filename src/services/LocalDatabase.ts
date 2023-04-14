@@ -11,6 +11,7 @@ import {
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
+import { getUserCategoryTypes } from '@/services/Blueprints'
 
 /**
  * A Dexie wrapper class that acts as a local database.
@@ -98,6 +99,15 @@ class LocalDatabase extends Dexie {
   liveDataType(type: DatabaseType) {
     return liveQuery(() =>
       this.Records.where(DatabaseField.TYPE).equals(type).sortBy(DatabaseField.CREATED_TIMESTAMP)
+    )
+  }
+
+  /**
+   * Observable of the Parent and Child category database types.
+   */
+  liveRecordCuring() {
+    return liveQuery(() =>
+      this.Records.where(DatabaseField.TYPE).anyOf(getUserCategoryTypes()).toArray()
     )
   }
 

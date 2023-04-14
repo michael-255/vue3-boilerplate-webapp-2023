@@ -108,3 +108,17 @@ export function getDurationFromMilliseconds(milliseconds?: number): string | und
 
   return `${daysStr}${hoursStr}${minutesStr}${secondsStr}`
 }
+
+/**
+ * Returns display text with the number of records found in the provided array.
+ * @param records
+ */
+export function getRecordsCountDisplay(records: any[]) {
+  const count = records?.length ?? 0
+
+  if (count === 1) {
+    return '1 record found'
+  } else {
+    return `${count} records found`
+  }
+}

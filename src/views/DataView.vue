@@ -12,6 +12,7 @@ import {
 } from '@/services/Blueprints'
 import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
+import { getRecordsCountDisplay } from '@/utils/common'
 import useLogger from '@/composables/useLogger'
 import useRoutables from '@/composables/useRoutables'
 import useActions from '@/composables/useActions'
@@ -63,19 +64,6 @@ onMounted(async () => {
 onUnmounted(() => {
   subscription.unsubscribe()
 })
-
-/**
- * Returns display text with the number of records for the current database type.
- */
-function getRecordsCountText() {
-  const count = rows?.value?.length ?? 0
-
-  if (count === 1) {
-    return '1 record found'
-  } else {
-    return `${count} records found`
-  }
-}
 </script>
 
 <template>
@@ -224,6 +212,6 @@ function getRecordsCountText() {
       </div>
     </template>
 
-    <template v-slot:bottom>{{ getRecordsCountText() }}</template>
+    <template v-slot:bottom>{{ getRecordsCountDisplay(rows) }}</template>
   </QTable>
 </template>
