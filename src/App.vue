@@ -107,15 +107,3 @@ watch(
     <RouterView />
   </component>
 </template>
-
-<style lang="css">
-/* These are the global transition styles used by the app layouts */
-.global-fade-enter-active,
-.global-fade-leave-active {
-  transition: opacity 0.15s;
-}
-.global-fade-enter-from,
-.global-fade-leave-to {
-  opacity: 0;
-}
-</style>
