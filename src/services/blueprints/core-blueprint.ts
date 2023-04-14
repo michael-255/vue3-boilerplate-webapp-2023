@@ -48,24 +48,6 @@ Do NOT mutate these objects as they are used by multiple components.
  */
 export const coreBlueprint: readonly CoreBlueprint[] = [
   /**
-   * Settings Blueprint
-   */
-  {
-    type: DatabaseType.SETTING,
-    typeSlug: slugify(DatabaseType.SETTING),
-    category: DatabaseCategory.INTERNAL,
-    singularLabel: 'Setting',
-    pluralLabel: 'Settings',
-    icon: Icon.SETTINGS,
-    parentType: null,
-    childType: null,
-    supportedActions: [],
-    chartBluprints: [],
-    fieldBlueprints: [typeField, idField, valueField],
-    visibleColumns: [DatabaseField.ID, DatabaseField.VALUE],
-    tableColumns: [requiredTypeColumn, requiredIdColumn, idColumn, valueColumn],
-  },
-  /**
    * Logs Blueprint
    */
   {
@@ -102,6 +84,24 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
       labelColumn,
       detailsColumn,
     ],
+  },
+  /**
+   * Settings Blueprint
+   */
+  {
+    type: DatabaseType.SETTING,
+    typeSlug: slugify(DatabaseType.SETTING),
+    category: DatabaseCategory.INTERNAL,
+    singularLabel: 'Setting',
+    pluralLabel: 'Settings',
+    icon: Icon.SETTINGS,
+    parentType: null,
+    childType: null,
+    supportedActions: [],
+    chartBluprints: [],
+    fieldBlueprints: [typeField, idField, valueField],
+    visibleColumns: [DatabaseField.ID, DatabaseField.VALUE],
+    tableColumns: [requiredTypeColumn, requiredIdColumn, idColumn, valueColumn],
   },
   /**
    * App Performance Blueprint

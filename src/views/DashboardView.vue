@@ -5,7 +5,6 @@ import {
   DatabaseType,
   DatabaseField,
   SettingId,
-  type DatabaseParentType,
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
@@ -28,15 +27,12 @@ const { log } = useLogger()
 const { goToCreate } = useRoutables()
 
 // Data
-const dashboardListOptions = getParentCategoryTypes().map((type) => ({
+const dashboardListOptions = getParentCategoryTypes().map((type, i) => ({
   label: type,
-  value: type,
+  value: i,
 }))
 const showIntroduction: Ref<Optional<SettingValue>> = ref(null)
-const dashboardRecordRefs = {
-  [DatabaseType.EXAMPLE]: ref([]),
-  [DatabaseType.TEST]: ref([]),
-} as { [key in DatabaseParentType]: Ref<DashboardParent[]> }
+const dashboardParentRefs: Ref<DashboardParent[]>[] = getParentCategoryTypes().map(() => ref([]))
 
 const subscription = DB.liveDashboard().subscribe({
   next: async (records) => {
@@ -71,7 +67,7 @@ const subscription = DB.liveDashboard().subscribe({
     const exampleNonFavorites = dashboardExamples.filter(
       (r) => r[DatabaseField.IS_FAVORITED] === false
     )
-    dashboardRecordRefs[DatabaseType.EXAMPLE].value = [...exampleFavorites, ...exampleNonFavorites]
+    dashboardParentRefs[0].value = [...exampleFavorites, ...exampleNonFavorites]
 
     // Tests
     // Include only enabled tests
@@ -99,7 +95,7 @@ const subscription = DB.liveDashboard().subscribe({
     // Group favorites at the top
     const testFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
     const testNonFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === false)
-    dashboardRecordRefs[DatabaseType.TEST].value = [...testFavorites, ...testNonFavorites]
+    dashboardParentRefs[1].value = [...testFavorites, ...testNonFavorites]
   },
   error: (error) => {
     log.error('Error loading live dashboard records', error)
@@ -114,7 +110,7 @@ onUnmounted(() => {
  * Returns display text with the number of enabled records for the current Dashboard selection.
  */
 function getDashboardRecordsCountText() {
-  const count = dashboardRecordRefs?.[uiStore.dashboardListSelection]?.value?.length ?? 0
+  const count = dashboardParentRefs?.[uiStore.dashboardListIndex]?.value?.length ?? 0
 
   if (count === 1) {
     return '1 enabled record found'
@@ -136,15 +132,15 @@ function getDashboardRecordsCountText() {
         <QOptionGroup
           color="primary"
           :options="dashboardListOptions"
-          :model-value="uiStore.dashboardListSelection"
-          @update:model-value="uiStore.dashboardListSelection = $event"
+          :model-value="uiStore.dashboardListIndex"
+          @update:model-value="uiStore.dashboardListIndex = $event"
         />
       </QCardSection>
     </QCard>
 
     <!-- Examples - Using v-show so the DOM doesn't get updated when switching selections -->
-    <div v-show="uiStore.dashboardListSelection === DatabaseType.EXAMPLE">
-      <div v-for="(record, i) in dashboardRecordRefs[DatabaseType.EXAMPLE].value" :key="i">
+    <div v-show="uiStore.dashboardListIndex === 0">
+      <div v-for="(record, i) in dashboardParentRefs[0].value" :key="i">
         <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
           :id="record[DatabaseField.ID]"
@@ -167,8 +163,8 @@ function getDashboardRecordsCountText() {
     </div>
 
     <!-- Tests - Using v-show so the DOM doesn't get updated when switching selections -->
-    <div v-show="uiStore.dashboardListSelection === DatabaseType.TEST">
-      <div v-for="(record, j) in dashboardRecordRefs[DatabaseType.TEST].value" :key="j">
+    <div v-show="uiStore.dashboardListIndex === 1">
+      <div v-for="(record, j) in dashboardParentRefs[1].value" :key="j">
         <DashboardParentCard
           :type="record[DatabaseField.TYPE]"
           :id="record[DatabaseField.ID]"
@@ -201,8 +197,11 @@ function getDashboardRecordsCountText() {
       <QBtn
         color="positive"
         :icon="Icon.CREATE"
-        :label="`Create ${getLabel(uiStore.dashboardListSelection, 'singular')}`"
-        @click="goToCreate(uiStore.dashboardListSelection)"
+        :label="`Create ${getLabel(
+          dashboardListOptions[uiStore.dashboardListIndex].label,
+          'singular'
+        )}`"
+        @click="goToCreate(dashboardListOptions[uiStore.dashboardListIndex].label)"
       />
     </div>
   </ResponsivePage>

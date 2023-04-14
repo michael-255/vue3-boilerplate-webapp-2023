@@ -3,9 +3,10 @@ import type { LogRetention } from '@/types/misc'
 /**
  * All database types that separate the different types of records.
  * Using compound indices instead of splitting records by table.
+ * NOTE: The order here determines the order when retrieving these types.
  */
 export enum DatabaseType {
-  LOG = 'Logs',
+  LOG = 'Logs', // First in order
   SETTING = 'Settings',
   EXAMPLE = 'Examples',
   EXAMPLE_RESULT = 'Example Results',

@@ -1,5 +1,7 @@
 import { DatabaseCategory, DatabaseType } from '@/types/database'
 import { coreBlueprint } from '@/services/blueprints/core-blueprint'
+import type { DatabaseParentType } from '@/types/database'
+import type { DatabaseChildType } from '@/types/database'
 
 /*
 These functions are used to access the core blueprints for all database types.
@@ -30,9 +32,10 @@ export function getAllCategoryTypes() {
     return Object.values(DatabaseType)
   } else {
     // Return only non-Dev types in PROD mode
-    return coreBlueprint
-      .filter((cbp) => cbp.category !== DatabaseCategory.DEV)
-      .map((cbp) => cbp.type)
+    return (
+      coreBlueprint.filter((cbp) => cbp.category !== DatabaseCategory.DEV).map((cbp) => cbp.type) ??
+      []
+    )
   }
 }
 
@@ -40,27 +43,33 @@ export function getAllCategoryTypes() {
  * Gets all database types with the Internal category.
  */
 export function getInternalCategoryTypes() {
-  return coreBlueprint
-    .filter((cbp) => cbp.category === DatabaseCategory.INTERNAL)
-    .map((cbp) => cbp.type)
+  return (
+    coreBlueprint
+      .filter((cbp) => cbp.category === DatabaseCategory.INTERNAL)
+      .map((cbp) => cbp.type) ?? []
+  )
 }
 
 /**
  * Gets all database types with the Parent category.
  */
-export function getParentCategoryTypes() {
-  return coreBlueprint
-    .filter((cbp) => cbp.category === DatabaseCategory.PARENT)
-    .map((cbp) => cbp.type)
+export function getParentCategoryTypes(): DatabaseParentType[] {
+  return (
+    (coreBlueprint
+      .filter((cbp) => cbp.category === DatabaseCategory.PARENT)
+      .map((cbp) => cbp.type) as DatabaseParentType[]) ?? []
+  )
 }
 
 /**
  * Gets all database types with the Child category.
  */
-export function getChildCategoryTypes() {
-  return coreBlueprint
-    .filter((cbp) => cbp.category === DatabaseCategory.CHILD)
-    .map((cbp) => cbp.type)
+export function getChildCategoryTypes(): DatabaseChildType[] {
+  return (
+    (coreBlueprint
+      .filter((cbp) => cbp.category === DatabaseCategory.CHILD)
+      .map((cbp) => cbp.type) as DatabaseChildType[]) ?? []
+  )
 }
 
 /**
