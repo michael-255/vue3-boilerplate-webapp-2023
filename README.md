@@ -5,7 +5,6 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] Check if an action is supported in the before route enter
 - [ ] `Record Curing` page for `Unused`, `Orphaned`, and `Partial` records
 - [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
 - [ ] Create `useCharts` composable and `PreparedChart` type
