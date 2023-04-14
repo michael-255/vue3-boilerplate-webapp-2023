@@ -96,3 +96,17 @@ export enum DatabaseAction {
   DELETE = 'Delete',
   CHARTS = 'Charts',
 }
+
+/**
+ * Record issues for record curing.
+ * Unknown: Unknown issue caused the record to get selected.
+ * Unused: Parent record with no child records.
+ * Orphaned: Child record with no parent record.
+ * Partial: Parent or child record with missing required data.
+ */
+export enum RecordIssue {
+  UNKNOWN = 'Unknown',
+  UNUSED = 'Unused',
+  ORPHANED = 'Orphaned',
+  PARTIAL = 'Partial',
+}

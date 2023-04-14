@@ -5,6 +5,7 @@ import type {
   DatabaseField,
   DatabaseParentType,
   DatabaseType,
+  RecordIssue,
 } from '@/types/database'
 import type { Icon } from '@/types/icons'
 import type { DatabaseRecord } from '@/types/models'
@@ -134,4 +135,13 @@ export type ChartBlueprint = {
   readonly label: string
   readonly chartOptions: AppObject
   readonly component: any // Vue component used when rendering
+}
+
+/**
+ * Record Curing page data item.
+ */
+export type CurableRecord = {
+  [DatabaseField.TYPE]: DatabaseType
+  [DatabaseField.ID]: string
+  recordIssue: RecordIssue
 }

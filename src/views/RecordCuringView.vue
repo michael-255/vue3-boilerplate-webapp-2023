@@ -3,8 +3,8 @@ import { type Ref, ref, onUnmounted } from 'vue'
 import { AppName } from '@/types/misc'
 import { useMeta, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
-import type { DatabaseRecord } from '@/types/models'
-import { DatabaseField } from '@/types/database'
+import type { CurableRecord } from '@/types/misc'
+import { DatabaseField, RecordIssue } from '@/types/database'
 import { requiredTypeColumn } from '@/services/blueprints/table-columns'
 import { requiredIdColumn } from '@/services/blueprints/table-columns'
 import { typeColumn } from '@/services/blueprints/table-columns'
@@ -21,12 +21,6 @@ useMeta({ title: `${AppName} - Record Curing` })
 const { log } = useLogger()
 const { goToInspect, goToEdit, goBack } = useRoutables()
 const { onDeleteRecord } = useActions()
-
-enum RecordIssue {
-  UNUSED = 'Unused', // Parent record with no child records
-  ORPHANED = 'Orphaned', // Child record with no parent record
-  PARTIAL = 'Partial', // Parent or child record with missing required data
-}
 
 // Data
 const columns: Ref<QTableColumn[]> = ref([
@@ -49,15 +43,26 @@ const columnOptions: Ref<QTableColumn[]> = ref(
   columns.value.filter((col: QTableColumn) => !col.required)
 )
 const visibleColumns: Ref<string[]> = ref([DatabaseField.TYPE, DatabaseField.ID, 'recordIssue'])
-const rows: Ref<DatabaseRecord[]> = ref([])
+const rows: Ref<CurableRecord[]> = ref([])
 const searchFilter: Ref<string> = ref('')
 
 const subscription = DB.liveRecordCuring().subscribe({
-  next: (records) => {
-    rows.value = records
+  next: async (records) => {
     // TODO: Need to collect the records with issues only (might have to do each manaully in here)
     // - Parent: Unused or Missing Required Data (all parent types)
     // - Child: Orphaned or Missing Required Data (all child types)
+    const curableRecords: CurableRecord[] = records
+      .filter(async (record) => await DB.isRecordUnused(record))
+      .map((record) => {
+        // TODO - Everything is getting flagged as unused... this needs work
+        return {
+          [DatabaseField.TYPE]: record.type,
+          [DatabaseField.ID]: record.id,
+          recordIssue: RecordIssue.UNUSED,
+        } as CurableRecord
+      })
+
+    rows.value = curableRecords
   },
   error: (error) => {
     log.error('Error during data retrieval', error)

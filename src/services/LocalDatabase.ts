@@ -11,7 +11,7 @@ import {
   type DatabaseChildType,
   type SettingValue,
 } from '@/types/database'
-import { getUserCategoryTypes } from '@/services/Blueprints'
+import { getChildType, getUserCategoryTypes } from '@/services/Blueprints'
 
 /**
  * A Dexie wrapper class that acts as a local database.
@@ -217,6 +217,24 @@ class LocalDatabase extends Dexie {
       [DatabaseField.TYPE]: childType,
       [DatabaseField.PARENT_ID]: parentId,
     }).sortBy(DatabaseField.CREATED_TIMESTAMP)
+  }
+
+  /**
+   * Returns true if the parent record has no child records.
+   * @param parentRecord
+   */
+  async isRecordUnused(record: DatabaseRecord) {
+    const childType = getChildType(record[DatabaseField.TYPE])
+
+    if (childType) {
+      const childRecords = await this.getChildRecordsByParentId(
+        childType as DatabaseChildType,
+        record[DatabaseField.ID]
+      )
+      return childRecords?.length ?? 0 === 0
+    } else {
+      false
+    }
   }
 
   /////////////////////////////////////////////////////////////////////////////
