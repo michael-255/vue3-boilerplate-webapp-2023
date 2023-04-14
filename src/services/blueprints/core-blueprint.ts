@@ -2,7 +2,7 @@ import { Icon } from '@/types/icons'
 import type { CoreBlueprint } from '@/types/misc'
 import { slugify } from '@/utils/common'
 import { numberChart } from '@/services/blueprints/chart-blueprints'
-import { DatabaseAction, DatabaseField, DatabaseType } from '@/types/database'
+import { DatabaseAction, DatabaseCategory, DatabaseField, DatabaseType } from '@/types/database'
 import {
   idField,
   valueField,
@@ -53,6 +53,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
   {
     type: DatabaseType.SETTING,
     typeSlug: slugify(DatabaseType.SETTING),
+    category: DatabaseCategory.INTERNAL,
     singularLabel: 'Setting',
     pluralLabel: 'Settings',
     icon: Icon.SETTINGS,
@@ -70,6 +71,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
   {
     type: DatabaseType.LOG,
     typeSlug: slugify(DatabaseType.LOG),
+    category: DatabaseCategory.INTERNAL,
     singularLabel: 'Log',
     pluralLabel: 'Logs',
     icon: Icon.LOGS,
@@ -102,11 +104,16 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     ],
   },
   /**
+   * App Performance Blueprint
+   */
+  // {},
+  /**
    * Example Blueprint
    */
   {
     type: DatabaseType.EXAMPLE,
     typeSlug: slugify(DatabaseType.EXAMPLE),
+    category: DatabaseCategory.PARENT,
     singularLabel: 'Example',
     pluralLabel: 'Examples',
     icon: Icon.EXAMPLES,
@@ -144,6 +151,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
   {
     type: DatabaseType.EXAMPLE_RESULT,
     typeSlug: slugify(DatabaseType.EXAMPLE_RESULT),
+    category: DatabaseCategory.CHILD,
     singularLabel: 'Example Result',
     pluralLabel: 'Example Results',
     icon: Icon.RECORDS,
@@ -176,6 +184,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
   {
     type: DatabaseType.TEST,
     typeSlug: slugify(DatabaseType.TEST),
+    category: DatabaseCategory.PARENT,
     singularLabel: 'Test',
     pluralLabel: 'Tests',
     icon: Icon.TESTS,
@@ -213,6 +222,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
   {
     type: DatabaseType.TEST_RESULT,
     typeSlug: slugify(DatabaseType.TEST_RESULT),
+    category: DatabaseCategory.CHILD,
     singularLabel: 'Test Result',
     pluralLabel: 'Test Results',
     icon: Icon.RECORDS,

@@ -1,12 +1,221 @@
 <script setup lang="ts">
+import { type Ref, ref, onMounted, onUnmounted } from 'vue'
 import { AppName } from '@/types/misc'
-import { useMeta } from 'quasar'
+import { useMeta, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
-import ResponsivePage from '@/components/ResponsivePage.vue'
+import useLogger from '@/composables/useLogger'
+import useActions from '@/composables/useActions'
+import useRoutables from '@/composables/useRoutables'
+import { getFields, getVisibleColumns } from '@/services/Blueprints'
+import type { DatabaseRecord } from '@/types/models'
+import DB from '@/services/LocalDatabase'
+import { DatabaseType, SettingId } from '@/types/database'
+import { requiredTypeColumn } from '@/services/blueprints/table-columns'
+import { requiredIdColumn } from '@/services/blueprints/table-columns'
+import { typeColumn } from '@/services/blueprints/table-columns'
+import { partialIdColumn } from '@/services/blueprints/table-columns'
 
 useMeta({ title: `${AppName} - Record Curing` })
+
+// Composables & Stores
+const { log } = useLogger()
+const { goToInspect, goToEdit, goBack } = useRoutables()
+const { onDeleteRecord } = useActions()
+
+const routeDatabaseType = DatabaseType.LOG
+
+// Data
+const columns: Ref<QTableColumn[]> = ref([
+  requiredTypeColumn,
+  requiredIdColumn,
+  typeColumn,
+  partialIdColumn,
+  {
+    name: 'issue',
+    label: 'Issue',
+    align: 'left',
+    sortable: true,
+    required: false,
+    field: (row: any) => row.issue,
+    format: (val: string) => `${val}`, // TODO
+  } as QTableColumn,
+])
+const columnOptions: Ref<QTableColumn[]> = ref(
+  columns.value.filter((col: QTableColumn) => !col.required)
+)
+const visibleColumns: Ref<string[]> = ref([])
+const rows: Ref<DatabaseRecord[]> = ref([])
+const searchFilter: Ref<string> = ref('')
+
+const subscription = DB.liveDataType(routeDatabaseType).subscribe({
+  next: (records) => {
+    rows.value = records
+  },
+  error: (error) => {
+    log.error('Error during data retrieval', error)
+  },
+})
+
+onMounted(async () => {
+  try {
+    // Get the setting for showing all columns
+    const showAllDataColumns = (
+      await DB.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS)
+    )?.value
+
+    // This sets up what is currently visible on the QTable
+    if (showAllDataColumns) {
+      visibleColumns.value = getFields(routeDatabaseType) ?? [] // All columns
+    } else {
+      visibleColumns.value = getVisibleColumns(routeDatabaseType) ?? [] // Default columns
+    }
+  } catch (error) {
+    log.error('Error loading data view', error)
+  }
+})
+
+onUnmounted(() => {
+  subscription.unsubscribe()
+})
+
+/**
+ * Returns display text with the number of records for the current database type.
+ */
+function getRecordsCountText() {
+  const count = rows?.value?.length ?? 0
+
+  if (count === 1) {
+    return '1 record found'
+  } else {
+    return `${count} records found`
+  }
+}
 </script>
 
 <template>
-  <ResponsivePage :bannerIcon="Icon.RECORDS" bannerTitle="Record Curing">X</ResponsivePage>
+  <QTable
+    :rows="rows"
+    :columns="columns"
+    :visible-columns="visibleColumns"
+    :rows-per-page-options="[0]"
+    :filter="searchFilter"
+    virtual-scroll
+    fullscreen
+    row-key="id"
+  >
+    <!-- Column Headers -->
+    <template v-slot:header="props">
+      <QTr :props="props">
+        <!-- Do not show "hiddenType" and "hiddenId" -->
+        <QTh
+          v-for="col in props.cols"
+          v-show="col.name !== 'hiddenType' && col.name !== 'hiddenId'"
+          :key="col.name"
+          :props="props"
+        >
+          {{ col.label }}
+        </QTh>
+        <QTh auto-width class="text-left">Actions</QTh>
+      </QTr>
+    </template>
+
+    <!-- Rows -->
+    <template v-slot:body="props">
+      <QTr :props="props">
+        <QTd v-for="col in props.cols" :key="col.name" :props="props">
+          {{ col.value }}
+        </QTd>
+        <QTd auto-width>
+          <!-- INSPECT -->
+          <QBtn
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="primary"
+            :icon="Icon.INSPECT"
+            @click="goToInspect(props.cols[0].value, props.cols[1].value)"
+          />
+          <!-- EDIT -->
+          <QBtn
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="orange-9"
+            :icon="Icon.EDIT"
+            @click="goToEdit(props.cols[0].value, props.cols[1].value)"
+          />
+          <!-- DELETE -->
+          <QBtn
+            flat
+            round
+            dense
+            class="q-ml-xs"
+            color="negative"
+            @click="onDeleteRecord(props.cols[0].value, props.cols[1].value)"
+            :icon="Icon.DELETE"
+          />
+        </QTd>
+      </QTr>
+    </template>
+
+    <template v-slot:top>
+      <div class="row justify-start full-width q-mb-md">
+        <!-- Tabel Title -->
+        <div class="col-10 text-h6 ellipsis">{{ routeDatabaseType }}</div>
+        <!-- Go Back Button -->
+        <QBtn
+          round
+          flat
+          class="absolute-top-right q-mr-sm q-mt-sm"
+          :icon="Icon.BACK"
+          @click="goBack()"
+        />
+      </div>
+
+      <div class="row justify-start full-width">
+        <div class="col-12">
+          <!-- SEARCH -->
+          <QInput
+            :disable="!rows.length"
+            outlined
+            dense
+            clearable
+            debounce="300"
+            v-model="searchFilter"
+            placeholder="Search"
+          >
+            <template v-slot:before>
+              <!-- OPTIONS (Visible Columns) -->
+              <QSelect
+                v-model="visibleColumns"
+                :options="columnOptions"
+                :disable="!rows.length"
+                bg-color="primary"
+                standout
+                multiple
+                dense
+                options-dense
+                emit-value
+                map-options
+                option-value="name"
+                display-value=""
+              >
+                <template v-slot:prepend>
+                  <QIcon color="white" :name="Icon.OPTIONS" />
+                </template>
+              </QSelect>
+            </template>
+
+            <template v-slot:append>
+              <QIcon name="search" />
+            </template>
+          </QInput>
+        </div>
+      </div>
+    </template>
+
+    <template v-slot:bottom>{{ getRecordsCountText() }}</template>
+  </QTable>
 </template>

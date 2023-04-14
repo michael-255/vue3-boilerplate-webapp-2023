@@ -10,7 +10,7 @@ import {
   type SettingValue,
 } from '@/types/database'
 import { type DashboardParent, type Optional, AppName } from '@/types/misc'
-import { parentDatabaseTypes, getChildType, getLabel } from '@/services/Blueprints'
+import { getParentCategoryTypes, getChildType, getLabel } from '@/services/Blueprints'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DashboardIntroduction from '@/components/DashboardIntroduction.vue'
@@ -28,7 +28,7 @@ const { log } = useLogger()
 const { goToCreate } = useRoutables()
 
 // Data
-const dashboardListOptions = parentDatabaseTypes.map((type) => ({
+const dashboardListOptions = getParentCategoryTypes().map((type) => ({
   label: type,
   value: type,
 }))

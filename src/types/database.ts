@@ -14,12 +14,24 @@ export enum DatabaseType {
 }
 
 /**
+ * Each database type has a category. These determine how certain parts of the app treat them.
+ */
+export enum DatabaseCategory {
+  DEV = 'Dev',
+  INTERNAL = 'Internal',
+  PARENT = 'Parent',
+  CHILD = 'Child',
+}
+
+/**
  * Parent types in the database.
+ * TODO - replace with DatabaseCategory search function?
  */
 export type DatabaseParentType = DatabaseType.EXAMPLE | DatabaseType.TEST
 
 /**
  * Child types to parent types in the database.
+ * TODO - replace with DatabaseCategory search function?
  */
 export type DatabaseChildType = DatabaseType.EXAMPLE_RESULT | DatabaseType.TEST_RESULT
 

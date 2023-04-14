@@ -1,45 +1,9 @@
-import { DatabaseType } from '@/types/database'
+import { DatabaseCategory, DatabaseType } from '@/types/database'
 import { coreBlueprint } from '@/services/blueprints/core-blueprint'
 
 /*
 These functions are used to access the core blueprints for all database types.
 */
-
-/**
- * All database types.
- */
-export const allDatabaseTypes: readonly DatabaseType[] = [
-  DatabaseType.LOG,
-  DatabaseType.SETTING,
-  DatabaseType.EXAMPLE,
-  DatabaseType.EXAMPLE_RESULT,
-  DatabaseType.TEST,
-  DatabaseType.TEST_RESULT,
-]
-
-/**
- * Only internal database types.
- */
-export const internalDatabaseTypes: readonly DatabaseType[] = [
-  DatabaseType.LOG,
-  DatabaseType.SETTING,
-]
-
-/**
- * Only parent database types.
- */
-export const parentDatabaseTypes: readonly DatabaseType[] = [
-  DatabaseType.EXAMPLE,
-  DatabaseType.TEST,
-]
-
-/**
- * Only child database types.
- */
-export const childDatabaseTypes: readonly DatabaseType[] = [
-  DatabaseType.EXAMPLE_RESULT,
-  DatabaseType.TEST_RESULT,
-]
 
 /**
  * Gets the slug for a database type.
@@ -55,6 +19,48 @@ export function getSlug(type: DatabaseType) {
  */
 export function getTypeFromSlug(databaseTypeSlug: string) {
   return coreBlueprint.find((cbp) => cbp.typeSlug === databaseTypeSlug)?.type
+}
+
+/**
+ * Gets all database types except Dev category ones if in PROD mode.
+ */
+export function getAllCategoryTypes() {
+  if (import.meta.env.DEV) {
+    // Return all types in DEV mode
+    return Object.values(DatabaseType)
+  } else {
+    // Return only non-Dev types in PROD mode
+    return coreBlueprint
+      .filter((cbp) => cbp.category !== DatabaseCategory.DEV)
+      .map((cbp) => cbp.type)
+  }
+}
+
+/**
+ * Gets all database types with the Internal category.
+ */
+export function getInternalCategoryTypes() {
+  return coreBlueprint
+    .filter((cbp) => cbp.category === DatabaseCategory.INTERNAL)
+    .map((cbp) => cbp.type)
+}
+
+/**
+ * Gets all database types with the Parent category.
+ */
+export function getParentCategoryTypes() {
+  return coreBlueprint
+    .filter((cbp) => cbp.category === DatabaseCategory.PARENT)
+    .map((cbp) => cbp.type)
+}
+
+/**
+ * Gets all database types with the Child category.
+ */
+export function getChildCategoryTypes() {
+  return coreBlueprint
+    .filter((cbp) => cbp.category === DatabaseCategory.CHILD)
+    .map((cbp) => cbp.type)
 }
 
 /**

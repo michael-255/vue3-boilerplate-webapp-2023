@@ -1,5 +1,6 @@
 import type {
   DatabaseAction,
+  DatabaseCategory,
   DatabaseChildType,
   DatabaseField,
   DatabaseParentType,
@@ -102,6 +103,7 @@ export type DashboardParent = {
 export type CoreBlueprint = {
   readonly type: DatabaseType
   readonly typeSlug: string
+  readonly category: DatabaseCategory
   readonly singularLabel: string
   readonly pluralLabel: string
   readonly icon: Icon

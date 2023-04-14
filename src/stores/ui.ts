@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ChartTime, Milliseconds } from '@/types/misc'
-import { parentDatabaseTypes } from '@/services/Blueprints'
+import { getParentCategoryTypes } from '@/services/Blueprints'
 import type { DatabaseParentType } from '@/types/database'
 
 const useUIStore = defineStore({
@@ -14,7 +14,7 @@ const useUIStore = defineStore({
     /**
      * Currently selected dashboard list.
      */
-    dashboardListSelection: parentDatabaseTypes[0] as DatabaseParentType,
+    dashboardListSelection: getParentCategoryTypes()[0] as DatabaseParentType,
     /**
      * Currently selected chart time used for graphing.
      */

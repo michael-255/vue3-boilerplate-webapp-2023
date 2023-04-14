@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { RouteName } from '@/router/route-names'
-import { allDatabaseTypes, getTypeFromSlug } from '@/services/Blueprints'
+import { getAllCategoryTypes, getTypeFromSlug } from '@/services/Blueprints'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -139,7 +139,7 @@ function isDatabaseTypeValid(databaseTypeSlug: string) {
   const typeSlug = getTypeFromSlug(databaseTypeSlug)
 
   if (typeSlug) {
-    return allDatabaseTypes.includes(typeSlug)
+    return getAllCategoryTypes().includes(typeSlug)
   } else {
     return false
   }
