@@ -29,6 +29,7 @@ export enum Icon {
   RECORDS = 'storage',
   EXAMPLES = 'smart_toy',
   TESTS = 'cruelty_free',
+  PERF = 'speed',
   // Misc
   LOCK = 'lock',
   NOTE = 'sticky_note_2',

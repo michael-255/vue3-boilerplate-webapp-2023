@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { RouteName } from '@/router/route-names'
-import { getAllCategoryTypes, getTypeFromSlug } from '@/services/Blueprints'
+import { getAllCategoryTypes, getSupportedActions, getTypeFromSlug } from '@/services/Blueprints'
+import { DatabaseAction, type DatabaseType } from '@/types/database'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +18,9 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/DataView.vue'),
       beforeEnter(to, from, next) {
-        if (isDatabaseTypeValid(to?.params?.databaseTypeSlug as string)) {
+        const databaseType = getTypeFromSlug(to?.params?.databaseTypeSlug as string)
+
+        if (isDatabaseTypeValid(databaseType)) {
           next()
         } else {
           next('/404')
@@ -30,8 +33,11 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionInspectView.vue'),
       beforeEnter(to, from, next) {
+        const databaseType = getTypeFromSlug(to?.params?.databaseTypeSlug as string)
+
         if (
-          isDatabaseTypeValid(to?.params?.databaseTypeSlug as string) &&
+          isTypeActionSupported(DatabaseAction.INSPECT, databaseType) &&
+          isDatabaseTypeValid(databaseType) &&
           isIdValid(to?.params?.id as string)
         ) {
           next()
@@ -47,7 +53,12 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionCreateView.vue'),
       beforeEnter(to, from, next) {
-        if (isDatabaseTypeValid(to?.params?.databaseTypeSlug as string)) {
+        const databaseType = getTypeFromSlug(to?.params?.databaseTypeSlug as string)
+
+        if (
+          isTypeActionSupported(DatabaseAction.CREATE, databaseType) &&
+          isDatabaseTypeValid(databaseType)
+        ) {
           next()
         } else {
           next('/404')
@@ -60,8 +71,11 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionEditView.vue'),
       beforeEnter(to, from, next) {
+        const databaseType = getTypeFromSlug(to?.params?.databaseTypeSlug as string)
+
         if (
-          isDatabaseTypeValid(to?.params?.databaseTypeSlug as string) &&
+          isTypeActionSupported(DatabaseAction.EDIT, databaseType) &&
+          isDatabaseTypeValid(databaseType) &&
           isIdValid(to?.params?.id as string)
         ) {
           next()
@@ -76,8 +90,11 @@ const router = createRouter({
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/ActionChartsView.vue'),
       beforeEnter(to, from, next) {
+        const databaseType = getTypeFromSlug(to?.params?.databaseTypeSlug as string)
+
         if (
-          isDatabaseTypeValid(to?.params?.databaseTypeSlug as string) &&
+          isTypeActionSupported(DatabaseAction.CHARTS, databaseType) &&
+          isDatabaseTypeValid(databaseType) &&
           isIdValid(to?.params?.id as string)
         ) {
           next()
@@ -91,12 +108,6 @@ const router = createRouter({
       name: RouteName.RECORD_CURING,
       meta: { layout: 'MenuLayout' },
       component: () => import('../views/RecordCuringView.vue'),
-    },
-    {
-      path: '/app-performance',
-      name: RouteName.APP_PERFORMANCE,
-      meta: { layout: 'MenuLayout' },
-      component: () => import('../views/AppPerformanceView.vue'),
     },
     {
       path: '/settings',
@@ -132,14 +143,25 @@ const router = createRouter({
 })
 
 /**
- * Checks if the database type slug refers to a valid database type.
- * @param databaseTypeSlug
+ * Checks if the database type is valid.
+ * @param type
  */
-function isDatabaseTypeValid(databaseTypeSlug: string) {
-  const typeSlug = getTypeFromSlug(databaseTypeSlug)
+function isDatabaseTypeValid(type?: DatabaseType) {
+  if (type) {
+    return getAllCategoryTypes().includes(type)
+  } else {
+    return false
+  }
+}
 
-  if (typeSlug) {
-    return getAllCategoryTypes().includes(typeSlug)
+/**
+ * Checks if the database type supports the action that is being requested.
+ * @param action
+ * @param type
+ */
+function isTypeActionSupported(action: DatabaseAction, type?: DatabaseType) {
+  if (type) {
+    return getSupportedActions(type).includes(action)
   } else {
     return false
   }

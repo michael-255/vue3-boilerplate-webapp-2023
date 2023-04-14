@@ -59,7 +59,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     icon: Icon.LOGS,
     parentType: null,
     childType: null,
-    supportedActions: [DatabaseAction.DELETE],
+    supportedActions: [DatabaseAction.INSPECT, DatabaseAction.DELETE],
     chartBluprints: [],
     fieldBlueprints: [
       typeField,
@@ -97,7 +97,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     icon: Icon.SETTINGS,
     parentType: null,
     childType: null,
-    supportedActions: [],
+    supportedActions: [DatabaseAction.INSPECT],
     chartBluprints: [],
     fieldBlueprints: [typeField, idField, valueField],
     visibleColumns: [DatabaseField.ID, DatabaseField.VALUE],
@@ -106,7 +106,21 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
   /**
    * App Performance Blueprint
    */
-  // {},
+  {
+    type: DatabaseType.APP_PERFORMANCE,
+    typeSlug: slugify(DatabaseType.APP_PERFORMANCE),
+    category: DatabaseCategory.DEV,
+    singularLabel: 'App Performance',
+    pluralLabel: 'App Performance',
+    icon: Icon.PERF,
+    parentType: null,
+    childType: null,
+    supportedActions: [DatabaseAction.INSPECT, DatabaseAction.DELETE],
+    chartBluprints: [], // TODO
+    fieldBlueprints: [typeField, idField],
+    visibleColumns: [DatabaseField.TYPE, DatabaseField.ID],
+    tableColumns: [requiredTypeColumn, requiredIdColumn],
+  },
   /**
    * Example Blueprint
    */
@@ -120,6 +134,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     parentType: null,
     childType: DatabaseType.EXAMPLE_RESULT,
     supportedActions: [
+      DatabaseAction.INSPECT,
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
       DatabaseAction.DELETE,
@@ -157,7 +172,12 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     icon: Icon.RECORDS,
     parentType: DatabaseType.EXAMPLE,
     childType: null,
-    supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
+    supportedActions: [
+      DatabaseAction.INSPECT,
+      DatabaseAction.CREATE,
+      DatabaseAction.EDIT,
+      DatabaseAction.DELETE,
+    ],
     chartBluprints: [],
     fieldBlueprints: [
       typeField,
@@ -191,6 +211,7 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     parentType: null,
     childType: DatabaseType.TEST_RESULT,
     supportedActions: [
+      DatabaseAction.INSPECT,
       DatabaseAction.CREATE,
       DatabaseAction.EDIT,
       DatabaseAction.DELETE,
@@ -228,7 +249,12 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     icon: Icon.RECORDS,
     parentType: DatabaseType.TEST,
     childType: null,
-    supportedActions: [DatabaseAction.CREATE, DatabaseAction.EDIT, DatabaseAction.DELETE],
+    supportedActions: [
+      DatabaseAction.INSPECT,
+      DatabaseAction.CREATE,
+      DatabaseAction.EDIT,
+      DatabaseAction.DELETE,
+    ],
     chartBluprints: [],
     fieldBlueprints: [
       typeField,

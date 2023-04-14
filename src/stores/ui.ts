@@ -10,7 +10,7 @@ const useUIStore = defineStore({
      */
     drawer: false,
     /**
-     * Currently selected dashboard list.
+     * Currently selected dashboard list index.
      */
     dashboardListIndex: 0,
     /**

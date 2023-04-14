@@ -125,6 +125,7 @@ function getRecordsCountText() {
           />
           <!-- INSPECT -->
           <QBtn
+            v-if="getSupportedActions(routeDatabaseType).includes(DatabaseAction.INSPECT)"
             flat
             round
             dense

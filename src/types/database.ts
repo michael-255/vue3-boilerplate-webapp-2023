@@ -8,11 +8,22 @@ import type { LogRetention } from '@/types/misc'
 export enum DatabaseType {
   LOG = 'Logs', // First in order
   SETTING = 'Settings',
+  APP_PERFORMANCE = 'App Performance',
   EXAMPLE = 'Examples',
   EXAMPLE_RESULT = 'Example Results',
   TEST = 'Tests',
   TEST_RESULT = 'Test Results',
 }
+
+/**
+ * Parent types in the database.
+ */
+export type DatabaseParentType = DatabaseType.EXAMPLE | DatabaseType.TEST
+
+/**
+ * Child types to parent types in the database.
+ */
+export type DatabaseChildType = DatabaseType.EXAMPLE_RESULT | DatabaseType.TEST_RESULT
 
 /**
  * Each database type has a category. These determine how certain parts of the app treat them.
@@ -23,18 +34,6 @@ export enum DatabaseCategory {
   PARENT = 'Parent',
   CHILD = 'Child',
 }
-
-/**
- * Parent types in the database.
- * TODO - replace with DatabaseCategory search function?
- */
-export type DatabaseParentType = DatabaseType.EXAMPLE | DatabaseType.TEST
-
-/**
- * Child types to parent types in the database.
- * TODO - replace with DatabaseCategory search function?
- */
-export type DatabaseChildType = DatabaseType.EXAMPLE_RESULT | DatabaseType.TEST_RESULT
 
 /**
  * All field names used by database records.
@@ -90,9 +89,10 @@ export enum Severity {
 }
 
 /**
- * Actions that a database type can support.
+ * Actions that a database type can support. Used for action and routing controls.
  */
 export enum DatabaseAction {
+  INSPECT = 'Inspect',
   CREATE = 'Create',
   EDIT = 'Edit',
   DELETE = 'Delete',
