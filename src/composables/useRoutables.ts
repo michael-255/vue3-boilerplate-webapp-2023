@@ -137,17 +137,6 @@ export default function useRoutables() {
   }
 
   /**
-   * Go to app performance route.
-   */
-  function goToAppPerformance() {
-    try {
-      router.push({ name: RouteName.APP_PERFORMANCE })
-    } catch (error) {
-      log.error('Error accessing app performance route', error)
-    }
-  }
-
-  /**
    * Go back if previous route state is part of the app history, otherwise go to Dashboard.
    */
   function goBack() {
@@ -173,7 +162,6 @@ export default function useRoutables() {
     goToEdit,
     goToCharts,
     goToRecordCuring,
-    goToAppPerformance,
     goBack,
   }
 }

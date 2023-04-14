@@ -20,7 +20,7 @@ useMeta({ title: `${AppName} - Settings` })
 const { log } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useDialogs()
-const { goToData, goToRecordCuring, goToAppPerformance } = useRoutables()
+const { goToData, goToRecordCuring } = useRoutables()
 const { onDefaults } = useDefaults()
 
 // Data
@@ -447,18 +447,6 @@ async function onDeleteDatabase() {
           :step="1"
           @change="(index) => onChangeLogRetention(index)"
         />
-
-        <!-- Application Performance (DEV only) -->
-        <div v-if="DEV">
-          <div class="q-my-md">
-            Use the console time tracking functions from the Logger composable to track app
-            performance. Simply add them to the sections of code you want to track and use the app
-            to generate some performance records. Then view the results as a flame graph on the App
-            Performance page.
-          </div>
-
-          <QBtn label="App Performance" color="accent" @click="goToAppPerformance()" />
-        </div>
       </QCardSection>
     </QCard>
 
