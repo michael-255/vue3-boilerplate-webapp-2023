@@ -14,21 +14,17 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
-useMeta({
-  title: `${AppName} - Settings`,
-  meta: {
-    description: { name: 'description', content: 'Settings Page' },
-  },
-})
+useMeta({ title: `${AppName} - Settings` })
 
 // Composables & Stores
 const { log } = useLogger()
 const { notify } = useNotifications()
 const { confirmDialog } = useDialogs()
-const { goToData } = useRoutables()
+const { goToData, goToRecordCuring, goToAppPerformance } = useRoutables()
 const { onDefaults } = useDefaults()
 
 // Data
+const DEV = import.meta.env.DEV
 const settings: Ref<any[]> = ref([])
 const logRetentionIndex: Ref<number> = ref(0)
 const importFile: Ref<any> = ref(null)
@@ -131,7 +127,7 @@ function onExportRecords(types: DatabaseType[]) {
 
   confirmDialog(
     'Export Data',
-    `Export all of your data as the file ${filename}?`,
+    `Export all selected data types as the file ${filename}?`,
     Icon.INFO,
     'info',
     async () => {
@@ -386,6 +382,14 @@ async function onDeleteDatabase() {
             />
           </template>
         </QSelect>
+
+        <!-- Record Curing -->
+        <div class="q-mb-md">
+          Examine and fix any issues with your data on the Record Curing page. Records on this page
+          are either unused, orphaned, or missing data properties.
+        </div>
+
+        <QBtn label="Record Curing" color="primary" @click="goToRecordCuring()" />
       </QCardSection>
     </QCard>
 
@@ -443,6 +447,18 @@ async function onDeleteDatabase() {
           :step="1"
           @change="(index) => onChangeLogRetention(index)"
         />
+
+        <!-- Application Performance (DEV only) -->
+        <div v-if="DEV">
+          <div class="q-my-md">
+            Use the console time tracking functions from the Logger composable to track app
+            performance. Simply add them to the sections of code you want to track and use the app
+            to generate some performance records. Then view the results as a flame graph on the App
+            Performance page.
+          </div>
+
+          <QBtn label="App Performance" color="accent" @click="goToAppPerformance()" />
+        </div>
       </QCardSection>
     </QCard>
 

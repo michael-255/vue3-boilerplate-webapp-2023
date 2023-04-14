@@ -4,16 +4,11 @@ import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-useMeta({
-  title: `${AppName} - FAQ`,
-  meta: {
-    description: { name: 'description', content: 'FAQ Page' },
-  },
-})
+useMeta({ title: `${AppName} - FAQ` })
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.HELP" banner-title="FAQ">
+  <ResponsivePage :bannerIcon="Icon.HELP" bannerTitle="FAQ">
     <QList bordered class="rounded-borders">
       <QExpansionItem label="What is this application?" header-class="text-weight-bold">
         <QCard>

@@ -7,7 +7,7 @@ Do NOT mutate these objects as they are used by multiple components.
 */
 
 /**
- * Numbers chart.
+ * Numbers chart for child records.
  */
 export const numberChart: ChartBlueprint = {
   label: 'Numbers',

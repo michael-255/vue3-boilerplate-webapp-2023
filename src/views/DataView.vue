@@ -17,12 +17,7 @@ import useRoutables from '@/composables/useRoutables'
 import useActions from '@/composables/useActions'
 import DB from '@/services/LocalDatabase'
 
-useMeta({
-  title: `${AppName} - Data`,
-  meta: {
-    description: { name: 'description', content: 'Data Page' },
-  },
-})
+useMeta({ title: `${AppName} - Data` })
 
 // Composables & Stores
 const { log } = useLogger()

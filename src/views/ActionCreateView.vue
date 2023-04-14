@@ -13,12 +13,7 @@ import useLogger from '@/composables/useLogger'
 import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
 
-useMeta({
-  title: `${AppName} - Create Record`,
-  meta: {
-    description: { name: 'description', content: 'Create Record Page' },
-  },
-})
+useMeta({ title: `${AppName} - Create Record` })
 
 // Composables & Stores
 const { routeDatabaseType, routeParentId, goBack } = useRoutables()
@@ -104,8 +99,8 @@ function lockFields(field: DatabaseField) {
 
 <template>
   <ResponsivePage
-    :banner-icon="Icon.CREATE"
-    :banner-title="`Create ${getLabel(routeDatabaseType, 'singular')}`"
+    :bannerIcon="Icon.CREATE"
+    :bannerTitle="`Create ${getLabel(routeDatabaseType, 'singular')}`"
   >
     <!-- Error Render -->
     <div v-if="fieldBlueprints.length === 0">

@@ -37,7 +37,7 @@ export const valueField: FieldBlueprint = {
 }
 
 /**
- * Created Timestamp field used by Logs and child records.
+ * Created Timestamp field used by Logs and child records. Inspection format converts timestamp to a readable date.
  */
 export const createdTimestampField: FieldBlueprint = {
   field: DatabaseField.CREATED_TIMESTAMP,
@@ -67,7 +67,7 @@ export const labelField: FieldBlueprint = {
 }
 
 /**
- * Details field used by Logs.
+ * Details field used by Logs. Inspection format converts details to json for display.
  */
 export const detailsField: FieldBlueprint = {
   field: DatabaseField.DETAILS,
@@ -98,7 +98,7 @@ export const descriptionField: FieldBlueprint = {
 }
 
 /**
- * Favorited field used by parent records.
+ * Favorited field used by parent records. Inspection format converts boolean to Yes/No.
  */
 export const favoritedField: FieldBlueprint = {
   field: DatabaseField.IS_FAVORITED,
@@ -110,7 +110,7 @@ export const favoritedField: FieldBlueprint = {
 }
 
 /**
- * Enabled field used by parent records.
+ * Enabled field used by parent records. Inspection format converts boolean to Yes/No.
  */
 export const enabledField: FieldBlueprint = {
   field: DatabaseField.IS_ENABLED,

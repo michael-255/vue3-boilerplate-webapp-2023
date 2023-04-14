@@ -22,7 +22,7 @@ export const requiredTypeColumn: QTableColumn = {
   required: true,
   field: (row: any) => row[DatabaseField.TYPE],
   format: (val: DatabaseType) => `${val}`,
-  style: 'display: none',
+  style: 'display: none', // Hide column in QTable
 }
 
 /**
@@ -38,7 +38,7 @@ export const requiredIdColumn: QTableColumn = {
   required: true,
   field: (row: any) => row[DatabaseField.ID],
   format: (val: string) => `${val}`,
-  style: 'display: none',
+  style: 'display: none', // Hide column in QTable
 }
 
 /**
@@ -55,7 +55,7 @@ export const typeColumn: QTableColumn = {
 }
 
 /**
- * Partial Id column used by all records. Truncated to provide more horizontal space on the Data view.
+ * Partial Id column used by all records. Format truncates id to provide more horizontal space on Data view.
  */
 export const partialIdColumn: QTableColumn = {
   name: DatabaseField.ID,
@@ -81,7 +81,7 @@ export const idColumn: QTableColumn = {
 }
 
 /**
- * Created Date column used by Logs and child records.
+ * Created Date column used by Logs and child records. Format converts the timestamp to a readable date.
  */
 export const createdTimestampColumn: QTableColumn = {
   name: DatabaseField.CREATED_TIMESTAMP,
@@ -94,7 +94,7 @@ export const createdTimestampColumn: QTableColumn = {
 }
 
 /**
- * Setting Value column used by Settings.
+ * Setting Value column used by Settings. Format truncates value in case it is to large.
  */
 export const valueColumn: QTableColumn = {
   name: DatabaseField.VALUE,
@@ -120,7 +120,7 @@ export const severityColumn: QTableColumn = {
 }
 
 /**
- * Details column used by Logs.
+ * Details column used by Logs. Format truncates value in case it is to large.
  */
 export const detailsColumn: QTableColumn = {
   name: DatabaseField.DETAILS,
@@ -133,7 +133,7 @@ export const detailsColumn: QTableColumn = {
 }
 
 /**
- * Label column used by Logs.
+ * Label column used by Logs. Format truncates value in case it is to large.
  */
 export const labelColumn: QTableColumn = {
   name: DatabaseField.LABEL,
@@ -146,7 +146,7 @@ export const labelColumn: QTableColumn = {
 }
 
 /**
- * Name column used by parent records.
+ * Name column used by parent records. Format truncates value in case it is to large.
  */
 export const nameColumn: QTableColumn = {
   name: DatabaseField.NAME,
@@ -159,7 +159,7 @@ export const nameColumn: QTableColumn = {
 }
 
 /**
- * Description column used by parent records.
+ * Description column used by parent records. Format truncates value in case it is to large.
  */
 export const descriptionColumn: QTableColumn = {
   name: DatabaseField.DESCRIPTION,
@@ -172,7 +172,7 @@ export const descriptionColumn: QTableColumn = {
 }
 
 /**
- * Favorite column used by parent records.
+ * Favorite column used by parent records. Format converts boolean to Yes/No.
  */
 export const favoritedColumn: QTableColumn = {
   name: DatabaseField.IS_FAVORITED,
@@ -185,7 +185,7 @@ export const favoritedColumn: QTableColumn = {
 }
 
 /**
- * Enabled column used by parent records.
+ * Enabled column used by parent records. Format converts boolean to Yes/No.
  */
 export const enabledColumn: QTableColumn = {
   name: DatabaseField.IS_ENABLED,
@@ -198,7 +198,7 @@ export const enabledColumn: QTableColumn = {
 }
 
 /**
- * Parent Id column used by child records.
+ * Parent Id column used by child records. Format truncates id to provide more horizontal space on Data view.
  */
 export const parentIdColumn: QTableColumn = {
   name: DatabaseField.PARENT_ID,
@@ -211,7 +211,7 @@ export const parentIdColumn: QTableColumn = {
 }
 
 /**
- * Note column used by child records.
+ * Note column used by child records. Format truncates value in case it is to large.
  */
 export const noteColumn: QTableColumn = {
   name: DatabaseField.NOTE,

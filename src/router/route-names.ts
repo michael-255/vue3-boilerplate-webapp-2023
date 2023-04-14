@@ -8,6 +8,8 @@ export enum RouteName {
   ACTION_CREATE = 'Create',
   ACTION_EDIT = 'Edit',
   ACTION_CHARTS = 'Charts',
+  RECORD_CURING = 'RecordCuring',
+  APP_PERFORMANCE = 'AppPerformance',
   SETTINGS = 'Settings',
   FAQ = 'FAQ',
   ABOUT = 'About',

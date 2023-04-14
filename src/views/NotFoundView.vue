@@ -3,12 +3,7 @@ import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-useMeta({
-  title: `${AppName} - 404`,
-  meta: {
-    description: { name: 'description', content: '404 Page' },
-  },
-})
+useMeta({ title: `${AppName} - 404` })
 </script>
 
 <template>

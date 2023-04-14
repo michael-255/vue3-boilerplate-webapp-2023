@@ -2,26 +2,17 @@
 import { Icon } from '@/types/icons'
 import { RouteName } from '@/router/route-names'
 import { useMeta } from 'quasar'
-import { AppName } from '@/types/misc'
+import { AppName, AppDescription } from '@/types/misc'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-useMeta({
-  title: `${AppName} - About`,
-  meta: {
-    description: { name: 'description', content: 'About Page' },
-  },
-})
+useMeta({ title: `${AppName} - About` })
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.INFO" banner-title="About">
+  <ResponsivePage :bannerIcon="Icon.INFO" bannerTitle="About">
     <QCard>
       <QCardSection>
-        <div class="q-mb-md">
-          {{ AppName }} is a Vue 3 Typescript project created by michael-255 on GitHub. This project
-          was built to be the foundation for many web applications. It is publicly available using
-          the MIT License.
-        </div>
+        <div class="q-mb-md">{{ AppDescription }}</div>
 
         <div class="q-mb-md">
           Feel free to checkout my other projects or help support my work with a donation. Thanks

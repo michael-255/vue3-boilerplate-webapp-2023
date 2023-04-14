@@ -2,7 +2,7 @@
 import { RouterView, useRoute } from 'vue-router'
 import { onMounted, type Ref, ref, watch, markRaw } from 'vue'
 import { Icon } from '@/types/icons'
-import type { Optional } from '@/types/misc'
+import { type Optional, AppDescription } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ErrorLayout from '@/layouts/ErrorLayout.vue'
 import useLogger from '@/composables/useLogger'
@@ -15,6 +15,7 @@ import DB from '@/services/LocalDatabase'
  */
 useMeta({
   meta: {
+    description: { name: 'description', content: AppDescription },
     charset: { charset: 'UTF-8' },
     viewport: {
       name: 'viewport',

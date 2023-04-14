@@ -87,6 +87,18 @@ const router = createRouter({
       },
     },
     {
+      path: '/record-curing',
+      name: RouteName.RECORD_CURING,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/RecordCuringView.vue'),
+    },
+    {
+      path: '/app-performance',
+      name: RouteName.APP_PERFORMANCE,
+      meta: { layout: 'MenuLayout' },
+      component: () => import('../views/AppPerformanceView.vue'),
+    },
+    {
       path: '/settings',
       name: RouteName.SETTINGS,
       meta: { layout: 'MenuLayout' },

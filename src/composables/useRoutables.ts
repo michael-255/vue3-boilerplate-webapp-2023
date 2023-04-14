@@ -126,6 +126,28 @@ export default function useRoutables() {
   }
 
   /**
+   * Go to record curing route.
+   */
+  function goToRecordCuring() {
+    try {
+      router.push({ name: RouteName.RECORD_CURING })
+    } catch (error) {
+      log.error('Error accessing record curing route', error)
+    }
+  }
+
+  /**
+   * Go to app performance route.
+   */
+  function goToAppPerformance() {
+    try {
+      router.push({ name: RouteName.APP_PERFORMANCE })
+    } catch (error) {
+      log.error('Error accessing app performance route', error)
+    }
+  }
+
+  /**
    * Go back if previous route state is part of the app history, otherwise go to Dashboard.
    */
   function goBack() {
@@ -150,6 +172,8 @@ export default function useRoutables() {
     goToCreate,
     goToEdit,
     goToCharts,
+    goToRecordCuring,
+    goToAppPerformance,
     goBack,
   }
 }

@@ -13,12 +13,7 @@ import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
-useMeta({
-  title: `${AppName} - Edit Record`,
-  meta: {
-    description: { name: 'description', content: 'Edit Record Page' },
-  },
-})
+useMeta({ title: `${AppName} - Edit Record` })
 
 // Composables & Stores
 const { routeDatabaseType, routeId, goBack } = useRoutables()
@@ -100,8 +95,8 @@ async function onUpdateRecord() {
 
 <template>
   <ResponsivePage
-    :banner-icon="Icon.EDIT"
-    :banner-title="`Edit ${getLabel(routeDatabaseType, 'singular')}`"
+    :bannerIcon="Icon.EDIT"
+    :bannerTitle="`Edit ${getLabel(routeDatabaseType, 'singular')}`"
   >
     <!-- Error Render -->
     <div v-if="fieldBlueprints.length === 0">

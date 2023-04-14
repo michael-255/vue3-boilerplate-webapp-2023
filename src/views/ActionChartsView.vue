@@ -7,12 +7,7 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import ChartTimeInput from '@/components/charts/ChartTimeInput.vue'
 
-useMeta({
-  title: `${AppName} - Charts`,
-  meta: {
-    description: { name: 'description', content: 'Charts Page' },
-  },
-})
+useMeta({ title: `${AppName} - Charts` })
 
 // Composables & Stores
 const { routeDatabaseType } = useRoutables()

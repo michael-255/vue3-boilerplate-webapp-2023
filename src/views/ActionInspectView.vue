@@ -10,12 +10,7 @@ import useRoutables from '@/composables/useRoutables'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import DB from '@/services/LocalDatabase'
 
-useMeta({
-  title: `${AppName} - Inspect Record`,
-  meta: {
-    description: { name: 'description', content: 'Inspect Record Page' },
-  },
-})
+useMeta({ title: `${AppName} - Inspect Record` })
 
 // Composables & Stores
 const { routeDatabaseType, routeId } = useRoutables()
@@ -36,8 +31,8 @@ onMounted(async () => {
 
 <template>
   <ResponsivePage
-    :banner-icon="Icon.INSPECT"
-    :banner-title="`Inspect ${getLabel(routeDatabaseType, 'singular')}`"
+    :bannerIcon="Icon.INSPECT"
+    :bannerTitle="`Inspect ${getLabel(routeDatabaseType, 'singular')}`"
   >
     <QCard v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
       <QCardSection>

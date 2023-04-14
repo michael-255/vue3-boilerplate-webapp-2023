@@ -20,12 +20,7 @@ import DashboardParentCard from '@/components/DashboardParentCard.vue'
 import useUIStore from '@/stores/ui'
 import DB from '@/services/LocalDatabase'
 
-useMeta({
-  title: `${AppName} - Dashboard`,
-  meta: {
-    description: { name: 'description', content: 'Dashboard Page' },
-  },
-})
+useMeta({ title: `${AppName} - Dashboard` })
 
 // Composables & Stores
 const uiStore = useUIStore()

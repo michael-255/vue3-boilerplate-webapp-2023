@@ -4,16 +4,11 @@ import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 
-useMeta({
-  title: `${AppName} - Donate`,
-  meta: {
-    description: { name: 'description', content: 'Donate Page' },
-  },
-})
+useMeta({ title: `${AppName} - Donate` })
 </script>
 
 <template>
-  <ResponsivePage :banner-icon="Icon.DONATE" banner-title="Donate">
+  <ResponsivePage :bannerIcon="Icon.DONATE" bannerTitle="Donate">
     <QCard>
       <QCardSection>
         <div class="q-mb-md">
