@@ -6,7 +6,6 @@ projects. Read through this README to have a better understanding of how this pr
 ## Todos (\*\*\*)
 
 - [ ] `Record Curing` page for `Unused`, `Orphaned`, and `Partial` records
-- [ ] Flame graph and logic for `timeStart` and `timeEnd` functions (performance tracking)
 - [ ] Create `useCharts` composable and `PreparedChart` type
 - [ ] Setup `KoFi` account for donations (link on `Donate` page and GitHub?)
 - [ ] Quasar Icon Genie CLI to generate a more complete icon list

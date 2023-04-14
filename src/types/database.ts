@@ -8,7 +8,6 @@ import type { LogRetention } from '@/types/misc'
 export enum DatabaseType {
   LOG = 'Logs', // First in order
   SETTING = 'Settings',
-  APP_PERFORMANCE = 'App Performance',
   EXAMPLE = 'Examples',
   EXAMPLE_RESULT = 'Example Results',
   TEST = 'Tests',
@@ -29,7 +28,6 @@ export type DatabaseChildType = DatabaseType.EXAMPLE_RESULT | DatabaseType.TEST_
  * Each database type has a category. These determine how certain parts of the app treat them.
  */
 export enum DatabaseCategory {
-  DEV = 'Dev',
   INTERNAL = 'Internal',
   PARENT = 'Parent',
   CHILD = 'Child',

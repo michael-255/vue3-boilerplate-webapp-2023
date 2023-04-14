@@ -24,7 +24,6 @@ const { goToData, goToRecordCuring } = useRoutables()
 const { onDefaults } = useDefaults()
 
 // Data
-const DEV = import.meta.env.DEV
 const settings: Ref<any[]> = ref([])
 const logRetentionIndex: Ref<number> = ref(0)
 const importFile: Ref<any> = ref(null)

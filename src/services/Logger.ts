@@ -50,14 +50,6 @@ class ApplicationLogger {
   error(message: any, ...args: any) {
     console.error(this.name, this.style.error, message, ...args)
   }
-
-  timeStart(key: string) {
-    console.time(key)
-  }
-
-  timeEnd(key: string) {
-    console.timeEnd(key)
-  }
 }
 
 /**

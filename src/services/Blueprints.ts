@@ -27,16 +27,7 @@ export function getTypeFromSlug(databaseTypeSlug: string) {
  * Gets all database types except Dev category ones if in PROD mode.
  */
 export function getAllCategoryTypes() {
-  if (import.meta.env.DEV) {
-    // Return all types in DEV mode
-    return Object.values(DatabaseType)
-  } else {
-    // Return only non-Dev types in PROD mode
-    return (
-      coreBlueprint.filter((cbp) => cbp.category !== DatabaseCategory.DEV).map((cbp) => cbp.type) ??
-      []
-    )
-  }
+  return Object.values(DatabaseType) ?? []
 }
 
 /**

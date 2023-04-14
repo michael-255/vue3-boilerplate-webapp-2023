@@ -104,24 +104,6 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
     tableColumns: [requiredTypeColumn, requiredIdColumn, idColumn, valueColumn],
   },
   /**
-   * App Performance Blueprint
-   */
-  {
-    type: DatabaseType.APP_PERFORMANCE,
-    typeSlug: slugify(DatabaseType.APP_PERFORMANCE),
-    category: DatabaseCategory.DEV,
-    singularLabel: 'App Performance',
-    pluralLabel: 'App Performance',
-    icon: Icon.PERF,
-    parentType: null,
-    childType: null,
-    supportedActions: [DatabaseAction.INSPECT, DatabaseAction.DELETE],
-    chartBluprints: [], // TODO
-    fieldBlueprints: [typeField, idField],
-    visibleColumns: [DatabaseField.TYPE, DatabaseField.ID],
-    tableColumns: [requiredTypeColumn, requiredIdColumn],
-  },
-  /**
    * Example Blueprint
    */
   {

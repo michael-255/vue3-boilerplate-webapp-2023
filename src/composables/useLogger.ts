@@ -95,27 +95,6 @@ export default function useLogger() {
 
       notify(name, Icon.ERROR, 'negative')
     },
-    /**
-     * Track start time with a key label. Usefull for tracking application performance.
-     * Only works in DEV mode.
-     * @param key
-     */
-    timeStart: (key: string) => {
-      if (import.meta.env.DEV) {
-        Logger.timeStart(key)
-      }
-    },
-    /**
-     * Track end time with a key label. Usefull for tracking application performance.
-     * Only works in DEV mode.
-     * @param key
-     */
-    timeEnd: (key: string) => {
-      if (import.meta.env.DEV) {
-        Logger.timeEnd(key)
-        // TODO - Saving performance data to DB
-      }
-    },
   }
 
   return { log }
