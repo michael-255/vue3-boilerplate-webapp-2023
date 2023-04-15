@@ -1,6 +1,12 @@
 import type { LogRetention } from '@/types/misc'
 
 /**
+ * Current database version. Change this to force a new database to be created for users.
+ * Cannot use records from the previous database without importing it through the Settings if version changes.
+ */
+export const DatabaseVersion = 1
+
+/**
  * All database types that separate the different types of records.
  * Using compound indices instead of splitting records by table.
  * NOTE: The order here determines the order when retrieving these types.

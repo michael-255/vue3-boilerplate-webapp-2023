@@ -3,6 +3,7 @@ import type { DatabaseRecord, Log, Setting } from '@/types/models'
 import { LogRetention, Milliseconds, type AppObject, AppName } from '@/types/misc'
 import { Dark, uid } from 'quasar'
 import {
+  DatabaseVersion,
   DatabaseField,
   DatabaseType,
   SettingId,
@@ -20,7 +21,7 @@ export class LocalDatabase extends Dexie {
   Records!: Table<DatabaseRecord>
 
   constructor(name: string) {
-    super(name)
+    super(`${name} v${DatabaseVersion}}`)
 
     this.version(1).stores({
       Records: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
