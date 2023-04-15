@@ -4,7 +4,7 @@ import { AppName } from '@/types/misc'
  * Logger adds some style to your console.
  * @param name Logger name appearing in the console
  */
-class ApplicationLogger {
+export class ApplicationLogger {
   private name: string
   private style: {
     print: string

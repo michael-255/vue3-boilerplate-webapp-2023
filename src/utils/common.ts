@@ -110,7 +110,7 @@ export function getDurationFromMilliseconds(milliseconds?: number): string | und
 }
 
 /**
- * Returns display text with the number of records found in the provided array.
+ * Returns formatted count string with the number of records found in the provided array.
  * @param records
  */
 export function getRecordsCountDisplay(records: any[]) {

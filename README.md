@@ -1,13 +1,8 @@
 # Vue 3 Web App Template (WORK IN PROGRESS)
 
 This Vue 3 Typescript project can be used as a template to help you get started developing smaller
-projects. Read through this README to have a better understanding of how this project is setup.
-
-## Todos (\*\*\*)
-
-- [ ] `Add Tests`
-      <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
-- [ ] Update cloning/usage steps
+web applications. Read through this README to have a better understanding of how this project is
+setup.
 
 ## Post Cloning Steps (Remove after completion)
 
@@ -23,10 +18,9 @@ projects. Read through this README to have a better understanding of how this pr
 - [ ] Update certain code files
 
   - [ ] Update `base` in `~/vite.config.ts` to your repository name for deployments to work
-  - [ ] Update `AppText` enums in `~/src/constants/ui/string-enums.ts` to represent your app
-  - [ ] Update `title` in `~/index.html` to reflect the app name you use in `ui-enums.ts`
-  - [ ] Update `name` and `short_name` in `~/public/manifest.json` the app name
-  - [ ] Update `start_url` in `~/public/manifest.json` to deployed website address (home)
+  - [ ] Update `AppName` and `AppDescription` in `~/src/types/misc.ts` to represent your app
+  - [ ] Update `name` and `short_name` in `~/public/manifest.json` to the app name
+  - [ ] Update `start_url` in `~/public/manifest.json` to deployed website address
 
 - [ ] Update `GitHub` repository settings
 
@@ -137,7 +131,8 @@ Details on the steps I took to setup this project.
      "scripts": {
        "test": "vitest --environment jsdom --root src/",
        "test:coverage": "vitest --environment jsdom --coverage --root src/",
-       "deploy": "npm run build && cd dist && cp index.html 404.html && cd .. && gh-pages -d dist -m Deployment"
+       "deploy:clean": "gh-pages-clean gh-pages -d dist -m Deployment",
+       "deploy:gh-pages": "npm run build && npm version patch && cd dist && cp index.html 404.html && cd .. && gh-pages -d dist -m Deployment"
      }
    }
    ```
@@ -149,18 +144,7 @@ Details on the steps I took to setup this project.
    - `.gitignore`
    - `.prettierignore`
    - `.prettier.json`
-1. Add icons, manifest file, and update `index.html` for the project:
-   - `manifest.json`
-   - `favicon.ico`
-   - (other icons)
-   - ```html
-     <meta name="theme-color" content="#1976D2" />
-     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
-     <link rel="manifest" href="manifest.json" />
-     <title>Vue 3 Web App Template</title>
-     ```
+1. Add icons, manifest file, and update `useMeta` in `~/src/App.vue`
 1. Run `git init` inside your project directory
 1. Commit all changes to the project into it's initial commit
 1. Run the follow commands to push the new project to your GitHub repo:
@@ -202,3 +186,5 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## Credits
 
 Recognize the work of anyone whose material you used in the project here.
+
+Original `Web App Template` created by Michael Joy (michael-255 on GitHub)

@@ -16,7 +16,7 @@ import { getUserCategoryTypes } from '@/services/Blueprints'
 /**
  * A Dexie wrapper class that acts as a local database.
  */
-class LocalDatabase extends Dexie {
+export class LocalDatabase extends Dexie {
   Records!: Table<DatabaseRecord>
 
   constructor(name: string) {
@@ -166,20 +166,20 @@ class LocalDatabase extends Dexie {
   }
 
   /**
-   * Get all records by database type.
-   * @param type
-   */
-  async getRecordsByType(type: DatabaseType) {
-    return await this.Records.where(DatabaseField.TYPE).equals(type).toArray()
-  }
-
-  /**
    * Get specific record by database type and id.
    * @param type
    * @param id
    */
   async getRecord(type: DatabaseType, id: string | SettingId) {
     return await this.Records.get([type, id])
+  }
+
+  /**
+   * Get all records by database type.
+   * @param type
+   */
+  async getRecordsByType(type: DatabaseType) {
+    return await this.Records.where(DatabaseField.TYPE).equals(type).toArray()
   }
 
   /**
