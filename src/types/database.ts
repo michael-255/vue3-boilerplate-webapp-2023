@@ -55,14 +55,15 @@ export enum DatabaseField {
   SEVERITY = 'severity',
   LABEL = 'label',
   DETAILS = 'details',
-  // Examples
+  // Parent
   NAME = 'name',
   DESCRIPTION = 'description',
   IS_FAVORITED = 'isFavorited',
   IS_ENABLED = 'isEnabled',
-  // Example Results
+  // Child
   PARENT_ID = 'parentId',
   NOTE = 'note',
+  // Example & Test Results
   NUMBER = 'number',
 }
 
