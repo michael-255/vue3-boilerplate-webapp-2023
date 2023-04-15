@@ -21,7 +21,7 @@ export class LocalDatabase extends Dexie {
   Records!: Table<DatabaseRecord>
 
   constructor(name: string) {
-    super(`${name} v${DatabaseVersion}}`)
+    super(`${name} v${DatabaseVersion}`)
 
     this.version(1).stores({
       Records: `&[${DatabaseField.TYPE}+${DatabaseField.ID}], [${DatabaseField.TYPE}+${DatabaseField.PARENT_ID}]`,
