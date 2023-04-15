@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "test": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --coverage --root src/",
-    "deploy:clean": "gh-pages-clean gh-pages -d dist -m Deployment",
+    "deploy:clean-gh-pages": "gh-pages-clean gh-pages -d dist -m Deployment",
     "deploy:gh-pages": "npm run build && npm version patch && cd dist && cp index.html 404.html && cd .. && gh-pages -d dist -m Deployment"
   },
   "dependencies": {

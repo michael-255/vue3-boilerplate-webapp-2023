@@ -69,16 +69,34 @@ Build the project `dist` directory.
 npm run build
 ```
 
-Run tests and coverage report (press `q` to quit).
+Preview application using built `dist` artifacts.
+
+```sh
+npm run preview
+```
+
+Run tests.
 
 ```sh
 npm test
 ```
 
-Build and deploy the `dist` directory.
+Run tests with coverage report.
 
 ```sh
-npm run deploy
+npm test:coverage
+```
+
+Removes previous GitHub Pages deployment.
+
+```sh
+npm run deploy:clean-gh-pages
+```
+
+Build and deploy the `dist` directory to GitHub Pages.
+
+```sh
+npm run deploy:gh-pages
 ```
 
 Check for outdated packages.
@@ -131,7 +149,7 @@ Details on the steps I took to setup this project.
      "scripts": {
        "test": "vitest --environment jsdom --root src/",
        "test:coverage": "vitest --environment jsdom --coverage --root src/",
-       "deploy:clean": "gh-pages-clean gh-pages -d dist -m Deployment",
+       "deploy:clean-gh-pages": "gh-pages-clean gh-pages -d dist -m Deployment",
        "deploy:gh-pages": "npm run build && npm version patch && cd dist && cp index.html 404.html && cd .. && gh-pages -d dist -m Deployment"
      }
    }
