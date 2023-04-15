@@ -30,7 +30,7 @@ developing. Read through this README to have a better understanding of how this 
 
     - [ ] Uncheck `Releases`
     - [ ] Uncheck `Packages`
-    - [ ] Uncheck `Environments`
+    - [ ] Uncheck `Environments` (or keep checked to show gh-pages deployment)
 
 - [ ] Generate a new Favicon here: <https://favicon.io/> (credit original artists)
 
