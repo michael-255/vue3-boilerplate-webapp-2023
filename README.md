@@ -1,10 +1,9 @@
-# Vue 3 Web App Template (WORK IN PROGRESS)
+# Web App Template
 
-This Vue 3 Typescript project can be used as a template to help you get started developing smaller
-web applications. Read through this README to have a better understanding of how this project is
-setup.
+This Vue 3 Typescript project can be used as a web application template to help you get started
+developing. Read through this README to have a better understanding of how this project is setup.
 
-## Post Cloning Steps (Remove after completion)
+## Post Cloning Steps
 
 - [ ] Update `package.json`
 
@@ -113,7 +112,8 @@ npm upgrade
 
 ## Project Creation Steps
 
-Details on the steps I took to setup this project.
+Details on the general steps I took to setup this project. This isn't intended as a step-by-step
+guide on how to replicate this project, but is a good starting point.
 
 1. Create an empty repository in GitHub with a `PROJECT_NAME`
 1. Run `npm init @vue/latest` in your local Projects directory:
