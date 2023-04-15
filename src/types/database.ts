@@ -9,7 +9,8 @@ export const DatabaseVersion = 1
 /**
  * All database types that separate the different types of records.
  * Using compound indices instead of splitting records by table.
- * NOTE: The order here determines the order when retrieving these types.
+ * The order here determines the order when retrieving these types.
+ * Use the plural version of the type for the value.
  */
 export enum DatabaseType {
   LOG = 'Logs', // First in order
@@ -105,10 +106,9 @@ export enum DatabaseAction {
 
 /**
  * Record issues for record curing.
- * Unknown: Unknown issue caused the record to get selected.
+ * None: None issue is used as a filter to be removed before displaying.
  * Unused: Parent record with no child records.
  * Orphaned: Child record with no parent record.
- * Partial: Parent or child record with missing required data.
  */
 export enum RecordIssue {
   NONE = 'None',
