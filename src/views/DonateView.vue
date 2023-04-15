@@ -25,7 +25,7 @@ useMeta({ title: `${AppName} - Donate` })
             <QBtn
               class="full-width"
               color="warning"
-              label="Donate with Ko-fi"
+              label="Support me on Ko-fi"
               target="_blank"
               href="https://ko-fi.com/michael255"
               :icon="Icon.WEB"

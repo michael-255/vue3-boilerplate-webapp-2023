@@ -5,13 +5,9 @@ projects. Read through this README to have a better understanding of how this pr
 
 ## Todos (\*\*\*)
 
-- [ ] Quasar Icon Genie CLI to generate a more complete icon list
-- [ ] Script that quickly updates certain values across the app (maybe)?
-
-  - [ ] May not be as useful since I implemented useMeta from Quasar
-
 - [ ] `Add Tests`
       <https://www.youtube.com/watch?v=FJRuG85tXV0&list=WL&index=18&ab_channel=ProgramWithErik>
+- [ ] Update cloning/usage steps
 
 ## Post Cloning Steps (Remove after completion)
 
