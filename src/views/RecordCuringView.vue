@@ -4,7 +4,12 @@ import { AppName } from '@/types/misc'
 import { useMeta, type QTableColumn } from 'quasar'
 import { Icon } from '@/types/icons'
 import type { CurableRecord } from '@/types/misc'
-import { DatabaseField, RecordIssue } from '@/types/database'
+import {
+  DatabaseField,
+  RecordIssue,
+  type DatabaseParentType,
+  type DatabaseChildType,
+} from '@/types/database'
 import { requiredTypeColumn } from '@/services/blueprints/table-columns'
 import { requiredIdColumn } from '@/services/blueprints/table-columns'
 import { typeColumn } from '@/services/blueprints/table-columns'
@@ -14,6 +19,12 @@ import useLogger from '@/composables/useLogger'
 import useActions from '@/composables/useActions'
 import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
+import {
+  getChildCategoryTypes,
+  getChildType,
+  getParentCategoryTypes,
+  getParentType,
+} from '@/services/Blueprints'
 
 useMeta({ title: `${AppName} - Record Curing` })
 
@@ -48,21 +59,61 @@ const searchFilter: Ref<string> = ref('')
 
 const subscription = DB.liveRecordCuring().subscribe({
   next: async (records) => {
-    // TODO: Need to collect the records with issues only (might have to do each manaully in here)
-    // - Parent: Unused or Missing Required Data (all parent types)
-    // - Child: Orphaned or Missing Required Data (all child types)
-    const curableRecords: CurableRecord[] = records
-      .filter(async (record) => await DB.isRecordUnused(record))
-      .map((record) => {
-        // TODO - Everything is getting flagged as unused... this needs work
-        return {
-          [DatabaseField.TYPE]: record.type,
-          [DatabaseField.ID]: record.id,
-          recordIssue: RecordIssue.UNUSED,
-        } as CurableRecord
-      })
+    const parentTypes = getParentCategoryTypes()
+    const childTypes = getChildCategoryTypes()
 
-    rows.value = curableRecords
+    const curableRecords: CurableRecord[] = await Promise.all(
+      records.map(async (r) => {
+        // Unused - Must be a parent type
+        if (parentTypes.includes(r[DatabaseField.TYPE] as DatabaseParentType)) {
+          const childType = getChildType(r[DatabaseField.TYPE]) ?? false
+
+          // Child type must exist for parent type
+          if (childType) {
+            const childRecords = await DB.getChildRecordsByParentId(
+              childType as DatabaseChildType,
+              r[DatabaseField.ID]
+            )
+
+            // Child records must be missing
+            if (childRecords?.length === 0) {
+              return {
+                [DatabaseField.TYPE]: r[DatabaseField.TYPE],
+                [DatabaseField.ID]: r[DatabaseField.ID],
+                recordIssue: RecordIssue.UNUSED,
+              }
+            }
+          }
+        }
+
+        // Orphaned - Must be a child type
+        if (childTypes.includes(r[DatabaseField.TYPE] as DatabaseChildType)) {
+          const parentRecord = await DB.getRecord(
+            getParentType(r[DatabaseField.TYPE] as DatabaseChildType) as DatabaseParentType,
+            r[DatabaseField.PARENT_ID] as string
+          )
+
+          // Parent must be missing
+          if (!parentRecord) {
+            return {
+              [DatabaseField.TYPE]: r[DatabaseField.TYPE],
+              [DatabaseField.ID]: r[DatabaseField.ID],
+              recordIssue: RecordIssue.ORPHANED,
+            }
+          }
+        }
+
+        // None - All other records
+        return {
+          [DatabaseField.TYPE]: r[DatabaseField.TYPE],
+          [DatabaseField.ID]: r[DatabaseField.ID],
+          recordIssue: RecordIssue.NONE,
+        }
+      })
+    )
+
+    // Removing None issue records at the end
+    rows.value = curableRecords.filter((r) => r.recordIssue !== RecordIssue.NONE)
   },
   error: (error) => {
     log.error('Error during data retrieval', error)

@@ -105,8 +105,7 @@ export enum DatabaseAction {
  * Partial: Parent or child record with missing required data.
  */
 export enum RecordIssue {
-  UNKNOWN = 'Unknown',
+  NONE = 'None',
   UNUSED = 'Unused',
   ORPHANED = 'Orphaned',
-  PARTIAL = 'Partial',
 }

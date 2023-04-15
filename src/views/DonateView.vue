@@ -27,7 +27,7 @@ useMeta({ title: `${AppName} - Donate` })
               color="warning"
               label="Donate with Ko-fi"
               target="_blank"
-              href="https://ko-fi.com/"
+              href="https://ko-fi.com/michael255"
               :icon="Icon.WEB"
             />
           </div>
