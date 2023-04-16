@@ -139,10 +139,9 @@ onUnmounted(() => {
           class="q-mb-md"
         >
           <QBtn
-            outline
+            round
             color="positive"
-            label="Add Record"
-            :icon="Icon.NEW"
+            :icon="Icon.ADD_NOTE"
             @click="goToCreate(DatabaseType.EXAMPLE_RESULT, record[DatabaseField.ID])"
           />
         </DashboardParentCard>
@@ -163,10 +162,9 @@ onUnmounted(() => {
           class="q-mb-md"
         >
           <QBtn
-            outline
+            round
             color="positive"
-            label="Add Record"
-            :icon="Icon.NEW"
+            :icon="Icon.ADD_NOTE"
             @click="goToCreate(DatabaseType.TEST_RESULT, record[DatabaseField.ID])"
           />
         </DashboardParentCard>
