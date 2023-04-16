@@ -40,9 +40,7 @@ const subscription = DB.liveDashboard().subscribe({
     // Settings
     showIntroduction.value = records.find((s) => s.id === SettingId.SHOW_INTRODUCTION)?.value
 
-    // Examples
-    // Include only enabled examples
-    // Sort them by name
+    // Examples - Enabled only, sorted by name
     const dashboardExamples = await Promise.all(
       records
         .filter((r) => r.type === DatabaseType.EXAMPLE && r[DatabaseField.IS_ENABLED] === true)
@@ -63,16 +61,17 @@ const subscription = DB.liveDashboard().subscribe({
           } as DashboardParent
         })
     )
-    // Group favorites at the top
-    const exampleFavorites = dashboardExamples.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
-    const exampleNonFavorites = dashboardExamples.filter(
-      (r) => r[DatabaseField.IS_FAVORITED] === false
-    )
-    dashboardParentRefs[0].value = [...exampleFavorites, ...exampleNonFavorites]
 
-    // Tests
-    // Include only enabled tests
-    // Sort them by name
+    // Group favorites at the top
+    let favorites = dashboardExamples.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
+    let nonFavorites = dashboardExamples.filter((r) => r[DatabaseField.IS_FAVORITED] === false)
+    dashboardParentRefs[0].value = [...favorites, ...nonFavorites]
+
+    // Empty out the arrays
+    favorites = []
+    nonFavorites = []
+
+    // Tests - Enabled only, sorted by name
     const dashboardTests = await Promise.all(
       records
         .filter((r) => r.type === DatabaseType.TEST && r[DatabaseField.IS_ENABLED] === true)
@@ -94,9 +93,9 @@ const subscription = DB.liveDashboard().subscribe({
         })
     )
     // Group favorites at the top
-    const testFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
-    const testNonFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === false)
-    dashboardParentRefs[1].value = [...testFavorites, ...testNonFavorites]
+    favorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === true)
+    nonFavorites = dashboardTests.filter((r) => r[DatabaseField.IS_FAVORITED] === false)
+    dashboardParentRefs[1].value = [...favorites, ...nonFavorites]
   },
   error: (error) => {
     log.error('Error loading live dashboard records', error)
