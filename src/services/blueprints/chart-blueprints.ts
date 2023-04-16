@@ -1,4 +1,5 @@
 import type { ChartBlueprint } from '@/types/misc'
+import { date } from 'quasar'
 import { defineAsyncComponent } from 'vue'
 
 /*
@@ -19,9 +20,25 @@ export const numberChart: ChartBlueprint = {
       legend: {
         display: false,
       },
+      tooltip: {
+        callbacks: {
+          title: (tooltipItem: any) => {
+            return date.formatDate(tooltipItem?.[0]?.label, 'ddd, YYYY MMM D, h:mm a')
+          },
+        },
+      },
     },
     interaction: {
       intersect: false,
+    },
+    scales: {
+      x: {
+        ticks: {
+          autoSkip: true,
+          maxRotation: 70,
+          minRotation: 70,
+        },
+      },
     },
   },
   component: defineAsyncComponent(() => import('@/components/charts/ChartNumbers.vue')),

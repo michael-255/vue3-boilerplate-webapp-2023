@@ -92,7 +92,7 @@ async function recalculateChart() {
 
       // Create chart label dates from the created timestamps
       const chartLabels = timeRestrictedRecords.map((record: any) =>
-        date.formatDate(record[DatabaseField.CREATED_TIMESTAMP], 'ddd YYYY MMM D h:mm a')
+        date.formatDate(record[DatabaseField.CREATED_TIMESTAMP], 'YYYY MMM D')
       )
 
       // Create chart data from the number fields
