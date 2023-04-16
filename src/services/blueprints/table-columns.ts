@@ -120,19 +120,6 @@ export const severityColumn: QTableColumn = {
 }
 
 /**
- * Details column used by Logs. Format truncates value in case it is to large.
- */
-export const detailsColumn: QTableColumn = {
-  name: DatabaseField.DETAILS,
-  label: 'Details',
-  align: 'left',
-  sortable: false,
-  required: false,
-  field: (row: any) => row[DatabaseField.DETAILS],
-  format: (val: AppObject) => truncateString(JSON.stringify(val), 30, '...'),
-}
-
-/**
  * Label column used by Logs. Format truncates value in case it is to large.
  */
 export const labelColumn: QTableColumn = {
@@ -143,6 +130,19 @@ export const labelColumn: QTableColumn = {
   required: false,
   field: (row: any) => row[DatabaseField.LABEL],
   format: (val: string) => truncateString(val, 30, '...'),
+}
+
+/**
+ * Details column used by Logs. Format truncates value in case it is to large.
+ */
+export const detailsColumn: QTableColumn = {
+  name: DatabaseField.DETAILS,
+  label: 'Details',
+  align: 'left',
+  sortable: false,
+  required: false,
+  field: (row: any) => row[DatabaseField.DETAILS],
+  format: (val: any) => truncateString(JSON.stringify(val), 30, '...'),
 }
 
 /**
