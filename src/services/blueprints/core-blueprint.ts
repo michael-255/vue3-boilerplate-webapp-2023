@@ -18,6 +18,8 @@ import {
   noteField,
   numberField,
   typeField,
+  messageField,
+  stackField,
 } from '@/services/blueprints/field-bluprints'
 import {
   requiredTypeColumn,
@@ -36,6 +38,8 @@ import {
   partialIdColumn,
   severityColumn,
   valueColumn,
+  messageColumn,
+  stackColumn,
 } from '@/services/blueprints/table-columns'
 
 /*
@@ -68,6 +72,8 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
       severityField,
       labelField,
       detailsField,
+      messageField,
+      stackField,
     ],
     visibleColumns: [
       DatabaseField.ID,
@@ -83,6 +89,8 @@ export const coreBlueprint: readonly CoreBlueprint[] = [
       severityColumn,
       labelColumn,
       detailsColumn,
+      messageColumn,
+      stackColumn,
     ],
   },
   /**

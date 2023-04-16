@@ -1,4 +1,3 @@
-import type { AppObject } from '@/types/misc'
 import type {
   DatabaseField,
   DatabaseType,
@@ -19,7 +18,9 @@ export interface DatabaseRecord {
   [DatabaseField.CREATED_TIMESTAMP]?: number
   [DatabaseField.SEVERITY]?: Severity
   [DatabaseField.LABEL]?: string
-  [DatabaseField.DETAILS]?: Optional<AppObject>
+  [DatabaseField.DETAILS]?: Optional<any>
+  [DatabaseField.MESSAGE]?: Optional<string>
+  [DatabaseField.STACK]?: Optional<string>
   [DatabaseField.NAME]?: string
   [DatabaseField.DESCRIPTION]?: Optional<string>
   [DatabaseField.IS_FAVORITED]?: boolean
@@ -48,6 +49,8 @@ export type Log = Pick<
   | DatabaseField.SEVERITY
   | DatabaseField.LABEL
   | DatabaseField.DETAILS
+  | DatabaseField.MESSAGE
+  | DatabaseField.STACK
 >
 
 /**

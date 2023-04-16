@@ -55,6 +55,8 @@ export enum DatabaseField {
   SEVERITY = 'severity',
   LABEL = 'label',
   DETAILS = 'details',
+  MESSAGE = 'message',
+  STACK = 'stack',
   // Parent
   NAME = 'name',
   DESCRIPTION = 'description',

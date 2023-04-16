@@ -124,14 +124,27 @@ export class LocalDatabase extends Dexie {
    * @param label
    * @param details
    */
-  async addLog(severity: Severity, label: string, details?: AppObject) {
-    const log: Log = {
+  async addLog(severity: Severity, label: string, details?: any) {
+    const log = {
       [DatabaseField.TYPE]: DatabaseType.LOG,
       [DatabaseField.ID]: uid(),
       [DatabaseField.CREATED_TIMESTAMP]: new Date().getTime(),
       [DatabaseField.SEVERITY]: severity,
       [DatabaseField.LABEL]: label,
-      [DatabaseField.DETAILS]: details,
+      // Remaining properties are determined by details
+    } as Log
+
+    // It's an error type if it has a message or stack
+    // This separation is required to prevent circular errors
+    if (
+      typeof details === 'object' &&
+      details !== null &&
+      ('message' in details || 'stack' in details)
+    ) {
+      log[DatabaseField.MESSAGE] = details.message
+      log[DatabaseField.STACK] = details.stack
+    } else {
+      log[DatabaseField.DETAILS] = JSON.stringify(details)
     }
 
     return await this.Records.add(log as DatabaseRecord)

@@ -76,6 +76,24 @@ export const detailsField: FieldBlueprint = {
 }
 
 /**
+ * Message field used by Logs.
+ */
+export const messageField: FieldBlueprint = {
+  field: DatabaseField.MESSAGE,
+  label: 'Message',
+  inspectFormat: (val: string) => `${val}`,
+}
+
+/**
+ * Stack field used by Logs.
+ */
+export const stackField: FieldBlueprint = {
+  field: DatabaseField.STACK,
+  label: 'Stack',
+  inspectFormat: (val: string) => `${val}`,
+}
+
+/**
  * Name field used by parent records.
  */
 export const nameField: FieldBlueprint = {

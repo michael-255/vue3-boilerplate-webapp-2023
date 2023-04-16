@@ -146,6 +146,32 @@ export const labelColumn: QTableColumn = {
 }
 
 /**
+ * Message column used by Logs. Format truncates value in case it is to large.
+ */
+export const messageColumn: QTableColumn = {
+  name: DatabaseField.MESSAGE,
+  label: 'Message',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.MESSAGE],
+  format: (val: string) => truncateString(val, 30, '...'),
+}
+
+/**
+ * Stack column used by Logs. Format truncates value in case it is to large.
+ */
+export const stackColumn: QTableColumn = {
+  name: DatabaseField.STACK,
+  label: 'Stack',
+  align: 'left',
+  sortable: true,
+  required: false,
+  field: (row: any) => row[DatabaseField.STACK],
+  format: (val: string) => truncateString(val, 30, '...'),
+}
+
+/**
  * Name column used by parent records. Format truncates value in case it is to large.
  */
 export const nameColumn: QTableColumn = {
