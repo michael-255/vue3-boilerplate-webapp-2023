@@ -3,7 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import { Icon } from '@/types/icons'
 import { RouteName } from '@/router/route-names'
 import { getParentCategoryTypes, getLabel, getIcon, getSlug } from '@/services/Blueprints'
-import { AppName } from '@/types/misc'
+import { AppHeaderColor, AppName } from '@/types/misc'
 import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
 
@@ -16,7 +16,7 @@ const route = useRoute()
 <template>
   <QLayout view="hHh LpR lff">
     <!-- App Header Bar -->
-    <QHeader elevated>
+    <QHeader elevated :class="`bg-${AppHeaderColor}`">
       <QToolbar>
         <QBtn flat round :icon="Icon.MENU_STANDARD" @click="uiStore.drawer = !uiStore.drawer" />
 

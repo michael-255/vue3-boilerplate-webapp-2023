@@ -11,14 +11,25 @@ import type { Icon } from '@/types/icons'
 import type { DatabaseRecord } from '@/types/models'
 import type { QTableColumn } from 'quasar'
 
-// Application strings
+/**
+ * App display name.
+ */
 export const AppName = 'Web App Template'
 
+/**
+ * App description used in useMeta and About page.
+ */
 export const AppDescription = `
 ${AppName} is a Vue 3 Typescript project created by michael-255 on GitHub.
 This project was built to be the foundation for many web applications.
 It is publicly available using the MIT License.
 `
+
+/**
+ * App header color. Must be a valid Quasar color.
+ * @see https://quasar.dev/style/color-palette
+ */
+export const AppHeaderColor = 'primary'
 
 /**
  * Type that allows for a value to be null or undefined.

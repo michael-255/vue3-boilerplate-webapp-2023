@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { AppName } from '@/types/misc'
+import { AppHeaderColor, AppName } from '@/types/misc'
 </script>
 
 <template>
   <QLayout view="hHh LpR lff">
-    <QHeader elevated>
+    <QHeader elevated :class="`bg-${AppHeaderColor}`">
       <QToolbar>
         <QToolbarTitle>{{ AppName }}</QToolbarTitle>
       </QToolbar>
