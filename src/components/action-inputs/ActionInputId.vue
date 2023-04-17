@@ -24,20 +24,20 @@ onMounted(() => {
 })
 
 /**
- * Input rule test for the id.
- * @param id
+ * Input validation rule test for the template component.
+ * @param val
  */
-function idRule(id: string) {
+function validationRule(val: string) {
   const idRegex = /^.{1,50}$/ // 1-50 characters
 
-  const isIdValid = (id: string) => {
-    return id !== undefined && id !== null && id !== '' && idRegex.test(id)
+  const isIdValid = (val: string) => {
+    return val !== undefined && val !== null && val !== '' && idRegex.test(val)
   }
 
-  if (id) {
-    return isIdValid(slugify(id))
+  if (val) {
+    return isIdValid(slugify(val))
   } else {
-    return isIdValid(id)
+    return isIdValid(val)
   }
 }
 
@@ -61,7 +61,7 @@ function validateInput() {
 </script>
 
 <template>
-  <QCard>
+  <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Id
@@ -76,7 +76,7 @@ function validateInput() {
         v-model="actionRecordStore.actionRecord[DatabaseField.ID]"
         ref="inputRef"
         label="Id"
-        :rules="[(id: string) => idRule(id) || 'Id must be between 1 and 50 characters']"
+        :rules="[(val: string) => validationRule(val) || 'Id must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
         counter

@@ -55,7 +55,7 @@ function validateInput() {
 </script>
 
 <template>
-  <QCard>
+  <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Created Date

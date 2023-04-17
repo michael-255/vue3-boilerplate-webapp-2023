@@ -165,13 +165,13 @@ describe('LocalDatabase service', () => {
   })
 
   test('getEnabledParentRecords returns enabled parent records of a given type', async () => {
-    db.Records.where().equals().filter().toArray = vi.fn().mockReturnValue([exampleMock])
+    db.Records.where().equals().filter().sortBy = vi.fn().mockReturnValue([exampleMock])
     const result = await db.getEnabledParentRecords(DatabaseType.EXAMPLE)
 
     expect(db.Records.where).toHaveBeenCalledWith(DatabaseField.TYPE)
     expect(db.Records.where().equals).toHaveBeenCalledWith(DatabaseType.EXAMPLE)
     expect(db.Records.where().equals().filter).toHaveBeenCalled()
-    expect(db.Records.where().equals().filter().toArray).toHaveBeenCalled()
+    expect(db.Records.where().equals().filter().sortBy).toHaveBeenCalledWith(DatabaseField.NAME)
     expect(result).toEqual(expect.arrayContaining([exampleMock]))
   })
 

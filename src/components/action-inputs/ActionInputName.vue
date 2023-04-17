@@ -22,20 +22,20 @@ onMounted(() => {
 })
 
 /**
- * Input rule test for the name.
- * @param name
+ * Input validation rule test for the template component.
+ * @param val
  */
-function nameRule(name: string) {
+function validationRule(val: string) {
   const nameRegex = /^.{1,50}$/ // 1-50 characters
 
-  const isNameValid = (name: string) => {
-    return name !== undefined && name !== null && name !== '' && nameRegex.test(name)
+  const isNameValid = (val: string) => {
+    return val !== undefined && val !== null && val !== '' && nameRegex.test(val)
   }
 
-  if (name) {
-    return isNameValid(name.trim())
+  if (val) {
+    return isNameValid(val.trim())
   } else {
-    return isNameValid(name)
+    return isNameValid(val)
   }
 }
 
@@ -50,7 +50,7 @@ function validateInput() {
 </script>
 
 <template>
-  <QCard>
+  <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Name
@@ -63,7 +63,7 @@ function validateInput() {
         v-model="actionRecordStore.actionRecord[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
-        :rules="[(name: string) => nameRule(name) || 'Name must be between 1 and 50 characters']"
+        :rules="[(val: string) => validationRule(val) || 'Name must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
         counter

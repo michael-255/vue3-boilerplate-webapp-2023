@@ -22,20 +22,20 @@ onMounted(() => {
 })
 
 /**
- * Input rule test for the note.
- * @param note
+ * Input validation rule test for the template component.
+ * @param val
  */
-function noteRule(note: string) {
+function validationRule(val: string) {
   const noteRegex = /^.{0,500}$/ // 0-500 characters
 
-  const isNoteValid = (note: string) => {
-    return noteRegex.test(note)
+  const isNoteValid = (val: string) => {
+    return noteRegex.test(val)
   }
 
-  if (note) {
-    return isNoteValid(note.trim())
+  if (val) {
+    return isNoteValid(val.trim())
   } else {
-    return isNoteValid(note)
+    return isNoteValid(val)
   }
 }
 
@@ -50,7 +50,7 @@ function validateInput() {
 </script>
 
 <template>
-  <QCard>
+  <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Note
@@ -65,7 +65,7 @@ function validateInput() {
         v-model="actionRecordStore.actionRecord[DatabaseField.NOTE]"
         ref="inputRef"
         label="Note"
-        :rules="[(note: string) => noteRule(note) || 'Note cannot exceed 500 characters']"
+        :rules="[(val: string) => validationRule(val) || 'Note cannot exceed 500 characters']"
         :disable="locked"
         :maxlength="500"
         type="textarea"

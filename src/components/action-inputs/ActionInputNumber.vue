@@ -22,15 +22,15 @@ onMounted(() => {
 })
 
 /**
- * Input rule test for the number.
- * @param num
+ * Input validation rule test for the template component.
+ * @param val
  */
-function exampleNumberRule(num: number): boolean {
+function validationRule(val: number): boolean {
   return (
-    typeof num === 'number' &&
-    isFinite(num) &&
-    num < 999_999_999_999_999 &&
-    num > -999_999_999_999_999
+    typeof val === 'number' &&
+    isFinite(val) &&
+    val < 999_999_999_999_999 &&
+    val > -999_999_999_999_999
   )
 }
 
@@ -43,7 +43,7 @@ function validateInput() {
 </script>
 
 <template>
-  <QCard>
+  <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Number
@@ -57,7 +57,7 @@ function validateInput() {
         v-model.number="actionRecordStore.actionRecord[DatabaseField.NUMBER]"
         ref="inputRef"
         label="Number"
-        :rules="[(num: number) => exampleNumberRule(num) || 'Must be a valid number within 15 digits']"
+        :rules="[(val: number) => validationRule(val) || 'Must be a valid number within 15 digits']"
         :disable="locked"
         type="number"
         dense

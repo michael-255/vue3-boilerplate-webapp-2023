@@ -8,6 +8,7 @@ import useLogger from '@/composables/useLogger'
 import useActionRecordStore from '@/stores/action-record'
 import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
+import type { DatabaseRecord } from '@/types/models'
 
 // Props & Emits
 defineProps<{
@@ -39,9 +40,9 @@ onMounted(async () => {
     const parentTypeRecords = await DB.getEnabledParentRecords(parentType)
 
     // Builds parent options with value as the id, and the label as the name and truncated id
-    options.value = parentTypeRecords.map((a: any) => ({
-      value: a.id, // Item id is used as the value under the hood
-      label: `${a.name} (${truncateString(a.id, 4, '*')})`, // Truncate id for readability
+    options.value = parentTypeRecords.map((r: DatabaseRecord) => ({
+      value: r.id, // Item id is used as the value under the hood
+      label: `${r.name} (${truncateString(r.id, 4, '*')})`, // Truncate id for readability
     }))
 
     // Set the current option
@@ -76,11 +77,11 @@ onMounted(async () => {
 })
 
 /**
- * Input rule test for the parent id.
- * @param id
+ * Input validation rule test for the template component.
+ * @param val
  */
-function parentIdRule(id: string) {
-  return id !== undefined && id !== null && id !== ''
+function validationRule(val: string) {
+  return val !== undefined && val !== null && val !== ''
 }
 
 /**
@@ -92,6 +93,7 @@ function validateInput() {
 </script>
 
 <template>
+  <!-- Always shown so the user knows what Parent record they a making a Child record for -->
   <QCard>
     <QCardSection>
       <div class="text-h6 q-mb-md">
@@ -110,7 +112,7 @@ function validateInput() {
         label="Parent"
         :disable="locked"
         :options="options"
-        :rules="[(id: string) => parentIdRule(id) || '* Required']"
+        :rules="[(val: string) => validationRule(val) || '* Required']"
         emit-value
         map-options
         options-dense

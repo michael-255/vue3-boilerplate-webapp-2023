@@ -22,20 +22,20 @@ onMounted(() => {
 })
 
 /**
- * Input rule test for the description.
- * @param description
+ * Input validation rule test for the template component.
+ * @param val
  */
-function descriptionRule(description: string) {
+function validationRule(val: string) {
   const descriptionRegex = /^.{0,500}$/ // 0-500 characters
 
-  const isDescriptionValid = (description: string) => {
-    return descriptionRegex.test(description)
+  const isDescriptionValid = (val: string) => {
+    return descriptionRegex.test(val)
   }
 
-  if (description) {
-    return isDescriptionValid(description.trim())
+  if (val) {
+    return isDescriptionValid(val.trim())
   } else {
-    return isDescriptionValid(description)
+    return isDescriptionValid(val)
   }
 }
 
@@ -50,7 +50,7 @@ function validateInput() {
 </script>
 
 <template>
-  <QCard>
+  <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
         Description
@@ -63,7 +63,7 @@ function validateInput() {
         v-model="actionRecordStore.actionRecord[DatabaseField.DESCRIPTION]"
         ref="inputRef"
         label="Description"
-        :rules="[(description: string) => descriptionRule(description) || 'Description cannot exceed 500 characters']"
+        :rules="[(val: string) => validationRule(val) || 'Description cannot exceed 500 characters']"
         :disable="locked"
         :maxlength="500"
         type="textarea"

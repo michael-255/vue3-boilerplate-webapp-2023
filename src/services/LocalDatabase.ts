@@ -230,7 +230,7 @@ export class LocalDatabase extends Dexie {
     return await this.Records.where(DatabaseField.TYPE)
       .equals(parentType)
       .filter((r) => r[DatabaseField.IS_ENABLED] === true)
-      .toArray()
+      .sortBy(DatabaseField.NAME)
   }
 
   /**
