@@ -24,9 +24,6 @@ const actionRecordStore = useActionRecordStore()
 const inputRef: Ref<any> = ref(null)
 const options: Ref<any[]> = ref([])
 
-/**
- * Sets the select box options with the parent items from the database.
- */
 onMounted(async () => {
   try {
     const parentType = getParentType(routeDatabaseType)
@@ -39,7 +36,7 @@ onMounted(async () => {
     // Gets all enabled parent records
     const parentTypeRecords = await DB.getEnabledParentRecords(parentType)
 
-    // Builds parent options with value as the id, and the label as the name and truncated id
+    // Build select box options
     options.value = parentTypeRecords.map((r: DatabaseRecord) => ({
       value: r.id, // Item id is used as the value under the hood
       label: `${r.name} (${truncateString(r.id, 4, '*')})`, // Truncate id for readability
