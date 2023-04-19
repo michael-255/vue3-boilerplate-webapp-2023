@@ -82,7 +82,7 @@ async function onCreateRecord() {
 }
 
 /**
- * Determines which fields are locked when a routeParentId is present.
+ * Determines which fields are locked or hidden when a routeParentId is present.
  * Having a routeParentId means you are creating a child record for a parent record.
  * @param field
  */
