@@ -12,21 +12,27 @@ import type { Optional } from '@/types/misc'
  * Cast back to this type when saving or updating the database.
  */
 export interface DatabaseRecord {
+  // All
   [DatabaseField.TYPE]: DatabaseType
   [DatabaseField.ID]: string | SettingId
+  // Settings
   [DatabaseField.VALUE]?: SettingValue
+  // Logs
   [DatabaseField.CREATED_TIMESTAMP]?: number
   [DatabaseField.SEVERITY]?: Severity
   [DatabaseField.LABEL]?: string
   [DatabaseField.DETAILS]?: Optional<any>
   [DatabaseField.MESSAGE]?: Optional<string>
   [DatabaseField.STACK]?: Optional<string>
+  // Parent
   [DatabaseField.NAME]?: string
   [DatabaseField.DESCRIPTION]?: Optional<string>
   [DatabaseField.IS_FAVORITED]?: boolean
   [DatabaseField.IS_ENABLED]?: boolean
+  // Child
   [DatabaseField.PARENT_ID]?: string
   [DatabaseField.NOTE]?: Optional<string>
+  // Examples & Tests
   [DatabaseField.NUMBER]?: number
 }
 
