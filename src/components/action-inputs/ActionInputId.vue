@@ -79,6 +79,7 @@ function validateInput() {
         :rules="[(val: string) => validationRule(val) || 'Id must be between 1 and 50 characters']"
         :disable="locked"
         :maxlength="50"
+        type="text"
         counter
         dense
         outlined
