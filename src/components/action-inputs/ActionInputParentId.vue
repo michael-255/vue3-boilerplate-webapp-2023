@@ -30,7 +30,7 @@ onMounted(async () => {
 
     // Parent type must exist to continue
     if (!parentType) {
-      throw new Error('Missing parent table')
+      throw new Error('Missing parent type')
     }
 
     // Gets all enabled parent records
