@@ -20,7 +20,7 @@ import {
   typeField,
   messageField,
   stackField,
-} from '@/services/blueprints/field-bluprints'
+} from '@/services/blueprints/field-blueprints'
 import {
   requiredTypeColumn,
   requiredIdColumn,
