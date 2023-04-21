@@ -5,11 +5,7 @@ developing. Read through this README to have a better understanding of how this 
 
 ## TODO
 
-- [ ] Might be worthwhile to add `default` to `field-blueprints` to be used by `actionStore`
-
-  - [ ] Default the `actionStore` during `create` or `edit` by using `default` value in blueprint
-  - [ ] Pass the `field-blueprints` `label` into the component as a `prop`
-
+- [ ] Pass the `field-blueprints` `label` into the component as a `prop`
 - [ ] `QForms` for `Create` and `Edit` views
 
   - [ ] Might be able to remove `valid` from `actionStore`
