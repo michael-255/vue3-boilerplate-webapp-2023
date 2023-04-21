@@ -5,9 +5,6 @@ developing. Read through this README to have a better understanding of how this 
 
 ## TODO
 
-- [ ] Rename: `action-record` -> `action`
-- [ ] Rename: `actionRecordStore` -> `actionStore`
-- [ ] Rename: `actionRecordStore.actionRecord[*]` -> `actionStore.record[*]`
 - [ ] Might be worthwhile to add `default` to `field-blueprints` to be used by `actionStore`
 
   - [ ] Default the `actionStore` during `create` or `edit` by using `default` value in blueprint

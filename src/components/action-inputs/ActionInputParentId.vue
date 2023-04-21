@@ -5,7 +5,7 @@ import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { getParentType } from '@/services/Blueprints'
 import useLogger from '@/composables/useLogger'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 import useRoutables from '@/composables/useRoutables'
 import DB from '@/services/LocalDatabase'
 import type { DatabaseRecord } from '@/types/models'
@@ -18,7 +18,7 @@ defineProps<{
 // Composables & Stores
 const { routeDatabaseType, routeParentId } = useRoutables()
 const { log } = useLogger()
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
@@ -52,20 +52,20 @@ onMounted(async () => {
 
       if (matchedParent) {
         // Parent match found, so use that id
-        actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = matchedParent
+        actionRecordStore.record[DatabaseField.PARENT_ID] = matchedParent
         actionRecordStore.valid[DatabaseField.PARENT_ID] = true
       } else {
         // Parent match NOT found, so set to null (parent is missing for some reason)
-        actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = null
+        actionRecordStore.record[DatabaseField.PARENT_ID] = null
         actionRecordStore.valid[DatabaseField.PARENT_ID] = false
       }
     } else if (options.value?.length > 0) {
       // We know at least one option exists, so default to the first option
-      actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = options.value[0].value
+      actionRecordStore.record[DatabaseField.PARENT_ID] = options.value[0].value
       actionRecordStore.valid[DatabaseField.PARENT_ID] = true
     } else {
       // No options exist, so set to null (this record cannot be completed until a parent is created)
-      actionRecordStore.actionRecord[DatabaseField.PARENT_ID] = null
+      actionRecordStore.record[DatabaseField.PARENT_ID] = null
       actionRecordStore.valid[DatabaseField.PARENT_ID] = false
     }
   } catch (error) {
@@ -104,7 +104,7 @@ function validateInput() {
       </div>
 
       <QSelect
-        v-model="actionRecordStore.actionRecord[DatabaseField.PARENT_ID]"
+        v-model="actionRecordStore.record[DatabaseField.PARENT_ID]"
         ref="inputRef"
         label="Parent"
         :disable="locked"

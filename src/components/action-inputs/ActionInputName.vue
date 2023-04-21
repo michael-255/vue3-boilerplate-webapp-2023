@@ -2,7 +2,7 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 
 // Props & Emits
 defineProps<{
@@ -10,14 +10,14 @@ defineProps<{
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.actionRecord[DatabaseField.NAME] =
-    actionRecordStore.actionRecord[DatabaseField.NAME] ?? 'Example'
+  actionRecordStore.record[DatabaseField.NAME] =
+    actionRecordStore.record[DatabaseField.NAME] ?? 'Example'
   actionRecordStore.valid[DatabaseField.NAME] = true
 })
 
@@ -43,8 +43,7 @@ function validationRule(val: string) {
  * Runs the input validation and sets the store valid property to the result. Trims the input.
  */
 function validateInput() {
-  actionRecordStore.actionRecord[DatabaseField.NAME] =
-    actionRecordStore.actionRecord[DatabaseField.NAME].trim()
+  actionRecordStore.record[DatabaseField.NAME] = actionRecordStore.record[DatabaseField.NAME].trim()
   actionRecordStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
 }
 </script>
@@ -60,7 +59,7 @@ function validateInput() {
       <div class="q-mb-md">The record name. Dashboard records are partial sorted by name.</div>
 
       <QInput
-        v-model="actionRecordStore.actionRecord[DatabaseField.NAME]"
+        v-model="actionRecordStore.record[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
         :rules="[(val: string) => validationRule(val) || 'Name must be between 1 and 50 characters']"

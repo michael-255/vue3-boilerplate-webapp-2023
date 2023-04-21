@@ -2,7 +2,7 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 
 // Props & Emits
 defineProps<{
@@ -10,14 +10,14 @@ defineProps<{
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.actionRecord[DatabaseField.NUMBER] =
-    actionRecordStore.actionRecord[DatabaseField.NUMBER] ?? 0
+  actionRecordStore.record[DatabaseField.NUMBER] =
+    actionRecordStore.record[DatabaseField.NUMBER] ?? 0
   actionRecordStore.valid[DatabaseField.NUMBER] = true
 })
 
@@ -54,7 +54,7 @@ function validateInput() {
 
       <!-- Note: v-model.number for number types -->
       <QInput
-        v-model.number="actionRecordStore.actionRecord[DatabaseField.NUMBER]"
+        v-model.number="actionRecordStore.record[DatabaseField.NUMBER]"
         ref="inputRef"
         label="Number"
         :rules="[(val: number) => validationRule(val) || 'Must be a valid number within 15 digits']"

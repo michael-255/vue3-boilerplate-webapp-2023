@@ -2,19 +2,19 @@ import { defineStore } from 'pinia'
 import { DatabaseField } from '@/types/database'
 import type { Optional } from '@/types/misc'
 
-const useActionRecordStore = defineStore({
-  id: 'action-record',
+const useActionStore = defineStore({
+  id: 'action',
 
   state: () => ({
     /**
      * Used as the WIP record for creates and updates.
      */
-    actionRecord: Object.values(DatabaseField).reduce((acc, field) => {
+    record: Object.values(DatabaseField).reduce((acc, field) => {
       acc[field] = null as any
       return acc
     }, {} as { [key in DatabaseField]: any }),
     /**
-     * Used to track the validity of the actionRecord fields.
+     * Used to track the validity of the action record fields.
      */
     valid: Object.values(DatabaseField).reduce((acc, field) => {
       acc[field] = null as Optional<boolean>
@@ -35,4 +35,4 @@ const useActionRecordStore = defineStore({
   },
 })
 
-export default useActionRecordStore
+export default useActionStore

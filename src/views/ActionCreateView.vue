@@ -8,7 +8,7 @@ import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutables from '@/composables/useRoutables'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 import useLogger from '@/composables/useLogger'
 import useDialogs from '@/composables/useDialogs'
 import DB from '@/services/LocalDatabase'
@@ -19,14 +19,14 @@ useMeta({ title: `${AppName} - Create Record` })
 const { routeDatabaseType, routeParentId, goBack } = useRoutables()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useDialogs()
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 
 onMounted(() => {
   try {
-    actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+    actionRecordStore.record[DatabaseField.TYPE] = routeDatabaseType
     actionRecordStore.valid[DatabaseField.TYPE] = true
   } catch (error) {
     log.error('Error loading create view', error)
@@ -45,7 +45,7 @@ async function onCreateRecord() {
 
   // Build record from store using only fields used by its type (ignoring others in store)
   const record = fields.reduce((acc, field) => {
-    acc[field] = actionRecordStore.actionRecord[field] as DatabaseRecord[typeof field]
+    acc[field] = actionRecordStore.record[field] as DatabaseRecord[typeof field]
     return acc
   }, {} as any) as DatabaseRecord
 

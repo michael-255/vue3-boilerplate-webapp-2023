@@ -3,7 +3,7 @@ import { date } from 'quasar'
 import { onMounted, type Ref, ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 
 // Props & Emits
 defineProps<{
@@ -11,7 +11,7 @@ defineProps<{
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
@@ -19,8 +19,8 @@ const displayedDate: Ref<string> = ref('')
 const dateTimePicker: Ref<string> = ref('')
 
 onMounted(() => {
-  if (actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP]) {
-    updateDates(actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP])
+  if (actionRecordStore.record[DatabaseField.CREATED_TIMESTAMP]) {
+    updateDates(actionRecordStore.record[DatabaseField.CREATED_TIMESTAMP])
   } else {
     updateDates()
   }
@@ -32,7 +32,7 @@ onMounted(() => {
  * @param timestamp
  */
 function updateDates(timestamp: number = new Date().getTime()) {
-  actionRecordStore.actionRecord[DatabaseField.CREATED_TIMESTAMP] = timestamp
+  actionRecordStore.record[DatabaseField.CREATED_TIMESTAMP] = timestamp
   actionRecordStore.valid[DatabaseField.CREATED_TIMESTAMP] = true
   displayedDate.value = date.formatDate(timestamp, 'ddd, YYYY MMM Do, h:mm A')
 }

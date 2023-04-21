@@ -4,7 +4,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { slugify } from '@/utils/common'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 
 // Props & Emits
 defineProps<{
@@ -12,14 +12,13 @@ defineProps<{
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.actionRecord[DatabaseField.ID] =
-    actionRecordStore.actionRecord[DatabaseField.ID] ?? uid()
+  actionRecordStore.record[DatabaseField.ID] = actionRecordStore.record[DatabaseField.ID] ?? uid()
   actionRecordStore.valid[DatabaseField.ID] = true
 })
 
@@ -45,7 +44,7 @@ function validationRule(val: string) {
  * Generates a random id for the store and sets it as valid.
  */
 function generateId() {
-  actionRecordStore.actionRecord[DatabaseField.ID] = uid()
+  actionRecordStore.record[DatabaseField.ID] = uid()
   actionRecordStore.valid[DatabaseField.ID] = true
 }
 
@@ -53,9 +52,7 @@ function generateId() {
  * Runs the input validation and sets the store valid property to the result. Slugifies the input.
  */
 function validateInput() {
-  actionRecordStore.actionRecord[DatabaseField.ID] = slugify(
-    actionRecordStore.actionRecord[DatabaseField.ID]
-  )
+  actionRecordStore.record[DatabaseField.ID] = slugify(actionRecordStore.record[DatabaseField.ID])
   actionRecordStore.valid[DatabaseField.ID] = !!inputRef?.value?.validate()
 }
 </script>
@@ -73,7 +70,7 @@ function validateInput() {
       </div>
 
       <QInput
-        v-model="actionRecordStore.actionRecord[DatabaseField.ID]"
+        v-model="actionRecordStore.record[DatabaseField.ID]"
         ref="inputRef"
         label="Id"
         :rules="[(val: string) => validationRule(val) || 'Id must be between 1 and 50 characters']"

@@ -7,7 +7,7 @@ import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
 import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import useRoutables from '@/composables/useRoutables'
-import useActionRecordStore from '@/stores/action-record'
+import useActionStore from '@/stores/action'
 import useDialogs from '@/composables/useDialogs'
 import useLogger from '@/composables/useLogger'
 import ResponsivePage from '@/components/ResponsivePage.vue'
@@ -19,14 +19,14 @@ useMeta({ title: `${AppName} - Edit Record` })
 const { routeDatabaseType, routeId, goBack } = useRoutables()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useDialogs()
-const actionRecordStore = useActionRecordStore()
+const actionRecordStore = useActionStore()
 
 // Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 
 onMounted(async () => {
   try {
-    actionRecordStore.actionRecord[DatabaseField.TYPE] = routeDatabaseType
+    actionRecordStore.record[DatabaseField.TYPE] = routeDatabaseType
     actionRecordStore.valid[DatabaseField.TYPE] = true
 
     if (routeId) {
@@ -34,7 +34,7 @@ onMounted(async () => {
 
       if (oldRecord) {
         Object.keys(oldRecord).forEach((key) => {
-          actionRecordStore.actionRecord[key as DatabaseField] = oldRecord[key as DatabaseField]
+          actionRecordStore.record[key as DatabaseField] = oldRecord[key as DatabaseField]
         })
       }
     }
@@ -55,7 +55,7 @@ async function onUpdateRecord() {
 
   // Build record from store using only fields used by its type (ignoring others in store)
   const record = fields.reduce((acc, field) => {
-    acc[field] = actionRecordStore.actionRecord[field] as DatabaseRecord[typeof field]
+    acc[field] = actionRecordStore.record[field] as DatabaseRecord[typeof field]
     return acc
   }, {} as any) as DatabaseRecord
 
