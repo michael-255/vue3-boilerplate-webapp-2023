@@ -19,22 +19,22 @@ useMeta({ title: `${AppName} - Edit Record` })
 const { routeDatabaseType, routeId, goBack } = useRoutables()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useDialogs()
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 // Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 
 onMounted(async () => {
   try {
-    actionRecordStore.record[DatabaseField.TYPE] = routeDatabaseType
-    actionRecordStore.valid[DatabaseField.TYPE] = true
+    actionStore.record[DatabaseField.TYPE] = routeDatabaseType
+    actionStore.valid[DatabaseField.TYPE] = true
 
     if (routeId) {
       const oldRecord = await DB.getRecord(routeDatabaseType, routeId)
 
       if (oldRecord) {
         Object.keys(oldRecord).forEach((key) => {
-          actionRecordStore.record[key as DatabaseField] = oldRecord[key as DatabaseField]
+          actionStore.record[key as DatabaseField] = oldRecord[key as DatabaseField]
         })
       }
     }
@@ -44,7 +44,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  actionRecordStore.$reset()
+  actionStore.$reset()
 })
 
 /**
@@ -55,12 +55,12 @@ async function onUpdateRecord() {
 
   // Build record from store using only fields used by its type (ignoring others in store)
   const record = fields.reduce((acc, field) => {
-    acc[field] = actionRecordStore.record[field] as DatabaseRecord[typeof field]
+    acc[field] = actionStore.record[field] as DatabaseRecord[typeof field]
     return acc
   }, {} as any) as DatabaseRecord
 
   // Inputs must be valid to continue
-  if (actionRecordStore.areRecordFieldsValid(fields)) {
+  if (actionStore.areRecordFieldsValid(fields)) {
     confirmDialog(
       'Update Record',
       `Update record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
@@ -75,7 +75,7 @@ async function onUpdateRecord() {
             updatedRecordId: routeId,
           })
 
-          actionRecordStore.$reset()
+          actionStore.$reset()
           goBack() // Return to previous page
         } catch (error) {
           log.error('Update failed', error)
@@ -112,7 +112,7 @@ async function onUpdateRecord() {
       <!-- TODO - QForm -->
       <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
         <!-- Dynamic Async Components -->
-        <component :is="fieldBP.component" />
+        <component :is="fieldBP.component" :default="fieldBP.getDefault()" />
       </div>
 
       <QBtn label="Update" color="positive" :icon="Icon.SAVE" @click="onUpdateRecord()" />

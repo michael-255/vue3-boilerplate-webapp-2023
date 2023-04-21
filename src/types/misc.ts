@@ -136,6 +136,7 @@ export type CoreBlueprint = {
 export type FieldBlueprint = {
   readonly field: DatabaseField
   readonly label: string
+  readonly getDefault: () => any
   readonly inspectFormat: (val: any) => string
   readonly component?: any // Vue component used when rendering (if any)
 }

@@ -5,17 +5,18 @@ import { onMounted } from 'vue'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  default?: any
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 onMounted(() => {
-  actionRecordStore.record[DatabaseField.IS_ENABLED] =
-    actionRecordStore.record[DatabaseField.IS_ENABLED] ?? true
-  actionRecordStore.valid[DatabaseField.IS_ENABLED] = true
+  actionStore.record[DatabaseField.IS_ENABLED] =
+    actionStore.record[DatabaseField.IS_ENABLED] ?? props.default
+  actionStore.valid[DatabaseField.IS_ENABLED] = true
 })
 </script>
 
@@ -31,7 +32,7 @@ onMounted(() => {
         Toggle the record as enabled or not. Only enabled records will appear on the Dashboard.
       </div>
 
-      <QToggle :disable="locked" v-model="actionRecordStore.record[DatabaseField.IS_ENABLED]" />
+      <QToggle :disable="locked" v-model="actionStore.record[DatabaseField.IS_ENABLED]" />
     </QCardSection>
   </QCard>
 </template>

@@ -5,20 +5,20 @@ import { Icon } from '@/types/icons'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  default?: any
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.record[DatabaseField.NAME] =
-    actionRecordStore.record[DatabaseField.NAME] ?? 'Example'
-  actionRecordStore.valid[DatabaseField.NAME] = true
+  actionStore.record[DatabaseField.NAME] = actionStore.record[DatabaseField.NAME] ?? props.default
+  actionStore.valid[DatabaseField.NAME] = true
 })
 
 /**
@@ -43,8 +43,8 @@ function validationRule(val: string) {
  * Runs the input validation and sets the store valid property to the result. Trims the input.
  */
 function validateInput() {
-  actionRecordStore.record[DatabaseField.NAME] = actionRecordStore.record[DatabaseField.NAME].trim()
-  actionRecordStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
+  actionStore.record[DatabaseField.NAME] = actionStore.record[DatabaseField.NAME].trim()
+  actionStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -59,7 +59,7 @@ function validateInput() {
       <div class="q-mb-md">The record name. Dashboard records are partial sorted by name.</div>
 
       <QInput
-        v-model="actionRecordStore.record[DatabaseField.NAME]"
+        v-model="actionStore.record[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
         :rules="[(val: string) => validationRule(val) || 'Name must be between 1 and 50 characters']"

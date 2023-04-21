@@ -19,22 +19,22 @@ useMeta({ title: `${AppName} - Create Record` })
 const { routeDatabaseType, routeParentId, goBack } = useRoutables()
 const { log } = useLogger()
 const { confirmDialog, dismissDialog } = useDialogs()
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 // Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
 
 onMounted(() => {
   try {
-    actionRecordStore.record[DatabaseField.TYPE] = routeDatabaseType
-    actionRecordStore.valid[DatabaseField.TYPE] = true
+    actionStore.record[DatabaseField.TYPE] = routeDatabaseType
+    actionStore.valid[DatabaseField.TYPE] = true
   } catch (error) {
     log.error('Error loading create view', error)
   }
 })
 
 onUnmounted(() => {
-  actionRecordStore.$reset()
+  actionStore.$reset()
 })
 
 /**
@@ -45,12 +45,12 @@ async function onCreateRecord() {
 
   // Build record from store using only fields used by its type (ignoring others in store)
   const record = fields.reduce((acc, field) => {
-    acc[field] = actionRecordStore.record[field] as DatabaseRecord[typeof field]
+    acc[field] = actionStore.record[field] as DatabaseRecord[typeof field]
     return acc
   }, {} as any) as DatabaseRecord
 
   // Inputs must be valid
-  if (actionRecordStore.areRecordFieldsValid(fields)) {
+  if (actionStore.areRecordFieldsValid(fields)) {
     confirmDialog(
       'Create Record',
       `Create record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
@@ -116,7 +116,11 @@ function lockFields(field: DatabaseField) {
       <!-- TODO - QForm -->
       <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
         <!-- Dynamic Async Components -->
-        <component :is="fieldBP.component" :locked="lockFields(fieldBP.field)" />
+        <component
+          :is="fieldBP.component"
+          :locked="lockFields(fieldBP.field)"
+          :default="fieldBP.getDefault()"
+        />
       </div>
 
       <QBtn label="Create" color="positive" :icon="Icon.SAVE" @click="onCreateRecord()" />

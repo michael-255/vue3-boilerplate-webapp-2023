@@ -1,6 +1,7 @@
 import { DatabaseField, Severity, type SettingValue } from '@/types/database'
 import type { AppObject, FieldBlueprint } from '@/types/misc'
 import { getDisplayDate } from '@/utils/common'
+import { uid } from 'quasar'
 import { defineAsyncComponent } from 'vue'
 
 /*
@@ -14,6 +15,7 @@ Do NOT mutate these objects as they are used by multiple components.
 export const typeField: FieldBlueprint = {
   field: DatabaseField.TYPE,
   label: 'Type',
+  getDefault: () => null,
   inspectFormat: (val: string) => `${val}`,
 }
 
@@ -23,6 +25,7 @@ export const typeField: FieldBlueprint = {
 export const idField: FieldBlueprint = {
   field: DatabaseField.ID,
   label: 'Id',
+  getDefault: () => uid(),
   inspectFormat: (val: string) => `${val}`,
   component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputId.vue')),
 }
@@ -33,6 +36,7 @@ export const idField: FieldBlueprint = {
 export const valueField: FieldBlueprint = {
   field: DatabaseField.VALUE,
   label: 'Setting Value',
+  getDefault: () => null,
   inspectFormat: (val: SettingValue) => `${val}`,
 }
 
@@ -42,6 +46,7 @@ export const valueField: FieldBlueprint = {
 export const createdTimestampField: FieldBlueprint = {
   field: DatabaseField.CREATED_TIMESTAMP,
   label: 'Created Date',
+  getDefault: () => null,
   inspectFormat: (val: number) => getDisplayDate(val),
   component: defineAsyncComponent(
     () => import('@/components/action-inputs/ActionInputCreatedTimestamp.vue')
@@ -54,6 +59,7 @@ export const createdTimestampField: FieldBlueprint = {
 export const severityField: FieldBlueprint = {
   field: DatabaseField.SEVERITY,
   label: 'Severity',
+  getDefault: () => Severity.DEBUG,
   inspectFormat: (val: Severity) => `${val}`,
 }
 
@@ -63,6 +69,7 @@ export const severityField: FieldBlueprint = {
 export const labelField: FieldBlueprint = {
   field: DatabaseField.LABEL,
   label: 'Label',
+  getDefault: () => 'Error',
   inspectFormat: (val: string) => `${val}`,
 }
 
@@ -72,6 +79,7 @@ export const labelField: FieldBlueprint = {
 export const detailsField: FieldBlueprint = {
   field: DatabaseField.DETAILS,
   label: 'Details',
+  getDefault: () => null,
   inspectFormat: (val: AppObject) => JSON.stringify(val),
 }
 
@@ -81,6 +89,7 @@ export const detailsField: FieldBlueprint = {
 export const messageField: FieldBlueprint = {
   field: DatabaseField.MESSAGE,
   label: 'Message',
+  getDefault: () => null,
   inspectFormat: (val: string) => `${val ?? '-'}`,
 }
 
@@ -90,6 +99,7 @@ export const messageField: FieldBlueprint = {
 export const stackField: FieldBlueprint = {
   field: DatabaseField.STACK,
   label: 'Stack',
+  getDefault: () => null,
   inspectFormat: (val: string) => `${val ?? '-'}`,
 }
 
@@ -99,6 +109,7 @@ export const stackField: FieldBlueprint = {
 export const nameField: FieldBlueprint = {
   field: DatabaseField.NAME,
   label: 'Name',
+  getDefault: () => 'Example',
   inspectFormat: (val: string) => `${val}`,
   component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputName.vue')),
 }
@@ -109,6 +120,7 @@ export const nameField: FieldBlueprint = {
 export const descriptionField: FieldBlueprint = {
   field: DatabaseField.DESCRIPTION,
   label: 'Description',
+  getDefault: () => '',
   inspectFormat: (val: string) => `${val}`,
   component: defineAsyncComponent(
     () => import('@/components/action-inputs/ActionInputDescription.vue')
@@ -121,6 +133,7 @@ export const descriptionField: FieldBlueprint = {
 export const favoritedField: FieldBlueprint = {
   field: DatabaseField.IS_FAVORITED,
   label: 'Favorited',
+  getDefault: () => false,
   inspectFormat: (val: boolean) => (val ? 'Yes' : 'No'),
   component: defineAsyncComponent(
     () => import('@/components/action-inputs/ActionInputFavorited.vue')
@@ -133,6 +146,7 @@ export const favoritedField: FieldBlueprint = {
 export const enabledField: FieldBlueprint = {
   field: DatabaseField.IS_ENABLED,
   label: 'Enabled',
+  getDefault: () => true,
   inspectFormat: (val: boolean) => (val ? 'Yes' : 'No'),
   component: defineAsyncComponent(
     () => import('@/components/action-inputs/ActionInputEnabled.vue')
@@ -145,6 +159,7 @@ export const enabledField: FieldBlueprint = {
 export const parentIdField: FieldBlueprint = {
   field: DatabaseField.PARENT_ID,
   label: 'Parent Id',
+  getDefault: () => null,
   inspectFormat: (val: string) => `${val}`,
   component: defineAsyncComponent(
     () => import('@/components/action-inputs/ActionInputParentId.vue')
@@ -157,6 +172,7 @@ export const parentIdField: FieldBlueprint = {
 export const noteField: FieldBlueprint = {
   field: DatabaseField.NOTE,
   label: 'Note',
+  getDefault: () => '',
   inspectFormat: (val: string) => `${val}`,
   component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputNote.vue')),
 }
@@ -167,6 +183,7 @@ export const noteField: FieldBlueprint = {
 export const numberField: FieldBlueprint = {
   field: DatabaseField.NUMBER,
   label: 'Number',
+  getDefault: () => 0,
   inspectFormat: (val: number) => `${val}`,
   component: defineAsyncComponent(() => import('@/components/action-inputs/ActionInputNumber.vue')),
 }

@@ -5,17 +5,18 @@ import { onMounted } from 'vue'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  default?: any
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 onMounted(() => {
-  actionRecordStore.record[DatabaseField.IS_FAVORITED] =
-    actionRecordStore.record[DatabaseField.IS_FAVORITED] ?? false
-  actionRecordStore.valid[DatabaseField.IS_FAVORITED] = true
+  actionStore.record[DatabaseField.IS_FAVORITED] =
+    actionStore.record[DatabaseField.IS_FAVORITED] ?? props.default
+  actionStore.valid[DatabaseField.IS_FAVORITED] = true
 })
 </script>
 
@@ -32,7 +33,7 @@ onMounted(() => {
         Dashboard.
       </div>
 
-      <QToggle :disable="locked" v-model="actionRecordStore.record[DatabaseField.IS_FAVORITED]" />
+      <QToggle :disable="locked" v-model="actionStore.record[DatabaseField.IS_FAVORITED]" />
     </QCardSection>
   </QCard>
 </template>

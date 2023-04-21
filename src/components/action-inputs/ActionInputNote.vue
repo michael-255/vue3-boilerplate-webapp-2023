@@ -5,19 +5,20 @@ import { Icon } from '@/types/icons'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  default?: any
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.record[DatabaseField.NOTE] = actionRecordStore.record[DatabaseField.NOTE] ?? ''
-  actionRecordStore.valid[DatabaseField.NOTE] = true
+  actionStore.record[DatabaseField.NOTE] = actionStore.record[DatabaseField.NOTE] ?? props.default
+  actionStore.valid[DatabaseField.NOTE] = true
 })
 
 /**
@@ -42,8 +43,8 @@ function validationRule(val: string) {
  * Runs the input validation and sets the store valid property to the result. Trims the input.
  */
 function validateInput() {
-  actionRecordStore.record[DatabaseField.NOTE] = actionRecordStore.record[DatabaseField.NOTE].trim()
-  actionRecordStore.valid[DatabaseField.NOTE] = !!inputRef?.value?.validate()
+  actionStore.record[DatabaseField.NOTE] = actionStore.record[DatabaseField.NOTE].trim()
+  actionStore.valid[DatabaseField.NOTE] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -60,7 +61,7 @@ function validateInput() {
       </div>
 
       <QInput
-        v-model="actionRecordStore.record[DatabaseField.NOTE]"
+        v-model="actionStore.record[DatabaseField.NOTE]"
         ref="inputRef"
         label="Note"
         :rules="[(val: string) => validationRule(val) || 'Note cannot exceed 500 characters']"

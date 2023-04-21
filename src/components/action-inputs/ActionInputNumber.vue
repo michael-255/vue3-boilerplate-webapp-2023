@@ -5,20 +5,21 @@ import { Icon } from '@/types/icons'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  default?: any
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.record[DatabaseField.NUMBER] =
-    actionRecordStore.record[DatabaseField.NUMBER] ?? 0
-  actionRecordStore.valid[DatabaseField.NUMBER] = true
+  actionStore.record[DatabaseField.NUMBER] =
+    actionStore.record[DatabaseField.NUMBER] ?? props.default
+  actionStore.valid[DatabaseField.NUMBER] = true
 })
 
 /**
@@ -38,7 +39,7 @@ function validationRule(val: number): boolean {
  * Runs the input validation and sets the store valid property to the result.
  */
 function validateInput() {
-  actionRecordStore.valid[DatabaseField.NUMBER] = !!inputRef?.value?.validate()
+  actionStore.valid[DatabaseField.NUMBER] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -54,7 +55,7 @@ function validateInput() {
 
       <!-- Note: v-model.number for number types -->
       <QInput
-        v-model.number="actionRecordStore.record[DatabaseField.NUMBER]"
+        v-model.number="actionStore.record[DatabaseField.NUMBER]"
         ref="inputRef"
         label="Number"
         :rules="[(val: number) => validationRule(val) || 'Must be a valid number within 15 digits']"

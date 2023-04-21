@@ -5,20 +5,21 @@ import { Icon } from '@/types/icons'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-defineProps<{
+const props = defineProps<{
   locked?: boolean
+  default?: any
 }>()
 
 // Composables & Stores
-const actionRecordStore = useActionStore()
+const actionStore = useActionStore()
 
 // Data
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionRecordStore.record[DatabaseField.DESCRIPTION] =
-    actionRecordStore.record[DatabaseField.DESCRIPTION] ?? ''
-  actionRecordStore.valid[DatabaseField.DESCRIPTION] = true
+  actionStore.record[DatabaseField.DESCRIPTION] =
+    actionStore.record[DatabaseField.DESCRIPTION] ?? props.default
+  actionStore.valid[DatabaseField.DESCRIPTION] = true
 })
 
 /**
@@ -43,9 +44,9 @@ function validationRule(val: string) {
  * Runs the input validation and sets the store valid property to the result. Trims the input.
  */
 function validateInput() {
-  actionRecordStore.record[DatabaseField.DESCRIPTION] =
-    actionRecordStore.record[DatabaseField.DESCRIPTION].trim()
-  actionRecordStore.valid[DatabaseField.DESCRIPTION] = !!inputRef?.value?.validate()
+  actionStore.record[DatabaseField.DESCRIPTION] =
+    actionStore.record[DatabaseField.DESCRIPTION].trim()
+  actionStore.valid[DatabaseField.DESCRIPTION] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -60,7 +61,7 @@ function validateInput() {
       <div class="q-mb-md">Large text area for the parent record description.</div>
 
       <QInput
-        v-model="actionRecordStore.record[DatabaseField.DESCRIPTION]"
+        v-model="actionStore.record[DatabaseField.DESCRIPTION]"
         ref="inputRef"
         label="Description"
         :rules="[(val: string) => validationRule(val) || 'Description cannot exceed 500 characters']"
