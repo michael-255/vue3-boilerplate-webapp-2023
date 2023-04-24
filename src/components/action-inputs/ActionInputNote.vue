@@ -9,6 +9,7 @@ import useActionStore from '@/stores/action'
 // Props & Emits
 defineProps<{
   locked?: boolean
+  label: string
 }>()
 
 // Composables & Stores
@@ -44,7 +45,7 @@ function validateInput() {
   <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        Note
+        {{ label }}
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
@@ -55,7 +56,7 @@ function validateInput() {
       <QInput
         v-model="actionStore.record[DatabaseField.NOTE]"
         ref="inputRef"
-        label="Note"
+        :label="label"
         :rules="[(val: string) => validationRule(val) || `Note cannot exceed ${Limit.MAX_NOTE_LENGTH} characters`]"
         :disable="locked"
         :maxlength="Limit.MAX_NOTE_LENGTH"

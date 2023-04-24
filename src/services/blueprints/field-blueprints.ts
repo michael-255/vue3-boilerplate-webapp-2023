@@ -144,7 +144,7 @@ export const enabledField: FieldBlueprint = {
  */
 export const parentIdField: FieldBlueprint = {
   field: DatabaseField.PARENT_ID,
-  label: 'Parent Id',
+  label: 'Parent',
   inspectFormat: (val: string) => `${val}`,
   component: defineAsyncComponent(
     () => import('@/components/action-inputs/ActionInputParentId.vue')

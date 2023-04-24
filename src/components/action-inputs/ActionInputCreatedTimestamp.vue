@@ -8,6 +8,7 @@ import useActionStore from '@/stores/action'
 // Props & Emits
 defineProps<{
   locked?: boolean
+  label: string
 }>()
 
 // Composables & Stores
@@ -61,7 +62,7 @@ function validateInput() {
   <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        Created Date
+        {{ label }}
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
@@ -73,7 +74,7 @@ function validateInput() {
       <QInput
         v-model="displayedDate"
         ref="inputRef"
-        label="Created Date"
+        :label="label"
         dense
         outlined
         disable

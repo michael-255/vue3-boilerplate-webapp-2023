@@ -112,7 +112,7 @@ async function onUpdateRecord() {
       <!-- TODO - QForm -->
       <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
         <!-- Dynamic Async Components -->
-        <component :is="fieldBP.component" />
+        <component :is="fieldBP.component" :label="fieldBP.label" />
       </div>
 
       <QBtn label="Update" color="positive" :icon="Icon.SAVE" @click="onUpdateRecord()" />

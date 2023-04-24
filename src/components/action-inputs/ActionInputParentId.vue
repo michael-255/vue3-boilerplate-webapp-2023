@@ -13,6 +13,7 @@ import type { DatabaseRecord } from '@/types/models'
 // Props & Emits
 defineProps<{
   locked?: boolean
+  label: string
 }>()
 
 // Composables & Stores
@@ -94,7 +95,7 @@ function validateInput() {
   <QCard>
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        Parent
+        {{ label }}
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
@@ -106,7 +107,7 @@ function validateInput() {
       <QSelect
         v-model="actionStore.record[DatabaseField.PARENT_ID]"
         ref="inputRef"
-        label="Parent"
+        :label="label"
         :disable="locked"
         :options="options"
         :rules="[(val: string) => validationRule(val) || '* Required']"

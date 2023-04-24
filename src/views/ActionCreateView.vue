@@ -116,7 +116,11 @@ function lockFields(field: DatabaseField) {
       <!-- TODO - QForm -->
       <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
         <!-- Dynamic Async Components -->
-        <component :is="fieldBP.component" :locked="lockFields(fieldBP.field)" />
+        <component
+          :is="fieldBP.component"
+          :locked="lockFields(fieldBP.field)"
+          :label="fieldBP.label"
+        />
       </div>
 
       <QBtn label="Create" color="positive" :icon="Icon.SAVE" @click="onCreateRecord()" />

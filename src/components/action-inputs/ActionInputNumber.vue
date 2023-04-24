@@ -8,6 +8,7 @@ import useActionStore from '@/stores/action'
 // Props & Emits
 defineProps<{
   locked?: boolean
+  label: string
 }>()
 
 // Composables & Stores
@@ -53,7 +54,7 @@ function validateInput() {
       <QInput
         v-model.number="actionStore.record[DatabaseField.NUMBER]"
         ref="inputRef"
-        label="Number"
+        :label="label"
         :rules="[(val: number) => validationRule(val) || 'Must be a valid number within 15 digits']"
         :disable="locked"
         type="number"
