@@ -17,7 +17,6 @@ const actionStore = useActionStore()
 onMounted(() => {
   actionStore.record[DatabaseField.IS_ENABLED] =
     actionStore.record[DatabaseField.IS_ENABLED] ?? FieldDefault[DatabaseField.IS_ENABLED]() // function call
-  actionStore.valid[DatabaseField.IS_ENABLED] = true
 })
 </script>
 

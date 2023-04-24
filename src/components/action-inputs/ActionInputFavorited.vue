@@ -17,7 +17,6 @@ const actionStore = useActionStore()
 onMounted(() => {
   actionStore.record[DatabaseField.IS_FAVORITED] =
     actionStore.record[DatabaseField.IS_FAVORITED] ?? FieldDefault[DatabaseField.IS_FAVORITED]() // function call
-  actionStore.valid[DatabaseField.IS_FAVORITED] = true
 })
 </script>
 

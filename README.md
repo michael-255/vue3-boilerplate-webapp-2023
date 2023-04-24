@@ -5,7 +5,6 @@ developing. Read through this README to have a better understanding of how this 
 
 ## TODO
 
-- [ ] Pass the `field-blueprints` `label` into the component as a `prop`
 - [ ] `QForms` for `Create` and `Edit` views
 
   - [ ] Might be able to remove `valid` from `actionStore`

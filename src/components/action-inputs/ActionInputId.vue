@@ -23,7 +23,6 @@ const inputRef: Ref<any> = ref(null)
 onMounted(() => {
   actionStore.record[DatabaseField.ID] =
     actionStore.record[DatabaseField.ID] ?? FieldDefault[DatabaseField.ID]() // function call
-  actionStore.valid[DatabaseField.ID] = true
 })
 
 /**
@@ -34,22 +33,6 @@ function validationRule(val: string) {
   return (
     typeof val === 'string' && slugify(val).length <= Limit.MAX_ID_LENGTH && slugify(val).length > 0 // Must have at least 1 character
   )
-}
-
-/**
- * Generates a random id for the store and sets it as valid.
- */
-function generateId() {
-  actionStore.record[DatabaseField.ID] = uid()
-  actionStore.valid[DatabaseField.ID] = true
-}
-
-/**
- * Runs the input validation and sets the store valid property to the result. Slugifies the input.
- */
-function validateInput() {
-  actionStore.record[DatabaseField.ID] = slugify(actionStore.record[DatabaseField.ID])
-  actionStore.valid[DatabaseField.ID] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -78,7 +61,7 @@ function validateInput() {
         outlined
         color="primary"
         hint="Auto formatted"
-        @blur="validateInput()"
+        @blur="actionStore.record[DatabaseField.ID] = slugify(actionStore.record[DatabaseField.ID])"
       >
         <template v-slot:after>
           <QBtn
@@ -86,7 +69,7 @@ function validateInput() {
             :icon="Icon.REFRESH"
             color="primary"
             class="q-px-sm"
-            @click="generateId()"
+            @click="actionStore.record[DatabaseField.ID] = uid()"
           />
         </template>
       </QInput>

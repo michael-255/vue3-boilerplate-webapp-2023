@@ -20,7 +20,6 @@ const inputRef: Ref<any> = ref(null)
 onMounted(() => {
   actionStore.record[DatabaseField.NUMBER] =
     actionStore.record[DatabaseField.NUMBER] ?? FieldDefault[DatabaseField.NUMBER]() // function call
-  actionStore.valid[DatabaseField.NUMBER] = true
 })
 
 /**
@@ -30,13 +29,6 @@ onMounted(() => {
 function validationRule(val: number): boolean {
   // Didn't bother putting these values in Limits because this is just an example component
   return typeof val === 'number' && val < 999_999_999_999_999 && val > -999_999_999_999_999
-}
-
-/**
- * Runs the input validation and sets the store valid property to the result.
- */
-function validateInput() {
-  actionStore.valid[DatabaseField.NUMBER] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -61,7 +53,6 @@ function validateInput() {
         dense
         outlined
         color="primary"
-        @blur="validateInput()"
       />
     </QCardSection>
   </QCard>

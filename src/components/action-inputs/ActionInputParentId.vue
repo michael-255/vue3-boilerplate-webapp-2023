@@ -54,20 +54,16 @@ onMounted(async () => {
       if (matchedParent) {
         // Parent match found, so use that id
         actionStore.record[DatabaseField.PARENT_ID] = matchedParent
-        actionStore.valid[DatabaseField.PARENT_ID] = true
       } else {
         // Parent match NOT found, so set to null (parent is missing for some reason)
         actionStore.record[DatabaseField.PARENT_ID] = null
-        actionStore.valid[DatabaseField.PARENT_ID] = false
       }
     } else if (options.value?.length > 0) {
       // We know at least one option exists, so default to the first option
       actionStore.record[DatabaseField.PARENT_ID] = options.value[0].value
-      actionStore.valid[DatabaseField.PARENT_ID] = true
     } else {
       // No options exist, so set to null (this record cannot be completed until a parent is created)
       actionStore.record[DatabaseField.PARENT_ID] = null
-      actionStore.valid[DatabaseField.PARENT_ID] = false
     }
   } catch (error) {
     log.error('Error with parent id input', error)
@@ -80,13 +76,6 @@ onMounted(async () => {
  */
 function validationRule(val: string) {
   return val !== undefined && val !== null && val !== ''
-}
-
-/**
- * Runs the input validation and sets the store valid property to the result.
- */
-function validateInput() {
-  actionStore.valid[DatabaseField.PARENT_ID] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -117,7 +106,6 @@ function validateInput() {
         dense
         outlined
         color="primary"
-        @blur="validateInput()"
       />
     </QCardSection>
   </QCard>

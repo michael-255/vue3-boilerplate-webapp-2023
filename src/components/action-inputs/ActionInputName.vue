@@ -21,7 +21,6 @@ const inputRef: Ref<any> = ref(null)
 onMounted(() => {
   actionStore.record[DatabaseField.NAME] =
     actionStore.record[DatabaseField.NAME] ?? FieldDefault[DatabaseField.NAME]() // function call
-  actionStore.valid[DatabaseField.NAME] = true
 })
 
 /**
@@ -32,14 +31,6 @@ function validationRule(val: string) {
   return (
     typeof val === 'string' && val.trim().length <= Limit.MAX_NAME_LENGTH && val.trim().length > 0 // Must have at least 1 character
   )
-}
-
-/**
- * Runs the input validation and sets the store valid property to the result. Trims the input.
- */
-function validateInput() {
-  actionStore.record[DatabaseField.NAME] = actionStore.record[DatabaseField.NAME].trim()
-  actionStore.valid[DatabaseField.NAME] = !!inputRef?.value?.validate()
 }
 </script>
 
@@ -65,7 +56,9 @@ function validateInput() {
         dense
         outlined
         color="primary"
-        @blur="validateInput()"
+        @blur="
+          actionStore.record[DatabaseField.NAME] = actionStore.record[DatabaseField.NAME].trim()
+        "
       />
     </QCardSection>
   </QCard>

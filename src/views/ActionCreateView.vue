@@ -3,7 +3,7 @@ import { Icon } from '@/types/icons'
 import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
 import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
@@ -18,16 +18,16 @@ useMeta({ title: `${AppName} - Create Record` })
 // Composables & Stores
 const { routeDatabaseType, routeParentId, goBack } = useRoutables()
 const { log } = useLogger()
-const { confirmDialog, dismissDialog } = useDialogs()
+const { confirmDialog } = useDialogs()
 const actionStore = useActionStore()
 
 // Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
+const isFormValid = ref(true)
 
 onMounted(() => {
   try {
     actionStore.record[DatabaseField.TYPE] = routeDatabaseType
-    actionStore.valid[DatabaseField.TYPE] = true
   } catch (error) {
     log.error('Error loading create view', error)
   }
@@ -38,9 +38,9 @@ onUnmounted(() => {
 })
 
 /**
- * Confirmation creates a new record in the database. Validation dialog appears if any field inputs are invalid.
+ * Confirmation creates a new record in the database. All inputs must be valid.
  */
-async function onCreateRecord() {
+async function onSubmit() {
   const fields = getFields(routeDatabaseType)
 
   // Build record from store using only fields used by its type (ignoring others in store)
@@ -49,36 +49,26 @@ async function onCreateRecord() {
     return acc
   }, {} as any) as DatabaseRecord
 
-  // Inputs must be valid
-  if (actionStore.areRecordFieldsValid(fields)) {
-    confirmDialog(
-      'Create Record',
-      `Create record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
-      Icon.CREATE,
-      'positive',
-      async () => {
-        try {
-          await DB.addRecord(record)
+  confirmDialog(
+    'Create Record',
+    `Create record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
+    Icon.CREATE,
+    'positive',
+    async () => {
+      try {
+        await DB.addRecord(record)
 
-          log.info('Successfully created record', {
-            createdRecordType: record[DatabaseField.TYPE],
-            createdRecordId: record[DatabaseField.ID],
-          })
+        log.info('Successfully created record', {
+          createdRecordType: record[DatabaseField.TYPE],
+          createdRecordId: record[DatabaseField.ID],
+        })
 
-          goBack() // Return to previous page
-        } catch (error) {
-          log.error('Create failed', error)
-        }
+        goBack() // Return to previous page
+      } catch (error) {
+        log.error('Create failed', error)
       }
-    )
-  } else {
-    dismissDialog(
-      'Validation Error',
-      'Unable to create record. Ensure all inputs have valid entries.',
-      Icon.WARN,
-      'warning'
-    )
-  }
+    }
+  )
 }
 
 /**
@@ -113,17 +103,36 @@ function lockFields(field: DatabaseField) {
 
     <!-- Normal Page Render -->
     <div v-else>
-      <!-- TODO - QForm -->
-      <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
-        <!-- Dynamic Async Components -->
-        <component
-          :is="fieldBP.component"
-          :locked="lockFields(fieldBP.field)"
-          :label="fieldBP.label"
-        />
-      </div>
+      <!-- Create Form -->
+      <QForm
+        greedy
+        @submit="onSubmit"
+        @validation-error="isFormValid = false"
+        @validation-success="isFormValid = true"
+      >
+        <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
+          <!-- Dynamic Async Components -->
+          <component
+            :is="fieldBP.component"
+            :locked="lockFields(fieldBP.field)"
+            :label="fieldBP.label"
+          />
+        </div>
 
-      <QBtn label="Create" color="positive" :icon="Icon.SAVE" @click="onCreateRecord()" />
+        <div class="row justify-start">
+          <!-- Form Submit -->
+          <div class="col">
+            <QBtn label="Create" type="submit" color="positive" :icon="Icon.SAVE" />
+          </div>
+          <!-- Invalid entries message -->
+          <div class="col">
+            <div v-show="!isFormValid">
+              <QIcon :name="Icon.WARN" color="warning" />
+              <span class="text-caption q-ml-xs text-warning">Some entries are invalid</span>
+            </div>
+          </div>
+        </div>
+      </QForm>
     </div>
   </ResponsivePage>
 </template>

@@ -2,7 +2,7 @@
 import { Icon } from '@/types/icons'
 import { DatabaseField } from '@/types/database'
 import type { DatabaseRecord } from '@/types/models'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
 import { AppName } from '@/types/misc'
 import { useMeta } from 'quasar'
@@ -18,16 +18,16 @@ useMeta({ title: `${AppName} - Edit Record` })
 // Composables & Stores
 const { routeDatabaseType, routeId, goBack } = useRoutables()
 const { log } = useLogger()
-const { confirmDialog, dismissDialog } = useDialogs()
+const { confirmDialog } = useDialogs()
 const actionStore = useActionStore()
 
 // Data
 const fieldBlueprints = getFieldBlueprints(routeDatabaseType)
+const isFormValid = ref(true)
 
 onMounted(async () => {
   try {
     actionStore.record[DatabaseField.TYPE] = routeDatabaseType
-    actionStore.valid[DatabaseField.TYPE] = true
 
     if (routeId) {
       const oldRecord = await DB.getRecord(routeDatabaseType, routeId)
@@ -50,7 +50,7 @@ onUnmounted(() => {
 /**
  * Confirmation edits the existing record in the database. Validation dialog appears if any field inputs are invalid.
  */
-async function onUpdateRecord() {
+async function onSubmit() {
   const fields = getFields(routeDatabaseType)
 
   // Build record from store using only fields used by its type (ignoring others in store)
@@ -59,37 +59,27 @@ async function onUpdateRecord() {
     return acc
   }, {} as any) as DatabaseRecord
 
-  // Inputs must be valid to continue
-  if (actionStore.areRecordFieldsValid(fields)) {
-    confirmDialog(
-      'Update Record',
-      `Update record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
-      Icon.EDIT,
-      'positive',
-      async () => {
-        try {
-          await DB.updateRecord(routeDatabaseType, routeId, record)
+  confirmDialog(
+    'Update Record',
+    `Update record ${record[DatabaseField.ID]} for ${record[DatabaseField.TYPE]}?`,
+    Icon.EDIT,
+    'positive',
+    async () => {
+      try {
+        await DB.updateRecord(routeDatabaseType, routeId, record)
 
-          log.info('Successfully updated record', {
-            updatedRecordType: routeDatabaseType,
-            updatedRecordId: routeId,
-          })
+        log.info('Successfully updated record', {
+          updatedRecordType: routeDatabaseType,
+          updatedRecordId: routeId,
+        })
 
-          actionStore.$reset()
-          goBack() // Return to previous page
-        } catch (error) {
-          log.error('Update failed', error)
-        }
+        actionStore.$reset()
+        goBack() // Return to previous page
+      } catch (error) {
+        log.error('Update failed', error)
       }
-    )
-  } else {
-    dismissDialog(
-      'Validation Error',
-      'Unable to update record. Ensure all inputs have valid entries.',
-      Icon.WARN,
-      'warning'
-    )
-  }
+    }
+  )
 }
 </script>
 
@@ -109,13 +99,32 @@ async function onUpdateRecord() {
 
     <!-- Normal Page Render -->
     <div v-else>
-      <!-- TODO - QForm -->
-      <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
-        <!-- Dynamic Async Components -->
-        <component :is="fieldBP.component" :label="fieldBP.label" />
-      </div>
+      <!-- Create Form -->
+      <QForm
+        greedy
+        @submit="onSubmit"
+        @validation-error="isFormValid = false"
+        @validation-success="isFormValid = true"
+      >
+        <div v-for="(fieldBP, i) in fieldBlueprints" :key="i" class="q-mb-md">
+          <!-- Dynamic Async Components -->
+          <component :is="fieldBP.component" :label="fieldBP.label" />
+        </div>
 
-      <QBtn label="Update" color="positive" :icon="Icon.SAVE" @click="onUpdateRecord()" />
+        <div class="row justify-start">
+          <!-- Form Submit -->
+          <div class="col">
+            <QBtn label="Update" type="submit" color="positive" :icon="Icon.SAVE" />
+          </div>
+          <!-- Invalid entries message -->
+          <div class="col">
+            <div v-show="!isFormValid">
+              <QIcon :name="Icon.WARN" color="warning" />
+              <span class="text-caption q-ml-xs text-warning">Some entries are invalid</span>
+            </div>
+          </div>
+        </div>
+      </QForm>
     </div>
   </ResponsivePage>
 </template>
