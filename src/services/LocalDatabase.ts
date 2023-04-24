@@ -17,6 +17,7 @@ import {
   getParentCategoryTypes,
   getUserCategoryTypes,
 } from '@/services/Blueprints'
+import AppDefault from '@/services/AppDefaults'
 
 /**
  * A Dexie wrapper class that acts as a local database.
@@ -44,18 +45,23 @@ export class LocalDatabase extends Dexie {
   async initSettings() {
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
     const showIntroduction =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ?? true
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ??
+      AppDefault[SettingId.SHOW_INTRODUCTION]
     const darkMode =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ?? true
+      (await this.getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ??
+      AppDefault[SettingId.DARK_MODE]
     const showAllDataColumns =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ?? false
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ??
+      AppDefault[SettingId.SHOW_ALL_DATA_COLUMNS]
     const showConsoleLogs =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ?? false
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ??
+      AppDefault[SettingId.SHOW_CONSOLE_LOGS]
     const showInfoMessages =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ?? true
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ??
+      AppDefault[SettingId.SHOW_INFO_MESSAGES]
     const logRetentionTime =
       (await this.getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
-      LogRetention.THREE_MONTHS
+      AppDefault[SettingId.LOG_RETENTION_TIME]
 
     // Set Quasar dark mode
     Dark.set(!!darkMode) // Cast to boolean

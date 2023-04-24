@@ -2,12 +2,12 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
+import AppDefault from '@/services/AppDefaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
-const props = defineProps<{
+defineProps<{
   locked?: boolean
-  default?: any
 }>()
 
 // Composables & Stores
@@ -17,7 +17,8 @@ const actionStore = useActionStore()
 const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
-  actionStore.record[DatabaseField.NAME] = actionStore.record[DatabaseField.NAME] ?? props.default
+  actionStore.record[DatabaseField.NAME] =
+    actionStore.record[DatabaseField.NAME] ?? AppDefault[DatabaseField.NAME]
   actionStore.valid[DatabaseField.NAME] = true
 })
 
@@ -26,17 +27,11 @@ onMounted(() => {
  * @param val
  */
 function validationRule(val: string) {
-  const nameRegex = /^.{1,50}$/ // 1-50 characters
-
-  const isNameValid = (val: string) => {
-    return val !== undefined && val !== null && val !== '' && nameRegex.test(val)
-  }
-
-  if (val) {
-    return isNameValid(val.trim())
-  } else {
-    return isNameValid(val)
-  }
+  return (
+    typeof val === 'string' &&
+    val.trim().length <= AppDefault.MAX_NAME_LENGTH &&
+    val.trim().length > 0 // Must have at least 1 character
+  )
 }
 
 /**
@@ -62,9 +57,9 @@ function validateInput() {
         v-model="actionStore.record[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
-        :rules="[(val: string) => validationRule(val) || 'Name must be between 1 and 50 characters']"
+        :rules="[(val: string) => validationRule(val) || `Name must be between 1 and ${AppDefault.MAX_NAME_LENGTH} characters`]"
         :disable="locked"
-        :maxlength="50"
+        :maxlength="AppDefault.MAX_NAME_LENGTH"
         type="text"
         counter
         dense

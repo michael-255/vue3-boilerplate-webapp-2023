@@ -1,8 +1,8 @@
 import type {
+  DatabaseField,
   DatabaseAction,
   DatabaseCategory,
   DatabaseChildType,
-  DatabaseField,
   DatabaseParentType,
   DatabaseType,
   RecordIssue,
@@ -40,13 +40,6 @@ export type Optional<T> = T | null | undefined
  * Generic type for an object with string based properties storing any value.
  */
 export type AppObject = { [x: string]: any }
-
-/**
- * Limits for various rules and inputs.
- */
-export enum Limit {
-  FILESIZE = 100_000_000, // ~100 megabytes
-}
 
 /**
  * Milliseconds per time value.
@@ -136,7 +129,6 @@ export type CoreBlueprint = {
 export type FieldBlueprint = {
   readonly field: DatabaseField
   readonly label: string
-  readonly getDefault: () => any
   readonly inspectFormat: (val: any) => string
   readonly component?: any // Vue component used when rendering (if any)
 }
