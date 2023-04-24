@@ -2,7 +2,8 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import AppDefault from '@/services/AppDefaults'
+import { Limit } from '@/types/misc'
+import { FieldDefault } from '@/services/Defaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -18,7 +19,7 @@ const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
   actionStore.record[DatabaseField.DESCRIPTION] =
-    actionStore.record[DatabaseField.DESCRIPTION] ?? AppDefault[DatabaseField.DESCRIPTION]
+    actionStore.record[DatabaseField.DESCRIPTION] ?? FieldDefault[DatabaseField.DESCRIPTION]() // function call
   actionStore.valid[DatabaseField.DESCRIPTION] = true
 })
 
@@ -27,7 +28,7 @@ onMounted(() => {
  * @param val
  */
 function validationRule(val: string) {
-  return typeof val === 'string' && val.trim().length <= AppDefault.MAX_DESCRIPTION_LENGTH
+  return typeof val === 'string' && val.trim().length <= Limit.MAX_DESCRIPTION_LENGTH
 }
 
 /**
@@ -54,9 +55,9 @@ function validateInput() {
         v-model="actionStore.record[DatabaseField.DESCRIPTION]"
         ref="inputRef"
         label="Description"
-        :rules="[(val: string) => validationRule(val) || `Description cannot exceed ${AppDefault.MAX_DESCRIPTION_LENGTH} characters`]"
+        :rules="[(val: string) => validationRule(val) || `Description cannot exceed ${Limit.MAX_DESCRIPTION_LENGTH} characters`]"
         :disable="locked"
-        :maxlength="AppDefault.MAX_DESCRIPTION_LENGTH"
+        :maxlength="Limit.MAX_DESCRIPTION_LENGTH"
         type="textarea"
         autogrow
         counter

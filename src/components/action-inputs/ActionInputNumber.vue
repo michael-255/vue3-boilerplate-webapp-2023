@@ -2,7 +2,7 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import AppDefault from '@/services/AppDefaults'
+import { FieldDefault } from '@/services/Defaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -18,7 +18,7 @@ const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
   actionStore.record[DatabaseField.NUMBER] =
-    actionStore.record[DatabaseField.NUMBER] ?? AppDefault[DatabaseField.NUMBER]
+    actionStore.record[DatabaseField.NUMBER] ?? FieldDefault[DatabaseField.NUMBER]() // function call
   actionStore.valid[DatabaseField.NUMBER] = true
 })
 
@@ -27,13 +27,8 @@ onMounted(() => {
  * @param val
  */
 function validationRule(val: number): boolean {
-  // Didn't bother putting these values in AppDefaults because this is just an example component
-  return (
-    typeof val === 'number' &&
-    isFinite(val) &&
-    val < 999_999_999_999_999 &&
-    val > -999_999_999_999_999
-  )
+  // Didn't bother putting these values in Limits because this is just an example component
+  return typeof val === 'number' && val < 999_999_999_999_999 && val > -999_999_999_999_999
 }
 
 /**

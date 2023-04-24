@@ -2,7 +2,7 @@
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { onMounted } from 'vue'
-import AppDefault from '@/services/AppDefaults'
+import { FieldDefault } from '@/services/Defaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -15,7 +15,7 @@ const actionStore = useActionStore()
 
 onMounted(() => {
   actionStore.record[DatabaseField.IS_ENABLED] =
-    actionStore.record[DatabaseField.IS_ENABLED] ?? AppDefault[DatabaseField.IS_ENABLED]
+    actionStore.record[DatabaseField.IS_ENABLED] ?? FieldDefault[DatabaseField.IS_ENABLED]() // function call
   actionStore.valid[DatabaseField.IS_ENABLED] = true
 })
 </script>

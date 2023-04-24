@@ -4,7 +4,8 @@ import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { slugify } from '@/utils/common'
-import AppDefault from '@/services/AppDefaults'
+import { Limit } from '@/types/misc'
+import { FieldDefault } from '@/services/Defaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -20,7 +21,7 @@ const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
   actionStore.record[DatabaseField.ID] =
-    actionStore.record[DatabaseField.ID] ?? AppDefault[DatabaseField.ID]() // id function
+    actionStore.record[DatabaseField.ID] ?? FieldDefault[DatabaseField.ID]() // function call
   actionStore.valid[DatabaseField.ID] = true
 })
 
@@ -30,9 +31,7 @@ onMounted(() => {
  */
 function validationRule(val: string) {
   return (
-    typeof val === 'string' &&
-    slugify(val).length <= AppDefault.MAX_ID_LENGTH &&
-    slugify(val).length > 0 // Must have at least 1 character
+    typeof val === 'string' && slugify(val).length <= Limit.MAX_ID_LENGTH && slugify(val).length > 0 // Must have at least 1 character
   )
 }
 
@@ -69,9 +68,9 @@ function validateInput() {
         v-model="actionStore.record[DatabaseField.ID]"
         ref="inputRef"
         label="Id"
-        :rules="[(val: string) => validationRule(val) || `Id must be between 1 and ${AppDefault.MAX_ID_LENGTH} characters`]"
+        :rules="[(val: string) => validationRule(val) || `Id must be between 1 and ${Limit.MAX_ID_LENGTH} characters`]"
         :disable="locked"
-        :maxlength="AppDefault.MAX_ID_LENGTH"
+        :maxlength="Limit.MAX_ID_LENGTH"
         type="text"
         counter
         dense

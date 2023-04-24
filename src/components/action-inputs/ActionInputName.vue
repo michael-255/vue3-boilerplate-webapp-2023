@@ -2,7 +2,8 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import AppDefault from '@/services/AppDefaults'
+import { Limit } from '@/types/misc'
+import { FieldDefault } from '@/services/Defaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -18,7 +19,7 @@ const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
   actionStore.record[DatabaseField.NAME] =
-    actionStore.record[DatabaseField.NAME] ?? AppDefault[DatabaseField.NAME]
+    actionStore.record[DatabaseField.NAME] ?? FieldDefault[DatabaseField.NAME]() // function call
   actionStore.valid[DatabaseField.NAME] = true
 })
 
@@ -28,9 +29,7 @@ onMounted(() => {
  */
 function validationRule(val: string) {
   return (
-    typeof val === 'string' &&
-    val.trim().length <= AppDefault.MAX_NAME_LENGTH &&
-    val.trim().length > 0 // Must have at least 1 character
+    typeof val === 'string' && val.trim().length <= Limit.MAX_NAME_LENGTH && val.trim().length > 0 // Must have at least 1 character
   )
 }
 
@@ -57,9 +56,9 @@ function validateInput() {
         v-model="actionStore.record[DatabaseField.NAME]"
         ref="inputRef"
         label="Name"
-        :rules="[(val: string) => validationRule(val) || `Name must be between 1 and ${AppDefault.MAX_NAME_LENGTH} characters`]"
+        :rules="[(val: string) => validationRule(val) || `Name must be between 1 and ${Limit.MAX_NAME_LENGTH} characters`]"
         :disable="locked"
-        :maxlength="AppDefault.MAX_NAME_LENGTH"
+        :maxlength="Limit.MAX_NAME_LENGTH"
         type="text"
         counter
         dense

@@ -2,7 +2,8 @@
 import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
-import AppDefault from '@/services/AppDefaults'
+import { Limit } from '@/types/misc'
+import { FieldDefault } from '@/services/Defaults'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -18,7 +19,7 @@ const inputRef: Ref<any> = ref(null)
 
 onMounted(() => {
   actionStore.record[DatabaseField.NOTE] =
-    actionStore.record[DatabaseField.NOTE] ?? AppDefault[DatabaseField.NOTE]
+    actionStore.record[DatabaseField.NOTE] ?? FieldDefault[DatabaseField.NOTE]() // function call
   actionStore.valid[DatabaseField.NOTE] = true
 })
 
@@ -27,7 +28,7 @@ onMounted(() => {
  * @param val
  */
 function validationRule(val: string) {
-  return typeof val === 'string' && val.trim().length <= AppDefault.MAX_NOTE_LENGTH
+  return typeof val === 'string' && val.trim().length <= Limit.MAX_NOTE_LENGTH
 }
 
 /**
@@ -55,9 +56,9 @@ function validateInput() {
         v-model="actionStore.record[DatabaseField.NOTE]"
         ref="inputRef"
         label="Note"
-        :rules="[(val: string) => validationRule(val) || `Note cannot exceed ${AppDefault.MAX_NOTE_LENGTH} characters`]"
+        :rules="[(val: string) => validationRule(val) || `Note cannot exceed ${Limit.MAX_NOTE_LENGTH} characters`]"
         :disable="locked"
-        :maxlength="AppDefault.MAX_NOTE_LENGTH"
+        :maxlength="Limit.MAX_NOTE_LENGTH"
         type="textarea"
         autogrow
         counter

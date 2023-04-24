@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { DatabaseField } from '@/types/database'
 import type { Optional } from '@/types/misc'
+import { FieldDefault } from '@/services/Defaults'
 
 const useActionStore = defineStore({
   id: 'action',
@@ -10,7 +11,7 @@ const useActionStore = defineStore({
      * Used as the WIP record for creates and updates.
      */
     record: Object.values(DatabaseField).reduce((acc, field) => {
-      acc[field] = null as any
+      acc[field] = FieldDefault[field]() as any // function call for default value
       return acc
     }, {} as { [key in DatabaseField]: any }),
     /**
