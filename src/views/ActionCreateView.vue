@@ -5,7 +5,7 @@ import type { DatabaseRecord } from '@/types/models'
 import { getFieldBlueprints, getFields, getLabel } from '@/services/Blueprints'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { AppName } from '@/types/misc'
-import { useMeta } from 'quasar'
+import { extend, useMeta } from 'quasar'
 import ResponsivePage from '@/components/ResponsivePage.vue'
 import useRoutables from '@/composables/useRoutables'
 import useActionStore from '@/stores/action'
@@ -56,7 +56,8 @@ async function onSubmit() {
     'positive',
     async () => {
       try {
-        await DB.addRecord(record)
+        const deepRecordCopy = extend(true, {}, record) as DatabaseRecord
+        await DB.addRecord(deepRecordCopy)
 
         log.info('Successfully created record', {
           createdRecordType: record[DatabaseField.TYPE],
