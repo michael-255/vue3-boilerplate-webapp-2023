@@ -5,10 +5,6 @@ developing. Read through this README to have a better understanding of how this 
 
 ## TODO
 
-- [ ] `QForms` for `Create` and `Edit` views
-
-  - [ ] Might be able to remove `valid` from `actionStore`
-
 - [ ] Better `ActionInput` components?
 - [ ] Better `blueprints`?
 

@@ -30,14 +30,6 @@ onMounted(() => {
 function validationRule(val: string) {
   return typeof val === 'string' && val.trim().length <= Limit.MAX_DESCRIPTION_LENGTH
 }
-
-/**
- * Makes required alterations to the input value.
- */
-function alterInput() {
-  actionStore.record[DatabaseField.DESCRIPTION] =
-    actionStore.record[DatabaseField.DESCRIPTION].trim()
-}
 </script>
 
 <template>
