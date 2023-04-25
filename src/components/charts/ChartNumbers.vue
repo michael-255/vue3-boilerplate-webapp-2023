@@ -12,13 +12,14 @@ import {
   PointElement,
   LineElement,
 } from 'chart.js'
-import { onMounted, ref, watch, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField, type DatabaseChildType } from '@/types/database'
 import { getChildType } from '@/services/Blueprints'
-import type { AppObject, ChartTime } from '@/types/misc'
+import type { AppObject } from '@/types/misc'
 import useLogger from '@/composables/useLogger'
 import useRoutables from '@/composables/useRoutables'
 import useUIStore from '@/stores/ui'
+import useChartTimeWatcher from '@/composables/useChartTimeWatcher'
 import DB from '@/services/LocalDatabase'
 
 ChartJS.register(
@@ -43,6 +44,7 @@ const uiStore = useUIStore()
 const { getPaletteColor } = colors
 const { log } = useLogger()
 const { routeDatabaseType, routeId } = useRoutables()
+useChartTimeWatcher(recalculateChart)
 
 // Data
 const recordCount: Ref<number> = ref(0)
@@ -121,21 +123,6 @@ async function recalculateChart() {
     log.error('Error loading numbers chart', error)
   }
 }
-
-/**
- * Watching uiStore chart time for the property to change.
- */
-watch(
-  () => uiStore.chartTime as ChartTime,
-  async () => {
-    try {
-      await recalculateChart()
-    } catch (error) {
-      log.error('Error with chart time watcher', error)
-    }
-  },
-  { immediate: true }
-)
 </script>
 
 <template>
