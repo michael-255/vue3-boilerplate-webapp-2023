@@ -45,7 +45,6 @@ function validationRule(val: string) {
       <QInput
         v-model="actionStore.record[DatabaseField.DESCRIPTION]"
         ref="inputRef"
-        :label="label"
         :rules="[(val: string) => validationRule(val) || `Description cannot exceed ${Limit.MAX_DESCRIPTION_LENGTH} characters`]"
         :disable="locked"
         :maxlength="Limit.MAX_DESCRIPTION_LENGTH"

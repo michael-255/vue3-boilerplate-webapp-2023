@@ -47,7 +47,6 @@ function validationRule(val: string) {
       <QInput
         v-model="actionStore.record[DatabaseField.NOTE]"
         ref="inputRef"
-        :label="label"
         :rules="[(val: string) => validationRule(val) || `Note cannot exceed ${Limit.MAX_NOTE_LENGTH} characters`]"
         :disable="locked"
         :maxlength="Limit.MAX_NOTE_LENGTH"

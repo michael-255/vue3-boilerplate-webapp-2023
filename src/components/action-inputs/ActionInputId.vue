@@ -51,7 +51,6 @@ function validationRule(val: string) {
       <QInput
         v-model="actionStore.record[DatabaseField.ID]"
         ref="inputRef"
-        :label="label"
         :rules="[(val: string) => validationRule(val) || `Id must be between 1 and ${Limit.MAX_ID_LENGTH} characters`]"
         :disable="locked"
         :maxlength="Limit.MAX_ID_LENGTH"

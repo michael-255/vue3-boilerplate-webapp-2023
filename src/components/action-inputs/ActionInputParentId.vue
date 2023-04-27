@@ -96,7 +96,6 @@ function validationRule(val: string) {
       <QSelect
         v-model="actionStore.record[DatabaseField.PARENT_ID]"
         ref="inputRef"
-        :label="label"
         :disable="locked"
         :options="options"
         :rules="[(val: string) => validationRule(val) || '* Required']"

@@ -3,6 +3,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { FieldDefault } from '@/services/Defaults'
+import useParentIdWatcher from '@/composables/useParentIdWatcher'
 import useActionStore from '@/stores/action'
 
 // Props & Emits
@@ -13,6 +14,7 @@ defineProps<{
 
 // Composables & Stores
 const actionStore = useActionStore()
+const { previousRecord } = useParentIdWatcher()
 
 // Data
 const inputRef: Ref<any> = ref(null)
@@ -36,7 +38,7 @@ function validationRule(val: number): boolean {
   <QCard v-show="!locked">
     <QCardSection>
       <div class="text-h6 q-mb-md">
-        Number
+        {{ label }}
         <QIcon v-if="locked" :name="Icon.LOCK" color="warning" class="q-pb-xs" />
       </div>
 
@@ -46,7 +48,7 @@ function validationRule(val: number): boolean {
       <QInput
         v-model.number="actionStore.record[DatabaseField.NUMBER]"
         ref="inputRef"
-        :label="label"
+        :label="`${previousRecord?.number ?? 'No previous value'}`"
         :rules="[(val: number) => validationRule(val) || 'Must be a valid number within 15 digits']"
         :disable="locked"
         type="number"
