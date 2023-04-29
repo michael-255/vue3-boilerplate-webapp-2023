@@ -24,11 +24,12 @@ onMounted(() => {
 })
 
 /**
- * Input validation rule test for the template component.
- * @param val
+ * Input validation rule for the template component.
  */
-function validationRule(val: string) {
-  return typeof val === 'string' && val.trim().length <= Limit.MAX_DESCRIPTION_LENGTH
+function validationRule() {
+  return (val: string) =>
+    (typeof val === 'string' && val.trim().length <= Limit.MAX_DESCRIPTION_LENGTH) ||
+    `Description cannot exceed ${Limit.MAX_DESCRIPTION_LENGTH} characters`
 }
 </script>
 
@@ -45,7 +46,7 @@ function validationRule(val: string) {
       <QInput
         v-model="actionStore.record[DatabaseField.DESCRIPTION]"
         ref="inputRef"
-        :rules="[(val: string) => validationRule(val) || `Description cannot exceed ${Limit.MAX_DESCRIPTION_LENGTH} characters`]"
+        :rules="[validationRule()]"
         :disable="locked"
         :maxlength="Limit.MAX_DESCRIPTION_LENGTH"
         type="textarea"

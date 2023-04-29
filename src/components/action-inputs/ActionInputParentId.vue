@@ -71,11 +71,10 @@ onMounted(async () => {
 })
 
 /**
- * Input validation rule test for the template component.
- * @param val
+ * Input validation rule for the template component.
  */
-function validationRule(val: string) {
-  return val !== undefined && val !== null && val !== ''
+function validationRule() {
+  return (val: string) => (val !== undefined && val !== null && val !== '') || '* Required'
 }
 </script>
 
@@ -98,7 +97,7 @@ function validationRule(val: string) {
         ref="inputRef"
         :disable="locked"
         :options="options"
-        :rules="[(val: string) => validationRule(val) || '* Required']"
+        :rules="[validationRule()]"
         emit-value
         map-options
         options-dense

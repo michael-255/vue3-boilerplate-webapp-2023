@@ -26,13 +26,14 @@ onMounted(() => {
 })
 
 /**
- * Input validation rule test for the template component.
- * @param val
+ * Input validation rule for the template component.
  */
-function validationRule(val: string) {
-  return (
-    typeof val === 'string' && slugify(val).length <= Limit.MAX_ID_LENGTH && slugify(val).length > 0 // Must have at least 1 character
-  )
+function validationRule() {
+  return (val: string) =>
+    (typeof val === 'string' &&
+      slugify(val).length <= Limit.MAX_ID_LENGTH &&
+      slugify(val).length > 0) ||
+    `Id must be between 1 and ${Limit.MAX_ID_LENGTH} characters`
 }
 </script>
 
@@ -51,7 +52,7 @@ function validationRule(val: string) {
       <QInput
         v-model="actionStore.record[DatabaseField.ID]"
         ref="inputRef"
-        :rules="[(val: string) => validationRule(val) || `Id must be between 1 and ${Limit.MAX_ID_LENGTH} characters`]"
+        :rules="[validationRule()]"
         :disable="locked"
         :maxlength="Limit.MAX_ID_LENGTH"
         type="text"

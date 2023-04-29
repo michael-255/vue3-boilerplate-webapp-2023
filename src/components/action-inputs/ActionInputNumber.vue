@@ -25,12 +25,13 @@ onMounted(() => {
 })
 
 /**
- * Input validation rule test for the template component.
- * @param val
+ * Input validation rule for the template component.
+ * Didn't bother putting the limit values in Limits because this is just an example component for the template app.
  */
-function validationRule(val: number): boolean {
-  // Didn't bother putting these values in Limits because this is just an example component
-  return typeof val === 'number' && val < 999_999_999_999_999 && val > -999_999_999_999_999
+function validationRule() {
+  return (val: number) =>
+    (typeof val === 'number' && val < 999_999_999_999_999 && val > -999_999_999_999_999) ||
+    'Must be a valid number within 15 digits'
 }
 </script>
 
@@ -49,7 +50,7 @@ function validationRule(val: number): boolean {
         v-model.number="actionStore.record[DatabaseField.NUMBER]"
         ref="inputRef"
         :label="`${previousRecord?.number ?? 'No previous value'}`"
-        :rules="[(val: number) => validationRule(val) || 'Must be a valid number within 15 digits']"
+        :rules="[validationRule()]"
         :disable="locked"
         type="number"
         dense
