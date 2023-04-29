@@ -12,7 +12,7 @@ export default function useChartTimeWatcher(chartUpdateFunc: () => Promise<void>
   const { log } = useLogger()
 
   /**
-   * Watching uiStore chart time for the property to change.
+   * Watching uiStore chart time.
    * The provided function is called when the property changes.
    */
   watch(

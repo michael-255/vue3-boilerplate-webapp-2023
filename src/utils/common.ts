@@ -74,7 +74,7 @@ export function truncateString(
       return str.slice(0, len) + ending
     }
   }
-  return '-'
+  return ''
 }
 
 /**

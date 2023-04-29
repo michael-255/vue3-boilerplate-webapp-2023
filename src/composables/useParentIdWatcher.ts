@@ -16,7 +16,7 @@ export default function useParentIdWatcher() {
   const previousRecord: Ref<Optional<DatabaseRecord>> = ref(null)
 
   /**
-   * Watching actionStore parent id for the property to change.
+   * Watching actionStore parent id.
    */
   watch(
     () => actionStore.record[DatabaseField.PARENT_ID] as string,
