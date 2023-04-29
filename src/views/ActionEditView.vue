@@ -121,7 +121,9 @@ async function onSubmit() {
           <div class="col">
             <div v-show="!isFormValid">
               <QIcon :name="Icon.WARN" color="warning" />
-              <span class="text-caption q-ml-xs text-warning">Some entries are invalid</span>
+              <span class="text-caption q-ml-xs text-warning">
+                Correct invalid entries and try again
+              </span>
             </div>
           </div>
         </div>

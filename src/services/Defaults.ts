@@ -6,28 +6,14 @@ import { uid } from 'quasar'
  * Default functions for each field.
  */
 export const FieldDefault = Object.freeze({
-  // All
-  [DatabaseField.TYPE]: () => null,
-  [DatabaseField.ID]: () => uid(),
-  // Settings
-  [DatabaseField.VALUE]: () => null,
-  // Logs - These fields are handled by the components that use them
-  [DatabaseField.CREATED_TIMESTAMP]: () => null,
-  [DatabaseField.SEVERITY]: () => null,
-  [DatabaseField.LABEL]: () => null,
-  [DatabaseField.DETAILS]: () => null,
-  [DatabaseField.MESSAGE]: () => null,
-  [DatabaseField.STACK]: () => null,
-  // Parent
-  [DatabaseField.NAME]: () => 'Example',
-  [DatabaseField.DESCRIPTION]: () => '',
-  [DatabaseField.IS_FAVORITED]: () => false,
-  [DatabaseField.IS_ENABLED]: () => true,
-  // Child
-  [DatabaseField.PARENT_ID]: () => null,
-  [DatabaseField.NOTE]: () => '',
-  // Example & Test Results
-  [DatabaseField.NUMBER]: () => 0,
+  [DatabaseField.ID]: (): string => uid(),
+  [DatabaseField.NAME]: (): string => 'Example',
+  [DatabaseField.DESCRIPTION]: (): string => '',
+  [DatabaseField.IS_FAVORITED]: (): boolean => false,
+  [DatabaseField.IS_ENABLED]: (): boolean => true,
+  [DatabaseField.NOTE]: (): string => '',
+  // Result Defaults
+  [DatabaseField.NUMBER]: (): number => 0,
 })
 
 /**
