@@ -30,8 +30,8 @@ function validationRule() {
   return (val: string) =>
     (typeof val === 'string' &&
       val.trim().length <= Limit.MAX_NAME_LENGTH &&
-      val.trim().length > 0) ||
-    `Name must be between 1 and ${Limit.MAX_NAME_LENGTH} characters`
+      val.trim().length >= Limit.MIN_NAME_LENGTH) ||
+    `Name must be between ${Limit.MIN_NAME_LENGTH} and ${Limit.MAX_NAME_LENGTH} characters`
 }
 </script>
 

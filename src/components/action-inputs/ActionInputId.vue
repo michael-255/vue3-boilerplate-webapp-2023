@@ -32,8 +32,8 @@ function validationRule() {
   return (val: string) =>
     (typeof val === 'string' &&
       slugify(val).length <= Limit.MAX_ID_LENGTH &&
-      slugify(val).length > 0) ||
-    `Id must be between 1 and ${Limit.MAX_ID_LENGTH} characters`
+      slugify(val).length >= Limit.MIN_ID_LENGTH) ||
+    `Id must be between ${Limit.MIN_ID_LENGTH} and ${Limit.MAX_ID_LENGTH} characters`
 }
 </script>
 
