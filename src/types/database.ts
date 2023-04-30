@@ -72,7 +72,7 @@ export enum DatabaseField {
 /**
  * Setting values are restricted to the types needed.
  */
-export type SettingValue = Optional<string | number | boolean | DatabaseType | LogRetention | null>
+export type SettingValue = Optional<string | number | boolean | DatabaseType | LogRetention>
 
 /**
  * The only valid setting ids.
