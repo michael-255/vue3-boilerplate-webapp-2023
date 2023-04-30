@@ -1,5 +1,5 @@
 import { DatabaseField, SettingId } from '@/types/database'
-import { LogRetention } from '@/types/misc'
+import { LogRetention, type Optional } from '@/types/misc'
 import { uid } from 'quasar'
 
 /**
@@ -13,7 +13,7 @@ export const FieldDefault = Object.freeze({
   [DatabaseField.IS_ENABLED]: (): boolean => true,
   [DatabaseField.NOTE]: (): string => '',
   // Result Defaults
-  [DatabaseField.NUMBER]: (): number => 0,
+  [DatabaseField.NUMBER]: (): Optional<number> => null,
 })
 
 /**

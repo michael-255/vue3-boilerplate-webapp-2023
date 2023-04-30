@@ -33,7 +33,7 @@ export interface DatabaseRecord {
   [DatabaseField.PARENT_ID]?: string
   [DatabaseField.NOTE]?: Optional<string>
   // Examples & Tests
-  [DatabaseField.NUMBER]?: number
+  [DatabaseField.NUMBER]?: Optional<number>
 }
 
 /**

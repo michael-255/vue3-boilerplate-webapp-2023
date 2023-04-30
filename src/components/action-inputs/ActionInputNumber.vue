@@ -3,6 +3,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import { DatabaseField } from '@/types/database'
 import { Icon } from '@/types/icons'
 import { FieldDefault } from '@/services/Defaults'
+import type { Optional } from '@/types/misc'
 import useParentIdWatcher from '@/composables/useParentIdWatcher'
 import useActionStore from '@/stores/action'
 
@@ -25,13 +26,37 @@ onMounted(() => {
 })
 
 /**
+ * Formats the label for the input field based on the previous record value.
+ * @param actionRecordValue
+ */
+function previousLabel(actionRecordValue: Optional<number>) {
+  if (actionRecordValue !== null && actionRecordValue !== undefined) {
+    return `Previously ${actionRecordValue}`
+  } else {
+    return 'No previous data'
+  }
+}
+
+/**
  * Input validation rule for the template component.
  * Didn't bother putting the limit values in Limits because this is just an example component for the template app.
  */
 function validationRule() {
-  return (val: number) =>
+  return (val: Optional<number>) =>
+    val === null ||
+    val === undefined ||
     (typeof val === 'number' && val < 999_999_999_999_999 && val > -999_999_999_999_999) ||
-    'Must be a valid number within 15 digits'
+    'If provided, number must be 15 digits (+/-)'
+}
+
+/**
+ * Ensures the values are set to null if the input is empty.
+ * @param val
+ */
+function blurValueUpdate(val: Optional<number> | '') {
+  if (val === null || val === undefined || val === '') {
+    actionStore.record[DatabaseField.NUMBER] = null
+  }
 }
 </script>
 
@@ -49,13 +74,14 @@ function validationRule() {
       <QInput
         v-model.number="actionStore.record[DatabaseField.NUMBER]"
         ref="inputRef"
-        :label="`${previousRecord?.number ?? 'No previous value'}`"
+        :label="previousLabel(previousRecord?.number)"
         :rules="[validationRule()]"
         :disable="locked"
         type="number"
         dense
         outlined
         color="primary"
+        @blur="blurValueUpdate(actionStore.record[DatabaseField.NUMBER])"
       />
     </QCardSection>
   </QCard>
