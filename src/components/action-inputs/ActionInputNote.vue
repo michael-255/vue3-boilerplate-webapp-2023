@@ -42,7 +42,8 @@ function validationRule() {
       </div>
 
       <div class="q-mb-md">
-        Large text area for the child record note. Previous notes can be viewed on the Dashboard.
+        Large text area for the child record to write notes that will get saved with the record.
+        Previous notes can be viewed on the Dashboard.
       </div>
 
       <QInput

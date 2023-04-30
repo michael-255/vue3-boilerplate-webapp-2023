@@ -35,7 +35,7 @@ const route = useRoute()
     <!-- Menu Drawer -->
     <QDrawer v-model="uiStore.drawer" :width="250" overlay show-if-above bordered side="left">
       <div class="row justify-center">
-        <QAvatar outline size="100px" class="q-my-md">
+        <QAvatar size="96px" color="white" class="q-my-md">
           <img src="@/assets/menu-avatar.png" />
         </QAvatar>
       </div>
