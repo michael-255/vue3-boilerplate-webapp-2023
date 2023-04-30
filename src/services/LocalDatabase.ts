@@ -47,6 +47,9 @@ export class LocalDatabase extends Dexie {
     const showIntroduction =
       (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ??
       SettingDefault[SettingId.SHOW_INTRODUCTION]
+    const showDashboardDescriptions =
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_DASHBOARD_DESCRIPTIONS))?.value ??
+      SettingDefault[SettingId.SHOW_DASHBOARD_DESCRIPTIONS]
     const darkMode =
       (await this.getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ??
       SettingDefault[SettingId.DARK_MODE]
@@ -69,6 +72,7 @@ export class LocalDatabase extends Dexie {
     // Set all settings before continuing
     await Promise.all([
       this.setSetting(SettingId.SHOW_INTRODUCTION, showIntroduction),
+      this.setSetting(SettingId.SHOW_DASHBOARD_DESCRIPTIONS, showDashboardDescriptions),
       this.setSetting(SettingId.DARK_MODE, darkMode),
       this.setSetting(SettingId.SHOW_ALL_DATA_COLUMNS, showAllDataColumns),
       this.setSetting(SettingId.SHOW_CONSOLE_LOGS, showConsoleLogs),

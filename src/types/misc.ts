@@ -110,6 +110,7 @@ export type DashboardParent = {
   [DatabaseField.TYPE]: DatabaseParentType
   [DatabaseField.ID]: string
   [DatabaseField.NAME]: string
+  [DatabaseField.DESCRIPTION]: Optional<string>
   [DatabaseField.IS_FAVORITED]: boolean
   previousNote?: string
   previousCreatedTimestamp?: number

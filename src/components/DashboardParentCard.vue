@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { useTimeAgo } from '@vueuse/core'
-import { DatabaseField, DatabaseType, type DatabaseParentType } from '@/types/database'
+import {
+  DatabaseField,
+  DatabaseType,
+  type DatabaseParentType,
+  type SettingValue,
+} from '@/types/database'
 import { Icon } from '@/types/icons'
 import { getDisplayDate } from '@/utils/common'
+import type { Optional } from '@/types/misc'
 import useLogger from '@/composables/useLogger'
 import useDialogs from '@/composables/useDialogs'
 import useRoutables from '@/composables/useRoutables'
@@ -13,7 +19,9 @@ defineProps<{
   type: DatabaseParentType
   id: string
   name: string
-  isFavorite: boolean
+  showDescription: Optional<SettingValue>
+  description: Optional<string>
+  isFavorited: boolean
   // Will be undefined if no records have been recorded yet
   previousNote?: string
   previousCreatedTimestamp?: number
@@ -110,6 +118,9 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
     <QCardSection>
       <div class="text-h6 q-mb-md">{{ name }}</div>
 
+      <!-- Description (if show setting is true) -->
+      <div v-if="showDescription" class="q-mb-md">{{ description }}</div>
+
       <!-- Top right corner buttons on card -->
       <div class="absolute-top-right q-ma-xs">
         <!-- Note Icon -->
@@ -124,7 +135,7 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
 
         <!-- Favorite Star Icon -->
         <QIcon
-          v-show="isFavorite"
+          v-show="isFavorited"
           :name="Icon.FAVORITE_ON"
           color="warning"
           size="md"
@@ -132,7 +143,7 @@ async function onDeleteRecord(type: DatabaseType, id: string) {
           @click="onUnfavorite(type, id, name)"
         />
         <QIcon
-          v-show="!isFavorite"
+          v-show="!isFavorited"
           :name="Icon.FAVORITE_OFF"
           color="grey"
           size="md"

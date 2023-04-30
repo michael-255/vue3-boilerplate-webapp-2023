@@ -264,6 +264,15 @@ async function onDeleteDatabase() {
           @update:model-value="DB.setSetting(SettingId.SHOW_INTRODUCTION, $event)"
         />
 
+        <div class="q-mb-md">Show descriptions for records displayed on the Dashboard page.</div>
+
+        <QToggle
+          class="q-mb-md"
+          label="Show Dashboard Descriptions"
+          :model-value="settings.find((s) => s.id === SettingId.SHOW_DASHBOARD_DESCRIPTIONS)?.value"
+          @update:model-value="DB.setSetting(SettingId.SHOW_DASHBOARD_DESCRIPTIONS, $event)"
+        />
+
         <div class="q-mb-md">
           Dark Mode allows you to switch between a light or dark theme for the app.
         </div>

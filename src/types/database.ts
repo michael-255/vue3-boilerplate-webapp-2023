@@ -72,13 +72,14 @@ export enum DatabaseField {
 /**
  * Setting values are restricted to a few primitive types.
  */
-export type SettingValue = string | number | boolean | DatabaseType | LogRetention
+export type SettingValue = string | number | boolean | DatabaseType | LogRetention | null
 
 /**
  * The only valid setting ids.
  */
 export enum SettingId {
   SHOW_INTRODUCTION = 'show-introduction',
+  SHOW_DASHBOARD_DESCRIPTIONS = 'show-dashboard-descriptions',
   DARK_MODE = 'dark-mode',
   SHOW_ALL_DATA_COLUMNS = 'show-all-data-columns',
   SHOW_CONSOLE_LOGS = 'show-console-logs',

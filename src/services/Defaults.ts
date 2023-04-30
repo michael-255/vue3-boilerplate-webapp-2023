@@ -20,10 +20,11 @@ export const FieldDefault = Object.freeze({
  * Default values for each setting.
  */
 export const SettingDefault = Object.freeze({
-  [SettingId.DARK_MODE]: true,
-  [SettingId.LOG_RETENTION_TIME]: LogRetention.THREE_MONTHS,
-  [SettingId.SHOW_ALL_DATA_COLUMNS]: false,
   [SettingId.SHOW_INTRODUCTION]: true,
+  [SettingId.SHOW_DASHBOARD_DESCRIPTIONS]: true,
+  [SettingId.DARK_MODE]: true,
+  [SettingId.SHOW_ALL_DATA_COLUMNS]: false,
   [SettingId.SHOW_CONSOLE_LOGS]: false,
   [SettingId.SHOW_INFO_MESSAGES]: true,
+  [SettingId.LOG_RETENTION_TIME]: LogRetention.THREE_MONTHS,
 })
