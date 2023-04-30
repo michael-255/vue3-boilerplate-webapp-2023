@@ -45,26 +45,32 @@ export class LocalDatabase extends Dexie {
   async initSettings() {
     // Defaults are set after the nullish coalescing operator, which means no setting data was found
     const showIntroduction =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.value ??
-      SettingDefault[SettingId.SHOW_INTRODUCTION]
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INTRODUCTION))?.[
+        DatabaseField.VALUE
+      ] ?? SettingDefault[SettingId.SHOW_INTRODUCTION]
     const showDashboardDescriptions =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_DASHBOARD_DESCRIPTIONS))?.value ??
-      SettingDefault[SettingId.SHOW_DASHBOARD_DESCRIPTIONS]
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_DASHBOARD_DESCRIPTIONS))?.[
+        DatabaseField.VALUE
+      ] ?? SettingDefault[SettingId.SHOW_DASHBOARD_DESCRIPTIONS]
     const darkMode =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.value ??
+      (await this.getRecord(DatabaseType.SETTING, SettingId.DARK_MODE))?.[DatabaseField.VALUE] ??
       SettingDefault[SettingId.DARK_MODE]
     const showAllDataColumns =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.value ??
-      SettingDefault[SettingId.SHOW_ALL_DATA_COLUMNS]
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_ALL_DATA_COLUMNS))?.[
+        DatabaseField.VALUE
+      ] ?? SettingDefault[SettingId.SHOW_ALL_DATA_COLUMNS]
     const showConsoleLogs =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.value ??
-      SettingDefault[SettingId.SHOW_CONSOLE_LOGS]
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_CONSOLE_LOGS))?.[
+        DatabaseField.VALUE
+      ] ?? SettingDefault[SettingId.SHOW_CONSOLE_LOGS]
     const showInfoMessages =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.value ??
-      SettingDefault[SettingId.SHOW_INFO_MESSAGES]
+      (await this.getRecord(DatabaseType.SETTING, SettingId.SHOW_INFO_MESSAGES))?.[
+        DatabaseField.VALUE
+      ] ?? SettingDefault[SettingId.SHOW_INFO_MESSAGES]
     const logRetentionTime =
-      (await this.getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.value ??
-      SettingDefault[SettingId.LOG_RETENTION_TIME]
+      (await this.getRecord(DatabaseType.SETTING, SettingId.LOG_RETENTION_TIME))?.[
+        DatabaseField.VALUE
+      ] ?? SettingDefault[SettingId.LOG_RETENTION_TIME]
 
     // Set Quasar dark mode
     Dark.set(!!darkMode) // Cast to boolean

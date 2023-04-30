@@ -1,4 +1,4 @@
-import type { LogRetention } from '@/types/misc'
+import type { LogRetention, Optional } from '@/types/misc'
 
 /**
  * Current database version. Change this to force a new database to be created for users.
@@ -70,9 +70,9 @@ export enum DatabaseField {
 }
 
 /**
- * Setting values are restricted to a few primitive types.
+ * Setting values are restricted to the types needed.
  */
-export type SettingValue = string | number | boolean | DatabaseType | LogRetention | null
+export type SettingValue = Optional<string | number | boolean | DatabaseType | LogRetention | null>
 
 /**
  * The only valid setting ids.
