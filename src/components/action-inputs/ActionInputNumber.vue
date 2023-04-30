@@ -50,12 +50,14 @@ function validationRule() {
 }
 
 /**
- * Ensures the values are set to null if the input is empty.
+ * Ensures the values are set to null if the input is empty and decimals if it is not.
  * @param val
  */
-function blurValueUpdate(val: Optional<number> | '') {
-  if (val === null || val === undefined || val === '') {
+function cleanInputValue(actionStoreValue: Optional<number> | '') {
+  if (actionStoreValue === null || actionStoreValue === undefined || actionStoreValue === '') {
     actionStore.record[DatabaseField.NUMBER] = null
+  } else {
+    actionStore.record[DatabaseField.NUMBER] = parseFloat(actionStoreValue.toFixed(2))
   }
 }
 </script>
@@ -78,10 +80,11 @@ function blurValueUpdate(val: Optional<number> | '') {
         :rules="[validationRule()]"
         :disable="locked"
         type="number"
+        step="0.01"
         dense
         outlined
         color="primary"
-        @blur="blurValueUpdate(actionStore.record[DatabaseField.NUMBER])"
+        @blur="cleanInputValue(actionStore.record[DatabaseField.NUMBER])"
       />
     </QCardSection>
   </QCard>
